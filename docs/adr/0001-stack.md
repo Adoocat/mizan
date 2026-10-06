@@ -26,6 +26,9 @@ Implementation choices made in Phase 0:
 | **MSW 2**, not 3 | Vitest 5's mocker peers on MSW 2 |
 | **node-postgres (`pg`)** as the Drizzle driver | pg-boss uses it too, so there's one driver |
 | Integration and E2E tests start Postgres with **Testcontainers** | No shared state between runs; the Compose database is only for local development |
+| **Plain dates use our own integer-day utilities** (`packages/domain/src/dates.ts`) instead of date-fns | Business dates are `YYYY-MM-DD` strings. Integer day arithmetic never touches `Date` or time zones, so there are no off-by-one-day bugs. Time zones only come in through the injected `Clock` (`todayIn`) |
+| **Number formatting and parsing are our own** (`format.ts`, `parse.ts`) instead of `Intl.NumberFormat` | Identical output in Node and every browser, and values never pass through a float. See ADR 0002 |
+| The local dev database listens on **127.0.0.1:5433** | Avoids clashing with a locally installed Postgres on 5432 |
 
 ## Consequences
 
