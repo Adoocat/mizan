@@ -3,6 +3,44 @@
     "name": "Mizan",
     "tagline": "Önce planla, sonra harca."
   },
+  "common": {
+    "cancel": "Vazgeç",
+    "close": "Kapat",
+    "delete": "Sil",
+    "undo": "Geri al",
+    "loading": "Yükleniyor"
+  },
+  "nav": {
+    "main": "Ana menü",
+    "homeLink": "Mizan ana sayfa",
+    "skipToContent": "İçeriğe geç",
+    "groups": {
+      "daily": "Günlük",
+      "wealth": "Varlıklar"
+    },
+    "home": "Ana sayfa",
+    "plan": "Plan",
+    "transactions": "İşlemler",
+    "upcoming": "Yaklaşanlar",
+    "goals": "Hedefler",
+    "accounts": "Hesaplar",
+    "settings": "Ayarlar",
+    "showcase": "Tasarım sistemi",
+    "more": "Daha fazla",
+    "tabBar": "Sekme çubuğu",
+    "add": "İşlem ekle"
+  },
+  "pages": {
+    "placeholder": "Bu sayfa planın {{phase}}. aşamasında gelecek.",
+    "home": { "title": "Ana sayfa", "emptyTitle": "Günlük özetin burada görünecek" },
+    "plan": { "title": "Plan", "emptyTitle": "Henüz plan yok" },
+    "transactions": { "title": "İşlemler", "emptyTitle": "Henüz işlem yok" },
+    "upcoming": { "title": "Yaklaşanlar", "emptyTitle": "Yaklaşan ödeme yok" },
+    "goals": { "title": "Hedefler", "emptyTitle": "Henüz hedef yok" },
+    "accounts": { "title": "Hesaplar", "emptyTitle": "Henüz hesap yok" },
+    "settings": { "title": "Ayarlar", "appearance": "Görünüm" },
+    "notFound": { "title": "Sayfa bulunamadı", "emptyTitle": "Bu adreste bir şey yok" }
+  },
   "health": {
     "label": "API durumu",
     "checking": "Bağlantı kontrol ediliyor…",
@@ -14,5 +52,88 @@
     "label": "Dil",
     "en": "English",
     "tr": "Türkçe"
+  },
+  "theme": {
+    "label": "Tema",
+    "system": "Sistem",
+    "light": "Açık",
+    "dark": "Koyu"
+  },
+  "privacy": {
+    "label": "Tutarlar",
+    "hide": "Tutarları gizle",
+    "show": "Tutarları göster",
+    "hiddenAmount": "Tutar gizli"
+  },
+  "currencyInput": {
+    "errors": {
+      "empty": "Bir tutar gir.",
+      "invalid": "1.250,50 ya da 1,250.50 gibi bir sayı gir.",
+      "too_many_decimals": "En fazla {{decimals}} ondalık basamak kullan.",
+      "out_of_range": "Bu tutar çok büyük.",
+      "negative": "Tutar negatif olamaz."
+    }
+  },
+  "budget": {
+    "left": "kaldı",
+    "over": "aşıldı",
+    "status": {
+      "onPace": "planlanan hızda",
+      "aheadOfPace": "planlanandan hızlı",
+      "over": "bütçe aşıldı"
+    }
+  },
+  "showcase": {
+    "title": "Tasarım sistemi",
+    "intro": "Tüm bileşenler, seçili tema ve dilde. İkisini de kontrol etmek için temayı buradan, dili yan menüden değiştir.",
+    "colours": "Renkler",
+    "typography": "Tipografi",
+    "buttons": "Düğmeler",
+    "badges": "Etiketler",
+    "money": "Para",
+    "currencyInput": "Tutar girişi",
+    "metrics": "Göstergeler",
+    "progress": "İlerleme",
+    "feedback": "Diyaloglar ve bildirimler",
+    "emptyAndLoading": "Boş ve yükleniyor durumları",
+    "savePlan": "Planı kaydet",
+    "export": "CSV dışa aktar",
+    "small": "Küçük",
+    "badge": {
+      "paid": "Ödendi",
+      "upcoming": "Yaklaşıyor",
+      "estimated": "Tahmini",
+      "overdue": "Gecikti",
+      "pending": "Bekliyor",
+      "onTrack": "Yolunda",
+      "fullyAllocated": "Tamamı dağıtıldı"
+    },
+    "moneyDefault": "Varsayılan",
+    "moneyWhole": "Tam birim",
+    "moneyIncome": "Gelir (işaretli)",
+    "moneyOverspent": "Aşım",
+    "percent": "Yüzde",
+    "deltaGood": "Getiri",
+    "deltaSpending": "Harcama değişimi",
+    "amount": "Tutar",
+    "amountHint": "50.000,50, 1,250.99 ya da 1200+350 dene.",
+    "wireValue": "API'ye gönderilen değer",
+    "safeToday": "Bugün güvenle harcanabilir",
+    "safeTodayFootnote": "₺3.000 harcanabilir ÷ kalan 10 gün",
+    "availableToSpend": "Harcanabilir",
+    "availableFootnote": "planlanan ₺9.000'den",
+    "leftToAllocate": "Dağıtılacak tutar",
+    "utilities": "Faturalar",
+    "groceries": "Market ve gıda",
+    "personalCare": "Kişisel bakım",
+    "deleteTransaction": "İşlemi sil…",
+    "showToast": "Geri al bildirimini göster",
+    "confirmTitle": "Bu işlem silinsin mi?",
+    "confirmDescription": "Bakiyelerinden ve planından kaldırılacak. Hemen ardından geri alabilirsin.",
+    "deletedToast": "İşlem silindi",
+    "restoredToast": "İşlem geri yüklendi",
+    "emptyTitle": "Henüz hesap yok",
+    "emptyDescription": "Harcama ve birikim için kullandığın hesapları ekle. Bakiyeleri planının başlangıcı olur.",
+    "addAccount": "Hesap ekle"
   }
 }

@@ -1,6 +1,7 @@
 import { healthResponseSchema } from '@mizan/contracts'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { Badge, type BadgeTone } from '../../components/ui/Badge'
 import { apiGet } from '../../lib/api-client'
 
 export const healthQueryKey = ['health'] as const
@@ -17,6 +18,13 @@ export function useHealth() {
 
 type IndicatorState = 'checking' | 'ok' | 'degraded' | 'offline'
 
+const TONES: Record<IndicatorState, BadgeTone> = {
+  checking: 'neutral',
+  ok: 'positive',
+  degraded: 'warning',
+  offline: 'negative',
+}
+
 export function HealthIndicator() {
   const { t } = useTranslation()
   const health = useHealth()
@@ -26,8 +34,8 @@ export function HealthIndicator() {
   else if (health.data) state = health.data.status === 'ok' ? 'ok' : 'degraded'
 
   return (
-    <p role="status" aria-label={t('health.label')} data-testid="health" data-state={state}>
-      {t(`health.${state}`)}
-    </p>
+    <span role="status" aria-label={t('health.label')} data-testid="health" data-state={state}>
+      <Badge tone={TONES[state]}>{t(`health.${state}`)}</Badge>
+    </span>
   )
 }

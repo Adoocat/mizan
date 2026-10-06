@@ -3,6 +3,44 @@
     "name": "Mizan",
     "tagline": "Plan first, then spend."
   },
+  "common": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "delete": "Delete",
+    "undo": "Undo",
+    "loading": "Loading"
+  },
+  "nav": {
+    "main": "Main navigation",
+    "homeLink": "Mizan home",
+    "skipToContent": "Skip to content",
+    "groups": {
+      "daily": "Daily",
+      "wealth": "Wealth"
+    },
+    "home": "Home",
+    "plan": "Plan",
+    "transactions": "Transactions",
+    "upcoming": "Upcoming",
+    "goals": "Goals",
+    "accounts": "Accounts",
+    "settings": "Settings",
+    "showcase": "Design system",
+    "more": "More",
+    "tabBar": "Tab bar",
+    "add": "Add transaction"
+  },
+  "pages": {
+    "placeholder": "This page arrives in phase {{phase}} of the plan.",
+    "home": { "title": "Home", "emptyTitle": "Your daily overview will appear here" },
+    "plan": { "title": "Plan", "emptyTitle": "No plan yet" },
+    "transactions": { "title": "Transactions", "emptyTitle": "No transactions yet" },
+    "upcoming": { "title": "Upcoming", "emptyTitle": "No upcoming payments" },
+    "goals": { "title": "Goals", "emptyTitle": "No goals yet" },
+    "accounts": { "title": "Accounts", "emptyTitle": "No accounts yet" },
+    "settings": { "title": "Settings", "appearance": "Appearance" },
+    "notFound": { "title": "Page not found", "emptyTitle": "There's nothing at this address" }
+  },
   "health": {
     "label": "API status",
     "checking": "Checking connection…",
@@ -14,5 +52,88 @@
     "label": "Language",
     "en": "English",
     "tr": "Türkçe"
+  },
+  "theme": {
+    "label": "Theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "privacy": {
+    "label": "Amounts",
+    "hide": "Hide amounts",
+    "show": "Show amounts",
+    "hiddenAmount": "Amount hidden"
+  },
+  "currencyInput": {
+    "errors": {
+      "empty": "Enter an amount.",
+      "invalid": "Enter a number like 1.250,50 or 1,250.50.",
+      "too_many_decimals": "Use at most {{decimals}} decimal places.",
+      "out_of_range": "This amount is too large.",
+      "negative": "The amount can't be negative."
+    }
+  },
+  "budget": {
+    "left": "left",
+    "over": "over",
+    "status": {
+      "onPace": "on pace",
+      "aheadOfPace": "ahead of pace",
+      "over": "over budget"
+    }
+  },
+  "showcase": {
+    "title": "Design system",
+    "intro": "Every component in the current theme and language. Switch the theme here or the language in the sidebar to check both.",
+    "colours": "Colours",
+    "typography": "Typography",
+    "buttons": "Buttons",
+    "badges": "Badges",
+    "money": "Money",
+    "currencyInput": "Amount input",
+    "metrics": "Metrics",
+    "progress": "Progress",
+    "feedback": "Dialogs and toasts",
+    "emptyAndLoading": "Empty and loading states",
+    "savePlan": "Save plan",
+    "export": "Export CSV",
+    "small": "Small",
+    "badge": {
+      "paid": "Paid",
+      "upcoming": "Upcoming",
+      "estimated": "Estimated",
+      "overdue": "Overdue",
+      "pending": "Pending",
+      "onTrack": "On track",
+      "fullyAllocated": "Fully allocated"
+    },
+    "moneyDefault": "Default",
+    "moneyWhole": "Whole units",
+    "moneyIncome": "Income (signed)",
+    "moneyOverspent": "Overspent",
+    "percent": "Percent",
+    "deltaGood": "Return",
+    "deltaSpending": "Spending change",
+    "amount": "Amount",
+    "amountHint": "Try 50.000,50, 1,250.99 or 1200+350.",
+    "wireValue": "Value sent to the API",
+    "safeToday": "Safe to spend today",
+    "safeTodayFootnote": "₺3,000 available ÷ 10 days left",
+    "availableToSpend": "Available to spend",
+    "availableFootnote": "of ₺9,000 planned",
+    "leftToAllocate": "Left to allocate",
+    "utilities": "Utilities",
+    "groceries": "Food & groceries",
+    "personalCare": "Personal care",
+    "deleteTransaction": "Delete transaction…",
+    "showToast": "Show undo toast",
+    "confirmTitle": "Delete this transaction?",
+    "confirmDescription": "It will be removed from your balances and plan. You can undo this right after.",
+    "deletedToast": "Transaction deleted",
+    "restoredToast": "Transaction restored",
+    "emptyTitle": "No accounts yet",
+    "emptyDescription": "Add the accounts you use for spending and saving. Their balances start your plan.",
+    "addAccount": "Add account"
   }
 }

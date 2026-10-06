@@ -9,8 +9,8 @@
 | Phase | Name | Status |
 |---|---|---|
 | 0 | Project foundation | ✅ |
-| 1 | Domain primitives (pure) | ⬜ |
-| 2 | Design system and app shell | ⬜ |
+| 1 | Domain primitives (pure) | ✅ |
+| 2 | Design system and app shell | ✅ |
 | 3 | Auth, users, workspace | ⬜ |
 | 4 | Accounts and ledger core | ⬜ |
 | 5 | Categories and transactions | ⬜ |

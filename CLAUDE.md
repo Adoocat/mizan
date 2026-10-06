@@ -109,6 +109,8 @@ Tests: unit tests are `*.test.ts(x)`, integration tests are `*.int.test.ts`. `ap
 ## Design reference
 
 - `design/*.dc.html` are high-fidelity mockups of the **long-term** product. Use them for layout, copy and visual language.
-- Port design tokens from `design/Mizan Design System.dc.html` (`--m-*` variables, dark and light, Geist font, tabular numerals).
+- Design tokens are ported to semantic names in `apps/web/src/app/styles.css` and are the source of truth for code (ADR 0005). Use the Tailwind utilities (`bg-surface`, `text-ink-3`, `text-value-m`, `rounded-card`), not hex values. A few light-mode text colours are darker than the mockup for WCAG AA; Playwright runs axe with contrast checks in both themes.
+- Use `cn()` from `apps/web/src/lib/cn.ts` to combine classes. If you add a type-scale token, register it there too.
+- `/showcase` renders every design-system component; add new shared components to it.
 - **Do not copy mockup code.** It computes money with JavaScript floats and `Math.round`.
 - Mockups show features beyond the current phase (open banking, assistant, health score). Don't build them early.

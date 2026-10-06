@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
@@ -5,7 +6,7 @@ const apiTarget = process.env.MIZAN_API_URL ?? 'http://127.0.0.1:3000'
 const port = Number.parseInt(process.env.MIZAN_WEB_PORT ?? '5173', 10)
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   server: {
     host: 'localhost',
     port,

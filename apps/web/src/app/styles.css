@@ -1,0 +1,305 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
+/*
+ * Mizan design tokens, ported from design/Mizan Design System.dc.html.
+ * The mockup's generated names (--m-f3f1ec-bg…) are replaced with semantic names.
+ * Dark is the design's default. Light applies with data-theme="light", or with the system
+ * preference when the user hasn't chosen a theme.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Neutrals */
+  --m-canvas: #0a0c0e; /* app background, sidebar */
+  --m-page: #0e1113; /* content area */
+  --m-surface: #14181b; /* cards, tables, inputs */
+  --m-surface-hover: #1a1f23;
+  --m-nav-hover: #171b1f;
+  --m-track: #22282d; /* progress tracks */
+  --m-divider: #1c2125; /* inner rules */
+  --m-border: #1f2428; /* card outlines */
+  --m-border-strong: #252b30; /* inputs, secondary buttons */
+  --m-border-hover: #3a4248;
+  --m-ink: #e8ebed; /* primary text */
+  --m-ink-2: #9aa3a9; /* secondary text */
+  --m-ink-3: #858d94; /* labels, meta */
+  --m-ink-nav: #b0b8bd; /* inactive navigation */
+  --m-ink-disabled: #79828a;
+  --m-disabled: #22282d;
+  --m-solid: #6cc3ae; /* primary button: teal in dark, ink in light */
+  --m-solid-hover: #8ad3c0;
+  --m-on-solid: #06201b;
+  --m-focus: #4e9d8e;
+  --m-tip: #262c31;
+  --m-tip-ink: #e6e9eb;
+  --m-tabbar: rgb(11 14 16 / 0.92);
+  --m-shadow: rgb(0 0 0 / 0.4);
+
+  /* Semantic: colour describes financial state, never decoration */
+  --m-accent: #6cc3ae;
+  --m-accent-strong: #2e8a7a;
+  --m-accent-soft: #12302b;
+  --m-link-hover: #9bdccb;
+  --m-positive: #7cc583;
+  --m-positive-bar: #3f8f48;
+  --m-positive-soft: #15281a;
+  --m-warning: #e3aa4f;
+  --m-warning-bar: #d69b3c;
+  --m-warning-soft: #2b2210;
+  --m-negative: #ec7f74;
+  --m-negative-bar: #c2574d;
+  --m-negative-soft: #2e1715;
+  --m-pace: #7c8a9c; /* on-pace progress bar */
+  /* Filled destructive buttons. White text passes WCAG AA (5.5:1) in both themes. */
+  --m-danger: #b4423a;
+
+  /* Data: plan groups */
+  --m-data-essentials: #6e8299;
+  --m-data-flexible: #a8b2be;
+  --m-data-debt: #d08a6c;
+  --m-data-savings: #4ea3ab;
+  --m-data-investments: #7e9be0;
+  --m-data-pool: #d8b465;
+
+  /* Brand mark (same in both themes) */
+  --m-logo-tile: #101417;
+  --m-logo-tile-border: #232a2f;
+  --m-logo-left: #5a9e96;
+  --m-logo-right: #84cdb8;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    color-scheme: light;
+    --m-canvas: #f3f1ec;
+    --m-page: #faf9f6;
+    --m-surface: #ffffff;
+    --m-surface-hover: #f6f4f0;
+    --m-nav-hover: #eae7e0;
+    --m-track: #efece6;
+    --m-divider: #efece6;
+    --m-border: #e7e4dd;
+    --m-border-strong: #e3e0d8;
+    --m-border-hover: #cfcac0;
+    --m-ink: #1c1b19;
+    --m-ink-2: #5c5852;
+    --m-ink-3: #6e695f; /* mockup #77726a, darkened for WCAG AA on canvas */
+    --m-ink-nav: #4f4b45;
+    --m-ink-disabled: #8a857c;
+    --m-disabled: #e7e4dd;
+    --m-solid: #1c1b19;
+    --m-solid-hover: #33312d;
+    --m-on-solid: #faf9f6;
+    --m-focus: #7dbdb0;
+    --m-tip: #1c1b19;
+    --m-tip-ink: #f3f1ec;
+    --m-tabbar: rgb(246 245 241 / 0.94);
+    --m-shadow: rgb(28 27 25 / 0.12);
+    --m-accent: #1f7266;
+    --m-accent-strong: #1f7266;
+    --m-accent-soft: #e4f1ee;
+    --m-link-hover: #17574e;
+    --m-positive: #336f32; /* mockup #3b7d3a, darkened for WCAG AA on positive-soft */
+    --m-positive-bar: #3b7d3a;
+    --m-positive-soft: #eaf3e7;
+    --m-warning: #8f5d0e; /* mockup #a86f12, darkened for WCAG AA on warning-soft */
+    --m-warning-bar: #c48a2a;
+    --m-warning-soft: #f8efdc;
+    --m-negative: #b4423a;
+    --m-negative-bar: #b4423a;
+    --m-negative-soft: #f8eae7;
+    --m-pace: #5a6577;
+    --m-data-essentials: #2f3a4a;
+    --m-data-flexible: #8c96a8;
+    --m-data-debt: #b0674a;
+    --m-data-savings: #3f7e86;
+    --m-data-investments: #3d5a99;
+    --m-data-pool: #d2a857;
+  }
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --m-canvas: #f3f1ec;
+  --m-page: #faf9f6;
+  --m-surface: #ffffff;
+  --m-surface-hover: #f6f4f0;
+  --m-nav-hover: #eae7e0;
+  --m-track: #efece6;
+  --m-divider: #efece6;
+  --m-border: #e7e4dd;
+  --m-border-strong: #e3e0d8;
+  --m-border-hover: #cfcac0;
+  --m-ink: #1c1b19;
+  --m-ink-2: #5c5852;
+  --m-ink-3: #6e695f; /* mockup #77726a, darkened for WCAG AA on canvas */
+  --m-ink-nav: #4f4b45;
+  --m-ink-disabled: #8a857c;
+  --m-disabled: #e7e4dd;
+  --m-solid: #1c1b19;
+  --m-solid-hover: #33312d;
+  --m-on-solid: #faf9f6;
+  --m-focus: #7dbdb0;
+  --m-tip: #1c1b19;
+  --m-tip-ink: #f3f1ec;
+  --m-tabbar: rgb(246 245 241 / 0.94);
+  --m-shadow: rgb(28 27 25 / 0.12);
+  --m-accent: #1f7266;
+  --m-accent-strong: #1f7266;
+  --m-accent-soft: #e4f1ee;
+  --m-link-hover: #17574e;
+  --m-positive: #336f32; /* mockup #3b7d3a, darkened for WCAG AA on positive-soft */
+  --m-positive-bar: #3b7d3a;
+  --m-positive-soft: #eaf3e7;
+  --m-warning: #8f5d0e; /* mockup #a86f12, darkened for WCAG AA on warning-soft */
+  --m-warning-bar: #c48a2a;
+  --m-warning-soft: #f8efdc;
+  --m-negative: #b4423a;
+  --m-negative-bar: #b4423a;
+  --m-negative-soft: #f8eae7;
+  --m-pace: #5a6577;
+  --m-data-essentials: #2f3a4a;
+  --m-data-flexible: #8c96a8;
+  --m-data-debt: #b0674a;
+  --m-data-savings: #3f7e86;
+  --m-data-investments: #3d5a99;
+  --m-data-pool: #d2a857;
+}
+
+/* Expose tokens to Tailwind as utilities: bg-surface, text-ink-2, border-border… */
+@theme inline {
+  --color-canvas: var(--m-canvas);
+  --color-page: var(--m-page);
+  --color-surface: var(--m-surface);
+  --color-surface-hover: var(--m-surface-hover);
+  --color-nav-hover: var(--m-nav-hover);
+  --color-track: var(--m-track);
+  --color-divider: var(--m-divider);
+  --color-border: var(--m-border);
+  --color-border-strong: var(--m-border-strong);
+  --color-border-hover: var(--m-border-hover);
+  --color-ink: var(--m-ink);
+  --color-ink-2: var(--m-ink-2);
+  --color-ink-3: var(--m-ink-3);
+  --color-ink-nav: var(--m-ink-nav);
+  --color-ink-disabled: var(--m-ink-disabled);
+  --color-disabled: var(--m-disabled);
+  --color-primary: var(--m-solid);
+  --color-primary-hover: var(--m-solid-hover);
+  --color-on-primary: var(--m-on-solid);
+  --color-focus: var(--m-focus);
+  --color-tip: var(--m-tip);
+  --color-tip-ink: var(--m-tip-ink);
+  --color-tabbar: var(--m-tabbar);
+  --color-accent: var(--m-accent);
+  --color-accent-strong: var(--m-accent-strong);
+  --color-accent-soft: var(--m-accent-soft);
+  --color-link-hover: var(--m-link-hover);
+  --color-positive: var(--m-positive);
+  --color-positive-bar: var(--m-positive-bar);
+  --color-positive-soft: var(--m-positive-soft);
+  --color-warning: var(--m-warning);
+  --color-warning-bar: var(--m-warning-bar);
+  --color-warning-soft: var(--m-warning-soft);
+  --color-negative: var(--m-negative);
+  --color-negative-bar: var(--m-negative-bar);
+  --color-negative-soft: var(--m-negative-soft);
+  --color-pace: var(--m-pace);
+  --color-danger: var(--m-danger);
+  --color-data-essentials: var(--m-data-essentials);
+  --color-data-flexible: var(--m-data-flexible);
+  --color-data-debt: var(--m-data-debt);
+  --color-data-savings: var(--m-data-savings);
+  --color-data-investments: var(--m-data-investments);
+  --color-data-pool: var(--m-data-pool);
+  --color-logo-tile: var(--m-logo-tile);
+  --color-logo-tile-border: var(--m-logo-tile-border);
+  --color-logo-left: var(--m-logo-left);
+  --color-logo-right: var(--m-logo-right);
+
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+
+  /* Type scale: size / line-height / letter-spacing / weight */
+  --text-hero: 52px;
+  --text-hero--line-height: 1;
+  --text-hero--letter-spacing: -0.04em;
+  --text-hero--font-weight: 500;
+  --text-value-l: 34px;
+  --text-value-l--line-height: 1.1;
+  --text-value-l--letter-spacing: -0.035em;
+  --text-value-l--font-weight: 500;
+  --text-value-m: 24px;
+  --text-value-m--line-height: 1.2;
+  --text-value-m--letter-spacing: -0.025em;
+  --text-value-m--font-weight: 500;
+  --text-page-title: 22px;
+  --text-page-title--line-height: 1.25;
+  --text-page-title--letter-spacing: -0.025em;
+  --text-page-title--font-weight: 600;
+  --text-value-s: 18px;
+  --text-value-s--line-height: 1.3;
+  --text-value-s--letter-spacing: -0.02em;
+  --text-value-s--font-weight: 500;
+  --text-card-title: 13.5px;
+  --text-card-title--line-height: 1.4;
+  --text-card-title--letter-spacing: -0.01em;
+  --text-card-title--font-weight: 600;
+  --text-body: 13px;
+  --text-body--line-height: 1.5;
+  --text-label: 12px;
+  --text-label--line-height: 1.4;
+  --text-caption: 11.5px;
+  --text-caption--line-height: 1.4;
+  --text-mono: 11px;
+  --text-mono--line-height: 1.4;
+
+  /* Radii */
+  --radius-bar: 3px;
+  --radius-badge: 4px;
+  --radius-control: 6px;
+  --radius-card: 8px;
+  --radius-modal: 10px;
+
+  /* Elevation: cards are flat (border only) */
+  --shadow-raised: 0 8px 24px var(--m-shadow);
+  --shadow-overlay: 0 12px 32px var(--m-shadow), 0 2px 6px var(--m-shadow);
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--m-canvas);
+    color: var(--m-ink);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* Tabular numerals everywhere, so amounts line up */
+    font-feature-settings: 'tnum' 1;
+  }
+
+  a {
+    color: var(--m-accent);
+  }
+
+  a:hover {
+    color: var(--m-link-hover);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--m-focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
