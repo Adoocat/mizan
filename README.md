@@ -51,3 +51,7 @@ pnpm test:e2e       # Playwright
 ## Security
 
 Please report vulnerabilities privately. See [SECURITY.md](SECURITY.md).
+
+## License
+
+[MIT](LICENSE) © Demirkan Doğru
