@@ -1,0 +1,18 @@
+{
+  "app": {
+    "name": "Mizan",
+    "tagline": "Önce planla, sonra harca."
+  },
+  "health": {
+    "label": "API durumu",
+    "checking": "Bağlantı kontrol ediliyor…",
+    "ok": "Bağlı",
+    "degraded": "Veritabanına ulaşılamıyor",
+    "offline": "API'ye ulaşılamıyor"
+  },
+  "language": {
+    "label": "Dil",
+    "en": "English",
+    "tr": "Türkçe"
+  }
+}

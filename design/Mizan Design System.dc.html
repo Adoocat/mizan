@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--m-tip:#262C31;--m-tip-fg:#E6E9EB;--m-tip-hover:#323940;--m-tabbar:rgba(11,14,16,0.92);--m-101417-bg:#101417;--m-1c1b19-bg:#6CC3AE;--m-1c1b19-fg:#E8EBED;--m-1c1b19-line:#6CC3AE;--m-1f3760-fg:#9BDCCB;--m-1f5e4e-bg:#1F5E4E;--m-21407a-bg:#21407A;--m-232a2f-line:#232A2F;--m-245f43-fg:#A8DCAB;--m-2c4a7c-bg:#2E8A7A;--m-2c4a7c-fg:#6CC3AE;--m-2c4a7c-line:#4FA898;--m-2f3a4a-bg:#6E8299;--m-2f3a4a-fg:#6E8299;--m-2f3a4a-line:#6E8299;--m-2f7d57-bg:#3F8F48;--m-2f7d57-fg:#7CC583;--m-2f7d57-line:#4F9E57;--m-33312d-bg:#8AD3C0;--m-33312d-line:#8AD3C0;--m-3a3833-bg:#353C42;--m-3a3833-line:#353C42;--m-3d5a99-bg:#7E9BE0;--m-3d5a99-fg:#7E9BE0;--m-3d5a99-line:#7E9BE0;--m-3e3b36-fg:#C5CBCF;--m-3f7e86-bg:#4EA3AB;--m-3f7e86-fg:#4EA3AB;--m-3f7e86-line:#4EA3AB;--m-4b3f8f-bg:#4B3F8F;--m-4f4b45-fg:#B0B8BD;--m-5a6577-bg:#7C8A9C;--m-5a6577-fg:#7C8A9C;--m-5a9e96-bg:#5A9E96;--m-5a9e96-line:#5A9E96;--m-5c5852-bg:#9AA3A9;--m-5c5852-fg:#9AA3A9;--m-5f79a8-bg:#5D78B0;--m-77726a-bg:#858D94;--m-77726a-fg:#858D94;--m-77726a-line:#858D94;--m-7a5410-bg:#EBC27A;--m-7a5410-fg:#EBC27A;--m-7f93bc-fg:#4F6491;--m-7f97c2-line:#4E9D8E;--m-84cdb8-bg:#84CDB8;--m-84cdb8-line:#84CDB8;--m-8a857c-bg:#79828A;--m-8a857c-fg:#79828A;--m-8a857c-line:#79828A;--m-8c3a33-fg:#F0A49B;--m-8c96a8-bg:#A8B2BE;--m-8c96a8-fg:#A8B2BE;--m-9a7b2f-bg:#9A7B2F;--m-9c3830-bg:#D2665B;--m-9c3830-line:#D2665B;--m-9fb0cf-bg:#3F4F70;--m-a49e94-bg:#646D74;--m-a49e94-fg:#646D74;--m-a49e94-line:#646D74;--m-a86f12-bg:#C9923A;--m-a86f12-fg:#E3AA4F;--m-a86f12-line:#C9923A;--m-afc0dc-line:#2F6B60;--m-b0674a-bg:#D08A6C;--m-b0674a-fg:#D08A6C;--m-b0674a-line:#D08A6C;--m-b4423a-bg:#C2574D;--m-b4423a-fg:#EC7F74;--m-b4423a-line:#C2574D;--m-b8b2a7-bg:#4D565D;--m-b8b2a7-fg:#4D565D;--m-b8b2a7-line:#4D565D;--m-bdb8ae-fg:#9AA3A9;--m-c48a2a-bg:#D69B3C;--m-c48a2a-fg:#D69B3C;--m-c8d0dd-bg:#3A4654;--m-c9a55a-line:#8A6B2C;--m-c9e0d2-bg:#2A5233;--m-cbd5e6-line:#275A51;--m-cfcac0-bg:#3A4248;--m-cfcac0-line:#3A4248;--m-d2a857-bg:#D8B465;--m-d2a857-fg:#D8B465;--m-d6d2c9-line:#353D43;--m-d9e2f0-bg:#1F4A42;--m-ddebe2-bg:#20402A;--m-dedad1-line:#2C3338;--m-e2a49d-line:#8A3E37;--m-e2ded5-bg:#232A2F;--m-e3dfd6-line:#2A3136;--m-e3e0d8-bg:#2A3136;--m-e3e0d8-line:#252B30;--m-e3e9f3-line:#1A3A34;--m-e4c9bc-bg:#5A3A2E;--m-e7c5bf-line:#5A2E2A;--m-e7e4dd-bg:#22282D;--m-e7e4dd-fg:#22282D;--m-e7e4dd-line:#1F2428;--m-e8f2ec-bg:#15281A;--m-e8f2ec-line:#15281A;--m-e9e6df-bg:#050607;--m-eae7e0-bg:#171B1F;--m-ebeff6-bg:#12302B;--m-ebeff6-line:#12302B;--m-ece9e2-bg:#0A0C0E;--m-eef1f6-bg:#18212F;--m-efe3e0-bg:#4A2622;--m-efece6-bg:#22282D;--m-efece6-fg:#22282D;--m-efece6-line:#1C2125;--m-f0e2c4-bg:#4A3A1A;--m-f0e2c4-line:#4A3A1A;--m-f1f4f9-bg:#13221F;--m-f3e6df-bg:#2C201B;--m-f3ebda-bg:#3A2F17;--m-f3f1ec-bg:#0A0C0E;--m-f3f1ec-line:#1A1F23;--m-f4f7fb-bg:#13201E;--m-f4f9f5-bg:#121C15;--m-f6ece7-bg:#2A1E19;--m-f6f4f0-bg:#1A1F23;--m-f6f5f1-bg:#0B0E10;--m-f6f8fb-bg:#111D1B;--m-f7fbf8-bg:#121C15;--m-f8eae7-bg:#2E1715;--m-f8eae7-line:#2E1715;--m-f8efdc-bg:#2B2210;--m-f8f6f2-bg:#181D21;--m-faf9f6-bg:#0E1113;--m-faf9f6-fg:#06201B;--m-faf9f6-line:#1A1F23;--m-fafcfa-bg:#121C15;--m-fdf5f3-bg:#241312;--m-fdf8ee-bg:#221B0E;--m-fdf9f1-bg:#1C170D;--m-fdfcfa-bg:#111518;--m-fdfcfb-bg:#111518;--m-ffffff-bg:#14181B;--m-ffffff-fg:#FFFFFF;--m-ffffff-line:#14181B}
+:root[data-theme="light"]{color-scheme:light;--m-tip:#1C1B19;--m-tip-fg:#F3F1EC;--m-tip-hover:#33312D;--m-tabbar:rgba(246,245,241,0.94);--m-101417-bg:#101417;--m-1c1b19-bg:#1C1B19;--m-1c1b19-fg:#1C1B19;--m-1c1b19-line:#1C1B19;--m-1f3760-fg:#17574E;--m-1f5e4e-bg:#1F5E4E;--m-21407a-bg:#21407A;--m-232a2f-line:#232A2F;--m-245f43-fg:#2D5F2C;--m-2c4a7c-bg:#1F7266;--m-2c4a7c-fg:#1F7266;--m-2c4a7c-line:#1F7266;--m-2f3a4a-bg:#2F3A4A;--m-2f3a4a-fg:#2F3A4A;--m-2f3a4a-line:#2F3A4A;--m-2f7d57-bg:#3B7D3A;--m-2f7d57-fg:#3B7D3A;--m-2f7d57-line:#3B7D3A;--m-33312d-bg:#33312D;--m-33312d-line:#33312D;--m-3a3833-bg:#3A3833;--m-3a3833-line:#3A3833;--m-3d5a99-bg:#3D5A99;--m-3d5a99-fg:#3D5A99;--m-3d5a99-line:#3D5A99;--m-3e3b36-fg:#3E3B36;--m-3f7e86-bg:#3F7E86;--m-3f7e86-fg:#3F7E86;--m-3f7e86-line:#3F7E86;--m-4b3f8f-bg:#4B3F8F;--m-4f4b45-fg:#4F4B45;--m-5a6577-bg:#5A6577;--m-5a6577-fg:#5A6577;--m-5a9e96-bg:#5A9E96;--m-5a9e96-line:#5A9E96;--m-5c5852-bg:#5C5852;--m-5c5852-fg:#5C5852;--m-5f79a8-bg:#5F79A8;--m-77726a-bg:#77726A;--m-77726a-fg:#77726A;--m-77726a-line:#77726A;--m-7a5410-bg:#7A5410;--m-7a5410-fg:#7A5410;--m-7f93bc-fg:#7F93BC;--m-7f97c2-line:#7DBDB0;--m-84cdb8-bg:#84CDB8;--m-84cdb8-line:#84CDB8;--m-8a857c-bg:#8A857C;--m-8a857c-fg:#8A857C;--m-8a857c-line:#8A857C;--m-8c3a33-fg:#8C3A33;--m-8c96a8-bg:#8C96A8;--m-8c96a8-fg:#8C96A8;--m-9a7b2f-bg:#9A7B2F;--m-9c3830-bg:#9C3830;--m-9c3830-line:#9C3830;--m-9fb0cf-bg:#9FB0CF;--m-a49e94-bg:#A49E94;--m-a49e94-fg:#A49E94;--m-a49e94-line:#A49E94;--m-a86f12-bg:#A86F12;--m-a86f12-fg:#A86F12;--m-a86f12-line:#A86F12;--m-afc0dc-line:#A3D1C7;--m-b0674a-bg:#B0674A;--m-b0674a-fg:#B0674A;--m-b0674a-line:#B0674A;--m-b4423a-bg:#B4423A;--m-b4423a-fg:#B4423A;--m-b4423a-line:#B4423A;--m-b8b2a7-bg:#B8B2A7;--m-b8b2a7-fg:#B8B2A7;--m-b8b2a7-line:#B8B2A7;--m-bdb8ae-fg:#BDB8AE;--m-c48a2a-bg:#C48A2A;--m-c48a2a-fg:#C48A2A;--m-c8d0dd-bg:#C8D0DD;--m-c9a55a-line:#C9A55A;--m-c9e0d2-bg:#CBE2C6;--m-cbd5e6-line:#BFDFD8;--m-cfcac0-bg:#CFCAC0;--m-cfcac0-line:#CFCAC0;--m-d2a857-bg:#D2A857;--m-d2a857-fg:#D2A857;--m-d6d2c9-line:#D6D2C9;--m-d9e2f0-bg:#CDE7E1;--m-ddebe2-bg:#DCEBD8;--m-dedad1-line:#DEDAD1;--m-e2a49d-line:#E2A49D;--m-e2ded5-bg:#E2DED5;--m-e3dfd6-line:#E3DFD6;--m-e3e0d8-bg:#E3E0D8;--m-e3e0d8-line:#E3E0D8;--m-e3e9f3-line:#D6EBE6;--m-e4c9bc-bg:#E4C9BC;--m-e7c5bf-line:#E7C5BF;--m-e7e4dd-bg:#E7E4DD;--m-e7e4dd-fg:#E7E4DD;--m-e7e4dd-line:#E7E4DD;--m-e8f2ec-bg:#EAF3E7;--m-e8f2ec-line:#EAF3E7;--m-e9e6df-bg:#E9E6DF;--m-eae7e0-bg:#EAE7E0;--m-ebeff6-bg:#E4F1EE;--m-ebeff6-line:#E4F1EE;--m-ece9e2-bg:#ECE9E2;--m-eef1f6-bg:#EEF1F6;--m-efe3e0-bg:#EFE3E0;--m-efece6-bg:#EFECE6;--m-efece6-fg:#EFECE6;--m-efece6-line:#EFECE6;--m-f0e2c4-bg:#F0E2C4;--m-f0e2c4-line:#F0E2C4;--m-f1f4f9-bg:#ECF5F3;--m-f3e6df-bg:#F3E6DF;--m-f3ebda-bg:#F3EBDA;--m-f3f1ec-bg:#F3F1EC;--m-f3f1ec-line:#F3F1EC;--m-f4f7fb-bg:#EFF7F5;--m-f4f9f5-bg:#F3F9F1;--m-f6ece7-bg:#F6ECE7;--m-f6f4f0-bg:#F6F4F0;--m-f6f5f1-bg:#F6F5F1;--m-f6f8fb-bg:#F2F8F6;--m-f7fbf8-bg:#F6FBF4;--m-f8eae7-bg:#F8EAE7;--m-f8eae7-line:#F8EAE7;--m-f8efdc-bg:#F8EFDC;--m-f8f6f2-bg:#F8F6F2;--m-faf9f6-bg:#FAF9F6;--m-faf9f6-fg:#FAF9F6;--m-faf9f6-line:#FAF9F6;--m-fafcfa-bg:#F9FCF8;--m-fdf5f3-bg:#FDF5F3;--m-fdf8ee-bg:#FDF8EE;--m-fdf9f1-bg:#FDF9F1;--m-fdfcfa-bg:#FDFCFA;--m-fdfcfb-bg:#FDFCFB;--m-ffffff-bg:#FFFFFF;--m-ffffff-fg:#FFFFFF;--m-ffffff-line:#FFFFFF}
+html,body{margin:0;padding:0;background:var(--m-f3f1ec-bg);color:var(--m-1c1b19-fg);font-family:'Geist',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1}
+*{box-sizing:border-box}
+a{color:var(--m-2c4a7c-fg);text-decoration:none}a:hover{color:var(--m-1f3760-fg);text-decoration:underline}
+button,input{font-family:inherit}
+@keyframes mzPulse{0%,100%{opacity:1}50%{opacity:0.55}}
+@keyframes mzSpin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<div style="max-width:1280px;margin:0 auto;padding:48px 40px 80px;display:flex;flex-direction:column;gap:56px">
+  <header style="display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;border-bottom:1px solid var(--m-e3e0d8-line);padding-bottom:28px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:28px;height:28px;border-radius:8px;background:var(--m-101417-bg);border:1px solid var(--m-232a2f-line);display:flex;align-items:center;justify-content:center;flex:none"><svg viewBox="0 0 176 186" style="width:16px;height:17px;display:block"><path d="M8 6 L68 51 L68 178 L8 136 Z" style="fill:var(--m-5a9e96-bg);stroke:var(--m-5a9e96-line);stroke-width:8;stroke-linejoin:round"></path><path d="M168 6 L168 136 L112 178 L112 106 C112 96 100 92 100 82 L100 54 Z" style="fill:var(--m-84cdb8-bg);stroke:var(--m-84cdb8-line);stroke-width:8;stroke-linejoin:round"></path></svg></div>
+        <span style="font-size:13px;color:var(--m-5c5852-fg)">Mizan · Design system 1.0</span>
+      </div>
+      <h1 style="margin:0;font-size:34px;font-weight:600;letter-spacing:-0.03em">Calm, exact, legible.</h1>
+    </div>
+    <div style="margin-left:auto;display:grid;grid-template-columns:repeat(3,minmax(160px,220px));gap:20px;font-size:12.5px;color:var(--m-3e3b36-fg);line-height:1.5">
+      <div><div style="font-weight:600;margin-bottom:4px">Numbers lead</div>Only the one figure that answers the screen’s question gets size. Everything else is 13–20px.</div>
+      <div><div style="font-weight:600;margin-bottom:4px">Colour means something</div>Green, amber and red describe financial state. They are never decoration.</div>
+      <div><div style="font-weight:600;margin-bottom:4px">Show the working</div>Every derived number can explain how it was calculated and where the data came from.</div>
+    </div>
+  </header>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:13px;font-weight:600;color:var(--m-77726a-fg)">01 · Colour — dark is the default theme, light is optional. Values shown dark / light.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">
+      <sc-for list="{{ neutrals }}" as="c" hint-placeholder-count="9">
+        <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;overflow:hidden">
+          <div style="height:64px;background:{{ c.sw }};border-bottom:1px solid var(--m-efece6-line)"></div>
+          <div style="padding:10px 12px;display:flex;flex-direction:column;gap:2px"><span style="font-size:12.5px;font-weight:500">{{ c.name }}</span><span style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--m-77726a-fg)">{{ c.hex }}</span><span style="font-size:11.5px;color:var(--m-5c5852-fg)">{{ c.use }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px">
+      <sc-for list="{{ semantic }}" as="c" hint-placeholder-count="5">
+        <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:6px"><div style="flex:2;height:44px;border-radius:5px;background:{{ c.sw }}"></div><div style="flex:1;height:44px;border-radius:5px;background:{{ c.softSw }}"></div></div>
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12.5px;font-weight:500">{{ c.name }} <span style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--m-77726a-fg);font-weight:400">{{ c.hex }} · {{ c.soft }}</span></span><span style="font-size:11.5px;color:var(--m-5c5852-fg);line-height:1.45">{{ c.use }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:12.5px;font-weight:500">Data palette</span><span style="font-size:11.5px;color:var(--m-5c5852-fg)">Fixed to the six plan groups everywhere — a colour always means the same money.</span></div>
+      <div style="display:flex;height:28px;gap:2px;border-radius:4px;overflow:hidden">
+        <sc-for list="{{ data }}" as="d" hint-placeholder-count="6"><div style="flex:1;background:{{ d.sw }}"></div></sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px">
+        <sc-for list="{{ data }}" as="d" hint-placeholder-count="6"><div style="display:flex;flex-direction:column;gap:1px"><span style="font-size:11.5px">{{ d.name }}</span><span style="font-family:'Geist Mono',monospace;font-size:10.5px;color:var(--m-77726a-fg)">{{ d.hex }}</span></div></sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-wrap:wrap;gap:20px">
+    <div style="flex:1.6 1 520px;display:flex;flex-direction:column;gap:20px">
+      <h2 style="margin:0;font-size:13px;font-weight:600;color:var(--m-77726a-fg)">02 · Typography — Geist, Geist Mono</h2>
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px">
+        <sc-for list="{{ type }}" as="t" hint-placeholder-count="10">
+          <div style="display:grid;grid-template-columns:140px minmax(0,1fr);align-items:baseline;column-gap:16px;padding:12px 18px;border-top:{{ t.bt }}">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:500">{{ t.name }}</span><span style="font-family:'Geist Mono',monospace;font-size:10.5px;color:var(--m-77726a-fg)">{{ t.spec }}</span></div>
+            <span style="font-size:{{ t.size }};font-weight:{{ t.w }};letter-spacing:{{ t.ls }};font-family:{{ t.ff }};color:{{ t.c }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.sample }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:20px">
+      <h2 style="margin:0;font-size:13px;font-weight:600;color:var(--m-77726a-fg)">Tabular figures</h2>
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;font-size:13px">
+        <div style="display:flex;justify-content:space-between;color:var(--m-77726a-fg);font-size:11.5px"><span>Always on (tnum)</span><span>Right-aligned</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Rent</span><span style="font-weight:500">−₺9,500.00</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Freelance</span><span style="font-weight:500;color:var(--m-2f7d57-fg)">+₺4,000.00</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Migros</span><span style="font-weight:500">−₺1,111.11</span></div>
+        <div style="display:flex;justify-content:space-between;border-top:1px solid var(--m-efece6-line);padding-top:6px"><span>Net</span><span style="font-weight:600">−₺6,611.11</span></div>
+      </div>
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--m-3e3b36-fg);line-height:1.5">
+        <span style="font-weight:600;color:var(--m-1c1b19-fg)">Number rules</span>
+        <span>Expenses use a true minus (−) in ink, not red. Income gets + and green.</span>
+        <span>Transactions show kuruş; plans, goals and summaries round to whole lira.</span>
+        <span>Estimates are prefixed with ~ and drawn dashed.</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-wrap:wrap;gap:20px">
+    <div style="flex:1 1 380px;display:flex;flex-direction:column;gap:20px">
+      <h2 style="margin:0;font-size:13px;font-weight:600;color:var(--m-77726a-fg)">03 · Spacing — 4px base</h2>
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ spacing }}" as="s" hint-placeholder-count="8">
+          <div style="display:grid;grid-template-columns:40px 1fr 160px;align-items:center;column-gap:12px;font-size:12px"><span style="font-family:'Geist Mono',monospace;color:var(--m-5c5852-fg)">{{ s.v }}</span><div style="height:10px;width:{{ s.px }};background:var(--m-c8d0dd-bg);border-radius:2px"></div><span style="color:var(--m-77726a-fg)">{{ s.use }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="flex:1 1 380px;display:flex;flex-direction:column;gap:20px">
+      <h2 style="margin:0;font-size:13px;font-weight:600;color:var(--m-77726a-fg)">Radius &amp; elevation</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <sc-for list="{{ radii }}" as="r" hint-placeholder-count="6">
+          <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+            <div style="width:56px;height:40px;border:1.5px solid var(--m-2f3a4a-line);border-radius:{{ r.r }};background:var(--m-f6f4f0-bg)"></div>
+            <span style="font-size:12px;font-weight:500">{{ r.r }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg);margin-top:-6px">{{ r.use }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:14px;font-size:12px"><div style="font-weight:500">Flat</div><div style="color:var(--m-77726a-fg);font-size:11.5px">Cards: 1px border, no shadow</div></div>
+        <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e3e0d8-line);border-radius:8px;padding:14px;font-size:12px;box-shadow:0 8px 24px rgba(28,27,25,0.12)"><div style="font-weight:500">Raised</div><div style="color:var(--m-77726a-fg);font-size:11.5px">Menus, popovers</div></div>
+        <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e3e0d8-line);border-radius:10px;padding:14px;font-size:12px;box-shadow:0 12px 32px rgba(28,27,25,0.14),0 2px 6px rgba(28,27,25,0.06)"><div style="font-weight:500">Overlay</div><div style="color:var(--m-77726a-fg);font-size:11.5px">Modals only</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:13px;font-weight:600;color:var(--m-77726a-fg)">04 · Buttons &amp; controls</h2>
+    <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:20px;display:grid;grid-template-columns:120px repeat(5,minmax(0,1fr));gap:14px 16px;align-items:center;overflow-x:auto">
+      <span></span><span style="font-size:11.5px;color:var(--m-77726a-fg)">Default</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">Hover</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">Focus</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">Disabled</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">Loading</span>
+      <span style="font-size:12.5px;font-weight:500">Primary</span>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:13px;font-weight:500;width:max-content">Save plan</button>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-33312d-line);background:var(--m-33312d-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:13px;font-weight:500;width:max-content">Save plan</button>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:13px;font-weight:500;width:max-content;box-shadow:0 0 0 2px var(--m-ffffff-line),0 0 0 4px var(--m-7f97c2-line)">Save plan</button>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-d6d2c9-line);background:var(--m-e7e4dd-bg);color:var(--m-8a857c-fg);border-radius:6px;font-size:13px;font-weight:500;width:max-content">Save plan</button>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:13px;font-weight:500;width:max-content;display:flex;align-items:center;gap:8px"><span style="width:11px;height:11px;border-radius:50%;border:1.5px solid var(--m-77726a-line);border-top-color:var(--m-faf9f6-line);animation:mzSpin 700ms linear infinite"></span>Saving</button>
+      <span style="font-size:12.5px;font-weight:500">Secondary</span>
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;width:max-content">Export CSV</button>
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-cfcac0-line);background:var(--m-f3f1ec-bg);border-radius:6px;font-size:13px;width:max-content">Export CSV</button>
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;width:max-content;box-shadow:0 0 0 2px var(--m-ffffff-line),0 0 0 4px var(--m-7f97c2-line)">Export CSV</button>
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-efece6-line);background:var(--m-faf9f6-bg);color:var(--m-a49e94-fg);border-radius:6px;font-size:13px;width:max-content">Export CSV</button>
+      <span style="font-size:12px;color:var(--m-77726a-fg)">—</span>
+      <span style="font-size:12.5px;font-weight:500">Destructive</span>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-b4423a-line);background:var(--m-b4423a-bg);color:var(--m-ffffff-fg);border-radius:6px;font-size:13px;font-weight:500;width:max-content">Disconnect</button>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-9c3830-line);background:var(--m-9c3830-bg);color:var(--m-ffffff-fg);border-radius:6px;font-size:13px;font-weight:500;width:max-content">Disconnect</button>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-b4423a-line);background:var(--m-b4423a-bg);color:var(--m-ffffff-fg);border-radius:6px;font-size:13px;font-weight:500;width:max-content;box-shadow:0 0 0 2px var(--m-ffffff-line),0 0 0 4px var(--m-e2a49d-line)">Disconnect</button>
+      <span style="font-size:12px;color:var(--m-77726a-fg)">Only inside a confirmation</span>
+      <span style="font-size:12px;color:var(--m-77726a-fg)">—</span>
+      <span style="font-size:12.5px;font-weight:500">Link / text</span>
+      <span style="font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500">Open plan</span>
+      <span style="font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500;text-decoration:underline">Open plan</span>
+      <span style="font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500;outline:2px solid var(--m-7f97c2-line);outline-offset:2px;border-radius:2px;width:max-content">Open plan</span>
+      <span style="font-size:12.5px;color:var(--m-a49e94-fg);font-weight:500">Open plan</span>
+      <span style="font-size:12px;color:var(--m-77726a-fg)">—</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:12.5px;font-weight:600">Inputs</span>
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">Merchant</span><input value="Migros Kadıköy" readonly="" style="height:36px;padding:0 10px;border:1px solid var(--m-dedad1-line);border-radius:6px;font-size:13px;color:var(--m-1c1b19-fg);outline:none"></label>
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">Monthly budget · focus</span><div style="height:36px;display:flex;align-items:center;gap:4px;padding:0 10px;border:1px solid var(--m-2c4a7c-line);border-radius:6px;box-shadow:0 0 0 3px var(--m-e3e9f3-line);font-size:13px"><span style="color:var(--m-8a857c-fg)">₺</span><span style="font-weight:500">6,000</span><span style="width:1px;height:16px;background:var(--m-1c1b19-bg);margin-left:1px"></span></div></label>
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">Target date · error</span><div style="height:36px;display:flex;align-items:center;padding:0 10px;border:1px solid var(--m-b4423a-line);border-radius:6px;font-size:13px">Sep 2026</div><span style="font-size:11.5px;color:var(--m-b4423a-fg)">Target date must be after today.</span></label>
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:var(--m-a49e94-fg);font-weight:500">Account · disabled</span><div style="height:36px;display:flex;align-items:center;padding:0 10px;border:1px solid var(--m-efece6-line);background:var(--m-faf9f6-bg);border-radius:6px;font-size:13px;color:var(--m-a49e94-fg)">Garanti BBVA ··4471</div></label>
+      </div>
+
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:12.5px;font-weight:600">Select &amp; dropdown</span>
+        <div style="height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border:1px solid var(--m-cfcac0-line);border-radius:6px;font-size:13px"><span style="display:flex;align-items:center;gap:7px"><span style="width:6px;height:6px;border-radius:50%;background:var(--m-d2a857-bg)"></span>Dining out</span><span style="font-size:9px;color:var(--m-8a857c-fg)">▾</span></div>
+        <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e3e0d8-line);border-radius:8px;box-shadow:0 8px 24px rgba(28,27,25,0.12);padding:6px;margin-top:-8px">
+          <div style="height:30px;display:flex;align-items:center;padding:0 8px;border:1px solid var(--m-e3e0d8-line);border-radius:5px;font-size:12.5px;color:var(--m-8a857c-fg);margin-bottom:4px">Search categories</div>
+          <div style="padding:7px 8px;font-size:13px;border-radius:5px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--m-2f3a4a-bg)"></span>Food &amp; groceries</div>
+          <div style="padding:7px 8px;font-size:13px;border-radius:5px;background:var(--m-f3f1ec-bg);display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--m-d2a857-bg)"></span>Dining out<span style="margin-left:auto;color:var(--m-2c4a7c-fg)">✓</span></div>
+          <div style="padding:7px 8px;font-size:13px;border-radius:5px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--m-8c96a8-bg)"></span>Transport</div>
+          <div style="height:1px;background:var(--m-efece6-bg);margin:4px 0"></div>
+          <div style="padding:7px 8px;font-size:13px;color:var(--m-2c4a7c-fg)">Split transaction…</div>
+        </div>
+      </div>
+
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:12.5px;font-weight:600">Date picker</span>
+        <div style="height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border:1px solid var(--m-2c4a7c-line);border-radius:6px;box-shadow:0 0 0 3px var(--m-e3e9f3-line);font-size:13px">1 – 22 Oct 2026<span style="font-size:9px;color:var(--m-8a857c-fg)">▾</span></div>
+        <div style="border:1px solid var(--m-e3e0d8-line);border-radius:8px;box-shadow:0 8px 24px rgba(28,27,25,0.12);padding:12px">
+          <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:500;margin-bottom:8px"><span style="color:var(--m-8a857c-fg)">‹</span>October 2026<span style="color:var(--m-8a857c-fg)">›</span></div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:11.5px">
+            <span style="color:var(--m-8a857c-fg)">M</span><span style="color:var(--m-8a857c-fg)">T</span><span style="color:var(--m-8a857c-fg)">W</span><span style="color:var(--m-8a857c-fg)">T</span><span style="color:var(--m-8a857c-fg)">F</span><span style="color:var(--m-8a857c-fg)">S</span><span style="color:var(--m-8a857c-fg)">S</span>
+            <sc-for list="{{ dp }}" as="d" hint-placeholder-count="35"><span style="height:26px;display:flex;align-items:center;justify-content:center;border-radius:{{ d.r }};background:{{ d.bg }};color:{{ d.c }};font-weight:{{ d.w }}">{{ d.n }}</span></sc-for>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><span style="font-size:11.5px;padding:3px 8px;border:1px solid var(--m-e3e0d8-line);border-radius:4px">This month</span><span style="font-size:11.5px;padding:3px 8px;border:1px solid var(--m-e3e0d8-line);border-radius:4px">Last 3 months</span><span style="font-size:11.5px;padding:3px 8px;border:1px solid var(--m-e3e0d8-line);border-radius:4px">Year to date</span></div>
+        </div>
+      </div>
+
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:16px">
+        <span style="font-size:12.5px;font-weight:600">Selection</span>
+        <div style="display:flex;gap:2px;padding:2px;background:var(--m-f3f1ec-bg);border-radius:6px;width:max-content"><span style="padding:5px 12px;border-radius:5px;font-size:12.5px;font-weight:500;background:var(--m-ffffff-bg);box-shadow:0 1px 2px rgba(28,27,25,0.08)">Month</span><span style="padding:5px 12px;font-size:12.5px;font-weight:500;color:var(--m-5c5852-fg)">Agenda</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:30px;height:18px;border-radius:9px;background:var(--m-2c4a7c-bg);position:relative"><span style="position:absolute;top:2px;left:14px;width:14px;height:14px;border-radius:50%;background:var(--m-ffffff-bg)"></span></span>Rollover on<span style="width:30px;height:18px;border-radius:9px;background:var(--m-cfcac0-bg);position:relative;margin-left:16px"><span style="position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--m-ffffff-bg)"></span></span>Off</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:14px;height:14px;border-radius:3px;background:var(--m-2c4a7c-bg);color:var(--m-ffffff-fg);font-size:10px;display:flex;align-items:center;justify-content:center">✓</span>Checked<span style="width:14px;height:14px;border-radius:3px;border:1.5px solid var(--m-cfcac0-line);margin-left:16px"></span>Unchecked</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--m-2c4a7c-line);display:flex;align-items:center;justify-content:center"><span style="width:6px;height:6px;border-radius:50%;background:var(--m-2c4a7c-bg)"></span></span>Selected<span style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--m-cfcac0-line);margin-left:16px"></span>Not selected</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--m-2c4a7c-line);background:var(--m-f4f7fb-bg);color:var(--m-1f3760-fg)">Category · 2</span><span style="font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--m-e3e0d8-line)">Account</span><span style="font-size:11.5px;padding:2px 7px;border-radius:4px;border:1px dashed var(--m-c9a55a-line);color:var(--m-7a5410-fg);background:var(--m-fdf8ee-bg)">Suggested: Dining out</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:13px;font-weight:600;color:var(--m-77726a-fg)">05 · Status &amp; progress</h2>
+    <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <sc-for list="{{ badges }}" as="b" hint-placeholder-count="12"><span style="font-size:11px;font-weight:500;padding:2px 7px;border-radius:4px;color:{{ b.c }};background:{{ b.bg }};border:{{ b.bd }}">{{ b.t }}</span></sc-for>
+      </div>
+      <span style="font-size:11.5px;color:var(--m-77726a-fg)">Badges are text-first. Colour reinforces; it never carries meaning alone.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:12.5px;font-weight:600">Budget bar with pace marker</span>
+        <sc-for list="{{ bars }}" as="b" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;font-size:12.5px"><span>{{ b.n }}</span><span style="color:{{ b.nc }}">{{ b.note }}</span></div>
+            <div style="position:relative;height:6px;background:var(--m-efece6-bg);border-radius:3px"><div style="position:absolute;left:0;top:0;bottom:0;width:{{ b.w }};background:{{ b.c }};border-radius:3px"></div><div style="position:absolute;left:71%;top:-4px;bottom:-4px;width:1.5px;background:var(--m-1c1b19-fg);opacity:0.55"></div></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:12.5px;font-weight:600">Goal progress</span>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;font-size:12.5px"><span>Single source</span><span>70%</span></div><div style="height:4px;background:var(--m-efece6-bg);border-radius:2px;overflow:hidden"><div style="height:100%;width:70%;background:var(--m-3f7e86-bg)"></div></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;font-size:12.5px"><span>Combined sources</span><span>43%</span></div><div style="height:6px;background:var(--m-efece6-bg);border-radius:3px;overflow:hidden;display:flex;gap:1.5px"><div style="width:20%;background:var(--m-3f7e86-bg)"></div><div style="width:13.3%;background:var(--m-3d5a99-bg)"></div><div style="width:10%;background:var(--m-d2a857-bg)"></div></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;font-size:12.5px"><span>Milestones</span><span>3.3 of 6 months</span></div><div style="position:relative;height:8px;background:var(--m-efece6-bg);border-radius:4px"><div style="position:absolute;left:0;top:0;bottom:0;width:55%;background:var(--m-3f7e86-bg);border-radius:4px 0 0 4px"></div><div style="position:absolute;left:16.5%;top:-3px;bottom:-3px;width:2px;background:var(--m-ffffff-bg);box-shadow:0 0 0 1px var(--m-3f7e86-line)"></div><div style="position:absolute;left:49.6%;top:-3px;bottom:-3px;width:2px;background:var(--m-ffffff-bg);box-shadow:0 0 0 1px var(--m-3f7e86-line)"></div></div></div>
+      </div>
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:12.5px;font-weight:600">Charts</span>
+        <div style="position:relative;display:flex;align-items:flex-end;gap:12px;height:90px;border-bottom:1px solid var(--m-e3e0d8-line);padding:0 8px">
+          <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:100%"><div style="width:12px;height:78%;background:var(--m-c8d0dd-bg);border-radius:2px 2px 0 0"></div><div style="width:12px;height:62%;background:var(--m-2f3a4a-bg);border-radius:2px 2px 0 0"></div></div>
+          <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:100%;background:var(--m-f6f4f0-bg);border-radius:4px 4px 0 0"><div style="width:12px;height:80%;background:var(--m-c8d0dd-bg);border-radius:2px 2px 0 0"></div><div style="width:12px;height:70%;background:var(--m-2f3a4a-bg);border-radius:2px 2px 0 0"></div></div>
+          <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:100%"><div style="width:12px;height:80%;background:var(--m-c8d0dd-bg);border-radius:2px 2px 0 0"></div><div style="width:12px;height:48%;background:var(--m-5a6577-bg);border-radius:2px 2px 0 0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.18) 0 3px,transparent 3px 6px)"></div></div>
+          <div style="position:absolute;left:38%;top:-6px;background:var(--m-tip);color:var(--m-tip-fg);border-radius:6px;padding:6px 9px;font-size:11.5px;box-shadow:0 6px 18px rgba(28,27,25,0.18)">Sep · kept ₺12,350</div>
+        </div>
+        <span style="font-size:11.5px;color:var(--m-5c5852-fg);line-height:1.5">Title each chart with the question it answers. One emphasised series, grey context, hatched = partial period, dashed = projected or estimated. Tooltips are dark, compact and show exact values.</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:13px;font-weight:600;color:var(--m-77726a-fg)">06 · Patterns</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;overflow:hidden">
+        <div style="padding:12px 16px;font-size:12.5px;font-weight:600">Table rows</div>
+        <div style="display:grid;grid-template-columns:1fr 110px 90px;column-gap:12px;padding:7px 16px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;background:var(--m-faf9f6-bg);border-top:1px solid var(--m-efece6-line);border-bottom:1px solid var(--m-efece6-line)"><span>Description</span><span>Category</span><span style="text-align:right">Amount</span></div>
+        <div style="display:grid;grid-template-columns:1fr 110px 90px;column-gap:12px;align-items:center;padding:0 16px;height:42px;font-size:13px;border-bottom:1px solid var(--m-f3f1ec-line)"><span style="font-weight:500">Migros Kadıköy</span><span style="display:flex;align-items:center;gap:6px;color:var(--m-3e3b36-fg)"><span style="width:6px;height:6px;border-radius:50%;background:var(--m-2f3a4a-bg)"></span>Groceries</span><span style="text-align:right;font-weight:500">−₺642.40</span></div>
+        <div style="display:grid;grid-template-columns:1fr 110px 90px;column-gap:12px;align-items:center;padding:0 16px;height:42px;font-size:13px;border-bottom:1px solid var(--m-f3f1ec-line);background:var(--m-faf9f6-bg)"><span style="font-weight:500">Shell Acıbadem <span style="font-size:11px;color:var(--m-77726a-fg);font-weight:400">· hover</span></span><span style="display:flex;align-items:center;gap:6px;color:var(--m-3e3b36-fg)"><span style="width:6px;height:6px;border-radius:50%;background:var(--m-8c96a8-bg)"></span>Transport</span><span style="text-align:right;font-weight:500">−₺920.00</span></div>
+        <div style="display:grid;grid-template-columns:1fr 110px 90px;column-gap:12px;align-items:center;padding:0 16px;height:42px;font-size:13px;background:var(--m-f1f4f9-bg)"><span style="font-weight:500">Atölye Studio <span style="font-size:11px;color:var(--m-77726a-fg);font-weight:400">· selected</span></span><span style="display:flex;align-items:center;gap:6px;color:var(--m-3e3b36-fg)"><span style="width:6px;height:6px;border-radius:50%;background:var(--m-2f7d57-bg)"></span>Income</span><span style="text-align:right;font-weight:500;color:var(--m-2f7d57-fg)">+₺4,000.00</span></div>
+      </div>
+
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:12.5px;font-weight:600">Navigation</span>
+        <div style="background:var(--m-f3f1ec-bg);border-radius:6px;padding:8px;display:flex;flex-direction:column;gap:1px;width:220px">
+          <div style="display:flex;align-items:center;gap:10px;height:30px;padding:0 8px;border-radius:6px;font-size:13px;background:var(--m-ffffff-bg);border:1px solid var(--m-e3dfd6-line);font-weight:500"><span style="width:5px;height:5px;border-radius:1px;background:var(--m-2c4a7c-bg)"></span>Dashboard</div>
+          <div style="display:flex;align-items:center;gap:10px;height:30px;padding:0 8px;border-radius:6px;font-size:13px;background:var(--m-eae7e0-bg);color:var(--m-4f4b45-fg);border:1px solid transparent"><span style="width:5px;height:5px"></span>Plan<span style="margin-left:auto;font-size:11px;color:var(--m-77726a-fg)">hover</span></div>
+          <div style="display:flex;align-items:center;gap:10px;height:30px;padding:0 8px;border-radius:6px;font-size:13px;color:var(--m-4f4b45-fg);border:1px solid transparent"><span style="width:5px;height:5px"></span>Transactions<span style="margin-left:auto;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">4</span></div>
+          <div style="display:flex;align-items:center;gap:10px;height:30px;padding:0 8px;border-radius:6px;font-size:13px;color:var(--m-4f4b45-fg);border:1px solid transparent"><span style="width:5px;height:5px"></span>Calendar<span style="margin-left:auto;font-size:11.5px;color:var(--m-b4423a-fg);font-weight:500">1</span></div>
+        </div>
+        <span style="font-size:11.5px;color:var(--m-77726a-fg)">Text-only, 30px rows, counts only when actionable.</span>
+      </div>
+
+      <div style="background:var(--m-faf9f6-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:20px;display:flex;align-items:center;justify-content:center">
+        <div style="width:100%;max-width:340px;background:var(--m-ffffff-bg);border:1px solid var(--m-e3e0d8-line);border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14)">
+          <div style="padding:16px 18px 0;display:flex;flex-direction:column;gap:8px"><span style="font-size:14px;font-weight:600">Delete “Japan trip”?</span><span style="font-size:12.5px;color:var(--m-3e3b36-fg);line-height:1.5">₺24,500 stays in Enpara ··0912 and becomes unassigned. Contribution history is removed.</span></div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 18px"><span style="height:30px;padding:0 12px;border:1px solid var(--m-dedad1-line);border-radius:6px;font-size:12.5px;display:flex;align-items:center">Keep goal</span><span style="height:30px;padding:0 12px;background:var(--m-b4423a-bg);color:var(--m-ffffff-fg);border-radius:6px;font-size:12.5px;font-weight:500;display:flex;align-items:center">Delete goal</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+        <span style="font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Empty state</span>
+        <span style="font-size:14px;font-weight:500">No sinking funds yet</span>
+        <span style="font-size:12.5px;color:var(--m-5c5852-fg);line-height:1.5;max-width:260px">Add costs you know are coming — insurance, taxes, gifts — and we’ll work out the monthly amount.</span>
+        <span style="margin-top:6px;height:30px;padding:0 12px;border:1px solid var(--m-dedad1-line);border-radius:6px;font-size:12.5px;display:flex;align-items:center">New sinking fund</span>
+      </div>
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Loading</span>
+        <div style="height:12px;width:40%;background:var(--m-efece6-bg);border-radius:3px;animation:mzPulse 1.4s ease-in-out infinite"></div>
+        <div style="height:28px;width:60%;background:var(--m-efece6-bg);border-radius:4px;animation:mzPulse 1.4s ease-in-out infinite"></div>
+        <div style="height:6px;width:100%;background:var(--m-efece6-bg);border-radius:3px;animation:mzPulse 1.4s ease-in-out infinite"></div>
+        <div style="display:flex;gap:8px"><div style="flex:1;height:36px;background:var(--m-f3f1ec-bg);border-radius:4px;animation:mzPulse 1.4s ease-in-out infinite"></div><div style="flex:1;height:36px;background:var(--m-f3f1ec-bg);border-radius:4px;animation:mzPulse 1.4s ease-in-out infinite"></div></div>
+        <span style="font-size:11.5px;color:var(--m-77726a-fg)">Skeletons mirror the final layout. Cached numbers show immediately, marked with their time.</span>
+      </div>
+      <div style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Error state</span>
+        <div style="display:flex;gap:10px;padding:12px;background:var(--m-fdf9f1-bg);border:1px solid var(--m-f0e2c4-line);border-radius:6px">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--m-a86f12-bg);margin-top:6px;flex:none"></span>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;font-weight:500">İş Bankası couldn’t be reached</span><span style="font-size:12px;color:var(--m-5c5852-fg);line-height:1.5">Showing the balance from 19 Oct, 08:12. Your plan still uses it. Nothing has been lost.</span><div style="display:flex;gap:12px;margin-top:4px;font-size:12.5px"><span style="color:var(--m-2c4a7c-fg);font-weight:500">Try again</span><span style="color:var(--m-5c5852-fg)">Status page</span></div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--m-tip);color:var(--m-tip-fg);border-radius:8px;font-size:12.5px;width:max-content;max-width:100%"><span style="width:16px;height:16px;border-radius:50%;background:var(--m-2f7d57-bg);display:flex;align-items:center;justify-content:center;font-size:10px">✓</span>Getir → Food &amp; groceries<span style="color:var(--m-bdb8ae-fg);margin-left:6px">Undo</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Dark&quot;,&quot;Light&quot;],&quot;default&quot;:&quot;Dark&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { this.applyTheme(); }
+  componentDidUpdate(p) { if (p.theme !== this.props.theme) this.applyTheme(); }
+  applyTheme() { document.documentElement.dataset.theme = (this.props.theme || 'Dark').toLowerCase(); }
+  renderVals() {
+    const dp = [];
+    for (let i = 0; i < 35; i++) {
+      const d = i - 2, inM = d >= 1 && d <= 31, inR = d >= 1 && d <= 22, edge = d === 1 || d === 22;
+      dp.push({ n: d < 1 ? 30 + d : d > 31 ? d - 31 : d, bg: edge ? 'var(--m-2c4a7c-bg)' : inR ? 'var(--m-ebeff6-bg)' : 'transparent', c: edge ? 'var(--m-ffffff-fg)' : inM ? 'var(--m-1c1b19-fg)' : 'var(--m-b8b2a7-fg)', w: edge ? 600 : 400, r: d === 1 ? '4px 0 0 4px' : d === 22 ? '0 4px 4px 0' : inR ? '0' : '4px' });
+    }
+    return {
+      neutrals: [{"name":"Canvas","use":"App background, sidebar","sw":"var(--m-f3f1ec-bg)","hex":"#0A0C0E / #F3F1EC"},{"name":"Page","use":"Content area","sw":"var(--m-faf9f6-bg)","hex":"#0E1113 / #FAF9F6"},{"name":"Surface","use":"Cards, tables","sw":"var(--m-ffffff-bg)","hex":"#14181B / #FFFFFF"},{"name":"Track","use":"Progress tracks","sw":"var(--m-efece6-bg)","hex":"#22282D / #EFECE6"},{"name":"Divider","use":"Inner rules","sw":"var(--m-efece6-line)","hex":"#1C2125 / #EFECE6"},{"name":"Border","use":"Card outlines","sw":"var(--m-e7e4dd-line)","hex":"#1F2428 / #E7E4DD"},{"name":"Solid","use":"Primary button: teal in dark, ink in light","sw":"var(--m-1c1b19-bg)","hex":"#6CC3AE / #1C1B19"},{"name":"Ink","use":"Primary text","sw":"var(--m-1c1b19-fg)","hex":"#E8EBED / #1C1B19"},{"name":"Ink 2","use":"Secondary text","sw":"var(--m-5c5852-fg)","hex":"#9AA3A9 / #5C5852"},{"name":"Ink 3","use":"Labels, meta","sw":"var(--m-77726a-fg)","hex":"#858D94 / #77726A"}],
+      semantic: [{"name":"Accent · Mizan teal","use":"Selection, focus, links, active navigation","sw":"var(--m-2c4a7c-fg)","softSw":"var(--m-ebeff6-bg)","hex":"#6CC3AE / #1F7266","soft":"#12302B / #E4F1EE"},{"name":"Positive","use":"Income, gains, on track, healthy","sw":"var(--m-2f7d57-fg)","softSw":"var(--m-e8f2ec-bg)","hex":"#7CC583 / #3B7D3A","soft":"#15281A / #EAF3E7"},{"name":"Warning","use":"Ahead of pace, upcoming risk, stale data","sw":"var(--m-a86f12-fg)","softSw":"var(--m-f8efdc-bg)","hex":"#E3AA4F / #A86F12","soft":"#2B2210 / #F8EFDC"},{"name":"Negative","use":"Over budget, overdue, losses, destructive actions","sw":"var(--m-b4423a-fg)","softSw":"var(--m-f8eae7-bg)","hex":"#EC7F74 / #B4423A","soft":"#2E1715 / #F8EAE7"},{"name":"Informational","use":"Paid, cleared, neutral facts","sw":"var(--m-5c5852-fg)","softSw":"var(--m-f3f1ec-bg)","hex":"#9AA3A9 / #5C5852","soft":"#0A0C0E / #F3F1EC"}],
+      data: [{"name":"Essentials","sw":"var(--m-2f3a4a-bg)","hex":"#6E8299 / #2F3A4A"},{"name":"Flexible","sw":"var(--m-8c96a8-bg)","hex":"#A8B2BE / #8C96A8"},{"name":"Debt","sw":"var(--m-b0674a-bg)","hex":"#D08A6C / #B0674A"},{"name":"Savings","sw":"var(--m-3f7e86-bg)","hex":"#4EA3AB / #3F7E86"},{"name":"Investments","sw":"var(--m-3d5a99-bg)","hex":"#7E9BE0 / #3D5A99"},{"name":"Available to spend","sw":"var(--m-d2a857-bg)","hex":"#D8B465 / #D2A857"}],
+      type: [
+        ['Hero figure', '52 / 500 / −4%', '52px', 500, '-0.04em', '₺300', 'Geist'],
+        ['Value L', '34 / 500 / −3.5%', '34px', 500, '-0.035em', '₺1,060,200', 'Geist'],
+        ['Value M', '24 / 500 / −2.5%', '24px', 500, '-0.025em', '₺7,430', 'Geist'],
+        ['Page title', '22 / 600 / −2.5%', '22px', 600, '-0.025em', 'Give every lira a job', 'Geist'],
+        ['Value S', '18 / 500 / −2%', '18px', 500, '-0.02em', '+₺146,330', 'Geist'],
+        ['Card title', '13.5 / 600 / −1%', '13.5px', 600, '-0.01em', 'Upcoming payments in the next 7 days', 'Geist'],
+        ['Body', '13 / 400', '13px', 400, '0', 'Unspent allowance carries into tomorrow.', 'Geist'],
+        ['Label', '12 / 400 · Ink 3', '12px', 400, '0', 'Monthly contribution', 'Geist'],
+        ['Caption', '11.5 / 400', '11.5px', 400, '0', 'Synced 14:58 · Open banking', 'Geist'],
+        ['Mono', '11 / 400 · Geist Mono', '11px', 400, '0', '⌘K   TR·· 4471   INV-0412', "'Geist Mono', monospace"],
+      ].map(([name, spec, size, w, ls, sample, ff], i) => ({ name, spec, size, w, ls, sample, ff, c: name === 'Label' ? 'var(--m-77726a-fg)' : 'var(--m-1c1b19-fg)', bt: i ? '1px solid var(--m-f3f1ec-line)' : 'none' })),
+      spacing: [[4, 'Icon–label gap'], [8, 'Inline groups, chips'], [12, 'Rows inside cards'], [16, 'Card gaps, grid gutter'], [20, 'Card padding'], [24, 'Hero padding'], [32, 'Page side padding'], [48, 'Section breaks']].map(([v, use]) => ({ v, px: v * 4 + 'px', use })),
+      radii: [['3px', 'Bars, tracks'], ['4px', 'Badges, tags'], ['6px', 'Buttons, inputs'], ['8px', 'Cards, menus'], ['10px', 'Modals'], ['999px', 'Filter chips only']].map(([r, use]) => ({ r, use })),
+      badges: [['Paid', 'var(--m-5c5852-bg)', 'var(--m-f3f1ec-bg)'], ['Upcoming', 'var(--m-2c4a7c-bg)', 'var(--m-ebeff6-bg)'], ['Estimated', 'var(--m-5c5852-bg)', 'var(--m-ffffff-bg)', '1px dashed var(--m-a49e94-bg)'], ['Overdue', 'var(--m-b4423a-bg)', 'var(--m-f8eae7-bg)'], ['Pending', 'var(--m-a86f12-bg)', 'var(--m-f8efdc-bg)'], ['Needs review', 'var(--m-7a5410-bg)', 'var(--m-f8efdc-bg)'], ['On track', 'var(--m-2f7d57-bg)', 'var(--m-e8f2ec-bg)'], ['Behind', 'var(--m-a86f12-bg)', 'var(--m-f8efdc-bg)'], ['Fully allocated', 'var(--m-2f7d57-bg)', 'var(--m-e8f2ec-bg)'], ['Manual', 'var(--m-2c4a7c-bg)', 'var(--m-ebeff6-bg)'], ['Access expired', 'var(--m-a86f12-bg)', 'var(--m-fdf9f1-bg)', '1px solid var(--m-f0e2c4-bg)'], ['Synced 14:58', 'var(--m-2f7d57-bg)', 'var(--m-ffffff-bg)', '1px solid var(--m-ddebe2-bg)']].map(([t, c, bg, bd]) => ({ t, c, bg, bd: bd || '1px solid ' + bg })),
+      bars: [['On pace · Utilities', 76, 'var(--m-5a6577-bg)', '₺330 left', 'var(--m-77726a-bg)'], ['Ahead of pace · Food & groceries', 81, 'var(--m-c48a2a-bg)', '₺1,150 left · ahead of pace', 'var(--m-a86f12-bg)'], ['Over · Personal care', 100, 'var(--m-b4423a-bg)', '₺110 over', 'var(--m-b4423a-bg)']].map(([n, w, c, note, nc]) => ({ n, w: w + '%', c, note, nc })),
+      dp,
+    };
+  }
+}
+</script>
+</body>
+</html>

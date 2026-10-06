@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="height:100%;display:flex;flex-direction:column;background:var(--m-ffffff-bg)">
+  <div style="height:56px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px 0 20px;border-bottom:1px solid var(--m-efece6-line)">
+    <div style="display:flex;flex-direction:column;line-height:1.3">
+      <span style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em">Assistant</span>
+      <span style="font-size:11.5px;color:var(--m-77726a-fg)">Answers only from your Mizan data</span>
+    </div>
+    <button onClick="{{ reset }}" style="all:unset;cursor:pointer;margin-left:auto;font-size:12px;color:var(--m-5c5852-fg);padding:4px 8px;border-radius:5px" style-hover="background:var(--m-f3f1ec-bg)">New chat</button>
+    <button onClick="{{ close }}" style="all:unset;cursor:pointer;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--m-5c5852-fg);font-size:16px" style-hover="background:var(--m-f3f1ec-bg)">×</button>
+  </div>
+
+  <div ref="{{ bodyRef }}" style="flex:1;overflow:auto;padding:18px 20px;display:flex;flex-direction:column;gap:18px">
+    <sc-if value="{{ empty }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <p style="margin:0;font-size:13px;color:var(--m-3e3b36-fg);line-height:1.55">Ask about your spending, plan, goals or investments. I’ll show the numbers and where they came from.</p>
+        <span style="font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;margin-top:4px">Suggested</span>
+      </div>
+    </sc-if>
+    <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="0">
+      <div style="display:flex;flex-direction:column;gap:8px;animation:mzRise 200ms ease-out">
+        <sc-if value="{{ m.user }}" hint-placeholder-val="{{ false }}">
+          <div style="align-self:flex-end;max-width:85%;background:var(--m-f3f1ec-bg);border-radius:8px;padding:9px 12px;font-size:13px;line-height:1.45">{{ m.text }}</div>
+        </sc-if>
+        <sc-if value="{{ m.bot }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <p style="margin:0;font-size:13px;line-height:1.6;color:var(--m-1c1b19-fg);text-wrap:pretty">{{ m.text }}</p>
+            <sc-if value="{{ m.hasTable }}" hint-placeholder-val="{{ false }}">
+              <div style="border:1px solid var(--m-efece6-line);border-radius:6px;overflow:hidden">
+                <sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="3">
+                  <div style="display:grid;grid-template-columns:1fr auto auto;column-gap:12px;padding:7px 10px;font-size:12.5px;border-top:{{ r.bt }};background:{{ r.bg }}">
+                    <span style="font-weight:{{ r.fw }}">{{ r.a }}</span><span style="color:var(--m-77726a-fg)">{{ r.b }}</span><span style="font-weight:500;text-align:right;color:{{ r.cc }}">{{ r.c }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ m.hasNote }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:13px;line-height:1.6;color:var(--m-3e3b36-fg)">{{ m.note }}</p></sc-if>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <span style="font-size:11px;color:var(--m-5c5852-fg);background:var(--m-faf9f6-bg);border:1px solid var(--m-efece6-line);border-radius:4px;padding:2px 7px">{{ m.source }}</span>
+              <sc-if value="{{ m.hasAction }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ m.act }}" style="all:unset;cursor:pointer;font-size:12px;color:var(--m-2c4a7c-fg);font-weight:500;margin-left:auto" style-hover="text-decoration:underline">{{ m.action }}</button>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ m.thinking }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--m-77726a-fg)">
+            <span style="width:10px;height:10px;border-radius:50%;border:1.5px solid var(--m-cfcac0-line);border-top-color:var(--m-2c4a7c-line);animation:mzSpin 700ms linear infinite"></span>{{ m.text }}
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="4">
+        <button onClick="{{ s.ask }}" style="all:unset;cursor:pointer;font-size:12.5px;line-height:1.4;padding:8px 11px;border:1px solid var(--m-e7e4dd-line);border-radius:6px;color:var(--m-3e3b36-fg)" style-hover="background:var(--m-faf9f6-bg);border-color:var(--m-d6d2c9-line)">{{ s.q }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="flex:none;padding:12px 16px 14px;border-top:1px solid var(--m-efece6-line);display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:center;gap:8px;padding:0 6px 0 12px;height:40px;border:1px solid var(--m-dedad1-line);border-radius:8px">
+      <input value="{{ draft }}" onChange="{{ setDraft }}" onKeyDown="{{ onKey }}" placeholder="Ask about your money…" style="all:unset;flex:1;font-size:13px;color:var(--m-1c1b19-fg)">
+      <button onClick="{{ send }}" style="all:unset;cursor:pointer;height:28px;padding:0 10px;border-radius:6px;background:{{ sendBg }};color:var(--m-ffffff-fg);font-size:12px;font-weight:500">Ask</button>
+    </div>
+    <span style="font-size:11px;color:var(--m-8a857c-fg);line-height:1.4">Uses balances and transactions in this account. Not financial advice.</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const A = {
+  spend: {
+    q: 'Why did I spend more this month?',
+    text: 'October spending is ₺29,329 so far — ₺3,140 more than at the same point in September. Three categories account for 90% of the difference:',
+    rows: [['Dining out', '11 orders vs 6', '+₺1,460'], ['Shopping', 'Desk lamp, luggage', '+₺980'], ['Personal care', 'Watsons, salon', '+₺410'], ['Everything else', '', '+₺290']],
+    note: 'Rent, utilities and loan payments were the same as September. Personal care is now ₺110 over budget.',
+    source: '68 transactions · 1–22 Oct vs 1–22 Sep', action: 'View dining out', go: 'transactions',
+  },
+  invest: {
+    q: 'Can I afford a ₺10,000 investment contribution this month?',
+    text: 'Partly. ₺5,720 fits this month without your checking account dropping below its ₺5,000 minimum on 31 October.',
+    rows: [['Projected checking, 31 Oct', '', '₺10,720'], ['Minimum balance', '', '−₺5,000'], ['Spare this month', '', '₺5,720', true]],
+    note: 'The other ₺4,280 would have to come from your emergency fund. Waiting until 1 November, after your salary arrives, the full ₺10,000 fits.',
+    source: 'Plan, calendar and Garanti balance', action: 'Open in What-if', go: 'whatif',
+  },
+  dining: {
+    q: 'How much did I spend on restaurants during the last three months?',
+    text: '₺9,890 on Dining out from July to September, across 38 transactions — about ₺3,297 a month.',
+    rows: [['July', '14 transactions', '₺3,610'], ['August', '11 transactions', '₺2,860'], ['September', '13 transactions', '₺3,420']],
+    note: 'Yemeksepeti was the largest single merchant at ₺3,120. Your Dining out spending so far in October is ₺2,850.',
+    source: 'Category: Dining out · 1 Jul – 30 Sep', action: 'View transactions', go: 'transactions',
+  },
+  goal: {
+    q: 'Am I on track for the Japan trip?',
+    text: 'Not quite. At ₺1,000 a month you’d reach ₺35,000 in September 2027, about two months after your July target.',
+    rows: [['Saved', '', '₺24,500'], ['Still needed', '', '₺10,500'], ['Needed per month for July', '', '₺1,170', true]],
+    note: 'Raising the contribution by ₺170 a month closes the gap.',
+    source: 'Goal: Japan trip · Enpara ··0912', action: 'Open savings', go: 'savings',
+  },
+};
+const KEYS = Object.keys(A);
+function match(q) {
+  const s = q.toLowerCase();
+  if (/restaurant|dining|eat/.test(s)) return 'dining';
+  if (/afford|invest/.test(s)) return 'invest';
+  if (/japan|trip|goal|track/.test(s)) return 'goal';
+  if (/spend more|why|more this month/.test(s)) return 'spend';
+  return null;
+}
+
+class Component extends DCLogic {
+  state = { msgs: [], draft: '' };
+  bodyRef = React.createRef();
+  componentDidMount() { if (this.props.question) this.ask(this.props.question); }
+  componentDidUpdate(prev) { if (this.props.question && this.props.question !== prev.question) this.ask(this.props.question); }
+  scroll() { setTimeout(() => { const el = this.bodyRef.current; if (el) el.scrollTop = el.scrollHeight; }, 30); }
+  ask = (q) => {
+    if (!q || !q.trim()) return;
+    const id = Date.now();
+    this.setState((s) => ({ draft: '', msgs: [...s.msgs, { role: 'user', text: q }, { role: 'thinking', id, text: 'Reading your transactions…' }] }));
+    this.scroll();
+    setTimeout(() => {
+      const k = match(q);
+      const ans = k ? { role: 'bot', key: k } : { role: 'bot', text: 'I can answer questions about your own spending, plan, goals, debts and investments. In this preview, try one of the suggested questions below.', source: 'No data used' };
+      this.setState((s) => ({ msgs: s.msgs.filter((m) => m.id !== id).concat(ans) }));
+      this.scroll();
+    }, 750);
+  };
+  renderVals() {
+    const asked = this.state.msgs.filter((m) => m.role === 'bot' && m.key).map((m) => m.key);
+    const msgs = this.state.msgs.map((m) => {
+      if (m.role !== 'bot') return { user: m.role === 'user', bot: false, thinking: m.role === 'thinking', text: m.text };
+      const a = m.key ? A[m.key] : m;
+      return {
+        user: false, bot: true, thinking: false, text: a.text, note: a.note || '', hasNote: !!a.note, source: a.source,
+        hasTable: !!a.rows, rows: (a.rows || []).map(([x, y, z, bold], i) => ({ a: x, b: y, c: z, bt: i ? '1px solid var(--m-f3f1ec-line)' : 'none', fw: bold ? 500 : 400, bg: bold ? 'var(--m-faf9f6-bg)' : 'var(--m-ffffff-bg)', cc: /^\+/.test(z) ? 'var(--m-a86f12-fg)' : 'var(--m-1c1b19-fg)' })),
+        hasAction: !!a.action, action: a.action, act: () => this.props.go && this.props.go(a.go),
+      };
+    });
+    return {
+      msgs, empty: this.state.msgs.length === 0, bodyRef: this.bodyRef,
+      suggestions: KEYS.filter((k) => !asked.includes(k)).map((k) => ({ q: A[k].q, ask: () => this.ask(A[k].q) })),
+      draft: this.state.draft, setDraft: (e) => this.setState({ draft: e.target.value }),
+      onKey: (e) => { if (e.key === 'Enter') this.ask(this.state.draft); },
+      send: () => this.ask(this.state.draft), sendBg: this.state.draft.trim() ? 'var(--m-1c1b19-bg)' : 'var(--m-b8b2a7-bg)',
+      close: () => this.props.onClose && this.props.onClose(), reset: () => this.setState({ msgs: [] }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="07 Goals" style="padding:28px 32px 56px;max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">Goals can draw on savings and investments together</div>
+      <h1 style="margin:4px 0 0;font-size:22px;font-weight:600;letter-spacing:-0.025em">Goals</h1>
+    </div>
+    <button style="height:32px;padding:0 14px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:var(--m-33312d-bg)">New goal</button>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+    <section style="flex:1 1 300px;max-width:100%;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;overflow:hidden">
+      <div style="padding:12px 16px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;border-bottom:1px solid var(--m-efece6-line);background:var(--m-faf9f6-bg);display:flex;justify-content:space-between"><span>5 goals</span><span>₺910,280 committed</span></div>
+      <sc-for list="{{ list }}" as="g" hint-placeholder-count="5">
+        <button onClick="{{ g.pick }}" style="all:unset;cursor:pointer;display:flex;flex-direction:column;gap:8px;width:100%;box-sizing:border-box;padding:14px 16px;border-bottom:1px solid var(--m-f3f1ec-line);background:{{ g.bg }};box-shadow:{{ g.ring }}" style-hover="background:{{ g.hbg }}">
+          <div style="display:flex;align-items:baseline;gap:8px">
+            <span style="font-size:13px;font-weight:{{ g.fw }}">{{ g.name }}</span>
+            <span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ g.kind }}</span>
+            <span style="margin-left:auto;font-size:12px;color:var(--m-5c5852-fg)">{{ g.pct }}</span>
+          </div>
+          <div style="height:4px;background:var(--m-efece6-bg);border-radius:2px;overflow:hidden;display:flex;gap:1px">
+            <sc-for list="{{ g.segs }}" as="s" hint-placeholder-count="2"><div style="width:{{ s.w }};background:{{ s.color }}"></div></sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--m-77726a-fg)"><span>{{ g.cur }} of {{ g.target }}</span><span>{{ g.date }}</span></div>
+        </button>
+      </sc-for>
+    </section>
+
+    <div style="flex:2.6 1 620px;min-width:0;display:flex;flex-direction:column;gap:16px">
+      <section style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:22px 24px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <h2 style="font-size:17px;font-weight:600;letter-spacing:-0.015em;margin:0">{{ d.name }}</h2>
+            <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Target {{ d.target }} by {{ d.date }} · {{ d.nSources }}</span>
+          </div>
+          <div style="margin-left:auto;text-align:right;display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:30px;font-weight:500;letter-spacing:-0.03em;line-height:1.1">{{ d.cur }} <span style="font-size:16px;color:var(--m-8a857c-fg);font-weight:400">/ {{ d.target }}</span></span>
+            <span style="font-size:12.5px;color:var(--m-5c5852-fg)">{{ d.pct }} · {{ d.left }} to go</span>
+          </div>
+        </div>
+        <div style="height:10px;background:var(--m-efece6-bg);border-radius:3px;overflow:hidden;display:flex;gap:2px">
+          <sc-for list="{{ d.sources }}" as="s" hint-placeholder-count="3"><div onMouseEnter="{{ s.enter }}" onMouseLeave="{{ s.leave }}" style="width:{{ s.w }};background:{{ s.color }};opacity:{{ s.op }};transition:opacity 150ms"></div></sc-for>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0">
+          <div style="flex:1.5 1 300px;min-width:0;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Linked accounts</span>
+            <sc-for list="{{ d.sources }}" as="s" hint-placeholder-count="3">
+              <div onMouseEnter="{{ s.enter }}" onMouseLeave="{{ s.leave }}" style="height:60px;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:0 14px;border:1px solid {{ s.bd }};border-radius:6px;background:var(--m-ffffff-bg);transition:border-color 150ms">
+                <span style="width:10px;height:10px;border-radius:2px;background:{{ s.color }};flex:none"></span>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.35">
+                  <span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</span>
+                  <span style="font-size:11.5px;color:var(--m-77726a-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.acct }}</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;line-height:1.35">
+                  <span style="font-size:13px;font-weight:500">{{ s.amt }}</span>
+                  <span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ s.of }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="width:72px;flex:none;align-self:stretch;padding-top:26px">
+            <svg viewBox="0 0 72 {{ d.svgH }}" preserveAspectRatio="none" style="width:72px;height:{{ d.svgHpx }};display:block">
+              <sc-for list="{{ d.sources }}" as="s" hint-placeholder-count="3">
+                <path d="{{ s.curve }}" style="fill:none;stroke:{{ s.color }};stroke-width:{{ s.sw }};opacity:{{ s.op }}"></path>
+              </sc-for>
+            </svg>
+          </div>
+          <div style="flex:1 1 200px;min-width:0;padding-top:26px;display:flex;align-items:center">
+            <div style="width:100%;border:1.5px solid var(--m-1c1b19-line);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:12px;color:var(--m-5c5852-fg)">Goal total</span>
+              <span style="font-size:22px;font-weight:500;letter-spacing:-0.025em">{{ d.cur }}</span>
+              <span style="font-size:11.5px;color:var(--m-77726a-fg)">Market value today. Funds and gold move with prices.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;display:flex;flex-wrap:wrap">
+        <div style="flex:1.4 1 380px;min-width:0;padding:20px 24px;display:flex;flex-direction:column;gap:16px;border-right:1px solid var(--m-efece6-line)">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">Projection</h2>
+            <span style="font-size:12px;color:var(--m-77726a-fg)">In today’s lira. Adjust the assumptions to see when the goal is reached.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;font-size:12.5px"><span style="color:var(--m-5c5852-fg)">Monthly contribution</span><span style="font-weight:500">{{ pmtF }}</span></div>
+            <input type="range" min="{{ pmtMin }}" max="{{ pmtMax }}" step="{{ pmtStep }}" value="{{ pmt }}" onChange="{{ setPmt }}" style="width:100%">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;font-size:12.5px"><span style="color:var(--m-5c5852-fg)">Assumed real return (above inflation)</span><span style="font-weight:500">{{ rF }}</span></div>
+            <input type="range" min="0" max="8" step="0.5" value="{{ r }}" onChange="{{ setR }}" style="width:100%">
+          </div>
+          <svg viewBox="0 0 400 120" preserveAspectRatio="none" style="width:100%;height:120px;display:block;overflow:visible">
+            <line x1="0" y1="{{ tY }}" x2="400" y2="{{ tY }}" style="stroke:var(--m-1c1b19-line);stroke-width:1;stroke-dasharray:3 3" vectorEffect="non-scaling-stroke"></line>
+            <line x1="{{ dX }}" y1="0" x2="{{ dX }}" y2="120" style="stroke:var(--m-a86f12-line);stroke-width:1;stroke-dasharray:3 3" vectorEffect="non-scaling-stroke"></line>
+            <path d="{{ projArea }}" style="fill:var(--m-eef1f6-bg)"></path>
+            <path d="{{ projLine }}" style="fill:none;stroke:var(--m-3d5a99-line);stroke-width:2" vectorEffect="non-scaling-stroke"></path>
+          </svg>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--m-8a857c-fg)"><span>Now</span><span style="color:var(--m-a86f12-fg)">Target date</span><span>{{ endLabel }}</span></div>
+        </div>
+        <div style="flex:1 1 260px;min-width:0;padding:20px 24px;display:flex;flex-direction:column;gap:16px;background:var(--m-fdfcfa-bg);border-radius:0 8px 8px 0">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:var(--m-77726a-fg)">Estimated completion</span><span style="font-size:22px;font-weight:500;letter-spacing:-0.025em;color:{{ estColor }}">{{ est }}</span><span style="font-size:11.5px;color:{{ estColor }}">{{ estNote }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:var(--m-77726a-fg)">Needed to reach it by {{ d.date }}</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em">{{ needF }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">per month at {{ rF }} real return</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--m-5c5852-fg);line-height:1.5;border-top:1px solid var(--m-efece6-line);padding-top:12px">
+            <span style="font-weight:500;color:var(--m-1c1b19-fg)">Current contributions</span>
+            <span>{{ d.contrib }}</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const at = (n) => { const t = 2026 * 12 + 9 + Math.ceil(n); return MON[t % 12] + ' ' + Math.floor(t / 12); };
+const GOALS = [
+  { id: 'house', name: 'House deposit', kind: 'Combined', target: 1500000, date: 'Dec 2029', months: 38, pmt: 6000, r: 4,
+    contrib: '₺4,000 to PPF money market fund on the 15th and ₺2,000 to gram gold on the 29th.',
+    sources: [
+      ['Cash savings', 'İş Bankası Savings ··2208', 300000, 'Entire balance', 'var(--m-3f7e86-bg)'],
+      ['Investment funds', 'PPF money market · İş Yatırım', 200000, 'of ₺200,080 held', 'var(--m-3d5a99-bg)'],
+      ['Gold', 'Gram gold · Kuveyt Türk', 150000, '25.6 g of 30 g', 'var(--m-d2a857-bg)'] ] },
+  { id: 'car', name: 'Car upgrade', kind: 'Combined', target: 800000, date: 'Jun 2030', months: 44, pmt: 3000, r: 3,
+    contrib: 'No automatic contribution yet. Trade-in value of the current car is not counted.',
+    sources: [['US dollars', 'Garanti FX account', 66300, 'USD 1,500 · all', 'var(--m-8c96a8-bg)'], ['Technology fund', 'TTE · İş Yatırım', 60480, 'Entire position', 'var(--m-3d5a99-bg)']] },
+  { id: 'ef', name: 'Emergency fund', kind: 'Savings', target: 150000, date: 'Jan 2029', months: 27, pmt: 2500, r: 0,
+    contrib: '₺2,500 auto-transfer on the 1st.', sources: [['Cash savings', 'Enpara Savings ··0912', 82000, 'Ring-fenced', 'var(--m-3f7e86-bg)']] },
+  { id: 'japan', name: 'Japan trip', kind: 'Savings', target: 35000, date: 'Jul 2027', months: 9, pmt: 1000, r: 0,
+    contrib: '₺1,000 auto-transfer on the 1st.', sources: [['Cash savings', 'Enpara Savings ··0912', 24500, 'Ring-fenced', 'var(--m-3f7e86-bg)']] },
+  { id: 'pc', name: 'New computer', kind: 'Savings', target: 40000, date: 'Dec 2027', months: 14, pmt: 1000, r: 0,
+    contrib: '₺1,000 auto-transfer on the 1st.', sources: [['Cash savings', 'Enpara Savings ··0912', 27000, 'Ring-fenced', 'var(--m-3f7e86-bg)']] },
+];
+function monthsTo(P, T, pmt, rA) {
+  const r = Math.pow(1 + rA / 100, 1 / 12) - 1; let v = P, n = 0;
+  while (v < T && n < 600) { v = v * (1 + r) + pmt; n++; }
+  return n;
+}
+
+class Component extends DCLogic {
+  state = { sel: 'house', pmt: {}, r: {}, hs: -1 };
+  renderVals() {
+    const g = GOALS.find((x) => x.id === this.state.sel);
+    const cur = g.sources.reduce((a, s) => a + s[2], 0);
+    const pmt = this.state.pmt[g.id] ?? g.pmt, r = this.state.r[g.id] ?? g.r;
+    const n = monthsTo(cur, g.target, pmt, r);
+    const rm = Math.pow(1 + r / 100, 1 / 12) - 1, gN = Math.pow(1 + rm, g.months);
+    const need = rm ? (g.target - cur * gN) * rm / (gN - 1) : (g.target - cur) / g.months;
+    const horizon = Math.max(n, g.months) + 6;
+    const pts = []; let v = cur; for (let i = 0; i <= horizon; i++) { pts.push(v); v = v * (1 + rm) + pmt; }
+    const hi = Math.max(g.target * 1.1, pts[pts.length - 1]);
+    const X = (i) => i / horizon * 400, Y = (val) => 120 - val / hi * 116;
+    const line = pts.map((p, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(p).toFixed(1)).join(' ');
+    const k = g.sources.length, rowH = 68, H = k * rowH - 8;
+    const hs = this.state.hs;
+    const sources = g.sources.map(([name, acct, amt, of, color], i) => {
+      const y0 = i * rowH + 30, y1 = H / 2 + 0;
+      return {
+        name, acct, amt: f0(amt), of, color, w: (amt / g.target * 100) + '%',
+        curve: `M0 ${y0} C 40 ${y0}, 32 ${y1}, 72 ${y1}`, sw: hs === i ? 2.5 : 1.5,
+        op: hs >= 0 && hs !== i ? 0.3 : 1, bd: hs === i ? color : 'var(--m-e7e4dd-fg)',
+        enter: () => this.setState({ hs: i }), leave: () => this.setState({ hs: -1 }),
+      };
+    });
+    const late = n > g.months;
+    return {
+      list: GOALS.map((x) => {
+        const c = x.sources.reduce((a, s) => a + s[2], 0), a = x.id === g.id;
+        return {
+          name: x.name, kind: x.kind, pct: Math.round(c / x.target * 100) + '%', cur: f0(c), target: f0(x.target), date: x.date,
+          segs: x.sources.map((s) => ({ w: (s[2] / x.target * 100) + '%', color: s[4] })),
+          bg: a ? 'var(--m-f6f8fb-bg)' : 'var(--m-ffffff-bg)', hbg: a ? 'var(--m-f6f8fb-bg)' : 'var(--m-faf9f6-bg)', ring: a ? 'inset 2px 0 0 var(--m-2c4a7c-line)' : 'none', fw: a ? 600 : 500,
+          pick: () => this.setState({ sel: x.id, hs: -1 }),
+        };
+      }),
+      d: {
+        name: g.name, target: f0(g.target), date: g.date, cur: f0(cur), pct: (cur / g.target * 100).toFixed(1) + '%', left: f0(g.target - cur),
+        nSources: k === 1 ? '1 linked account' : k + ' linked accounts', sources, contrib: g.contrib,
+        svgH: H, svgHpx: H + 'px',
+      },
+      pmt, pmtF: f0(pmt) + ' / month', pmtMin: 0, pmtMax: g.target > 500000 ? 30000 : 6000, pmtStep: g.target > 500000 ? 500 : 100,
+      setPmt: (e) => this.setState({ pmt: { ...this.state.pmt, [g.id]: Number(e.target.value) } }),
+      r, rF: r.toFixed(1) + '%', setR: (e) => this.setState({ r: { ...this.state.r, [g.id]: Number(e.target.value) } }),
+      est: n >= 600 ? 'Not reached' : at(n), estColor: late ? 'var(--m-a86f12-fg)' : 'var(--m-2f7d57-fg)',
+      estNote: n >= 600 ? 'Increase the contribution' : late ? Math.round(n - g.months) + ' months after the target date' : Math.max(0, Math.round(g.months - n)) + ' months before the target date',
+      needF: f0(Math.max(0, need)),
+      projLine: line, projArea: line + ` L400 120 L0 120 Z`, tY: Y(g.target), dX: X(g.months), endLabel: at(horizon),
+    };
+  }
+}
+</script>
+</body>
+</html>

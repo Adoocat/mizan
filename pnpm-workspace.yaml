@@ -1,0 +1,20 @@
+packages:
+  - apps/*
+  - packages/*
+  - e2e
+
+# Supply-chain hardening: don't install versions published less than a day ago.
+minimumReleaseAge: 1440
+
+# Dependency install scripts are denied unless listed here as true.
+# None of these are needed: their binaries ship as optional dependencies or are unused.
+allowBuilds:
+  cpu-features: false
+  esbuild: false
+  msw: false
+  protobufjs: false
+  ssh2: false
+
+overrides:
+  # drizzle-kit pulls esbuild 0.18 through @esbuild-kit (GHSA-67mh-4wv8-2f99). Use a patched esbuild.
+  '@esbuild-kit/core-utils>esbuild': ^0.25.12

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="01 Dashboard" style="padding:28px 32px 56px;max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">Thursday, 22 October 2026</div>
+      <h1 style="margin:4px 0 0;font-size:22px;font-weight:600;letter-spacing:-0.025em">Good afternoon, Elif</h1>
+    </div>
+    <div style="font-size:12.5px;color:var(--m-5c5852-fg);display:flex;gap:16px;flex-wrap:wrap">
+      <span>Last sync <span style="color:var(--m-1c1b19-fg);font-weight:500">14:58</span></span>
+      <span>Figures in <span style="color:var(--m-1c1b19-fg);font-weight:500">TRY</span></span>
+    </div>
+  </div>
+
+  <section style="display:flex;flex-wrap:wrap;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px">
+    <div style="flex:1 1 300px;max-width:100%;padding:22px 24px 22px;display:flex;flex-direction:column;gap:16px;border-right:1px solid var(--m-efece6-line);position:relative">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:13px;font-weight:500;color:var(--m-5c5852-fg)">Safe to spend today</span>
+        <button onMouseEnter="{{ tipOn }}" onMouseLeave="{{ tipOff }}" style="all:unset;cursor:help;width:15px;height:15px;border-radius:50%;border:1px solid var(--m-cfcac0-line);color:var(--m-77726a-fg);font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:500">?</button>
+      </div>
+      <sc-if value="{{ tip }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:48px;left:24px;z-index:5;width:280px;background:var(--m-tip);color:var(--m-tip-fg);border-radius:6px;padding:12px 14px;font-size:12px;line-height:1.5;box-shadow:0 6px 18px rgba(28,27,25,0.18);animation:mzFade 120ms ease-out">
+          <div style="font-weight:500;margin-bottom:6px;color:var(--m-ffffff-fg)">How this is calculated</div>
+          <div style="display:grid;grid-template-columns:1fr auto;row-gap:3px">
+            <span style="color:var(--m-bdb8ae-fg)">Available to spend this month</span><span>₺9,000</span>
+            <span style="color:var(--m-bdb8ae-fg)">Spent before today</span><span>−₺6,000</span>
+            <span style="color:var(--m-bdb8ae-fg)">Days left, including today</span><span>÷ 10</span>
+            <span style="border-top:1px solid var(--m-3a3833-line);padding-top:4px;margin-top:2px">Daily allowance</span><span style="border-top:1px solid var(--m-3a3833-line);padding-top:4px;margin-top:2px;font-weight:500">₺300</span>
+          </div>
+          <div style="color:var(--m-bdb8ae-fg);margin-top:8px">Bills and planned expenses are already set aside, so they don't reduce this number.</div>
+        </div>
+      </sc-if>
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font-size:52px;line-height:1;font-weight:500;letter-spacing:-0.04em">₺300</span>
+        <span style="font-size:13px;color:var(--m-77726a-fg)">per day for 10 days</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="height:6px;background:var(--m-efece6-bg);border-radius:3px;overflow:hidden;display:flex"><div style="width:28%;background:var(--m-d2a857-bg)"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px">
+          <span style="color:var(--m-5c5852-fg)">₺85 spent today</span>
+          <span style="font-weight:500">₺215 left today</span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--m-77726a-fg);line-height:1.5;text-wrap:pretty">Unspent allowance carries into tomorrow. Spend ₺200 today and tomorrow's allowance becomes ₺311.</div>
+    </div>
+
+    <div style="flex:2 1 520px;max-width:100%;padding:22px 24px;display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">October plan</h2>
+        <span style="font-size:11.5px;color:var(--m-2f7d57-fg);background:var(--m-e8f2ec-bg);border-radius:4px;padding:2px 7px;font-weight:500">Fully allocated</span>
+        <button onClick="{{ goPlan }}" style="all:unset;cursor:pointer;margin-left:auto;font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500" style-hover="text-decoration:underline">Open plan</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;height:12px;border-radius:3px;overflow:hidden;gap:2px">
+          <div title="Planned expenses ₺27,000" style="flex:27000;background:var(--m-2f3a4a-bg)"></div>
+          <div title="Savings ₺6,000" style="flex:6000;background:var(--m-3f7e86-bg)"></div>
+          <div title="Investments ₺8,000" style="flex:8000;background:var(--m-3d5a99-bg)"></div>
+          <div title="Available to spend ₺9,000" style="flex:9000;background:var(--m-d2a857-bg)"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--m-77726a-fg)"><span>₺0</span><span>₺50,000 income</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:18px 20px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:12px;color:var(--m-5c5852-fg);display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border:1.5px solid var(--m-2f3a4a-line);border-radius:2px"></span>Monthly income</span>
+          <span style="font-size:20px;font-weight:500;letter-spacing:-0.02em">₺50,000</span>
+          <span style="font-size:11.5px;color:var(--m-2f7d57-fg)">Received in full</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:12px;color:var(--m-5c5852-fg);display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;background:var(--m-2f3a4a-bg);border-radius:2px"></span>Planned expenses</span>
+          <span style="font-size:20px;font-weight:500;letter-spacing:-0.02em">₺27,000</span>
+          <span style="font-size:11.5px;color:var(--m-77726a-fg)">₺23,329 paid · ₺3,671 to go</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:12px;color:var(--m-5c5852-fg);display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;background:var(--m-3f7e86-bg);border-radius:2px"></span>Savings</span>
+          <span style="font-size:20px;font-weight:500;letter-spacing:-0.02em">₺6,000</span>
+          <span style="font-size:11.5px;color:var(--m-77726a-fg)">Transferred 1 Oct</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:12px;color:var(--m-5c5852-fg);display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;background:var(--m-3d5a99-bg);border-radius:2px"></span>Investments</span>
+          <span style="font-size:20px;font-weight:500;letter-spacing:-0.02em">₺8,000</span>
+          <span style="font-size:11.5px;color:var(--m-77726a-fg)">₺4,000 more on 29 Oct</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:12px;color:var(--m-5c5852-fg);display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;background:var(--m-d2a857-bg);border-radius:2px"></span>Available to spend</span>
+          <span style="font-size:20px;font-weight:500;letter-spacing:-0.02em">₺9,000</span>
+          <span style="font-size:11.5px;color:var(--m-77726a-fg)">₺6,000 spent · ₺3,000 left</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px">
+    <div style="display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:1px solid var(--m-efece6-line)">
+      <h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">Needs attention</h2>
+      <span style="font-size:12px;color:var(--m-77726a-fg)">{{ openCount }}</span>
+    </div>
+    <sc-for list="{{ alerts }}" as="a" hint-placeholder-count="4">
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 18px;border-top:{{ a.bt }};min-height:48px;background:{{ a.bg }};transition:background 200ms">
+        <span style="width:7px;height:7px;border-radius:50%;background:{{ a.dot }};flex:none"></span>
+        <span style="font-size:11.5px;font-weight:500;color:{{ a.dot }};width:64px;flex:none">{{ a.kind }}</span>
+        <span style="flex:1;font-size:13px;color:{{ a.textColor }};line-height:1.45;text-wrap:pretty">{{ a.text }}</span>
+        <sc-if value="{{ a.open }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ a.act }}" style="height:28px;padding:0 11px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:12.5px;cursor:pointer;white-space:nowrap;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg);border-color:var(--m-cfcac0-line)">{{ a.action }}</button>
+        </sc-if>
+        <sc-if value="{{ a.done }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:12.5px;color:var(--m-2f7d57-fg);white-space:nowrap;animation:mzFade 200ms">✓ {{ a.doneText }}</span>
+        </sc-if>
+      </div>
+    </sc-for>
+  </section>
+
+  <div style="display:flex;flex-wrap:wrap;gap:16px">
+    <section style="flex:1.6 1 520px;min-width:0;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px 20px 16px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">Cash flow</h2>
+          <span style="font-size:12px;color:var(--m-77726a-fg)">Income vs spending. Transfers to your own savings and investments are excluded.</span>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:14px;font-size:12px;color:var(--m-5c5852-fg)">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;background:var(--m-c8d0dd-bg);border-radius:2px"></span>Income</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;background:var(--m-2f3a4a-bg);border-radius:2px"></span>Spending</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div style="display:flex;flex-direction:column;justify-content:space-between;height:176px;font-size:11px;color:var(--m-8a857c-fg);text-align:right;width:28px;padding-bottom:20px">
+          <span>60k</span><span>40k</span><span>20k</span><span>0</span>
+        </div>
+        <div style="flex:1;position:relative;height:176px">
+          <div style="position:absolute;inset:0 0 20px 0;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none">
+            <div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px solid var(--m-e3e0d8-line)"></div>
+          </div>
+          <div style="position:absolute;inset:0;display:flex;align-items:stretch">
+            <sc-for list="{{ months }}" as="m" hint-placeholder-count="6">
+              <div onMouseEnter="{{ m.enter }}" onMouseLeave="{{ m.leave }}" style="flex:1;display:flex;flex-direction:column;position:relative;cursor:default;border-radius:4px;background:{{ m.hoverBg }}">
+                <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;gap:4px;padding:0 4px">
+                  <div style="width:16px;height:{{ m.inH }};background:var(--m-c8d0dd-bg);border-radius:2px 2px 0 0;transition:height 300ms"></div>
+                  <div style="width:16px;height:{{ m.outH }};background:{{ m.outColor }};border-radius:2px 2px 0 0;transition:height 300ms;background-image:{{ m.hatch }}"></div>
+                </div>
+                <div style="height:20px;display:flex;align-items:flex-end;justify-content:center;font-size:11.5px;color:{{ m.labelColor }}">{{ m.label }}</div>
+                <sc-if value="{{ m.tip }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;bottom:calc(100% - 24px);left:50%;transform:translateX(-50%);z-index:4;width:184px;background:var(--m-tip);color:var(--m-tip-fg);border-radius:6px;padding:10px 12px;font-size:12px;box-shadow:0 6px 18px rgba(28,27,25,0.18);pointer-events:none;animation:mzFade 100ms">
+                    <div style="font-weight:500;color:var(--m-ffffff-fg);margin-bottom:6px">{{ m.full }}</div>
+                    <div style="display:grid;grid-template-columns:1fr auto;row-gap:3px">
+                      <span style="color:var(--m-bdb8ae-fg)">Income</span><span>{{ m.inF }}</span>
+                      <span style="color:var(--m-bdb8ae-fg)">Spending</span><span>{{ m.outF }}</span>
+                      <span style="color:var(--m-bdb8ae-fg)">Kept</span><span>{{ m.netF }}</span>
+                      <span style="color:var(--m-bdb8ae-fg)">Savings rate</span><span>{{ m.rate }}</span>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;border-top:1px solid var(--m-efece6-line);padding-top:14px">
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;color:var(--m-77726a-fg)">October so far</span><span style="font-size:15px;font-weight:500">+₺20,671 kept</span></div>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;color:var(--m-77726a-fg)">Avg. spending, 5 mo</span><span style="font-size:15px;font-weight:500">₺40,430</span></div>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;color:var(--m-77726a-fg)">Avg. savings rate, 5 mo</span><span style="font-size:15px;font-weight:500">19.1%</span></div>
+      </div>
+    </section>
+
+    <section style="flex:1 1 340px;min-width:0;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:18px 20px 12px">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">Upcoming payments in the next 7 days</h2>
+          <span style="font-size:12px;color:var(--m-77726a-fg)">6 payments · 23–29 Oct</span>
+        </div>
+        <span style="margin-left:auto;font-size:20px;font-weight:500;letter-spacing:-0.02em">₺7,430</span>
+      </div>
+      <div style="margin:0 12px 6px;padding:9px 10px;border-radius:6px;background:var(--m-f8eae7-bg);display:flex;align-items:center;gap:10px">
+        <div style="width:36px;text-align:center;flex:none"><div style="font-size:10.5px;color:var(--m-b4423a-fg);font-weight:500">MON</div><div style="font-size:14px;font-weight:500;color:var(--m-b4423a-fg)">19</div></div>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500">İSKİ Water</div><div style="font-size:11.5px;color:var(--m-8c3a33-fg)">Overdue 3 days · Utilities</div></div>
+        <span style="font-size:13px;font-weight:500">₺310.00</span>
+      </div>
+      <div style="display:flex;flex-direction:column;padding:0 12px">
+        <sc-for list="{{ upcoming }}" as="u" hint-placeholder-count="6">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px" style-hover="background:var(--m-faf9f6-bg)">
+            <div style="width:36px;text-align:center;flex:none"><div style="font-size:10.5px;color:var(--m-77726a-fg);font-weight:500">{{ u.dow }}</div><div style="font-size:14px;font-weight:500">{{ u.day }}</div></div>
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ u.name }}</div><div style="font-size:11.5px;color:var(--m-77726a-fg)">{{ u.meta }}</div></div>
+            <span style="font-size:11px;font-weight:500;color:{{ u.sc }};border:1px {{ u.sb }} {{ u.sc }};border-radius:4px;padding:1px 6px;white-space:nowrap">{{ u.status }}</span>
+            <span style="font-size:13px;font-weight:500;width:76px;text-align:right">{{ u.amt }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--m-efece6-line);font-size:12.5px">
+        <span style="color:var(--m-5c5852-fg)">Checking after these: <span style="color:var(--m-1c1b19-fg);font-weight:500">₺17,110</span></span>
+        <button onClick="{{ goCalendar }}" style="all:unset;cursor:pointer;color:var(--m-2c4a7c-fg);font-weight:500" style-hover="text-decoration:underline">Open calendar</button>
+      </div>
+    </section>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:16px">
+    <section style="flex:1.25 1 440px;min-width:0;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">Budget performance</h2>
+          <span style="font-size:12px;color:var(--m-77726a-fg)">Marker shows expected pace — 71% of the month has passed</span>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:14px;align-items:center">
+          <button onClick="{{ askWhy }}" style="all:unset;cursor:pointer;font-size:12px;color:var(--m-3e3b36-fg);border:1px solid var(--m-e3e0d8-line);border-radius:999px;padding:2px 9px;white-space:nowrap" style-hover="background:var(--m-f3f1ec-bg)">Why is spending up?</button>
+          <button onClick="{{ goPlan }}" style="all:unset;cursor:pointer;font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500;white-space:nowrap" style-hover="text-decoration:underline">All categories</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:13px">
+        <sc-for list="{{ budgets }}" as="b" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:minmax(110px,150px) minmax(80px,1fr) 128px;align-items:center;gap:14px">
+            <span style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ b.name }}</span>
+            <div style="position:relative;height:6px;background:var(--m-efece6-bg);border-radius:3px">
+              <div style="position:absolute;left:0;top:0;bottom:0;width:{{ b.w }};background:{{ b.color }};border-radius:3px;transition:width 400ms"></div>
+              <div style="position:absolute;left:71%;top:-4px;bottom:-4px;width:1.5px;background:var(--m-1c1b19-fg);opacity:0.55"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;line-height:1.3">
+              <span style="font-size:12.5px;font-weight:500">{{ b.spent }} <span style="color:var(--m-8a857c-fg);font-weight:400">/ {{ b.budget }}</span></span>
+              <span style="font-size:11.5px;color:{{ b.noteColor }}">{{ b.note }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="flex:1 1 340px;min-width:0;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">Savings progress</h2>
+          <span style="font-size:12px;color:var(--m-77726a-fg)">₺440,500 saved across 4 goals</span>
+        </div>
+        <button onClick="{{ goSavings }}" style="all:unset;cursor:pointer;margin-left:auto;font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500" style-hover="text-decoration:underline">Savings</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <sc-for list="{{ goals }}" as="g" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:baseline;gap:8px">
+              <span style="font-size:13px;font-weight:500">{{ g.name }}</span>
+              <span style="font-size:12px;color:var(--m-77726a-fg)">{{ g.pct }}</span>
+              <span style="margin-left:auto;font-size:12.5px"><span style="font-weight:500">{{ g.cur }}</span> <span style="color:var(--m-8a857c-fg)">/ {{ g.target }}</span></span>
+            </div>
+            <div style="height:4px;background:var(--m-efece6-bg);border-radius:2px;overflow:hidden"><div style="height:100%;width:{{ g.w }};background:var(--m-3f7e86-bg);border-radius:2px"></div></div>
+            <span style="font-size:11.5px;color:{{ g.noteColor }}">{{ g.note }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+    <section style="flex:1.6 1 520px;min-width:0;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:12px;padding:16px 20px 10px">
+        <h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">Recent transactions</h2>
+        <span style="font-size:11.5px;color:var(--m-a86f12-fg);background:var(--m-f8efdc-bg);border-radius:4px;padding:2px 7px;font-weight:500">4 to review</span>
+        <button onClick="{{ goTx }}" style="all:unset;cursor:pointer;margin-left:auto;font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500" style-hover="text-decoration:underline">All transactions</button>
+      </div>
+      <div style="display:grid;grid-template-columns:64px minmax(140px,1.4fr) minmax(110px,1fr) minmax(90px,0.8fr) 104px;column-gap:12px;padding:6px 20px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;border-bottom:1px solid var(--m-efece6-line)">
+        <span>Date</span><span>Merchant</span><span>Category</span><span>Account</span><span style="text-align:right">Amount</span>
+      </div>
+      <sc-for list="{{ txs }}" as="t" hint-placeholder-count="7">
+        <div style="display:grid;grid-template-columns:64px minmax(140px,1.4fr) minmax(110px,1fr) minmax(90px,0.8fr) 104px;column-gap:12px;align-items:center;padding:0 20px;height:40px;border-bottom:1px solid var(--m-f3f1ec-line);font-size:13px" style-hover="background:var(--m-faf9f6-bg)">
+          <span style="color:var(--m-77726a-fg)">{{ t.date }}</span>
+          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500">{{ t.merchant }}</span>
+          <span style="display:flex;align-items:center;gap:7px;color:{{ t.catColor }};white-space:nowrap;overflow:hidden"><span style="width:6px;height:6px;border-radius:50%;background:{{ t.dot }};flex:none"></span>{{ t.cat }}</span>
+          <span style="color:var(--m-5c5852-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.acct }}</span>
+          <span style="text-align:right;font-weight:500;color:{{ t.amtColor }}">{{ t.amt }}</span>
+        </div>
+      </sc-for>
+    </section>
+
+    <div style="flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:16px">
+      <section onClick="{{ goNW }}" style="cursor:pointer;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:10px" style-hover="border-color:var(--m-d6d2c9-line)">
+        <div style="display:flex;align-items:center"><h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">Net worth</h2><span style="margin-left:auto;font-size:12px;color:var(--m-77726a-fg)">12 months</span></div>
+        <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+          <span style="font-size:26px;font-weight:500;letter-spacing:-0.025em">₺2,066,750</span>
+          <span style="font-size:12.5px;color:var(--m-2f7d57-fg);font-weight:500">+₺38,400 since Sep</span>
+        </div>
+        <svg viewBox="0 0 300 64" preserveAspectRatio="none" style="width:100%;height:64px;display:block">
+          <path d="{{ nwArea }}" style="fill:var(--m-eef1f6-bg)"></path>
+          <path d="{{ nwLine }}" style="fill:none;stroke:var(--m-3d5a99-line);stroke-width:1.5" vectorEffect="non-scaling-stroke"></path>
+        </svg>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--m-5c5852-fg)"><span>Assets ₺2,167,950</span><span>Liabilities ₺101,200</span></div>
+      </section>
+
+      <section onClick="{{ goInv }}" style="cursor:pointer;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:10px" style-hover="border-color:var(--m-d6d2c9-line)">
+        <div style="display:flex;align-items:center"><h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">Investment portfolio</h2><span style="margin-left:auto;font-size:12px;color:var(--m-77726a-fg)">Prices 15:42</span></div>
+        <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+          <span style="font-size:26px;font-weight:500;letter-spacing:-0.025em">₺1,060,200</span>
+          <span style="font-size:12.5px;color:var(--m-2f7d57-fg);font-weight:500">+16.0% unrealised</span>
+        </div>
+        <div style="display:flex;height:8px;border-radius:2px;overflow:hidden;gap:1.5px">
+          <div style="flex:41.8;background:var(--m-3d5a99-bg)"></div><div style="flex:24.6;background:var(--m-3f7e86-bg)"></div><div style="flex:19.4;background:var(--m-d2a857-bg)"></div><div style="flex:8.2;background:var(--m-8c96a8-bg)"></div><div style="flex:3.7;background:var(--m-b0674a-bg)"></div><div style="flex:2.3;background:var(--m-2f3a4a-bg)"></div>
+        </div>
+        <div style="font-size:12px;color:var(--m-5c5852-fg);line-height:1.5">Real return over 12 months: <span style="color:var(--m-1c1b19-fg);font-weight:500">+3.5%</span> after 26.9% inflation. Equities sit 11.8 pp above your target.</div>
+      </section>
+
+      <section style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;padding:16px 20px 10px;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;margin-bottom:6px"><h2 style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em;margin:0">Account balances</h2><button onClick="{{ goAccounts }}" style="all:unset;cursor:pointer;margin-left:auto;font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500" style-hover="text-decoration:underline">Accounts</button></div>
+        <sc-for list="{{ accounts }}" as="a" hint-placeholder-count="6">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:{{ a.bt }}">
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.35">
+              <span style="font-size:13px">{{ a.name }}</span>
+              <span style="font-size:11.5px;color:{{ a.syncColor }}">{{ a.sync }}</span>
+            </div>
+            <span style="font-size:13px;font-weight:500;color:{{ a.color }}">{{ a.bal }}</span>
+          </div>
+        </sc-for>
+      </section>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const f2 = (n) => (n < 0 ? '−₺' : '+₺') + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const MONTHS = [
+  ['May', 'May 2026', 48500, 38900], ['Jun', 'June 2026', 49000, 41200], ['Jul', 'July 2026', 52300, 44800],
+  ['Aug', 'August 2026', 50000, 39600], ['Sep', 'September 2026', 50000, 37650], ['Oct', 'October 2026 (to date)', 50000, 29329],
+];
+const NW = [1612000, 1648500, 1701200, 1688400, 1742900, 1781300, 1820600, 1866000, 1915400, 1972800, 2028350, 2066750];
+const ALERTS = [
+  { id: 'water', kind: 'Overdue', dot: 'var(--m-b4423a-bg)', text: 'İSKİ water bill of ₺310 was due on 19 Oct and hasn’t been matched to a payment.', action: 'Mark as paid', doneText: 'Marked as paid' },
+  { id: 'kasko', kind: 'At risk', dot: 'var(--m-a86f12-bg)', text: 'Car insurance (₺15,000, due Mar 2027) has no contributions yet. ₺3,000/month from November keeps it on schedule.', action: 'Add to November plan', doneText: 'Added to November plan' },
+  { id: 'care', kind: 'Over budget', dot: 'var(--m-a86f12-bg)', text: 'Personal care is ₺110 over its ₺500 budget. Covering it from Available to spend lowers today’s allowance to ₺289.', action: 'Cover from spending', doneText: 'Covered' },
+  { id: 'sync', kind: 'Data', dot: 'var(--m-2c4a7c-bg)', text: 'İş Bankası access expired on 19 Oct. The House deposit savings balance may be up to 3 days old.', action: 'Re-authorise', doneText: 'Reconnected · synced just now' },
+];
+const UPCOMING = [
+  ['FRI', 23, 'Turkcell Superonline', 'Internet · Garanti', 549, 'u'], ['SAT', 24, 'Spotify Premium', 'Subscriptions · Bonus card', 99, 'u'],
+  ['SUN', 25, 'Bonus card statement', 'Card payment · Garanti', 4860, 'u'], ['MON', 26, 'Enerjisa Electricity', 'Utilities · Garanti', 720, 'e'],
+  ['TUE', 27, 'MACFit membership', 'Gym · Bonus card', 980, 'u'], ['WED', 28, 'Netflix', 'Subscriptions · Bonus card', 222, 'u'],
+];
+const BUDGETS = [
+  ['Food & groceries', 4850, 6000], ['Transport', 1420, 1800], ['Personal care', 610, 500],
+  ['Utilities', 1070, 1400], ['Available to spend', 6000, 9000], ['Subscriptions', 379, 700],
+];
+const GOALS = [
+  ['Emergency fund', 82000, 150000, '3.3 months of essential expenses covered', 'var(--m-5c5852-bg)'],
+  ['Japan trip', 24500, 35000, 'Target Jul 2027 · about 2 months behind', 'var(--m-a86f12-bg)'],
+  ['New computer', 27000, 40000, 'On track for Dec 2027', 'var(--m-2f7d57-bg)'],
+  ['House deposit', 650000, 1500000, 'Cash, funds and gold · target Dec 2029', 'var(--m-5c5852-bg)'],
+];
+const TXS = [
+  ['22 Oct', 'Kahve Dünyası', 'Dining out', 'Garanti ··4471', -85], ['22 Oct', 'Migros Kadıköy', 'Food & groceries', 'Bonus ··9020', -642.4],
+  ['21 Oct', 'Yemeksepeti', 'Dining out', 'Bonus ··9020', -412.5], ['21 Oct', 'Shell Acıbadem', 'Transport', 'Bonus ··9020', -920],
+  ['20 Oct', 'Getir', null, 'Bonus ··9020', -318.75], ['20 Oct', 'Trendyol', 'Shopping', 'Bonus ··9020', -1249.9],
+  ['15 Oct', 'Atölye Studio — invoice #0412', 'Income', 'Garanti ··4471', 4000],
+];
+const CAT = { 'Dining out': 'var(--m-d2a857-bg)', 'Food & groceries': 'var(--m-2f3a4a-bg)', Transport: 'var(--m-8c96a8-bg)', Shopping: 'var(--m-d2a857-bg)', Income: 'var(--m-2f7d57-bg)' };
+const ACCTS = [
+  ['Garanti BBVA · Checking', 'Synced 14:58', 24850], ['Enpara · Goals savings', 'Synced 14:58', 140500],
+  ['İş Bankası · House deposit', 'Access expired · balance from 19 Oct', 300000, true], ['Investments · 5 accounts', 'Prices 15:42', 1060200],
+  ['Bonus card ··9020', 'Statement ₺4,860 due 25 Oct', -18400], ['Loans · 2', 'Next payment 10 Nov', -82800],
+];
+
+class Component extends DCLogic {
+  state = { hover: -1, tip: false, done: {} };
+  go = (s) => () => this.props.go && this.props.go(s);
+  renderVals() {
+    const { hover, done } = this.state;
+    const max = 60000;
+    const months = MONTHS.map(([l, full, i, o], k) => {
+      const partial = k === MONTHS.length - 1;
+      return {
+        label: l, full, inH: (i / max * 100) + '%', outH: (o / max * 100) + '%',
+        outColor: partial ? 'var(--m-5a6577-fg)' : 'var(--m-2f3a4a-fg)',
+        hatch: partial ? 'repeating-linear-gradient(135deg, rgba(255,255,255,0.18) 0 3px, transparent 3px 6px)' : 'none',
+        labelColor: hover === k ? 'var(--m-1c1b19-fg)' : 'var(--m-77726a-fg)', hoverBg: hover === k ? 'var(--m-f6f4f0-bg)' : 'transparent',
+        inF: f0(i), outF: f0(o), netF: f0(i - o), rate: ((i - o) / i * 100).toFixed(1) + '%', tip: hover === k,
+        enter: () => this.setState({ hover: k }), leave: () => this.setState({ hover: -1 }),
+      };
+    });
+    const lo = Math.min(...NW) * 0.985, hi = Math.max(...NW) * 1.005;
+    const pts = NW.map((v, k) => [k / (NW.length - 1) * 300, 64 - (v - lo) / (hi - lo) * 60]);
+    const nwLine = pts.map((p, k) => (k ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+    const alerts = ALERTS.map((a, k) => ({
+      ...a, open: !done[a.id], done: !!done[a.id], bt: k ? '1px solid var(--m-f3f1ec-line)' : 'none',
+      bg: done[a.id] ? 'var(--m-fafcfa-bg)' : 'transparent', textColor: done[a.id] ? 'var(--m-8a857c-fg)' : 'var(--m-1c1b19-fg)',
+      act: () => { this.setState({ done: { ...done, [a.id]: true } }); },
+    }));
+    const left = ALERTS.filter((a) => !done[a.id]).length;
+    return {
+      tip: this.state.tip, tipOn: () => this.setState({ tip: true }), tipOff: () => this.setState({ tip: false }),
+      months, nwLine, nwArea: nwLine + ' L300 64 L0 64 Z', alerts, openCount: left ? left + ' open' : 'All clear',
+      upcoming: UPCOMING.map(([dow, day, name, meta, amt, s]) => ({
+        dow, day, name, meta, amt: (s === 'e' ? '~' : '') + '₺' + amt.toLocaleString('en-US') + '.00',
+        status: s === 'e' ? 'Estimated' : 'Upcoming', sc: s === 'e' ? 'var(--m-77726a-fg)' : 'var(--m-2c4a7c-fg)', sb: s === 'e' ? 'dashed' : 'solid',
+      })),
+      budgets: BUDGETS.map(([name, s, b]) => {
+        const p = s / b, over = s > b, ahead = p > 0.76;
+        return {
+          name, spent: f0(s), budget: f0(b), w: Math.min(p, 1) * 100 + '%',
+          color: over ? 'var(--m-b4423a-fg)' : ahead ? 'var(--m-c48a2a-fg)' : 'var(--m-5a6577-fg)',
+          note: over ? f0(s - b) + ' over' : f0(b - s) + ' left' + (ahead ? ' · ahead of pace' : ''),
+          noteColor: over ? 'var(--m-b4423a-fg)' : ahead ? 'var(--m-a86f12-fg)' : 'var(--m-77726a-fg)',
+        };
+      }),
+      goals: GOALS.map(([name, c, t, note, nc]) => ({ name, cur: f0(c), target: f0(t), pct: Math.round(c / t * 100) + '%', w: (c / t * 100) + '%', note, noteColor: nc })),
+      txs: TXS.map(([date, merchant, cat, acct, a]) => ({
+        date, merchant, acct, cat: cat || 'Needs category', catColor: cat ? 'var(--m-5c5852-fg)' : 'var(--m-a86f12-fg)', dot: cat ? CAT[cat] : 'transparent',
+        amt: f2(a), amtColor: a > 0 ? 'var(--m-2f7d57-fg)' : 'var(--m-1c1b19-fg)',
+      })),
+      accounts: ACCTS.map(([name, sync, bal, warn], k) => ({ name, sync, bal: f0(bal), bt: k ? '1px solid var(--m-f3f1ec-line)' : 'none', syncColor: warn ? 'var(--m-a86f12-fg)' : 'var(--m-77726a-fg)', color: bal < 0 ? 'var(--m-1c1b19-fg)' : 'var(--m-1c1b19-fg)' })),
+      askWhy: () => this.props.ask && this.props.ask('Why did I spend more this month?'),
+      goPlan: this.go('plan'), goCalendar: this.go('calendar'), goSavings: this.go('savings'), goTx: this.go('transactions'),
+      goNW: this.go('networth'), goInv: this.go('investments'), goAccounts: this.go('accounts'),
+    };
+  }
+}
+</script>
+</body>
+</html>

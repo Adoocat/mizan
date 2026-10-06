@@ -1,0 +1,17 @@
+{
+  "name": "@mizan/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tsconfig.web.json": "./tsconfig.web.json",
+    "./prettier": "./prettier.config.js"
+  },
+  "scripts": {
+    "test:unit": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.3"
+  }
+}

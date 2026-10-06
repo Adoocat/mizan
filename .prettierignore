@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+dist/
+coverage/
+playwright-report/
+test-results/
+design/
+apps/api/src/db/migrations/meta/
+# Hand-edited docs keep their own formatting
+CLAUDE.md
+docs/

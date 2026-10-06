@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="08 Debts" style="padding:28px 32px 56px;max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">2 loans · 1 credit card</div>
+      <h1 style="margin:4px 0 0;font-size:22px;font-weight:600;letter-spacing:-0.025em">Debts</h1>
+    </div>
+    <button style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Add debt</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px">
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12.5px;color:var(--m-5c5852-fg)">Total owed</span><span style="font-size:24px;font-weight:500;letter-spacing:-0.025em">₺101,200</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">₺82,800 in loans · ₺18,400 on card</span></div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12.5px;color:var(--m-5c5852-fg)">Monthly loan payments</span><span style="font-size:24px;font-weight:500;letter-spacing:-0.025em">₺5,500</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">11% of income · healthy below 20%</span></div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12.5px;color:var(--m-5c5852-fg)">Interest paid in 2026</span><span style="font-size:24px;font-weight:500;letter-spacing:-0.025em">₺21,960</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">All from the personal loan</span></div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12.5px;color:var(--m-5c5852-fg)">Loan-free by</span><span style="font-size:24px;font-weight:500;letter-spacing:-0.025em">Sep 2028</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">On the current schedule</span></div>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;overflow:hidden">
+    <div style="overflow-x:auto">
+      <div style="min-width:940px">
+        <div style="display:grid;grid-template-columns:minmax(200px,1.6fr) 100px 110px 110px 110px 120px 110px minmax(110px,0.8fr);column-gap:14px;padding:10px 20px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;background:var(--m-faf9f6-bg);border-bottom:1px solid var(--m-efece6-line)">
+          <span>Debt</span><span style="text-align:right">Original</span><span style="text-align:right">Remaining</span><span style="text-align:right">Interest rate</span><span style="text-align:right">Monthly</span><span>Next payment</span><span>Payoff</span><span>Repaid</span>
+        </div>
+        <sc-for list="{{ debts }}" as="d" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:minmax(200px,1.6fr) 100px 110px 110px 110px 120px 110px minmax(110px,0.8fr);column-gap:14px;align-items:center;padding:0 20px;min-height:62px;border-bottom:1px solid var(--m-f3f1ec-line);font-size:13px" style-hover="background:var(--m-faf9f6-bg)">
+            <div style="display:flex;flex-direction:column;line-height:1.35;padding:8px 0"><span style="font-weight:500">{{ d.name }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ d.lender }}</span></div>
+            <span style="text-align:right;color:var(--m-5c5852-fg)">{{ d.orig }}</span>
+            <span style="text-align:right;font-weight:500">{{ d.rem }}</span>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;line-height:1.35"><span>{{ d.rate }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ d.apr }}</span></div>
+            <span style="text-align:right">{{ d.pmt }}</span>
+            <div style="display:flex;flex-direction:column;line-height:1.35"><span>{{ d.next }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ d.nextNote }}</span></div>
+            <span style="color:{{ d.payColor }}">{{ d.payoff }}</span>
+            <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:4px;background:var(--m-efece6-bg);border-radius:2px;overflow:hidden"><div style="height:100%;width:{{ d.w }};background:var(--m-b0674a-bg)"></div></div><span style="font-size:11.5px;color:var(--m-5c5852-fg);width:30px;text-align:right">{{ d.pct }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px;display:flex;flex-wrap:wrap">
+    <div style="flex:1 1 340px;min-width:0;padding:22px 24px;display:flex;flex-direction:column;gap:20px;border-right:1px solid var(--m-efece6-line)">
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <h2 style="font-size:15px;font-weight:600;letter-spacing:-0.01em;margin:0">Extra payment simulator</h2>
+        <span style="font-size:12px;color:var(--m-77726a-fg)">Applies to loans only — the card is already paid in full.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:12.5px;color:var(--m-5c5852-fg)">Additional payment per month</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em">{{ extraF }}</span></div>
+        <input type="range" min="0" max="6000" step="250" value="{{ extra }}" onChange="{{ setExtra }}" style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--m-8a857c-fg)"><span>₺0</span><span>₺6,000</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Pay down first</span>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <sc-for list="{{ strategies }}" as="s" hint-placeholder-count="2">
+            <button onClick="{{ s.pick }}" style="all:unset;cursor:pointer;display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:6px;border:1px solid {{ s.bd }};background:{{ s.bg }}" style-hover="border-color:var(--m-cfcac0-line)">
+              <span style="width:14px;height:14px;border-radius:50%;border:1.5px solid {{ s.ring }};flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center"><span style="width:6px;height:6px;border-radius:50%;background:{{ s.fill }}"></span></span>
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:500">{{ s.label }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ s.desc }}</span></span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ toggleRoll }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:12.5px">
+        <span style="width:30px;height:18px;border-radius:9px;background:{{ rollBg }};position:relative;transition:background 150ms;flex:none"><span style="position:absolute;top:2px;left:{{ rollL }};width:14px;height:14px;border-radius:50%;background:var(--m-ffffff-bg);box-shadow:0 1px 2px rgba(0,0,0,0.2);transition:left 150ms"></span></span>
+        Roll freed-up payments into the next loan
+      </button>
+    </div>
+
+    <div style="flex:1.6 1 440px;min-width:0;padding:22px 24px;display:flex;flex-direction:column;gap:18px">
+      <p style="margin:0;font-size:16px;line-height:1.5;letter-spacing:-0.01em;text-wrap:pretty">{{ headline }}</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
+        <div style="display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:var(--m-faf9f6-bg);border-radius:6px"><span style="font-size:12px;color:var(--m-77726a-fg)">Loan-free</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em">{{ newDate }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">was {{ baseDate }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:var(--m-faf9f6-bg);border-radius:6px"><span style="font-size:12px;color:var(--m-77726a-fg)">Time saved</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;color:{{ savedColor }}">{{ savedM }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">vs. current schedule</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:var(--m-faf9f6-bg);border-radius:6px"><span style="font-size:12px;color:var(--m-77726a-fg)">Interest saved</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;color:{{ savedColor }}">{{ intSaved }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">of {{ baseInt }} remaining</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;gap:14px;font-size:12px;color:var(--m-5c5852-fg)">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:0;border-top:1.5px dashed var(--m-8a857c-line)"></span>Current schedule</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:2px;background:var(--m-b0674a-bg)"></span>With extra payments</span>
+        </div>
+        <svg viewBox="0 0 500 130" preserveAspectRatio="none" style="width:100%;height:130px;display:block">
+          <line x1="0" y1="129" x2="500" y2="129" style="stroke:var(--m-e3e0d8-line);stroke-width:1"></line>
+          <path d="{{ baseLine }}" style="fill:none;stroke:var(--m-8a857c-line);stroke-width:1.5;stroke-dasharray:4 3" vectorEffect="non-scaling-stroke"></path>
+          <path d="{{ newArea }}" style="fill:var(--m-f6ece7-bg)"></path>
+          <path d="{{ newLine }}" style="fill:none;stroke:var(--m-b0674a-line);stroke-width:2" vectorEffect="non-scaling-stroke"></path>
+        </svg>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--m-8a857c-fg)"><span>Nov 2026</span><span>Nov 2027</span><span>Sep 2028</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--m-efece6-line)">
+        <span style="flex:1 1 260px;font-size:12px;color:var(--m-5c5852-fg);line-height:1.5">{{ tradeoff }}</span>
+        <button onClick="{{ apply }}" style="height:32px;padding:0 14px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap" style-hover="background:var(--m-33312d-bg)">Add to November plan</button>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const at = (n) => { const t = 2026 * 12 + 9 + n; return MON[t % 12] + ' ' + Math.floor(t / 12); };
+const LOANS = [{ id: 'L', bal: 68400, r: 0.0309, pmt: 4200 }, { id: 'K', bal: 14400, r: 0, pmt: 1300 }];
+
+function sim(extra, order, roll) {
+  const b = LOANS.map((l) => ({ ...l })); let m = 0, interest = 0; const series = [b.reduce((a, x) => a + x.bal, 0)];
+  while (b.some((x) => x.bal > 0.5) && m < 120) {
+    m++;
+    let pool = extra;
+    b.forEach((x) => { if (x.bal <= 0) { if (roll && extra > 0) pool += x.pmt; return; } const i = x.bal * x.r; interest += i; x.bal += i; const p = Math.min(x.pmt, x.bal); x.bal -= p; if (p < x.pmt && roll && extra > 0) pool += x.pmt - p; });
+    order.forEach((id) => { const x = b.find((y) => y.id === id); if (x.bal > 0 && pool > 0) { const p = Math.min(pool, x.bal); x.bal -= p; pool -= p; } });
+    series.push(b.reduce((a, x) => a + Math.max(x.bal, 0), 0));
+  }
+  return { m, interest, series };
+}
+
+class Component extends DCLogic {
+  state = { extra: 2000, strat: 'avalanche', roll: true };
+  renderVals() {
+    const { extra, strat, roll } = this.state;
+    const order = strat === 'avalanche' ? ['L', 'K'] : ['K', 'L'];
+    const base = sim(0, order, false), s = sim(extra, order, roll);
+    const saved = base.m - s.m;
+    const N = base.series.length - 1;
+    const X = (i) => i / N * 500, Y = (v) => 129 - v / 82800 * 124;
+    const path = (arr) => arr.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+    const nl = path(s.series);
+    return {
+      debts: [
+        ['Personal loan', 'İş Bankası · 36 months · instalment 13', '₺90,500', '₺68,400', '3.09% / month', '44.0% APR', '₺4,200', '10 Nov', 'Auto-pay from Garanti', 'Sep 2028', 0.244],
+        ['KYK student loan', 'Credit & Dormitories Agency', '₺36,000', '₺14,400', 'CPI-indexed', 'no interest', '₺1,300', '12 Nov', 'Auto-pay from Garanti', 'Oct 2027', 0.6],
+        ['Bonus credit card', 'Garanti BBVA · limit ₺60,000', '—', '₺18,400', '4.25% / month', 'if not paid in full', '₺4,860', '25 Oct', 'Statement · paid in full', 'Paid monthly', null],
+      ].map(([name, lender, orig, rem, rate, apr, pmt, next, nextNote, payoff, p]) => ({
+        name, lender, orig, rem, rate, apr, pmt, next, nextNote, payoff, payColor: p === null ? 'var(--m-2f7d57-fg)' : 'var(--m-1c1b19-fg)',
+        w: p === null ? '0%' : p * 100 + '%', pct: p === null ? '—' : Math.round(p * 100) + '%',
+      })),
+      extra, extraF: f0(extra), setExtra: (e) => this.setState({ extra: Number(e.target.value) }),
+      strategies: [['avalanche', 'Highest interest first', 'Personal loan, 3.09%/month — saves the most interest'], ['snowball', 'Smallest balance first', 'KYK loan — clears one debt sooner']].map(([id, label, desc]) => {
+        const a = strat === id; return { label, desc, bd: a ? 'var(--m-2c4a7c-line)' : 'var(--m-e3e0d8-line)', bg: a ? 'var(--m-f6f8fb-bg)' : 'var(--m-ffffff-bg)', ring: a ? 'var(--m-2c4a7c-line)' : 'var(--m-cfcac0-line)', fill: a ? 'var(--m-2c4a7c-bg)' : 'transparent', pick: () => this.setState({ strat: id }) };
+      }),
+      toggleRoll: () => this.setState({ roll: !roll }), rollBg: roll ? 'var(--m-2c4a7c-bg)' : 'var(--m-cfcac0-bg)', rollL: roll ? '14px' : '2px',
+      headline: extra === 0 ? 'Move the slider to see how extra payments change your payoff date.' : `If you pay an additional ${f0(extra)} per month, your loans may be paid off approximately ${saved} month${saved === 1 ? '' : 's'} earlier, saving about ${f0(base.interest - s.interest)} in interest.`,
+      newDate: at(s.m), baseDate: at(base.m), savedM: saved + (saved === 1 ? ' month' : ' months'), intSaved: f0(base.interest - s.interest), baseInt: f0(base.interest),
+      savedColor: saved > 0 ? 'var(--m-2f7d57-fg)' : 'var(--m-1c1b19-fg)',
+      baseLine: path(base.series), newLine: nl, newArea: nl + ` L${X(s.series.length - 1).toFixed(1)} 129 L0 129 Z`,
+      tradeoff: extra === 0 ? 'No change to your plan.' : `Funding this from Available to spend would lower it from ₺9,000 to ${f0(Math.max(0, 9000 - extra))} a month (about ${f0(Math.max(0, 9000 - extra) / 30)} a day).`,
+      apply: () => this.props.notify && this.props.notify(f0(extra) + ' extra loan payment added to November plan'),
+    };
+  }
+}
+</script>
+</body>
+</html>

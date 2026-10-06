@@ -1,0 +1,18 @@
+{
+  "app": {
+    "name": "Mizan",
+    "tagline": "Plan first, then spend."
+  },
+  "health": {
+    "label": "API status",
+    "checking": "Checking connection…",
+    "ok": "Connected",
+    "degraded": "Database unavailable",
+    "offline": "API unreachable"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "tr": "Türkçe"
+  }
+}

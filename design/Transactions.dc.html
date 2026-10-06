@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="03 Transactions" style="padding:28px 32px 56px;max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">1–22 October 2026 · 6 accounts</div>
+      <h1 style="margin:4px 0 0;font-size:22px;font-weight:600;letter-spacing:-0.025em">Transactions</h1>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Import statement</button>
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Export CSV</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px">
+    <div style="padding:14px 18px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12px;color:var(--m-77726a-fg)">Income</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;color:var(--m-2f7d57-fg)">+₺50,000.00</span></div>
+    <div style="padding:14px 18px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12px;color:var(--m-77726a-fg)">Spending</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em">−₺29,329.15</span></div>
+    <div style="padding:14px 18px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12px;color:var(--m-77726a-fg)">Transfers to savings &amp; investments</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;color:var(--m-5c5852-fg)">₺10,000.00</span></div>
+    <div style="padding:14px 18px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:var(--m-77726a-fg)">Needs review</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;color:{{ reviewColor }}">{{ reviewCount }}</span></div>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:8px">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--m-efece6-line);position:relative">
+      <div style="flex:1 1 220px;max-width:300px;height:32px;display:flex;align-items:center;gap:8px;padding:0 10px;border:1px solid var(--m-dedad1-line);border-radius:6px" style-focus-within="border-color:var(--m-2c4a7c-line)">
+        <span style="width:9px;height:9px;border:1.5px solid var(--m-8a857c-line);border-radius:50%;flex:none"></span>
+        <input value="{{ q }}" onChange="{{ setQ }}" placeholder="Search merchant, note or #tag" style="all:unset;flex:1;font-size:13px;color:var(--m-1c1b19-fg)">
+      </div>
+      <div style="display:flex;gap:2px;padding:2px;background:var(--m-f3f1ec-bg);border-radius:6px">
+        <sc-for list="{{ types }}" as="t" hint-placeholder-count="4">
+          <button onClick="{{ t.pick }}" style="all:unset;cursor:pointer;padding:5px 11px;border-radius:5px;font-size:12.5px;font-weight:500;background:{{ t.bg }};color:{{ t.color }};box-shadow:{{ t.shadow }}">{{ t.label }}</button>
+        </sc-for>
+      </div>
+      <sc-for list="{{ menus }}" as="m" hint-placeholder-count="2">
+        <div style="position:relative">
+          <button onClick="{{ m.toggle }}" style="height:32px;padding:0 11px;border:1px solid {{ m.bd }};background:{{ m.bg }};border-radius:6px;font-size:12.5px;cursor:pointer;color:var(--m-1c1b19-fg);display:flex;align-items:center;gap:6px" style-hover="border-color:var(--m-cfcac0-line)">{{ m.label }} <span style="color:var(--m-2c4a7c-fg);font-weight:500">{{ m.count }}</span> <span style="font-size:9px;color:var(--m-8a857c-fg)">▾</span></button>
+          <sc-if value="{{ m.open }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:36px;left:0;z-index:10;width:230px;background:var(--m-ffffff-bg);border:1px solid var(--m-e3e0d8-line);border-radius:8px;box-shadow:0 8px 24px rgba(28,27,25,0.12);padding:6px;animation:mzRise 120ms ease-out">
+              <sc-for list="{{ m.opts }}" as="o" hint-placeholder-count="5">
+                <button onClick="{{ o.toggle }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:9px;width:100%;box-sizing:border-box;padding:7px 8px;border-radius:5px;font-size:13px" style-hover="background:var(--m-f3f1ec-bg)">
+                  <span style="width:14px;height:14px;border-radius:3px;border:1.5px solid {{ o.bd }};background:{{ o.bg }};color:var(--m-ffffff-fg);font-size:10px;display:flex;align-items:center;justify-content:center;flex:none">{{ o.check }}</span>
+                  <span style="flex:1">{{ o.label }}</span><span style="font-size:11.5px;color:var(--m-8a857c-fg)">{{ o.n }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+      <button style="height:32px;padding:0 11px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:12.5px;cursor:pointer;color:var(--m-1c1b19-fg);display:flex;align-items:center;gap:6px">1 – 22 Oct <span style="font-size:9px;color:var(--m-8a857c-fg)">▾</span></button>
+      <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ clear }}" style="all:unset;cursor:pointer;font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500;padding:0 6px" style-hover="text-decoration:underline">Clear filters</button>
+      </sc-if>
+      <span style="margin-left:auto;font-size:12px;color:var(--m-77726a-fg)">{{ shown }}</span>
+    </div>
+
+    <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--m-tip);color:var(--m-tip-fg);font-size:12.5px;animation:mzFade 120ms">
+        <span style="font-weight:500">{{ selCount }}</span>
+        <span style="width:1px;height:16px;background:var(--m-3a3833-bg)"></span>
+        <button style="all:unset;cursor:pointer;padding:4px 8px;border-radius:4px" style-hover="background:var(--m-tip-hover)">Categorise</button>
+        <button style="all:unset;cursor:pointer;padding:4px 8px;border-radius:4px" style-hover="background:var(--m-tip-hover)">Add tag</button>
+        <button onClick="{{ markReviewed }}" style="all:unset;cursor:pointer;padding:4px 8px;border-radius:4px" style-hover="background:var(--m-tip-hover)">Mark as reviewed</button>
+        <button style="all:unset;cursor:pointer;padding:4px 8px;border-radius:4px" style-hover="background:var(--m-tip-hover)">Exclude from budget</button>
+        <button onClick="{{ clearSel }}" style="all:unset;cursor:pointer;margin-left:auto;color:var(--m-bdb8ae-fg);padding:4px 8px" style-hover="color:var(--m-ffffff-fg)">Deselect</button>
+      </div>
+    </sc-if>
+
+    <div style="overflow-x:auto">
+      <div style="min-width:820px">
+        <div style="display:grid;grid-template-columns:20px minmax(220px,2fr) minmax(170px,1.2fr) minmax(120px,0.9fr) 104px 120px;column-gap:14px;padding:8px 16px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;background:var(--m-faf9f6-bg);border-bottom:1px solid var(--m-efece6-line)">
+          <span></span><span>Description</span><span>Category</span><span>Account</span><span>Status</span><span style="text-align:right">Amount</span>
+        </div>
+        <sc-for list="{{ days }}" as="d" hint-placeholder-count="5">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 6px 50px;font-size:12px;color:var(--m-5c5852-fg);font-weight:500">
+              <span>{{ d.label }}</span><span style="color:var(--m-77726a-fg);font-weight:400">{{ d.total }}</span>
+            </div>
+            <sc-for list="{{ d.rows }}" as="r" hint-placeholder-count="3">
+              <div style="background:{{ r.bg }};transition:background 300ms">
+                <div onClick="{{ r.expand }}" style="display:grid;grid-template-columns:20px minmax(220px,2fr) minmax(170px,1.2fr) minmax(120px,0.9fr) 104px 120px;column-gap:14px;align-items:center;padding:0 16px;min-height:42px;border-top:1px solid var(--m-f3f1ec-line);cursor:{{ r.cursor }}" style-hover="background:var(--m-faf9f6-bg)">
+                  <button onClick="{{ r.check }}" style="all:unset;cursor:pointer;width:14px;height:14px;border-radius:3px;border:1.5px solid {{ r.cbBd }};background:{{ r.cbBg }};color:var(--m-ffffff-fg);font-size:10px;display:flex;align-items:center;justify-content:center">{{ r.cbMark }}</button>
+                  <div style="display:flex;align-items:center;gap:8px;min-width:0;padding:6px 0">
+                    <div style="display:flex;flex-direction:column;min-width:0;line-height:1.35">
+                      <span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.merchant }}</span>
+                      <sc-if value="{{ r.hasSub }}" hint-placeholder-val="{{ false }}"><span style="font-size:11.5px;color:var(--m-77726a-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sub }}</span></sc-if>
+                    </div>
+                    <sc-if value="{{ r.split }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;color:var(--m-2c4a7c-fg);border:1px solid var(--m-cbd5e6-line);border-radius:4px;padding:0 5px;white-space:nowrap;flex:none">Split · 2 {{ r.caret }}</span></sc-if>
+                  </div>
+                  <div style="min-width:0">
+                    <sc-if value="{{ r.review }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center">
+                        <sc-for list="{{ r.sugg }}" as="s" hint-placeholder-count="2">
+                          <button onClick="{{ s.pick }}" style="all:unset;cursor:pointer;font-size:11.5px;padding:2px 7px;border-radius:4px;border:1px dashed var(--m-c9a55a-line);color:var(--m-7a5410-fg);background:var(--m-fdf8ee-bg)" style-hover="background:var(--m-f8efdc-bg);border-style:solid">{{ s.label }}</button>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ r.categorised }}" hint-placeholder-val="{{ true }}">
+                      <span style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--m-3e3b36-fg);white-space:nowrap;overflow:hidden"><span style="width:6px;height:6px;border-radius:50%;background:{{ r.dot }};flex:none"></span>{{ r.cat }}<span style="color:var(--m-2f7d57-fg);font-size:11.5px">{{ r.justSet }}</span></span>
+                    </sc-if>
+                  </div>
+                  <span style="font-size:12.5px;color:var(--m-5c5852-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.acct }}</span>
+                  <span><span style="font-size:11px;font-weight:500;color:{{ r.sc }};background:{{ r.sbg }};border-radius:4px;padding:2px 6px;white-space:nowrap">{{ r.status }}</span></span>
+                  <span style="text-align:right;font-size:13px;font-weight:500;color:{{ r.amtColor }}">{{ r.amt }}</span>
+                </div>
+                <sc-if value="{{ r.open }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:2px 16px 10px 50px;display:flex;flex-direction:column;gap:2px;animation:mzFade 150ms">
+                    <sc-for list="{{ r.parts }}" as="p" hint-placeholder-count="2">
+                      <div style="display:grid;grid-template-columns:minmax(206px,2fr) minmax(170px,1.2fr) minmax(120px,0.9fr) 104px 120px;column-gap:14px;align-items:center;height:30px;font-size:12.5px;color:var(--m-5c5852-fg)">
+                        <span style="padding-left:12px;border-left:1.5px solid var(--m-dedad1-line)">{{ p.note }}</span>
+                        <span style="display:flex;align-items:center;gap:7px"><span style="width:6px;height:6px;border-radius:50%;background:{{ p.dot }}"></span>{{ p.cat }}</span>
+                        <span></span><span></span>
+                        <span style="text-align:right">{{ p.amt }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+        <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:56px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+            <span style="font-size:14px;font-weight:500">No transactions match these filters</span>
+            <span style="font-size:12.5px;color:var(--m-77726a-fg)">Try a different search, or clear filters to see all 68 October transactions.</span>
+            <button onClick="{{ clear }}" style="margin-top:6px;height:30px;padding:0 12px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:12.5px;cursor:pointer">Clear filters</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--m-efece6-line);font-size:12px;color:var(--m-77726a-fg)">
+      <span>Imported automatically via open banking from Garanti BBVA and Bonus. Cash wallet is entered manually.</span>
+      <button style="all:unset;cursor:pointer;color:var(--m-2c4a7c-fg);font-weight:500" style-hover="text-decoration:underline">Load earlier</button>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const COL = { 'Dining out': 'var(--m-d2a857-bg)', 'Food & groceries': 'var(--m-2f3a4a-bg)', Transport: 'var(--m-8c96a8-bg)', Shopping: 'var(--m-d2a857-bg)', 'Personal care': 'var(--m-8c96a8-bg)', Utilities: 'var(--m-2f3a4a-bg)', Entertainment: 'var(--m-d2a857-bg)', Income: 'var(--m-2f7d57-bg)', 'Debt payment': 'var(--m-b0674a-bg)', Investment: 'var(--m-3d5a99-bg)', 'Cash withdrawal': 'var(--m-b8b2a7-bg)' };
+const TX = [
+  [1, '22', 'Kahve Dünyası', '', 'Dining out', 'Garanti ··4471', -85, 'Pending', 'exp'],
+  [2, '22', 'Migros Kadıköy', '', 'Food & groceries', 'Bonus ··9020', -642.4, 'Pending', 'exp'],
+  [3, '21', 'Yemeksepeti', '', 'Dining out', 'Bonus ··9020', -412.5, 'Cleared', 'exp'],
+  [4, '21', 'Shell Acıbadem', '', 'Transport', 'Bonus ··9020', -920, 'Cleared', 'exp'],
+  [5, '20', 'Getir', '', null, 'Bonus ··9020', -318.75, 'Review', 'exp', ['Food & groceries', 'Dining out']],
+  [6, '20', 'Trendyol', '#home · Desk lamp', 'Shopping', 'Bonus ··9020', -1249.9, 'Cleared', 'exp'],
+  [7, '19', 'BiTaksi', '', null, 'Garanti ··4471', -265, 'Review', 'exp', ['Transport']],
+  [8, '19', 'Watsons', '', 'Personal care', 'Bonus ··9020', -389.9, 'Cleared', 'exp'],
+  [9, '18', 'Migros MMM Ataşehir', 'Weekly shop', 'Food & groceries', 'Bonus ··9020', -1840, 'Cleared', 'exp', null, [['Groceries', 'Food & groceries', -1520], ['Cleaning supplies', 'Shopping', -320]]],
+  [10, '18', 'ATM withdrawal', 'To Cash wallet', 'Cash withdrawal', 'Garanti ··4471', -1000, 'Cleared', 'tr'],
+  [11, '17', 'Karaköy Lokantası', '#shared · Can owes ₺570', 'Dining out', 'Bonus ··9020', -1140, 'Cleared', 'exp'],
+  [12, '17', 'İGDAŞ Natural gas', 'Auto-pay', 'Utilities', 'Garanti ··4471', -430, 'Cleared', 'exp'],
+  [13, '16', 'Biletix', 'Concert · Zorlu PSM', 'Entertainment', 'Bonus ··9020', -750, 'Cleared', 'exp'],
+  [14, '15', 'Atölye Studio', 'Invoice #0412 · #freelance', 'Income', 'Garanti ··4471', 4000, 'Cleared', 'inc'],
+  [15, '15', 'İş Yatırım', 'PPF fund purchase · Monthly plan', 'Investment', 'Garanti ··4471', -4000, 'Cleared', 'tr'],
+  [16, '14', 'POS 8812 IST', 'Unrecognised card terminal', null, 'Bonus ··9020', -145, 'Review', 'exp', ['Dining out', 'Shopping']],
+  [17, '13', 'A101', '', 'Food & groceries', 'Cash wallet', -212.5, 'Manual', 'exp'],
+  [18, '12', 'KYK repayment', '', 'Debt payment', 'Garanti ··4471', -1300, 'Cleared', 'exp'],
+  [19, '11', 'Hepsiburada', '#japan-trip · Luggage', null, 'Bonus ··9020', -529, 'Review', 'exp', ['Shopping']],
+  [20, '10', 'İş Bankası loan', 'Instalment 13 of 36', 'Debt payment', 'Garanti ··4471', -4200, 'Cleared', 'exp'],
+];
+const DOW = { 22: 'Thursday', 21: 'Wednesday', 20: 'Tuesday', 19: 'Monday', 18: 'Sunday', 17: 'Saturday', 16: 'Friday', 15: 'Thursday', 14: 'Wednesday', 13: 'Tuesday', 12: 'Monday', 11: 'Sunday', 10: 'Saturday' };
+const f2 = (n, sign) => (n < 0 ? '−₺' : sign ? '+₺' : '₺') + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const CATS = ['Food & groceries', 'Dining out', 'Transport', 'Shopping', 'Utilities', 'Debt payment', 'Income'];
+const ACCTS = ['Garanti ··4471', 'Bonus ··9020', 'Cash wallet'];
+
+class Component extends DCLogic {
+  state = { q: '', type: 'all', cats: [], accts: [], menu: null, sel: {}, open: { 9: true }, setCat: {}, just: {} };
+  toggleIn = (key, v) => this.setState((s) => ({ [key]: s[key].includes(v) ? s[key].filter((x) => x !== v) : [...s[key], v] }));
+  renderVals() {
+    const st = this.state;
+    const q = st.q.trim().toLowerCase();
+    const rows = TX.map(([id, day, merchant, sub, cat, acct, amt, status, type, sugg, parts]) => ({ id, day, merchant, sub, cat: st.setCat[id] || cat, acct, amt, status: st.setCat[id] ? 'Cleared' : status, type, sugg, parts }));
+    const vis = rows.filter((r) =>
+      (st.type === 'all' || r.type === st.type) &&
+      (!q || (r.merchant + ' ' + r.sub + ' ' + (r.cat || '')).toLowerCase().includes(q)) &&
+      (!st.cats.length || st.cats.includes(r.cat)) &&
+      (!st.accts.length || st.accts.includes(r.acct)));
+    const byDay = [];
+    vis.forEach((r) => { let d = byDay.find((x) => x.day === r.day); if (!d) { d = { day: r.day, list: [] }; byDay.push(d); } d.list.push(r); });
+    const days = byDay.map((d) => ({
+      label: DOW[d.day] + ', ' + d.day + ' October',
+      total: f2(d.list.reduce((a, r) => a + (r.type === 'tr' ? 0 : r.amt), 0), true).replace('+₺0.00', '₺0.00'),
+      rows: d.list.map((r) => {
+        const isSel = !!st.sel[r.id], review = !r.cat;
+        const S = { Pending: ['var(--m-a86f12-bg)', 'var(--m-f8efdc-bg)'], Cleared: ['var(--m-5c5852-bg)', 'var(--m-f3f1ec-bg)'], Review: ['var(--m-7a5410-bg)', 'var(--m-f8efdc-bg)'], Manual: ['var(--m-2c4a7c-bg)', 'var(--m-ebeff6-bg)'] }[r.status];
+        return {
+          merchant: r.merchant, sub: r.sub, hasSub: !!r.sub, acct: r.acct, review, categorised: !review,
+          cat: r.cat, dot: COL[r.cat] || 'var(--m-b8b2a7-bg)', justSet: st.just[r.id] ? '  ✓' : '',
+          status: r.status === 'Review' ? 'Needs review' : r.status, sc: S[0], sbg: S[1],
+          amt: f2(r.amt, true), amtColor: r.amt > 0 ? 'var(--m-2f7d57-fg)' : r.type === 'tr' ? 'var(--m-5c5852-fg)' : 'var(--m-1c1b19-fg)',
+          bg: isSel ? 'var(--m-f1f4f9-bg)' : st.just[r.id] ? 'var(--m-f4f9f5-bg)' : 'transparent',
+          cbBd: isSel ? 'var(--m-2c4a7c-line)' : 'var(--m-cfcac0-line)', cbBg: isSel ? 'var(--m-2c4a7c-bg)' : 'var(--m-ffffff-bg)', cbMark: isSel ? '✓' : '',
+          check: (e) => { e.stopPropagation(); this.setState((s) => ({ sel: { ...s.sel, [r.id]: !s.sel[r.id] } })); },
+          split: !!r.parts, caret: st.open[r.id] ? '▴' : '▾', open: !!(r.parts && st.open[r.id]), cursor: r.parts ? 'pointer' : 'default',
+          expand: r.parts ? () => this.setState((s) => ({ open: { ...s.open, [r.id]: !s.open[r.id] } })) : undefined,
+          parts: (r.parts || []).map(([note, c, a]) => ({ note, cat: c, dot: COL[c], amt: f2(a) })),
+          sugg: (r.sugg || []).map((c) => ({
+            label: c, pick: (e) => {
+              e.stopPropagation();
+              this.setState((s) => ({ setCat: { ...s.setCat, [r.id]: c }, just: { ...s.just, [r.id]: true } }));
+              setTimeout(() => this.setState((s) => ({ just: { ...s.just, [r.id]: false } })), 1600);
+              this.props.notify && this.props.notify(r.merchant + ' → ' + c + ' · future ' + r.merchant + ' purchases will use this');
+            },
+          })),
+        };
+      }),
+    }));
+    const reviewLeft = rows.filter((r) => !r.cat).length;
+    const selN = Object.values(st.sel).filter(Boolean).length;
+    const count = (key, v) => rows.filter((r) => (key === 'cats' ? r.cat : r.acct) === v).length;
+    const menus = [['cat', 'Category', 'cats', CATS], ['acct', 'Account', 'accts', ACCTS]].map(([id, label, key, opts]) => ({
+      label, count: st[key].length ? st[key].length : '', open: st.menu === id,
+      bd: st[key].length ? 'var(--m-afc0dc-line)' : 'var(--m-dedad1-line)', bg: st[key].length ? 'var(--m-f4f7fb-bg)' : 'var(--m-ffffff-bg)',
+      toggle: () => this.setState((s) => ({ menu: s.menu === id ? null : id })),
+      opts: opts.map((o) => { const on = st[key].includes(o); return { label: o, n: count(key, o), bd: on ? 'var(--m-2c4a7c-line)' : 'var(--m-cfcac0-line)', bg: on ? 'var(--m-2c4a7c-bg)' : 'var(--m-ffffff-bg)', check: on ? '✓' : '', toggle: () => this.toggleIn(key, o) }; }),
+    }));
+    const hasFilters = !!(q || st.type !== 'all' || st.cats.length || st.accts.length);
+    return {
+      q: st.q, setQ: (e) => this.setState({ q: e.target.value }),
+      types: [['all', 'All'], ['exp', 'Expenses'], ['inc', 'Income'], ['tr', 'Transfers']].map(([id, label]) => { const a = st.type === id; return { label, bg: a ? 'var(--m-ffffff-bg)' : 'transparent', color: a ? 'var(--m-1c1b19-fg)' : 'var(--m-5c5852-fg)', shadow: a ? '0 1px 2px rgba(28,27,25,0.08)' : 'none', pick: () => this.setState({ type: id }) }; }),
+      menus, hasFilters, clear: () => this.setState({ q: '', type: 'all', cats: [], accts: [], menu: null }),
+      shown: 'Showing ' + vis.length + ' of 68', days, empty: vis.length === 0,
+      reviewCount: reviewLeft ? String(reviewLeft) : 'All reviewed', reviewColor: reviewLeft ? 'var(--m-a86f12-fg)' : 'var(--m-2f7d57-fg)',
+      hasSel: selN > 0, selCount: selN + ' selected', clearSel: () => this.setState({ sel: {} }),
+      markReviewed: () => { this.setState({ sel: {} }); this.props.notify && this.props.notify(selN + ' transactions marked as reviewed'); },
+    };
+  }
+}
+</script>
+</body>
+</html>

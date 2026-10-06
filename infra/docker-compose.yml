@@ -1,0 +1,28 @@
+# Local development database. Not for production.
+# Ports are bound to 127.0.0.1 so the database is never reachable from your network.
+# Integration and E2E tests don't use this: they start their own throwaway Postgres via Testcontainers.
+name: mizan
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mizan
+      POSTGRES_PASSWORD: ${MIZAN_DB_PASSWORD:-mizan_local_dev}
+      POSTGRES_DB: mizan
+    ports:
+      # 5433 on the host so it doesn't clash with a locally installed Postgres on 5432.
+      - '127.0.0.1:${MIZAN_DB_PORT:-5433}:5432'
+    volumes:
+      # Postgres 18 images keep data under /var/lib/postgresql/18/docker
+      - mizan-pg:/var/lib/postgresql
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U mizan -d mizan']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  mizan-pg:
