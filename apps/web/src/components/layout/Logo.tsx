@@ -32,7 +32,7 @@ export function Logo() {
   return (
     <span className="flex items-center gap-2.5">
       <LogoMark />
-      <span className="text-[16px] font-semibold tracking-[-0.03em] text-ink">Mizan</span>
+      <span className="text-[19px] font-medium tracking-[-0.045em] text-ink">Mizan</span>
     </span>
   )
 }

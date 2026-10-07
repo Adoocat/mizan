@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="09 Net Worth" style="padding:32px 40px 80px;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">Everything you own minus everything you owe</div>
+      <h1 style="margin:6px 0 0;font-size:40px;font-weight:300;letter-spacing:-0.045em;line-height:1.05">Net worth</h1>
+    </div>
+    <div style="display:flex;gap:2px;padding:2px;background:var(--m-ece9e2-bg);border-radius:6px">
+      <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
+        <button onClick="{{ m.pick }}" style="all:unset;cursor:pointer;padding:5px 12px;border-radius:5px;font-size:12.5px;font-weight:500;background:{{ m.bg }};color:{{ m.color }};box-shadow:{{ m.shadow }}">{{ m.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:28px 32px;display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;flex-wrap:wrap;gap:20px 48px;align-items:flex-end">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Net worth · 22 Oct 2026</span>
+        <span style="font-size:38px;font-weight:500;letter-spacing:-0.035em;line-height:1">₺2,066,750</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:var(--m-77726a-fg)">Since 30 Sep</span><span style="font-size:15px;font-weight:500">+₺38,400 <span style="color:var(--m-77726a-fg);font-weight:400">(+1.9%)</span></span></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:var(--m-77726a-fg)">{{ yoyLabel }}</span><span style="font-size:15px;font-weight:500">{{ yoy }}</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:var(--m-77726a-fg)">Assets</span><span style="font-size:15px;font-weight:500">₺2,167,950</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:var(--m-77726a-fg)">Liabilities</span><span style="font-size:15px;font-weight:500">₺101,200</span></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:220px;font-size:11px;color:var(--m-8a857c-fg);text-align:right;width:36px;padding-bottom:20px">
+        <span>2.2M</span><span>1.65M</span><span>1.1M</span><span>550k</span><span>0</span>
+      </div>
+      <div style="flex:1;position:relative;height:220px">
+        <div style="position:absolute;inset:0 0 20px 0;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none">
+          <div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px solid var(--m-e3e0d8-line)"></div>
+        </div>
+        <div style="position:absolute;inset:0;display:flex">
+          <sc-for list="{{ months }}" as="m" hint-placeholder-count="12">
+            <div onMouseEnter="{{ m.enter }}" onMouseLeave="{{ m.leave }}" style="flex:1;display:flex;flex-direction:column;position:relative">
+              <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;padding:0 22%">
+                <div style="width:100%;height:{{ m.h }};display:flex;flex-direction:column;border-radius:3px 3px 0 0;overflow:hidden;transition:height 300ms">
+                  <div style="flex:{{ m.nw }};background:{{ m.nwColor }};transition:background 150ms"></div>
+                  <div style="flex:{{ m.li }};background:repeating-linear-gradient(135deg,var(--m-e4c9bc-bg) 0 2px,var(--m-f3e6df-bg) 2px 5px)"></div>
+                </div>
+              </div>
+              <div style="height:20px;display:flex;align-items:flex-end;justify-content:center;font-size:11px;color:{{ m.lc }}">{{ m.label }}</div>
+              <sc-if value="{{ m.tip }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:0;left:{{ m.tipLeft }};z-index:4;width:196px;background:var(--m-tip);color:var(--m-tip-fg);border-radius:6px;padding:10px 12px;font-size:12px;box-shadow:0 6px 18px rgba(28,27,25,0.18);pointer-events:none">
+                  <div style="font-weight:500;color:var(--m-ffffff-fg);margin-bottom:6px">{{ m.full }}</div>
+                  <div style="display:grid;grid-template-columns:1fr auto;row-gap:3px">
+                    <span style="color:var(--m-bdb8ae-fg)">Assets</span><span>{{ m.aF }}</span>
+                    <span style="color:var(--m-bdb8ae-fg)">Liabilities</span><span>{{ m.lF }}</span>
+                    <span style="color:var(--m-bdb8ae-fg)">Net worth</span><span style="font-weight:500">{{ m.nF }}</span>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:20px;font-size:12px;color:var(--m-5c5852-fg);flex-wrap:wrap">
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:var(--m-3d5a99-bg)"></span>Net worth</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:repeating-linear-gradient(135deg,var(--m-e4c9bc-bg) 0 2px,var(--m-f3e6df-bg) 2px 5px)"></span>Liabilities (bar top = total assets)</span>
+      <span style="margin-left:auto;color:var(--m-77726a-fg)">{{ note }}</span>
+    </div>
+  </section>
+
+  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+    <sc-for list="{{ sides }}" as="s" hint-placeholder-count="2">
+      <section style="flex:1 1 420px;min-width:0;background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;overflow:hidden">
+        <div style="display:flex;align-items:baseline;padding:16px 20px 12px;gap:10px">
+          <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">{{ s.title }}</h2>
+          <span style="margin-left:auto;font-size:18px;font-weight:500;letter-spacing:-0.02em">{{ s.total }}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(140px,1fr) 70px 110px 90px;column-gap:12px;padding:8px 20px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;background:var(--m-faf9f6-bg);border-top:1px solid var(--m-efece6-line);border-bottom:1px solid var(--m-efece6-line)">
+          <span>Category</span><span>Share</span><span style="text-align:right">Value</span><span style="text-align:right">1 month</span>
+        </div>
+        <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:minmax(140px,1fr) 70px 110px 90px;column-gap:12px;align-items:center;padding:0 20px;min-height:52px;border-bottom:1px solid var(--m-f3f1ec-line);font-size:13px;color:{{ r.color }}">
+            <div style="display:flex;flex-direction:column;line-height:1.35;padding:6px 0"><span style="font-weight:500">{{ r.name }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ r.src }}</span></div>
+            <div style="height:4px;background:var(--m-efece6-bg);border-radius:2px;overflow:hidden"><div style="height:100%;width:{{ r.w }};background:{{ s.bar }}"></div></div>
+            <span style="text-align:right;font-weight:500">{{ r.val }}</span>
+            <span style="text-align:right;font-size:12.5px;color:{{ r.chColor }}">{{ r.ch }}</span>
+          </div>
+        </sc-for>
+      </section>
+    </sc-for>
+  </div>
+
+  <section style="background:var(--m-faf9f6-bg);border:1px solid transparent;border-radius:24px;padding:22px 28px;display:flex;flex-wrap:wrap;gap:12px 40px;font-size:12.5px">
+    <div style="display:flex;flex-direction:column;gap:3px"><span style="color:var(--m-77726a-fg)">Liquid net worth</span><span style="font-weight:500;font-size:15px">₺1,426,750</span><span style="color:var(--m-77726a-fg);font-size:11.5px">Excludes the vehicle</span></div>
+    <div style="display:flex;flex-direction:column;gap:3px"><span style="color:var(--m-77726a-fg)">Debt-to-asset ratio</span><span style="font-weight:500;font-size:15px">4.7%</span><span style="color:var(--m-77726a-fg);font-size:11.5px">₺101,200 ÷ ₺2,167,950</span></div>
+    <div style="display:flex;flex-direction:column;gap:3px"><span style="color:var(--m-77726a-fg)">Where this month’s change came from</span><span style="font-weight:500;font-size:15px">Contributions ₺14,000 · Markets ₺18,700 · Debt repaid ₺5,700</span><span style="color:var(--m-77726a-fg);font-size:11.5px">Vehicle valuation unchanged</span></div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const NW = [1612000, 1648500, 1701200, 1688400, 1742900, 1781300, 1820600, 1866000, 1915400, 1972800, 2028350, 2066750];
+const LI = [152000, 147400, 143100, 140600, 134900, 130200, 125800, 121300, 116700, 112400, 106900, 101200];
+const ML = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
+const MF = ['Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026', 'May 2026', 'Jun 2026', 'Jul 2026', 'Aug 2026', 'Sep 2026', 'Oct 2026'];
+const CPI = NW.map((_, i) => Math.pow(1.0201, 11 - i));
+
+class Component extends DCLogic {
+  state = { real: false, hover: -1 };
+  renderVals() {
+    const { real, hover } = this.state;
+    const k = (i) => (real ? CPI[i] : 1);
+    const months = NW.map((n, i) => {
+      const nn = n * k(i), ll = LI[i] * k(i);
+      return {
+        label: ML[i], full: MF[i] + (real ? ' · in Oct 2026 lira' : ''), h: ((nn + ll) / 2200000 * 100) + '%', nw: nn, li: ll,
+        nwColor: hover === i ? 'var(--m-2c4a7c-fg)' : i === 11 ? 'var(--m-3d5a99-fg)' : 'var(--m-7f93bc-fg)', lc: hover === i ? 'var(--m-1c1b19-fg)' : 'var(--m-8a857c-fg)',
+        aF: f0(nn + ll), lF: f0(ll), nF: f0(nn), tip: hover === i, tipLeft: i > 8 ? '-150px' : '50%',
+        enter: () => this.setState({ hover: i }), leave: () => this.setState({ hover: -1 }),
+      };
+    });
+    const first = NW[0] * k(0);
+    const ch = NW[11] - first;
+    const A = [
+      ['Cash & checking', 'Garanti ··4471, cash wallet', 27250, -9850],
+      ['Savings accounts', 'Enpara, İş Bankası', 440500, 8100],
+      ['Investments', '5 accounts · market value', 1060200, 26750],
+      ['Vehicles', '2017 Fiat Egea · market estimate, Sep', 640000, 0],
+      ['Property', 'Not added', 0, 0],
+      ['Other assets', 'Not added', 0, 0],
+    ];
+    const L = [
+      ['Personal loans', 'İş Bankası, KYK', 82800, -5500],
+      ['Credit cards', 'Bonus ··9020 · paid in full monthly', 18400, 2100],
+      ['Mortgage', 'None', 0, 0],
+      ['Other debt', 'None', 0, 0],
+    ];
+    const rows = (arr, tot, inv) => arr.map(([name, src, v, c]) => ({
+      name, src, val: v ? f0(v) : '—', w: (v / tot * 100) + '%', color: v ? 'var(--m-1c1b19-fg)' : 'var(--m-8a857c-fg)',
+      ch: c ? (c > 0 ? '+' : '−') + f0(Math.abs(c)).replace('₺', '₺') : '—', chColor: c === 0 ? 'var(--m-8a857c-fg)' : (inv ? c < 0 : c > 0) ? 'var(--m-2f7d57-fg)' : 'var(--m-5c5852-fg)',
+    }));
+    return {
+      modes: [[false, 'Nominal'], [true, 'Inflation-adjusted']].map(([v, label]) => { const a = real === v; return { label, bg: a ? 'var(--m-ffffff-bg)' : 'transparent', color: a ? 'var(--m-1c1b19-fg)' : 'var(--m-5c5852-fg)', shadow: a ? '0 1px 2px rgba(28,27,25,0.08)' : 'none', pick: () => this.setState({ real: v }) }; }),
+      months, yoyLabel: real ? '12 months, after inflation' : '12 months', yoy: (ch >= 0 ? '+' : '−') + f0(Math.abs(ch)) + ' (' + (ch >= 0 ? '+' : '') + (ch / first * 100).toFixed(1) + '%)',
+      note: real ? 'Earlier months restated in October 2026 lira using TÜİK CPI' : 'Values as recorded at each month end',
+      sides: [
+        { title: 'Assets', total: '₺2,167,950', bar: 'var(--m-3d5a99-bg)', rows: rows(A, 2167950, false) },
+        { title: 'Liabilities', total: '₺101,200', bar: 'var(--m-b0674a-bg)', rows: rows(L, 101200, true) },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

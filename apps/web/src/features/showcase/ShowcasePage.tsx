@@ -2,7 +2,7 @@ import { decimal, Money } from '@mizan/domain'
 import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CurrencyInput } from '../../components/finance/CurrencyInput'
-import { MetricCard, MetricRow } from '../../components/finance/MetricCard'
+import { HeroPanel, MetricCard, MetricRow } from '../../components/finance/MetricCard'
 import { MoneyText } from '../../components/finance/MoneyText'
 import { DeltaText, PercentText } from '../../components/finance/PercentText'
 import { BudgetProgress, ProgressBar } from '../../components/finance/Progress'
@@ -10,7 +10,7 @@ import { PageContainer, PageHeader } from '../../components/layout/AppShell'
 import { PrivacyToggle, ThemeSwitch } from '../../components/layout/Preferences'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
-import { Card } from '../../components/ui/Card'
+import { Card, CardTitle } from '../../components/ui/Card'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Skeleton } from '../../components/ui/Skeleton'
@@ -34,7 +34,7 @@ function Swatch({ name, className }: { name: string; className: string }) {
     <div className="flex items-center gap-2.5">
       <span
         aria-hidden
-        className={`size-7 flex-none rounded-control border border-border ${className}`}
+        className={`size-7 flex-none rounded-inset border border-border ${className}`}
       />
       <span className="text-label text-ink-2">{name}</span>
     </div>
@@ -43,7 +43,7 @@ function Swatch({ name, className }: { name: string; className: string }) {
 
 const NEUTRALS = [
   ['Canvas', 'bg-canvas'],
-  ['Page', 'bg-page'],
+  ['Inset', 'bg-inset'],
   ['Surface', 'bg-surface'],
   ['Track', 'bg-track'],
   ['Border', 'bg-border'],
@@ -73,6 +73,26 @@ const DATA = [
   ['Available to spend', 'bg-data-pool'],
 ] as const
 
+const DISPLAY_SCALE = [
+  ['Display XL · 54→164/300', 'text-display-xl', 'Into balance.'],
+  ['Display L · 46→96/300', 'text-display-l', 'Plan before you spend.'],
+  ['Hero figure · 64→112/300', 'text-display-figure', '₺3,000'],
+  ['Page title · 40/300', 'text-page-display', 'Good afternoon, Elif'],
+  ['Panel value · 30/300', 'text-panel-value', '₺1,060,200'],
+  ['Panel title · 15/500', 'text-panel-title', 'Coming up'],
+  ['Lead · 18/400', 'text-lead text-ink-2', 'One strong statement, one supporting sentence.'],
+  ['Eyebrow · Mono 12/+8%', 'text-eyebrow font-mono text-ink-3', '01 — PLAN'],
+] as const
+
+const RADII = [
+  ['3px', 'radius.bar'],
+  ['12px', 'radius.control'],
+  ['16px', 'radius.inset'],
+  ['24px', 'radius.card'],
+  ['32px', 'radius.frame'],
+  ['999px', 'radius.pill'],
+] as const
+
 const TYPE_SCALE = [
   ['Hero figure · 52/500', 'text-hero', '₺300'],
   ['Value L · 34/500', 'text-value-l', '₺1,060,200'],
@@ -96,6 +116,103 @@ export function ShowcasePage() {
     <PageContainer>
       <PageHeader title={t('showcase.title')} actions={<ThemeSwitch />} />
       <p className="m-0 max-w-2xl text-body text-ink-2">{t('showcase.intro')}</p>
+
+      <Section id="sc-editorial" title={t('showcase.editorial')}>
+        <Card className="flex flex-col gap-6 rounded-frame p-7 md:p-11">
+          <div className="flex flex-col gap-5">
+            {DISPLAY_SCALE.map(([name, className, sample]) => (
+              <div key={name} className="grid gap-1 md:grid-cols-[170px_1fr] md:items-baseline">
+                <span className="font-mono text-mono text-ink-3">{name}</span>
+                <span className={`text-ink ${className}`}>{sample}</span>
+              </div>
+            ))}
+          </div>
+          <p className="m-0 max-w-[720px] text-caption text-ink-2">{t('showcase.weight300')}</p>
+        </Card>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card className="flex flex-col gap-3.5">
+            <CardTitle>{t('showcase.surfaces')}</CardTitle>
+            <div className="flex flex-col gap-2.5 rounded-[28px] bg-canvas p-4">
+              <span className="text-caption text-ink-3">{t('showcase.surfaceCanvas')}</span>
+              <div className="flex flex-col gap-2.5 rounded-card bg-surface p-3.5">
+                <span className="text-caption text-ink-3">{t('showcase.surfacePanel')}</span>
+                <div className="rounded-inset bg-inset p-3 text-caption text-ink-3">
+                  {t('showcase.surfaceInset')}
+                </div>
+              </div>
+            </div>
+            <p className="m-0 text-caption text-ink-2">{t('showcase.surfacesNote')}</p>
+          </Card>
+          <Card className="flex flex-col gap-3.5">
+            <CardTitle>{t('showcase.radii')}</CardTitle>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {RADII.map(([radius, key]) => (
+                <div key={radius} className="flex flex-col gap-1.5">
+                  <span
+                    aria-hidden
+                    className="h-10 w-14 border-[1.5px] border-data-essentials bg-inset"
+                    style={{ borderRadius: radius }}
+                  />
+                  <span className="font-mono text-mono text-ink-3">{radius}</span>
+                  <span className="text-caption text-ink-2">{t(`showcase.${key}`)}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+      </Section>
+
+      <Section id="sc-hero" title={t('showcase.heroPanel')}>
+        <HeroPanel
+          label={t('showcase.availableToSpend')}
+          value={<MoneyText value={tl('3000')} fractionDigits="none" />}
+          footnote={t('showcase.heroFootnote')}
+          aside={
+            <>
+              <div className="flex flex-wrap items-center gap-3">
+                <CardTitle>{t('showcase.octoberPlan')}</CardTitle>
+                <Badge tone="positive">{t('showcase.badge.fullyAllocated')}</Badge>
+              </div>
+              <div className="flex h-3.5 gap-0.5 overflow-hidden rounded-full" aria-hidden>
+                <span className="w-[54%] bg-data-essentials" />
+                <span className="w-[12%] bg-data-flexible" />
+                <span className="w-[10%] bg-data-savings" />
+                <span className="w-[8%] bg-data-investments" />
+                <span className="w-[16%] bg-data-pool" />
+              </div>
+              <MetricRow
+                items={[
+                  {
+                    label: t('showcase.monthlyIncome'),
+                    value: <MoneyText value={tl('50000')} fractionDigits="none" />,
+                  },
+                  {
+                    label: t('showcase.plannedExpenses'),
+                    value: <MoneyText value={tl('27000')} fractionDigits="none" />,
+                  },
+                  {
+                    label: t('showcase.leftToAllocate'),
+                    value: <MoneyText value={tl('0')} fractionDigits="none" />,
+                  },
+                ]}
+              />
+            </>
+          }
+        >
+          <div className="flex max-w-[420px] flex-col gap-2.5">
+            <div className="flex items-baseline justify-between gap-3 text-body">
+              <span>
+                <span className="text-[20px] tracking-[-0.02em]">
+                  <MoneyText value={tl('300')} fractionDigits="none" />
+                </span>{' '}
+                <span className="text-ink-3">{t('showcase.aDay')}</span>
+              </span>
+              <span className="text-ink-2">{t('showcase.leftToday')}</span>
+            </div>
+            <ProgressBar value={decimal('0.28')} tone="warning" label={t('showcase.safeToday')} />
+          </div>
+        </HeroPanel>
+      </Section>
 
       <Section id="sc-colours" title={t('showcase.colours')}>
         <Card className="grid gap-5 md:grid-cols-3">
@@ -205,7 +322,7 @@ export function ShowcasePage() {
           <div className="flex flex-col gap-1.5">
             <span className="text-label text-ink-3">{t('showcase.wireValue')}</span>
             <code
-              className="rounded-control bg-canvas px-3 py-2 font-mono text-mono text-ink-2"
+              className="rounded-inset bg-inset px-3 py-2 font-mono text-mono text-ink-2"
               data-testid="wire-value"
             >
               {amount ? JSON.stringify(amount.toDto()) : 'null'}

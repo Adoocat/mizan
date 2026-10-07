@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="10 Reports" style="padding:32px 40px 80px;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">Complete months only · Oct 2025 – Sep 2026</div>
+      <h1 style="margin:6px 0 0;font-size:40px;font-weight:300;letter-spacing:-0.045em;line-height:1.05">Reports</h1>
+    </div>
+    <div style="display:flex;gap:8px">
+      <div style="display:flex;gap:2px;padding:2px;background:var(--m-ece9e2-bg);border-radius:6px">
+        <sc-for list="{{ periods }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.pick }}" style="all:unset;cursor:pointer;padding:5px 12px;border-radius:5px;font-size:12.5px;font-weight:500;background:{{ p.bg }};color:{{ p.color }};box-shadow:{{ p.shadow }}">{{ p.label }}</button></sc-for>
+      </div>
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Export PDF</button>
+    </div>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;display:flex;flex-wrap:wrap">
+    <div style="flex:1 1 280px;min-width:0;padding:22px 24px;display:flex;flex-direction:column;gap:14px;border-right:1px solid var(--m-efece6-line)">
+      <span style="font-size:12px;color:var(--m-77726a-fg);font-weight:500">Financial health</span>
+      <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:44px;font-weight:500;letter-spacing:-0.04em;line-height:1">78</span><span style="font-size:16px;color:var(--m-8a857c-fg)">/ 100</span><span style="margin-left:8px;font-size:12px;font-weight:500;color:var(--m-2f7d57-fg);background:var(--m-e8f2ec-bg);border-radius:4px;padding:2px 8px">Good</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="position:relative;height:6px;display:flex;gap:2px">
+          <div style="flex:50;background:var(--m-efe3e0-bg);border-radius:3px 0 0 3px"></div><div style="flex:20;background:var(--m-f3ebda-bg)"></div><div style="flex:15;background:var(--m-ddebe2-bg)"></div><div style="flex:15;background:var(--m-c9e0d2-bg);border-radius:0 3px 3px 0"></div>
+          <div style="position:absolute;left:78%;top:-5px;width:2px;height:16px;background:var(--m-1c1b19-bg);border-radius:1px"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:50fr 20fr 15fr 15fr;font-size:10.5px;color:var(--m-8a857c-fg)"><span>Needs attention</span><span>Fair</span><span>Good</span><span>Strong</span></div>
+      </div>
+      <p style="margin:0;font-size:12.5px;color:var(--m-5c5852-fg);line-height:1.55;text-wrap:pretty">Strong savings habits and low debt. The emergency fund and two allocation drifts are what keep the score from the Strong range. Up 4 points since July.</p>
+      <span style="font-size:11.5px;color:var(--m-77726a-fg)">Recalculated monthly from your own data. Not a credit score.</span>
+    </div>
+    <div style="flex:2 1 520px;min-width:0;padding:10px 24px">
+      <sc-for list="{{ health }}" as="h" hint-placeholder-count="5">
+        <div style="display:grid;grid-template-columns:150px 110px minmax(0,1fr);column-gap:18px;align-items:center;padding:12px 0;border-bottom:{{ h.bb }}">
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:500">{{ h.name }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ h.metric }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <span style="font-size:12.5px"><span style="font-weight:500">{{ h.score }}</span><span style="color:var(--m-8a857c-fg)"> / 20</span></span>
+            <div style="display:flex;gap:2px"><sc-for list="{{ h.ticks }}" as="t" hint-placeholder-count="10"><span style="flex:1;height:4px;border-radius:1px;background:{{ t.c }}"></span></sc-for></div>
+          </div>
+          <span style="font-size:12.5px;color:var(--m-3e3b36-fg);line-height:1.5;text-wrap:pretty">{{ h.text }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span style="font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Income vs expenses</span>
+        <h2 style="font-size:15px;font-weight:600;letter-spacing:-0.01em;margin:0">Am I spending less than I earn?</h2>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:28px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11.5px;color:var(--m-77726a-fg)">Avg. income</span><span style="font-size:15px;font-weight:500">{{ avgIn }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11.5px;color:var(--m-77726a-fg)">Avg. monthly spending</span><span style="font-size:15px;font-weight:500">{{ avgOut }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11.5px;color:var(--m-77726a-fg)">Avg. savings rate</span><span style="font-size:15px;font-weight:500">{{ avgRate }}</span></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:180px;font-size:11px;color:var(--m-8a857c-fg);text-align:right;width:28px;padding-bottom:40px">
+        <span>60k</span><span>40k</span><span>20k</span><span>0</span>
+      </div>
+      <div style="flex:1;position:relative;height:180px">
+        <div style="position:absolute;inset:0 0 40px 0;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none">
+          <div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px solid var(--m-e3e0d8-line)"></div>
+        </div>
+        <div style="position:absolute;inset:0;display:flex">
+          <sc-for list="{{ ie }}" as="m" hint-placeholder-count="12">
+            <div onMouseEnter="{{ m.enter }}" onMouseLeave="{{ m.leave }}" style="flex:1;display:flex;flex-direction:column;border-radius:4px;background:{{ m.hbg }}">
+              <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px">
+                <div style="width:30%;max-width:14px;height:{{ m.inH }};background:var(--m-c8d0dd-bg);border-radius:2px 2px 0 0;transition:height 300ms"></div>
+                <div style="width:30%;max-width:14px;height:{{ m.outH }};background:var(--m-2f3a4a-bg);border-radius:2px 2px 0 0;transition:height 300ms"></div>
+              </div>
+              <div style="height:20px;display:flex;align-items:flex-end;justify-content:center;font-size:11px;color:var(--m-77726a-fg)">{{ m.label }}</div>
+              <div style="height:20px;display:flex;align-items:flex-end;justify-content:center;font-size:11px;font-weight:500;color:{{ m.rc }}">{{ m.rate }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:20px;font-size:12px;color:var(--m-5c5852-fg);flex-wrap:wrap;align-items:center">
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;background:var(--m-c8d0dd-bg);border-radius:2px"></span>Income</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;background:var(--m-2f3a4a-bg);border-radius:2px"></span>Spending</span>
+      <span>Bottom row: savings rate</span>
+      <span style="margin-left:auto;color:var(--m-3e3b36-fg)">{{ ieNote }}</span>
+    </div>
+  </section>
+
+  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+    <section style="flex:1.2 1 460px;min-width:0;background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span style="font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Spending by category · September</span>
+        <h2 style="font-size:15px;font-weight:600;letter-spacing:-0.01em;margin:0">Where does my money go?</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(110px,140px) minmax(0,1fr) 80px 70px;column-gap:12px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">
+        <span></span><span>Tick = 3-month average</span><span style="text-align:right">Amount</span><span style="text-align:right">vs avg</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="10">
+          <div style="display:grid;grid-template-columns:minmax(110px,140px) minmax(0,1fr) 80px 70px;column-gap:12px;align-items:center;font-size:12.5px">
+            <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.name }}</span>
+            <div style="position:relative;height:14px">
+              <div style="position:absolute;left:0;top:2px;bottom:2px;width:{{ c.w }};background:{{ c.color }};border-radius:2px"></div>
+              <div style="position:absolute;left:{{ c.avgW }};top:-1px;bottom:-1px;width:1.5px;background:var(--m-1c1b19-fg);opacity:0.6"></div>
+            </div>
+            <span style="text-align:right;font-weight:500">{{ c.v }}</span>
+            <span style="text-align:right;color:{{ c.dc }}">{{ c.d }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <span style="font-size:12px;color:var(--m-5c5852-fg);line-height:1.5;padding-top:10px;border-top:1px solid var(--m-efece6-line)">Dining out ran 16% above its 3-month average; shopping came in 15% below. Fixed costs (rent, debt) were 40% of spending.</span>
+    </section>
+
+    <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:20px">
+      <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span style="font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Budget vs actual · September</span>
+          <h2 style="font-size:15px;font-weight:600;letter-spacing:-0.01em;margin:0">Did I stick to the plan?</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 72px 72px 76px;column-gap:10px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;padding-bottom:6px;border-bottom:1px solid var(--m-efece6-line)">
+          <span>Category</span><span style="text-align:right">Budget</span><span style="text-align:right">Actual</span><span style="text-align:right">Difference</span>
+        </div>
+        <sc-for list="{{ bva }}" as="b" hint-placeholder-count="7">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 72px 72px 76px;column-gap:10px;font-size:12.5px;align-items:center;margin-top:-4px">
+            <span>{{ b.name }}</span><span style="text-align:right;color:var(--m-5c5852-fg)">{{ b.b }}</span><span style="text-align:right">{{ b.a }}</span><span style="text-align:right;font-weight:500;color:{{ b.dc }}">{{ b.d }}</span>
+          </div>
+        </sc-for>
+        <span style="font-size:12px;color:var(--m-5c5852-fg);padding-top:10px;border-top:1px solid var(--m-efece6-line)">6 of 8 categories on or under budget. Overspends came to ₺210.</span>
+      </section>
+
+      <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:flex-start;gap:10px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Recurring expenses</span>
+            <h2 style="font-size:15px;font-weight:600;letter-spacing:-0.01em;margin:0">What leaves every month automatically?</h2>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) auto auto;column-gap:20px;row-gap:7px;font-size:12.5px">
+          <sc-for list="{{ recurring }}" as="r" hint-placeholder-count="9">
+            <span style="color:var(--m-3e3b36-fg)">{{ r.name }}</span><span style="color:var(--m-8a857c-fg);font-size:11.5px">{{ r.kind }}</span><span style="text-align:right;font-weight:500">{{ r.v }}</span>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;padding-top:10px;border-top:1px solid var(--m-efece6-line)"><span style="color:var(--m-5c5852-fg)">₺18,398 / month · ₺220,776 / year</span><span style="color:var(--m-5c5852-fg)">37% of income</span></div>
+      </section>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const ML = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
+const IN = [46500, 47000, 62000, 48000, 48000, 48500, 48500, 48500, 49000, 52300, 50000, 50000];
+const OUT = [36200, 37800, 45900, 35400, 34900, 38100, 36700, 38900, 41200, 44800, 39600, 37650];
+const HEALTH = [
+  ['Emergency fund', '3.3 of 6 months', 13, 'Covers 3.3 months of essential expenses. Reaching 6 months is the largest single improvement available.'],
+  ['Savings rate', '27% of income', 19, 'You consistently keep more than a quarter of income. This is well above the 20% benchmark.'],
+  ['Debt burden', '11% of income', 17, 'Loan payments are a modest share of income and the card is paid in full. The personal loan rate is high relative to savings yields.'],
+  ['Budget consistency', '7 of 10 categories', 14, 'Most categories land within budget over the last 3 months. Dining out and personal care overran twice.'],
+  ['Investment allocation', '2 classes off target', 15, 'Diversified across six classes. Stocks are 12 pp over and funds 5 pp under your own targets.'],
+];
+const CATS = [
+  ['Rent', 9500, 9500, 'var(--m-2f3a4a-bg)'], ['Food & groceries', 5850, 5620, 'var(--m-2f3a4a-bg)'], ['Debt payments', 5500, 5500, 'var(--m-b0674a-bg)'], ['Dining out', 3420, 2960, 'var(--m-d2a857-bg)'],
+  ['Shopping', 2640, 3100, 'var(--m-d2a857-bg)'], ['Transport', 1980, 1760, 'var(--m-8c96a8-bg)'], ['Utilities', 1690, 1540, 'var(--m-2f3a4a-bg)'], ['Subscriptions', 1380, 1399, 'var(--m-8c96a8-bg)'],
+  ['Health', 1240, 860, 'var(--m-8c96a8-bg)'], ['Other', 4450, 4310, 'var(--m-b8b2a7-bg)'],
+];
+
+class Component extends DCLogic {
+  state = { period: '12M', hover: -1 };
+  renderVals() {
+    const n = this.state.period === '6M' ? 6 : this.state.period === 'YTD' ? 9 : 12;
+    const s = 12 - n;
+    const ins = IN.slice(s), outs = OUT.slice(s), labels = ML.slice(s);
+    const avgI = ins.reduce((a, b) => a + b, 0) / n, avgO = outs.reduce((a, b) => a + b, 0) / n;
+    const ie = ins.map((i, k) => {
+      const r = (i - outs[k]) / i * 100;
+      return { label: labels[k], inH: (i / 60000 * 100) + '%', outH: (outs[k] / 60000 * 100) + '%', rate: Math.round(r) + '%', rc: r >= 20 ? 'var(--m-2f7d57-fg)' : 'var(--m-5c5852-fg)',
+        hbg: this.state.hover === k ? 'var(--m-f6f4f0-bg)' : 'transparent', enter: () => this.setState({ hover: k }), leave: () => this.setState({ hover: -1 }) };
+    });
+    const hv = this.state.hover;
+    const ieNote = hv >= 0 ? `${labels[hv]}: income ${f0(ins[hv])}, spending ${f0(outs[hv])}, kept ${f0(ins[hv] - outs[hv])}` : 'Spending exceeded income in 0 of ' + n + ' months.';
+    return {
+      periods: ['6M', 'YTD', '12M'].map((p) => { const a = this.state.period === p; return { label: p === '12M' ? '12 months' : p === '6M' ? '6 months' : 'Year to date', bg: a ? 'var(--m-ffffff-bg)' : 'transparent', color: a ? 'var(--m-1c1b19-fg)' : 'var(--m-5c5852-fg)', shadow: a ? '0 1px 2px rgba(28,27,25,0.08)' : 'none', pick: () => this.setState({ period: p, hover: -1 }) }; }),
+      health: HEALTH.map(([name, metric, score, text], i) => ({ name, metric, score, text, bb: i < HEALTH.length - 1 ? '1px solid var(--m-f3f1ec-line)' : 'none',
+        ticks: Array.from({ length: 10 }, (_, t) => ({ c: t < score / 2 ? (score >= 16 ? 'var(--m-2f7d57-fg)' : score >= 12 ? 'var(--m-5a6577-fg)' : 'var(--m-c48a2a-fg)') : 'var(--m-efece6-fg)' })) })),
+      ie, ieNote, avgIn: f0(avgI), avgOut: f0(avgO), avgRate: ((avgI - avgO) / avgI * 100).toFixed(1) + '%',
+      cats: CATS.map(([name, v, avg, color]) => { const d = (v - avg) / avg * 100; return { name, v: f0(v), w: (v / 10000 * 100) + '%', avgW: (avg / 10000 * 100) + '%', color, d: Math.abs(d) < 1 ? '—' : (d > 0 ? '+' : '−') + Math.abs(d).toFixed(0) + '%', dc: d > 10 ? 'var(--m-a86f12-fg)' : 'var(--m-5c5852-fg)' }; }),
+      bva: [['Food & groceries', 7000, 5850], ['Available to spend', 10000, 9600], ['Transport', 2460, 1980], ['Subscriptions', 1700, 1380], ['Rent', 9500, 9500], ['Debt payments', 5500, 5500], ['Utilities', 1500, 1690], ['Personal care', 500, 520]]
+        .map(([name, b, a]) => ({ name, b: f0(b), a: f0(a), d: b === a ? '—' : (b > a ? '' : '+') + f0(a - b).replace('−', '−'), dc: a > b ? 'var(--m-b4423a-fg)' : b > a ? 'var(--m-2f7d57-fg)' : 'var(--m-8a857c-fg)' }))
+        .map((x) => ({ ...x, d: x.d === '—' ? '—' : x.dc.indexOf('2f7d57') >= 0 ? x.d.replace('−₺', '₺') + ' under' : x.d.replace('+', '') + ' over' })),
+      recurring: [['Rent', 'Housing', 9500], ['Personal loan', 'Debt', 4200], ['Utilities', 'Avg. of 3 bills', 1450], ['KYK loan', 'Debt', 1300], ['MACFit', 'Subscription', 980], ['Internet', 'Bill', 549], ['Netflix', 'Subscription', 222], ['Spotify', 'Subscription', 99], ['YouTube · iCloud', 'Subscriptions', 98]]
+        .map(([name, kind, v]) => ({ name, kind, v: f0(v) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

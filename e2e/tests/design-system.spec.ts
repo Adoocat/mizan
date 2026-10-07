@@ -32,10 +32,29 @@ for (const theme of ['dark', 'light'] as const) {
       expect(styles.numerals).toContain('tnum')
     })
 
-    for (const path of ['/', '/showcase', '/settings']) {
+    const pages = [
+      '/',
+      '/plan',
+      '/transactions',
+      '/calendar',
+      '/savings',
+      '/investments',
+      '/goals',
+      '/debts',
+      '/net-worth',
+      '/reports',
+      '/accounts',
+      '/what-if',
+      '/settings',
+      '/showcase',
+      '/landing',
+    ]
+    for (const path of pages) {
       test(`${path} has no accessibility violations, including contrast`, async ({ page }) => {
         await page.goto(path)
         await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+        // The landing page opens with a full-screen intro; measure the settled page, not it.
+        await expect(page.locator('[data-landing-intro]')).toHaveCount(0)
         const results = await new AxeBuilder({ page })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
           .analyze()
@@ -71,7 +90,15 @@ test('undo toast appears after confirming a delete', async ({ page }) => {
 })
 
 test('layout fits the viewport without horizontal scrolling', async ({ page }) => {
-  for (const path of ['/', '/showcase']) {
+  for (const path of [
+    '/',
+    '/plan',
+    '/transactions',
+    '/goals',
+    '/accounts',
+    '/showcase',
+    '/landing',
+  ]) {
     await page.goto(path)
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
     const overflow = await page.evaluate(
@@ -104,4 +131,11 @@ test('switching to Turkish formats money the Turkish way', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1, name: 'Tasarım sistemi' })).toBeVisible()
   await expect(page.getByTestId('money-samples')).toContainText('₺50.000,50')
   await expect(page.locator('html')).toHaveAttribute('lang', 'tr')
+})
+
+test('the landing page links into the app', async ({ page }) => {
+  await page.goto('/landing')
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Bring your money')
+  await page.getByRole('link', { name: 'Start using Mizan' }).first().click()
+  await expect(page.getByRole('heading', { level: 1, name: /Good afternoon/ })).toBeVisible()
 })

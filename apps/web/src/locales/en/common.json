@@ -16,7 +16,9 @@
     "skipToContent": "Skip to content",
     "groups": {
       "daily": "Daily",
-      "wealth": "Wealth"
+      "wealth": "Wealth",
+      "review": "Review",
+      "tools": "Tools"
     },
     "home": "Home",
     "plan": "Plan",
@@ -28,18 +30,51 @@
     "showcase": "Design system",
     "more": "More",
     "tabBar": "Tab bar",
-    "add": "Add transaction"
+    "add": "Add transaction",
+    "landing": "Landing page",
+    "calendar": "Calendar",
+    "savings": "Savings",
+    "investments": "Investments",
+    "debts": "Debts",
+    "netWorth": "Net worth",
+    "reports": "Reports",
+    "whatIf": "What-if simulator",
+    "search": "Search"
   },
   "pages": {
     "placeholder": "This page arrives in phase {{phase}} of the plan.",
-    "home": { "title": "Home", "emptyTitle": "Your daily overview will appear here" },
-    "plan": { "title": "Plan", "emptyTitle": "No plan yet" },
-    "transactions": { "title": "Transactions", "emptyTitle": "No transactions yet" },
-    "upcoming": { "title": "Upcoming", "emptyTitle": "No upcoming payments" },
-    "goals": { "title": "Goals", "emptyTitle": "No goals yet" },
-    "accounts": { "title": "Accounts", "emptyTitle": "No accounts yet" },
-    "settings": { "title": "Settings", "appearance": "Appearance" },
-    "notFound": { "title": "Page not found", "emptyTitle": "There's nothing at this address" }
+    "home": {
+      "title": "Home",
+      "emptyTitle": "Your daily overview will appear here"
+    },
+    "plan": {
+      "title": "Plan",
+      "emptyTitle": "No plan yet"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "emptyTitle": "No transactions yet"
+    },
+    "upcoming": {
+      "title": "Upcoming",
+      "emptyTitle": "No upcoming payments"
+    },
+    "goals": {
+      "title": "Goals",
+      "emptyTitle": "No goals yet"
+    },
+    "accounts": {
+      "title": "Accounts",
+      "emptyTitle": "No accounts yet"
+    },
+    "settings": {
+      "title": "Settings",
+      "appearance": "Appearance"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "emptyTitle": "There's nothing at this address"
+    }
   },
   "health": {
     "label": "API status",
@@ -86,6 +121,29 @@
   "showcase": {
     "title": "Design system",
     "intro": "Every component in the current theme and language. Switch the theme here or the language in the sidebar to check both.",
+    "editorial": "Editorial layer",
+    "weight300": "Weight 300 is reserved for display sizes (24px and up). Below that, use 400 or 500. Large type is set tight (-4% to -6%) and short — two lines, never a paragraph.",
+    "surfaces": "Surfaces",
+    "surfaceCanvas": "Canvas · app and page background",
+    "surfacePanel": "Panel · 24px radius, 28px padding",
+    "surfaceInset": "Inset tile · hover rows, notes",
+    "surfacesNote": "Separation comes from tone, not lines. Borders only on inputs and outline buttons. Fewer, larger panels — a screen should have 4 to 6, not 20.",
+    "radii": "Radii",
+    "radius": {
+      "bar": "Bars, tracks",
+      "control": "Inputs, nav items, rows",
+      "inset": "Inset tiles, menus",
+      "card": "Panels, modals",
+      "frame": "Hero frames",
+      "pill": "Buttons, chips, segmented"
+    },
+    "heroPanel": "Hero panel",
+    "heroFootnote": "left of ₺9,000 this month · 10 days to go",
+    "octoberPlan": "October plan",
+    "monthlyIncome": "Monthly income",
+    "plannedExpenses": "Planned expenses",
+    "aDay": "a day",
+    "leftToday": "₺85 spent · ₺215 left today",
     "colours": "Colours",
     "typography": "Typography",
     "buttons": "Buttons",
@@ -135,5 +193,752 @@
     "emptyTitle": "No accounts yet",
     "emptyDescription": "Add the accounts you use for spending and saving. Their balances start your plan.",
     "addAccount": "Add account"
+  },
+  "days": {
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "months": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
+  },
+  "categories": {
+    "groceries": "Food & groceries",
+    "transport": "Transport",
+    "personalCare": "Personal care",
+    "utilities": "Utilities",
+    "pool": "Available to spend",
+    "subscriptions": "Subscriptions",
+    "diningOut": "Dining out",
+    "shopping": "Shopping",
+    "income": "Income",
+    "rent": "Rent",
+    "internet": "Internet",
+    "cardPayment": "Card payment",
+    "gym": "Gym",
+    "emergency": "Emergency fund",
+    "japan": "Japan trip",
+    "funds": "Funds",
+    "gold": "Gold",
+    "debtPayments": "Debt payments",
+    "health": "Health",
+    "other": "Other"
+  },
+  "home": {
+    "date": "Thursday, 22 October 2026",
+    "greeting": "Good afternoon, {{name}}",
+    "lastSync": "Last sync",
+    "figuresIn": "Figures in",
+    "availableToSpend": "Available to spend",
+    "heroFootnote": "left of {{total}} this month · {{days}} days to go",
+    "aDay": "a day",
+    "spent": "spent",
+    "leftToday": "left today",
+    "todayAllowance": "Today's allowance",
+    "carryNote": "Unspent allowance carries into tomorrow.",
+    "monthPlan": "October plan",
+    "openPlan": "Open plan",
+    "incomeReceived": "₺50,000 income · received in full",
+    "unassignedZero": "₺0 unassigned",
+    "planNote": {
+      "plannedExpenses": "₺3,671 still to pay",
+      "savings": "Moved 1 Oct",
+      "investments": "₺4,000 more on 29 Oct",
+      "pool": "₺6,000 spent"
+    },
+    "needsAttention": "Needs attention",
+    "openCount": "{{count}} open",
+    "allClear": "All clear",
+    "alertKind": {
+      "overdue": "Overdue",
+      "atRisk": "At risk",
+      "overBudget": "Over budget",
+      "data": "Data"
+    },
+    "alerts": {
+      "water": "İSKİ water bill of ₺310 was due on 19 Oct and hasn't been matched to a payment.",
+      "insurance": "Car insurance (₺15,000, due Mar 2027) has no contributions yet. ₺3,000 a month from November keeps it on schedule.",
+      "care": "Personal care is ₺110 over its ₺500 budget. Covering it from Available to spend lowers today's allowance to ₺289.",
+      "sync": "İş Bankası access expired on 19 Oct. The House deposit balance may be up to 3 days old."
+    },
+    "alertAction": {
+      "water": "Mark as paid",
+      "insurance": "Add to November plan",
+      "care": "Cover from spending",
+      "sync": "Re-authorise"
+    },
+    "alertDone": {
+      "water": "Marked as paid",
+      "insurance": "Added to November plan",
+      "care": "Covered",
+      "sync": "Reconnected"
+    },
+    "cashFlow": "Cash flow",
+    "cashFlowNote": "Income against spending. Transfers to your own savings and investments are excluded.",
+    "cashFlowChartLabel": "Income and spending over the last six months",
+    "income": "Income",
+    "spending": "Spending",
+    "octoberSoFar": "October so far",
+    "kept": "kept",
+    "averageSpending": "Avg. spending, 5 mo",
+    "spentThisMonth": "Spent this month",
+    "comingUp": "Coming up",
+    "comingUpRange": "6 payments · 23–29 Oct",
+    "checkingAfter": "Checking after these",
+    "budgets": "Budgets",
+    "paceNote": "Marker shows expected pace — {{percent}}% of October has passed",
+    "allBudgets": "All budgets",
+    "savingsGoals": "Savings goals",
+    "savedAcross": "saved across {{count}} goals",
+    "allGoals": "All goals",
+    "recentTransactions": "Recent transactions",
+    "toReview": "{{count}} to review",
+    "allTransactions": "All transactions",
+    "sampleNote": "Sample figures from the mockups. Live data arrives in phase {{phase}}."
+  },
+  "plan": {
+    "eyebrow": "Monthly plan",
+    "title": "Give every lira a job",
+    "currentMonth": "October 2026",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "copyToNext": "Copy to November",
+    "totals": {
+      "income": "Income available",
+      "allocated": "Allocated",
+      "left": "Left to allocate"
+    },
+    "incomeNote": "Salary ₺46,000 · freelance ₺4,000",
+    "allocatedNote": "{{percent}}% of income",
+    "leftNote": "Aim for zero — every lira has a job",
+    "allocation": "Allocation",
+    "allocationNote": "Where this month's income is going",
+    "groups": {
+      "plannedExpenses": "Planned expenses",
+      "savings": "Savings",
+      "investments": "Investments",
+      "pool": "Available to spend"
+    },
+    "groups2": {
+      "essentials": "Essentials",
+      "flexible": "Flexible",
+      "savings": "Savings",
+      "investments": "Investments",
+      "pool": "Available to spend"
+    },
+    "ofIncome": "of income",
+    "categories": "Categories",
+    "columns": {
+      "category": "Category",
+      "budgeted": "Budgeted",
+      "spent": "Spent",
+      "remaining": "Remaining"
+    },
+    "mix": "Allocation mix",
+    "mixNote": "Compared with the common 50 / 30 / 20 guideline",
+    "mixRows": {
+      "needs": "Needs",
+      "wants": "Wants",
+      "future": "Future you"
+    },
+    "mixDesc": {
+      "needs": "Rent, utilities, groceries, transport",
+      "wants": "Dining out, subscriptions, personal care",
+      "future": "Savings, goals and investments"
+    },
+    "guideline": "guideline",
+    "changes": "Changes from September",
+    "changeRows": {
+      "investments": "Investments",
+      "groceries": "Food & groceries",
+      "pool": "Available to spend",
+      "sinkingFunds": "Sinking funds"
+    }
+  },
+  "transactions": {
+    "eyebrow": "1–22 October 2026 · 6 accounts",
+    "import": "Import statement",
+    "summary": {
+      "income": "Income",
+      "spending": "Spending",
+      "transfers": "Transfers to savings & investments",
+      "needsReview": "Needs review"
+    },
+    "reviewThem": "Review them",
+    "list": "All transactions",
+    "shown": "{{count}} shown",
+    "filter": "Filter transactions",
+    "filters": {
+      "all": "All",
+      "needsReview": "Needs review",
+      "spending": "Spending",
+      "income": "Income"
+    },
+    "columns": {
+      "date": "Date",
+      "merchant": "Merchant",
+      "category": "Category",
+      "account": "Account",
+      "amount": "Amount"
+    },
+    "needsReview": "Needs review",
+    "noMatches": "No transactions match this filter.",
+    "importNote": "Imported automatically via open banking. The cash wallet is entered manually."
+  },
+  "upcoming": {
+    "eyebrow": "Recurring and scheduled money movements",
+    "addRecurring": "Add recurring",
+    "tiles": {
+      "next7": "Next 7 days",
+      "overdue": "Overdue",
+      "lowest": "Lowest projected balance",
+      "income": "Next income"
+    },
+    "next7Note": "5 confirmed · 1 estimated",
+    "overdueNote": "İSKİ Water · due 19 Oct",
+    "lowestNote": "31 Oct, the day before salary",
+    "incomeNote": "Salary · expected 1 Nov",
+    "schedule": "Schedule",
+    "overdueDays": "Overdue {{count}} days",
+    "estimated": "estimated",
+    "recurring": "Recurring each month",
+    "recurringRows": {
+      "housing": "Housing & utilities",
+      "debt": "Debt payments",
+      "subscriptions": "Subscriptions",
+      "saving": "Savings & investing"
+    },
+    "committed": "Committed before spending",
+    "month": "October 2026",
+    "monthNote": "Grey figure = checking balance at end of day",
+    "legend": {
+      "paid": "Paid",
+      "upcoming": "Upcoming",
+      "estimated": "Estimated",
+      "overdue": "Overdue",
+      "income": "Income"
+    }
+  },
+  "goals": {
+    "eyebrow": "Goals can draw on savings and investments together",
+    "newGoal": "New goal",
+    "summary": "{{count}} goals",
+    "committed": "committed",
+    "of": "of",
+    "names": {
+      "emergency": "Emergency fund",
+      "japan": "Japan trip",
+      "computer": "New computer",
+      "house": "House deposit"
+    },
+    "notes": {
+      "emergency": "3.3 months of essential expenses covered",
+      "japan": "Target Jul 2027 · about 2 months behind",
+      "computer": "On track for Dec 2027",
+      "house": "Cash, funds and gold · target Dec 2029"
+    },
+    "howItWorks": "How goals work",
+    "howItWorksBody": "A goal earmarks money you already have. Contributing moves money from Available to spend into the goal; releasing it moves the money back. Balances stay in your real accounts — Mizan only remembers what each lira is for."
+  },
+  "accounts": {
+    "eyebrow": "{{count}} accounts · balances drive every other screen",
+    "addManual": "Add manual asset",
+    "connect": "Connect account",
+    "readOnly": "Read-only access. Mizan can never move your money.",
+    "readOnlyBody": "Connections use each bank's open banking consent and can be revoked here or in your bank's app at any time.",
+    "security": {
+      "twoStep": {
+        "label": "Two-step sign-in",
+        "value": "On · authenticator app"
+      },
+      "devices": {
+        "label": "Signed-in devices",
+        "value": "2 · this Mac, iPhone"
+      },
+      "encryption": {
+        "label": "Encryption",
+        "value": "At rest and in transit"
+      }
+    },
+    "kinds": {
+      "checking": "Checking",
+      "cash": "Cash",
+      "savings": "Savings",
+      "card": "Credit cards"
+    },
+    "statement": "statement {{date}}",
+    "synced": "Synced {{time}}",
+    "accessExpired": "Access expired",
+    "total": "Total",
+    "totalNote": "Everything on budget, after card balances. Account balances are derived from transactions, never stored."
+  },
+  "landing": {
+    "nav": "Landing navigation",
+    "links": {
+      "product": "Product",
+      "features": "Features",
+      "security": "Security",
+      "about": "About"
+    },
+    "signIn": "Sign in",
+    "cta": "Start using Mizan",
+    "seeHow": "See how it works",
+    "skipIntro": "Skip the intro",
+    "heroLead": "A personal finance system for your income, plans, savings, investments and net worth — so every lira has a job.",
+    "heroLine1": "Bring your money",
+    "heroLine2": "into balance.",
+    "statementLabel": "What Mizan is for",
+    "statement1": "Most money apps tell you",
+    "statement2": "where it went.",
+    "statement3": "Mizan helps you decide",
+    "statement4": "where it goes.",
+    "scenes": {
+      "plan": {
+        "eyebrow": "Plan",
+        "title1": "Plan before",
+        "title2": "you spend.",
+        "body": "Your income is divided the day it arrives — bills, life, savings, investments, debt. What's left is genuinely yours to spend."
+      },
+      "transactions": {
+        "eyebrow": "Transactions",
+        "title1": "See where",
+        "title2": "every lira goes.",
+        "body": "Every payment is matched to your plan as it happens. You only review the few Mizan isn't sure about."
+      },
+      "savings": {
+        "eyebrow": "Savings",
+        "title1": "Turn saving",
+        "title2": "into a system.",
+        "body": "Savings move on the first of the month, before you can miss them. Every goal shows exactly when you'll get there."
+      },
+      "investments": {
+        "eyebrow": "Investments",
+        "title1": "Investing,",
+        "title2": "part of the plan.",
+        "body": "Your portfolio lives in the same plan as your rent — contributions, allocation and returns measured after inflation."
+      },
+      "netWorth": {
+        "eyebrow": "Net worth",
+        "title1": "Understand your",
+        "title2": "real net worth.",
+        "body": "Everything you own, minus everything you owe. Switch to real terms to see what you actually gained."
+      },
+      "whatIf": {
+        "eyebrow": "What-if",
+        "body": "Mizan reruns your plan as you move the slider — and shows the trade-off before you commit."
+      },
+      "assistant": {
+        "eyebrow": "Assistant",
+        "title1": "Ask before",
+        "title2": "you decide.",
+        "body": "Answers come from your own accounts and plan — with the working shown, never a guess."
+      }
+    },
+    "octoberIncome": "October income",
+    "everyLira": "Every lira assigned · ₺0 left over",
+    "sankeyLabel": "Where October's income goes",
+    "flows": {
+      "essentials": "Essentials",
+      "pool": "Available to spend",
+      "savings": "Savings",
+      "investments": "Investments",
+      "debt": "Debt payments"
+    },
+    "spentSoFar": "Spent in October, so far",
+    "spendRows": {
+      "essentials": "Essentials",
+      "debt": "Debt",
+      "flexible": "Flexible"
+    },
+    "scheduled": "1 Nov · ₺6,000 to savings · scheduled",
+    "portfolio": "Portfolio",
+    "portfolioChart": "Portfolio value over twelve months",
+    "unrealised": "Unrealised",
+    "real12": "Real, 12 mo",
+    "allocation": "Allocation",
+    "holdings": {
+      "equities": "Equities",
+      "funds": "Funds",
+      "gold": "Gold",
+      "eurobonds": "Eurobonds",
+      "fx": "FX",
+      "cash": "Cash"
+    },
+    "rebalance": "Equities are 11.8 pp above your 30% target. Rebalance with November's ₺8,000.",
+    "assets": "Assets",
+    "assetRows": {
+      "cash": "Cash & savings",
+      "investments": "Investments",
+      "other": "Car & other"
+    },
+    "liabilities": "Liabilities",
+    "liabilityNote": "Credit card ₺18,400 · Loans ₺82,800",
+    "netWorthOn": "Net worth · 22 Oct 2026",
+    "netWorthBasis": "Net worth basis",
+    "nominal": "Nominal",
+    "realTerms": "Real terms",
+    "netWorthNominalNote": "Up {{gain}} in twelve months, +28.2% on paper.",
+    "netWorthRealNote": "After 26.9% inflation you're up {{gain}} in real terms — 1.0% in a year.",
+    "netWorthChart": "Net worth over twelve months",
+    "legendNominal": "Teal: nominal · dashed: today's lira",
+    "legendReal": "Teal: today's lira · dashed: nominal",
+    "nov2025": "Nov 2025",
+    "oct2026": "Oct 2026",
+    "whatIfQuestion": "What if I saved",
+    "whatIfQuestionTail": "more every month?",
+    "extraEachMonth": "Extra saved each month",
+    "allOfPool": "₺9,000 · all of Available to spend",
+    "netWorthBy": "Net worth by Oct 2031",
+    "versusToday": "Versus today's plan",
+    "whatIfChart": "Projected net worth over five years",
+    "poolBecomes": "Available to spend becomes",
+    "aMonth": "a month.",
+    "realTermsNote": "Real terms · 3.5%/yr",
+    "assistant": {
+      "afford": {
+        "question": "Can I afford to spend ₺8,000 this month?",
+        "verdict": "Not from spending money alone.",
+        "lines": [
+          "You have ₺3,000 left to spend, with 10 days of October to go.",
+          "Covering ₺8,000 means finding ₺5,000 more — the cleanest way is to skip the ₺4,000 investment due 29 Oct and take ₺1,000 from savings.",
+          "Or wait 10 days: November starts with ₺9,000 to spend."
+        ],
+        "source": "October plan · 8 accounts · synced 14:58"
+      },
+      "invest": {
+        "question": "How much can I safely invest this month?",
+        "verdict": "Your planned ₺4,000 — but not more.",
+        "lines": [
+          "After this week's bills (₺7,430), checking will hold ₺17,110.",
+          "Investing ₺4,000 on 29 Oct leaves ₺13,110, above your ₺12,000 safety buffer.",
+          "Anything beyond that dips into the buffer until salary day on 1 Nov."
+        ],
+        "source": "Calendar · Investments · Garanti ··4471"
+      }
+    },
+    "showWorking": "Show the working",
+    "trustTitle1": "Built for your money,",
+    "trustTitle2": "not for your attention.",
+    "trust": {
+      "readOnly": {
+        "title": "Read-only by design",
+        "body": "Mizan connects through open banking with view-only access. It can see your balances; it can never move your money."
+      },
+      "encrypted": {
+        "title": "Encrypted, always",
+        "body": "Your data is encrypted in transit and at rest, and every access is logged where you can see it."
+      },
+      "yours": {
+        "title": "Yours, not ours",
+        "body": "No ads, no selling data. Export or delete everything whenever you like."
+      }
+    },
+    "closingLine1": "Every lira,",
+    "closingLine2": "accounted for.",
+    "footerBlurb": "Mizan means balance. A personal finance system made in İstanbul.",
+    "sampleNote": "Figures on this page are the sample plan from the mockups.",
+    "preferences": "Preferences",
+    "copyright": "© 2026 Mizan"
+  },
+  "assistant": {
+    "title": "Assistant",
+    "subtitle": "Answers only from your Mizan data",
+    "newChat": "New chat",
+    "intro": "Ask about your spending, plan, goals or investments. I'll show the numbers and where they came from.",
+    "suggested": "Suggested",
+    "placeholder": "Ask about your money…",
+    "ask": "Ask",
+    "disclaimer": "Uses balances and transactions in this account. Not financial advice."
+  },
+  "savings": {
+    "eyebrow": "3 goals · 3 sinking funds · 1 shared goal",
+    "newFund": "New sinking fund",
+    "tiles": {
+      "total": "Total saved",
+      "totalNote": "Incl. ₺300,000 for House deposit",
+      "monthly": "Monthly contribution",
+      "monthlyNote": "{{percent}}% of income · auto-transfer on the 1st",
+      "interest": "Interest earned in 2026",
+      "interestNote": "Enpara and İş Bankası savings",
+      "rate": "Savings rate, last 12 months",
+      "rateNote": "Savings + investments ÷ income"
+    },
+    "priority": "Priority 1 · Enpara Savings ··0912 · instant access",
+    "funded": "{{percent}}% funded",
+    "ofTarget": "of",
+    "milestones": {
+      "oneMonth": "1 month",
+      "threeMonths": "3 months",
+      "sixMonths": "6 months"
+    },
+    "reached": "Reached",
+    "monthsNote": "₺82,000 ÷ ₺24,800 = {{months}} months of essential expenses. {{toGo}} to go for six months.",
+    "essentials": "Essential monthly expenses",
+    "essentialsNote": "What you'd still need to pay if income stopped",
+    "perMonth": "Per month",
+    "interestNote": "Interest (39% p.a.) is not included in projections.",
+    "otherGoals": "Other goals",
+    "monthly": "Monthly",
+    "sinkingFunds": "Sinking funds",
+    "sinkingNote": "Known future costs, saved for a little each month so they never arrive as a surprise",
+    "saved": "Saved",
+    "of": "of",
+    "funds": {
+      "insurance": "Car insurance",
+      "tax": "Property tax",
+      "school": "School fees"
+    },
+    "due": {
+      "mar2027": "Due March 2027",
+      "feb2027": "Due February 2027",
+      "sep2027": "Due September 2027"
+    }
+  },
+  "investments": {
+    "eyebrow": "5 accounts · BIST prices delayed 15 min · updated 22 Oct, 15:42",
+    "recordDividend": "Record dividend",
+    "addHolding": "Add holding",
+    "totalValue": "Total portfolio value",
+    "inclCash": "Market value incl. {{amount}} uninvested cash",
+    "stats": {
+      "invested": "Total invested",
+      "unrealised": "Unrealised profit",
+      "return12": "Return, 12 months",
+      "real": "Real return after inflation"
+    },
+    "statNotes": {
+      "invested": "Net of withdrawals",
+      "unrealised": "+16.0%",
+      "return12": "Time-weighted",
+      "real": "TÜİK CPI 26.9%, Sep"
+    },
+    "growth": "Growth vs. contributions",
+    "growthNote": "The gap between the lines is what the market added",
+    "marketValue": "Market value",
+    "netInvested": "Net invested",
+    "allocation": "Asset allocation",
+    "allocationNote": "Current portfolio compared with your target",
+    "current": "Current",
+    "target": "Target",
+    "columns": {
+      "class": "Class",
+      "value": "Value",
+      "now": "Now",
+      "target": "Target",
+      "drift": "Drift"
+    },
+    "rebalancing": "Rebalancing",
+    "rebalanceHeadline": "Stocks are 11.8 pp above your 30% target; funds are 5.4 pp below.",
+    "redirect": "Redirect new contributions",
+    "redirectBody": "Send future contributions only to under-weight classes. At ₺8,000 a month this reaches target in about {{months}} months, with no selling.",
+    "rebalanceNow": "Rebalance now",
+    "rebalanceNowBody": "Moving {{amount}} out of stocks would restore the target today.",
+    "disclaimer": "Informational only, not investment advice."
+  },
+  "debts": {
+    "eyebrow": "2 loans · 1 credit card",
+    "addDebt": "Add debt",
+    "tiles": {
+      "total": "Total owed",
+      "totalNote": "₺82,800 in loans · ₺18,400 on card",
+      "monthly": "Monthly loan payments",
+      "monthlyNote": "{{percent}}% of income · healthy below 20%",
+      "interest": "Interest paid in 2026",
+      "interestNote": "All from the personal loan",
+      "free": "Loan-free by",
+      "freeNote": "On the current schedule"
+    },
+    "lines": "Your debts",
+    "columns": {
+      "debt": "Debt",
+      "remaining": "Remaining",
+      "rate": "Interest rate",
+      "monthly": "Monthly",
+      "payoff": "Payoff"
+    },
+    "names": {
+      "personal": "Personal loan",
+      "student": "Student loan",
+      "card": "Bonus card"
+    },
+    "lenders": {
+      "personal": "İş Bankası",
+      "student": "KYK",
+      "card": "Garanti ··9020"
+    },
+    "next": "next",
+    "interestFree": "0%",
+    "dates": {
+      "sep2028": "Sep 2028",
+      "jan2028": "Jan 2028",
+      "monthly": "Paid monthly"
+    },
+    "simulator": "Extra payment simulator",
+    "simulatorNote": "Applies to loans only — the card is already paid in full",
+    "extra": "Additional payment per month",
+    "avalanche": "Highest rate first, and freed-up payments roll into the next loan.",
+    "monthsLeft": "Months to loan-free",
+    "wasMonths": "was {{months}} months",
+    "timeSaved": "Time saved",
+    "months_one": "{{count}} month",
+    "months_other": "{{count}} months",
+    "interestSaved": "Interest saved",
+    "ofRemaining": "of ₺{{amount}} remaining",
+    "addToPlan": "Add to November plan"
+  },
+  "netWorth": {
+    "eyebrow": "Everything you own minus everything you owe",
+    "onDate": "Net worth · 22 Oct 2026",
+    "sinceLastMonth": "Since 30 Sep",
+    "assets": "Assets",
+    "liabilities": "Liabilities",
+    "chart": "Net worth over twelve months",
+    "columns": {
+      "category": "Category",
+      "value": "Value",
+      "month": "1 month"
+    },
+    "rows": {
+      "assets": {
+        "cash": "Cash & checking",
+        "savings": "Savings accounts",
+        "investments": "Investments",
+        "vehicles": "Vehicles"
+      },
+      "liabilities": {
+        "loans": "Personal loans",
+        "cards": "Credit cards"
+      }
+    },
+    "sources": {
+      "assets": {
+        "cash": "Garanti ··4471, cash wallet",
+        "savings": "Enpara, İş Bankası",
+        "investments": "5 accounts · market value",
+        "vehicles": "2017 Fiat Egea · market estimate, Sep"
+      },
+      "liabilities": {
+        "loans": "İş Bankası, KYK",
+        "cards": "Bonus ··9020 · paid in full monthly"
+      }
+    },
+    "total": "Total",
+    "liquid": "Liquid net worth",
+    "liquidNote": "Excludes the vehicle",
+    "debtRatio": "Debt-to-asset ratio",
+    "debtRatioNote": "₺101,200 ÷ ₺2,167,950",
+    "changeFrom": "Where this month's change came from",
+    "changeBreakdown": "Contributions {{contributions}} · Markets {{markets}} · Debt repaid {{debt}}",
+    "changeNote": "Vehicle valuation unchanged"
+  },
+  "reports": {
+    "eyebrow": "Complete months only · Oct 2025 – Sep 2026",
+    "exportPdf": "Export PDF",
+    "health": "Financial health",
+    "bands": {
+      "needsAttention": "Needs attention",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong"
+    },
+    "scoreSummary": "Strong savings habits and low debt. The emergency fund and two allocation drifts are what keep the score from the Strong range. Up {{points}} points since July.",
+    "scoreDisclaimer": "Recalculated monthly from your own data. Not a credit score.",
+    "factors": {
+      "emergency": "Emergency fund",
+      "savingsRate": "Savings rate",
+      "debtBurden": "Debt burden",
+      "budgetConsistency": "Budget consistency",
+      "allocation": "Investment allocation"
+    },
+    "factorMeta": {
+      "emergency": "3.3 of 6 months",
+      "savingsRate": "27% of income",
+      "debtBurden": "11% of income",
+      "budgetConsistency": "7 of 10 categories",
+      "allocation": "2 classes off target"
+    },
+    "factorText": {
+      "emergency": "Covers 3.3 months of essential expenses. Reaching 6 months is the largest single improvement available.",
+      "savingsRate": "You consistently keep more than a quarter of income. This is well above the 20% benchmark.",
+      "debtBurden": "Loan payments are a modest share of income and the card is paid in full. The personal loan rate is high relative to savings yields.",
+      "budgetConsistency": "Most categories land within budget over the last 3 months. Dining out and personal care overran twice.",
+      "allocation": "Diversified across six classes. Stocks are 12 pp over and funds 5 pp under your own targets."
+    },
+    "incomeVsExpenses": "Income vs expenses",
+    "incomeVsExpensesNote": "Am I spending less than I earn?",
+    "avgIncome": "Avg. income",
+    "avgSpending": "Avg. monthly spending",
+    "avgRate": "Avg. savings rate",
+    "spendingByCategory": "Spending by category · September",
+    "spendingNote": "Where does my money go? The marker is the 3-month average",
+    "vsAverage": "vs avg",
+    "spendingSummary": "Dining out ran 16% above its 3-month average; shopping came in 15% below. Fixed costs (rent, debt) were 40% of spending."
+  },
+  "whatIf": {
+    "eyebrow": "Test a decision against your real plan before you make it",
+    "saveScenario": "Save scenario",
+    "question": "What happens if…",
+    "presets": {
+      "car": "I buy a car",
+      "move": "I move flat",
+      "sabbatical": "I take a sabbatical",
+      "course": "I pay for a course"
+    },
+    "presetAmounts": {
+      "car": "85000",
+      "move": "45000",
+      "sabbatical": "70000",
+      "course": "18000"
+    },
+    "amount": "One-off amount",
+    "howPaid": "How it's paid",
+    "funding": {
+      "savings": {
+        "label": "From savings",
+        "desc": "Taken from the emergency fund and goals"
+      },
+      "pool": {
+        "label": "From Available to spend",
+        "desc": "Spread across the next months' spending money"
+      },
+      "instalments": {
+        "label": "In instalments",
+        "desc": "12 monthly payments on the card"
+      }
+    },
+    "minimumNote": "Checking keeps your ₺5,000 minimum balance.",
+    "verdictSafe": "This works",
+    "verdictTight": "This runs you tight",
+    "verdictSafeBody": "Your cushion stays above the minimum throughout, and is back to plan in about {{months}} months.",
+    "verdictTightBody": "Your cushion drops below the ₺5,000 minimum. Spread it over instalments, or wait for the next salary.",
+    "lowestCushion": "Lowest cushion",
+    "minimumBalance": "Minimum balance",
+    "recovery": "Back to plan in",
+    "futureCashFlow": "Future cash flow",
+    "futureCashFlowNote": "Month-end cash cushion: checking plus the emergency fund",
+    "withThis": "With this",
+    "withoutThis": "Without this",
+    "calculation": "How this was calculated",
+    "calc": {
+      "amount": "One-off amount",
+      "source": "Paid from",
+      "monthlySurplus": "Monthly surplus",
+      "cushionToday": "Cushion today"
+    }
   }
 }

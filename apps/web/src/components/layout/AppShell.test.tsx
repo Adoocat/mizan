@@ -24,15 +24,24 @@ const sideNav = async () =>
   (await screen.findAllByRole('navigation', { name: 'Main navigation' }))[0]!
 
 describe('AppShell', () => {
-  it('shows the MVP navigation groups (D8: no Savings, Debts or Net Worth pages)', async () => {
+  it('shows every screen in the sidebar, in the four groups of the mockup', async () => {
     renderApp('/')
     const nav = await sideNav()
     expect(await within(nav).findByRole('link', { name: 'Home' })).toBeInTheDocument()
-    for (const name of ['Plan', 'Transactions', 'Upcoming', 'Goals', 'Accounts']) {
+    for (const name of [
+      'Plan',
+      'Transactions',
+      'Calendar',
+      'Savings',
+      'Investments',
+      'Goals',
+      'Debts',
+      'Net worth',
+      'Reports',
+      'Accounts',
+      'What-if simulator',
+    ]) {
       expect(within(nav).getByRole('link', { name })).toBeInTheDocument()
-    }
-    for (const name of ['Savings', 'Debts', 'Net worth', 'Investments']) {
-      expect(within(nav).queryByRole('link', { name })).not.toBeInTheDocument()
     }
   })
 
@@ -62,19 +71,23 @@ describe('AppShell', () => {
     renderApp('/')
     const languages = (await screen.findAllByRole('radiogroup', { name: 'Language' }))[0]!
     await userEvent.click(within(languages).getByRole('radio', { name: 'Türkçe' }))
-    expect(await screen.findByRole('heading', { level: 1, name: 'Ana sayfa' })).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'İyi günler Elif' }),
+    ).toBeInTheDocument()
     expect(document.documentElement.lang).toBe('tr')
     expect(localStorage.getItem('mizan.language')).toBe('tr')
     const tr = (await screen.findAllByRole('radiogroup', { name: 'Dil' }))[0]!
     await userEvent.click(within(tr).getByRole('radio', { name: 'English' }))
-    expect(await screen.findByRole('heading', { level: 1, name: 'Home' })).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Good afternoon, Elif' }),
+    ).toBeInTheDocument()
   })
 
   it('opens the mobile More sheet with the remaining pages', async () => {
     renderApp('/')
     await userEvent.click(await screen.findByRole('button', { name: 'More' }))
     const sheet = await screen.findByRole('dialog', { name: 'More' })
-    for (const name of ['Transactions', 'Upcoming', 'Accounts', 'Settings']) {
+    for (const name of ['Transactions', 'Calendar', 'Reports', 'Accounts', 'Settings']) {
       expect(within(sheet).getByRole('link', { name })).toBeInTheDocument()
     }
     await act(async () => {
@@ -91,12 +104,24 @@ describe('AppShell', () => {
     ).toBeInTheDocument()
   })
 
-  it.each(['/', '/plan', '/settings', '/showcase'])(
-    '%s has no accessibility violations',
-    async (path) => {
-      const { container } = renderApp(path)
-      await screen.findByRole('heading', { level: 1 })
-      expect(await axeViolations(container)).toEqual([])
-    },
-  )
+  it.each([
+    '/',
+    '/plan',
+    '/transactions',
+    '/calendar',
+    '/savings',
+    '/investments',
+    '/goals',
+    '/debts',
+    '/net-worth',
+    '/reports',
+    '/accounts',
+    '/what-if',
+    '/settings',
+    '/showcase',
+  ])('%s has no accessibility violations', async (path) => {
+    const { container } = renderApp(path)
+    await screen.findByRole('heading', { level: 1 })
+    expect(await axeViolations(container)).toEqual([])
+  })
 })

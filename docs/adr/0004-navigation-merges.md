@@ -1,7 +1,13 @@
 # ADR 0004: Navigation merges
 
-- **Status:** Accepted (2026-10-06)
+- **Status:** Superseded by ADR 0007 (2026-10-07)
 - **Decision:** D8 in `docs/PLAN.md` §22
+
+> **Superseded.** Every screen in `design/new-design/` is now built (ADR 0007), so the sidebar is
+> the mockup's: **Dashboard · Plan · Transactions · Calendar**, **Wealth** (Savings, Investments,
+> Goals, Debts, Net worth), **Review** (Reports, Accounts), **Tools** (What-if simulator). The
+> merges below were an MVP-scope decision, not a product one; if the MVP ships a subset of pages,
+> this ADR describes how to fold them back together.
 
 ## Decision
 

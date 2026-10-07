@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--m-tip:#262C31;--m-tip-fg:#E6E9EB;--m-tip-hover:#323940;--m-tabbar:rgba(11,14,16,0.92);--m-101417-bg:#101417;--m-1c1b19-bg:#6CC3AE;--m-1c1b19-fg:#E8EBED;--m-1c1b19-line:#6CC3AE;--m-1f3760-fg:#9BDCCB;--m-1f5e4e-bg:#1F5E4E;--m-21407a-bg:#21407A;--m-232a2f-line:#232A2F;--m-245f43-fg:#A8DCAB;--m-2c4a7c-bg:#2E8A7A;--m-2c4a7c-fg:#6CC3AE;--m-2c4a7c-line:#4FA898;--m-2f3a4a-bg:#6E8299;--m-2f3a4a-fg:#6E8299;--m-2f3a4a-line:#6E8299;--m-2f7d57-bg:#3F8F48;--m-2f7d57-fg:#7CC583;--m-2f7d57-line:#4F9E57;--m-33312d-bg:#8AD3C0;--m-33312d-line:#8AD3C0;--m-3a3833-bg:#353C42;--m-3a3833-line:#353C42;--m-3d5a99-bg:#7E9BE0;--m-3d5a99-fg:#7E9BE0;--m-3d5a99-line:#7E9BE0;--m-3e3b36-fg:#C5CBCF;--m-3f7e86-bg:#4EA3AB;--m-3f7e86-fg:#4EA3AB;--m-3f7e86-line:#4EA3AB;--m-4b3f8f-bg:#4B3F8F;--m-4f4b45-fg:#B0B8BD;--m-5a6577-bg:#7C8A9C;--m-5a6577-fg:#7C8A9C;--m-5a9e96-bg:#5A9E96;--m-5a9e96-line:#5A9E96;--m-5c5852-bg:#9AA3A9;--m-5c5852-fg:#9AA3A9;--m-5f79a8-bg:#5D78B0;--m-77726a-bg:#858D94;--m-77726a-fg:#858D94;--m-77726a-line:#858D94;--m-7a5410-bg:#EBC27A;--m-7a5410-fg:#EBC27A;--m-7f93bc-fg:#4F6491;--m-7f97c2-line:#4E9D8E;--m-84cdb8-bg:#84CDB8;--m-84cdb8-line:#84CDB8;--m-8a857c-bg:#79828A;--m-8a857c-fg:#79828A;--m-8a857c-line:#79828A;--m-8c3a33-fg:#F0A49B;--m-8c96a8-bg:#A8B2BE;--m-8c96a8-fg:#A8B2BE;--m-9a7b2f-bg:#9A7B2F;--m-9c3830-bg:#D2665B;--m-9c3830-line:#D2665B;--m-9fb0cf-bg:#3F4F70;--m-a49e94-bg:#646D74;--m-a49e94-fg:#646D74;--m-a49e94-line:#646D74;--m-a86f12-bg:#C9923A;--m-a86f12-fg:#E3AA4F;--m-a86f12-line:#C9923A;--m-afc0dc-line:#2F6B60;--m-b0674a-bg:#D08A6C;--m-b0674a-fg:#D08A6C;--m-b0674a-line:#D08A6C;--m-b4423a-bg:#C2574D;--m-b4423a-fg:#EC7F74;--m-b4423a-line:#C2574D;--m-b8b2a7-bg:#4D565D;--m-b8b2a7-fg:#4D565D;--m-b8b2a7-line:#4D565D;--m-bdb8ae-fg:#9AA3A9;--m-c48a2a-bg:#D69B3C;--m-c48a2a-fg:#D69B3C;--m-c8d0dd-bg:#3A4654;--m-c9a55a-line:#8A6B2C;--m-c9e0d2-bg:#2A5233;--m-cbd5e6-line:#275A51;--m-cfcac0-bg:#3A4248;--m-cfcac0-line:#3A4248;--m-d2a857-bg:#D8B465;--m-d2a857-fg:#D8B465;--m-d6d2c9-line:#353D43;--m-d9e2f0-bg:#1F4A42;--m-ddebe2-bg:#20402A;--m-dedad1-line:#2C3338;--m-e2a49d-line:#8A3E37;--m-e2ded5-bg:#232A2F;--m-e3dfd6-line:#2A3136;--m-e3e0d8-bg:#2A3136;--m-e3e0d8-line:#252B30;--m-e3e9f3-line:#1A3A34;--m-e4c9bc-bg:#5A3A2E;--m-e7c5bf-line:#5A2E2A;--m-e7e4dd-bg:#22282D;--m-e7e4dd-fg:#22282D;--m-e7e4dd-line:#1F2428;--m-e8f2ec-bg:#15281A;--m-e8f2ec-line:#15281A;--m-e9e6df-bg:#050607;--m-eae7e0-bg:#171B1F;--m-ebeff6-bg:#12302B;--m-ebeff6-line:#12302B;--m-ece9e2-bg:#0A0C0E;--m-eef1f6-bg:#18212F;--m-efe3e0-bg:#4A2622;--m-efece6-bg:#22282D;--m-efece6-fg:#22282D;--m-efece6-line:#1C2125;--m-f0e2c4-bg:#4A3A1A;--m-f0e2c4-line:#4A3A1A;--m-f1f4f9-bg:#13221F;--m-f3e6df-bg:#2C201B;--m-f3ebda-bg:#3A2F17;--m-f3f1ec-bg:#0A0C0E;--m-f3f1ec-line:#1A1F23;--m-f4f7fb-bg:#13201E;--m-f4f9f5-bg:#121C15;--m-f6ece7-bg:#2A1E19;--m-f6f4f0-bg:#1A1F23;--m-f6f5f1-bg:#0B0E10;--m-f6f8fb-bg:#111D1B;--m-f7fbf8-bg:#121C15;--m-f8eae7-bg:#2E1715;--m-f8eae7-line:#2E1715;--m-f8efdc-bg:#2B2210;--m-f8f6f2-bg:#181D21;--m-faf9f6-bg:#0E1113;--m-faf9f6-fg:#06201B;--m-faf9f6-line:#1A1F23;--m-fafcfa-bg:#121C15;--m-fdf5f3-bg:#241312;--m-fdf8ee-bg:#221B0E;--m-fdf9f1-bg:#1C170D;--m-fdfcfa-bg:#111518;--m-fdfcfb-bg:#111518;--m-ffffff-bg:#14181B;--m-ffffff-fg:#FFFFFF;--m-ffffff-line:#14181B}
+:root[data-theme="light"]{color-scheme:light;--m-tip:#1C1B19;--m-tip-fg:#F3F1EC;--m-tip-hover:#33312D;--m-tabbar:rgba(246,245,241,0.94);--m-101417-bg:#101417;--m-1c1b19-bg:#1C1B19;--m-1c1b19-fg:#1C1B19;--m-1c1b19-line:#1C1B19;--m-1f3760-fg:#17574E;--m-1f5e4e-bg:#1F5E4E;--m-21407a-bg:#21407A;--m-232a2f-line:#232A2F;--m-245f43-fg:#2D5F2C;--m-2c4a7c-bg:#1F7266;--m-2c4a7c-fg:#1F7266;--m-2c4a7c-line:#1F7266;--m-2f3a4a-bg:#2F3A4A;--m-2f3a4a-fg:#2F3A4A;--m-2f3a4a-line:#2F3A4A;--m-2f7d57-bg:#3B7D3A;--m-2f7d57-fg:#3B7D3A;--m-2f7d57-line:#3B7D3A;--m-33312d-bg:#33312D;--m-33312d-line:#33312D;--m-3a3833-bg:#3A3833;--m-3a3833-line:#3A3833;--m-3d5a99-bg:#3D5A99;--m-3d5a99-fg:#3D5A99;--m-3d5a99-line:#3D5A99;--m-3e3b36-fg:#3E3B36;--m-3f7e86-bg:#3F7E86;--m-3f7e86-fg:#3F7E86;--m-3f7e86-line:#3F7E86;--m-4b3f8f-bg:#4B3F8F;--m-4f4b45-fg:#4F4B45;--m-5a6577-bg:#5A6577;--m-5a6577-fg:#5A6577;--m-5a9e96-bg:#5A9E96;--m-5a9e96-line:#5A9E96;--m-5c5852-bg:#5C5852;--m-5c5852-fg:#5C5852;--m-5f79a8-bg:#5F79A8;--m-77726a-bg:#77726A;--m-77726a-fg:#77726A;--m-77726a-line:#77726A;--m-7a5410-bg:#7A5410;--m-7a5410-fg:#7A5410;--m-7f93bc-fg:#7F93BC;--m-7f97c2-line:#7DBDB0;--m-84cdb8-bg:#84CDB8;--m-84cdb8-line:#84CDB8;--m-8a857c-bg:#8A857C;--m-8a857c-fg:#8A857C;--m-8a857c-line:#8A857C;--m-8c3a33-fg:#8C3A33;--m-8c96a8-bg:#8C96A8;--m-8c96a8-fg:#8C96A8;--m-9a7b2f-bg:#9A7B2F;--m-9c3830-bg:#9C3830;--m-9c3830-line:#9C3830;--m-9fb0cf-bg:#9FB0CF;--m-a49e94-bg:#A49E94;--m-a49e94-fg:#A49E94;--m-a49e94-line:#A49E94;--m-a86f12-bg:#A86F12;--m-a86f12-fg:#A86F12;--m-a86f12-line:#A86F12;--m-afc0dc-line:#A3D1C7;--m-b0674a-bg:#B0674A;--m-b0674a-fg:#B0674A;--m-b0674a-line:#B0674A;--m-b4423a-bg:#B4423A;--m-b4423a-fg:#B4423A;--m-b4423a-line:#B4423A;--m-b8b2a7-bg:#B8B2A7;--m-b8b2a7-fg:#B8B2A7;--m-b8b2a7-line:#B8B2A7;--m-bdb8ae-fg:#BDB8AE;--m-c48a2a-bg:#C48A2A;--m-c48a2a-fg:#C48A2A;--m-c8d0dd-bg:#C8D0DD;--m-c9a55a-line:#C9A55A;--m-c9e0d2-bg:#CBE2C6;--m-cbd5e6-line:#BFDFD8;--m-cfcac0-bg:#CFCAC0;--m-cfcac0-line:#CFCAC0;--m-d2a857-bg:#D2A857;--m-d2a857-fg:#D2A857;--m-d6d2c9-line:#D6D2C9;--m-d9e2f0-bg:#CDE7E1;--m-ddebe2-bg:#DCEBD8;--m-dedad1-line:#DEDAD1;--m-e2a49d-line:#E2A49D;--m-e2ded5-bg:#E2DED5;--m-e3dfd6-line:#E3DFD6;--m-e3e0d8-bg:#E3E0D8;--m-e3e0d8-line:#E3E0D8;--m-e3e9f3-line:#D6EBE6;--m-e4c9bc-bg:#E4C9BC;--m-e7c5bf-line:#E7C5BF;--m-e7e4dd-bg:#E7E4DD;--m-e7e4dd-fg:#E7E4DD;--m-e7e4dd-line:#E7E4DD;--m-e8f2ec-bg:#EAF3E7;--m-e8f2ec-line:#EAF3E7;--m-e9e6df-bg:#E9E6DF;--m-eae7e0-bg:#EAE7E0;--m-ebeff6-bg:#E4F1EE;--m-ebeff6-line:#E4F1EE;--m-ece9e2-bg:#ECE9E2;--m-eef1f6-bg:#EEF1F6;--m-efe3e0-bg:#EFE3E0;--m-efece6-bg:#EFECE6;--m-efece6-fg:#EFECE6;--m-efece6-line:#EFECE6;--m-f0e2c4-bg:#F0E2C4;--m-f0e2c4-line:#F0E2C4;--m-f1f4f9-bg:#ECF5F3;--m-f3e6df-bg:#F3E6DF;--m-f3ebda-bg:#F3EBDA;--m-f3f1ec-bg:#F3F1EC;--m-f3f1ec-line:#F3F1EC;--m-f4f7fb-bg:#EFF7F5;--m-f4f9f5-bg:#F3F9F1;--m-f6ece7-bg:#F6ECE7;--m-f6f4f0-bg:#F6F4F0;--m-f6f5f1-bg:#F6F5F1;--m-f6f8fb-bg:#F2F8F6;--m-f7fbf8-bg:#F6FBF4;--m-f8eae7-bg:#F8EAE7;--m-f8eae7-line:#F8EAE7;--m-f8efdc-bg:#F8EFDC;--m-f8f6f2-bg:#F8F6F2;--m-faf9f6-bg:#FAF9F6;--m-faf9f6-fg:#FAF9F6;--m-faf9f6-line:#FAF9F6;--m-fafcfa-bg:#F9FCF8;--m-fdf5f3-bg:#FDF5F3;--m-fdf8ee-bg:#FDF8EE;--m-fdf9f1-bg:#FDF9F1;--m-fdfcfa-bg:#FDFCFA;--m-fdfcfb-bg:#FDFCFB;--m-ffffff-bg:#FFFFFF;--m-ffffff-fg:#FFFFFF;--m-ffffff-line:#FFFFFF}
+html,body{margin:0;padding:0;background:var(--m-e9e6df-bg);color:var(--m-1c1b19-fg);font-family:'Geist',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1}
+*{box-sizing:border-box}
+a{color:var(--m-2c4a7c-fg);text-decoration:none}a:hover{color:var(--m-1f3760-fg);text-decoration:underline}
+button{font-family:inherit}
+@keyframes mzBlink{50%{opacity:0}}
+</style>
+</helmet>
+<div style="padding:48px 48px 64px;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;flex-direction:column;gap:6px;max-width:760px">
+    <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Mizan · Mobile</span>
+    <h1 style="margin:0;font-size:26px;font-weight:600;letter-spacing:-0.025em">The phone is for checking and capturing, not analysing.</h1>
+    <p style="margin:0;font-size:13.5px;color:var(--m-3e3b36-fg);line-height:1.55">Mobile leads with today’s allowance, quick entry, bills and goals. Tables, rebalancing and reports stay on desktop; every mobile number links to its desktop detail.</p>
+  </div>
+  <div style="display:flex;gap:40px;flex-wrap:nowrap;align-items:flex-start;width:max-content">
+
+    <div data-screen-label="M1 Today" style="display:flex;flex-direction:column;gap:12px">
+      <span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">M1 · Today</span>
+      <x-import dark="{{ isDark }}" component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+        <div style="min-height:100%;background:var(--m-f6f5f1-bg);display:flex;flex-direction:column;font-family:'Geist',sans-serif;color:var(--m-1c1b19-fg)">
+          <div style="padding:62px 20px 0;display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;flex-direction:column"><span style="font-size:13px;color:var(--m-77726a-fg)">Thursday, 22 Oct</span><span style="font-size:22px;font-weight:600;letter-spacing:-0.025em">Today</span></div>
+            <div style="width:34px;height:34px;border-radius:50%;background:var(--m-e2ded5-bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--m-4f4b45-fg)">EK</div>
+          </div>
+          <div style="margin:18px 16px 0;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:14px;color:var(--m-5c5852-fg);font-weight:500">Safe to spend today</span>
+            <span style="font-size:60px;line-height:1;font-weight:500;letter-spacing:-0.045em">₺300</span>
+            <div style="height:8px;background:var(--m-efece6-bg);border-radius:4px;overflow:hidden"><div style="height:100%;width:28%;background:var(--m-d2a857-bg)"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:14px"><span style="color:var(--m-5c5852-fg)">₺85 spent</span><span style="font-weight:500">₺215 left today</span></div>
+            <span style="font-size:12.5px;color:var(--m-77726a-fg);line-height:1.45">₺3,000 left for the next 10 days. Bills are already set aside.</span>
+          </div>
+          <div style="margin:12px 16px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <button style="height:50px;border-radius:10px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);font-size:15px;font-weight:500">Add expense</button>
+            <button style="height:50px;border-radius:10px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);color:var(--m-1c1b19-fg);font-size:15px">Scan receipt</button>
+          </div>
+          <div style="margin:22px 20px 8px;display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:600">Next 7 days</span><span style="font-size:15px;font-weight:500">₺7,430</span></div>
+          <div style="margin:0 16px;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:12px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--m-f8eae7-bg)"><div style="width:34px;text-align:center"><div style="font-size:10.5px;color:var(--m-b4423a-fg);font-weight:600">MON</div><div style="font-size:16px;font-weight:500;color:var(--m-b4423a-fg)">19</div></div><div style="flex:1;display:flex;flex-direction:column"><span style="font-size:15px;font-weight:500">İSKİ Water</span><span style="font-size:12.5px;color:var(--m-8c3a33-fg)">Overdue · tap to mark paid</span></div><span style="font-size:15px;font-weight:500">₺310</span></div>
+            <sc-for list="{{ bills3 }}" as="b" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--m-f3f1ec-line);min-height:60px"><div style="width:34px;text-align:center"><div style="font-size:10.5px;color:var(--m-77726a-fg);font-weight:600">{{ b.dow }}</div><div style="font-size:16px;font-weight:500">{{ b.d }}</div></div><div style="flex:1;display:flex;flex-direction:column"><span style="font-size:15px;font-weight:500">{{ b.n }}</span><span style="font-size:12.5px;color:var(--m-77726a-fg)">{{ b.s }}</span></div><span style="font-size:15px;font-weight:500">{{ b.a }}</span></div>
+            </sc-for>
+          </div>
+          <div style="margin:22px 20px 8px"><span style="font-size:15px;font-weight:600">Balances</span></div>
+          <div style="margin:0 16px 24px;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:12px;overflow:hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0 14px;height:52px;font-size:15px"><span>Checking</span><span style="font-weight:500">₺24,850</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0 14px;height:52px;font-size:15px;border-top:1px solid var(--m-f3f1ec-line)"><span>Savings</span><span style="font-weight:500">₺440,500</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0 14px;height:52px;font-size:15px;border-top:1px solid var(--m-f3f1ec-line)"><span>Investments</span><span style="font-weight:500">₺1,060,200</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0 14px;height:52px;font-size:15px;border-top:1px solid var(--m-f3f1ec-line)"><span>Credit card</span><span style="font-weight:500">−₺18,400</span></div>
+          </div>
+          <div style="position:sticky;bottom:0;margin-top:auto;background:var(--m-tabbar);backdrop-filter:blur(12px);border-top:1px solid var(--m-e7e4dd-line);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 8px 30px;align-items:center">
+            <sc-for list="{{ tabsToday }}" as="t" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;height:48px;justify-content:center">
+                <sc-if value="{{ t.plus }}" hint-placeholder-val="{{ false }}"><div style="width:44px;height:44px;border-radius:50%;background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:400">+</div></sc-if>
+                <sc-if value="{{ t.tab }}" hint-placeholder-val="{{ true }}"><span style="width:5px;height:5px;border-radius:1px;background:{{ t.dot }}"></span><span style="font-size:11.5px;font-weight:{{ t.w }};color:{{ t.c }}">{{ t.l }}</span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div data-screen-label="M2 Quick add" style="display:flex;flex-direction:column;gap:12px">
+      <span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">M2 · Quick add — tap the keypad</span>
+      <x-import dark="{{ isDark }}" component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+        <div style="height:100%;background:var(--m-ffffff-bg);display:flex;flex-direction:column;font-family:'Geist',sans-serif;color:var(--m-1c1b19-fg)">
+          <div style="padding:62px 20px 0;display:flex;align-items:center;justify-content:space-between;font-size:15px">
+            <span style="color:var(--m-5c5852-fg)">Cancel</span><span style="font-weight:600">New expense</span><span style="width:48px"></span>
+          </div>
+          <div style="padding:26px 20px 0;display:flex;flex-direction:column;align-items:center;gap:6px">
+            <div style="display:flex;align-items:baseline;gap:4px"><span style="font-size:30px;color:var(--m-8a857c-fg)">₺</span><span style="font-size:56px;font-weight:500;letter-spacing:-0.04em;line-height:1">{{ amtF }}</span><span style="width:2px;height:44px;background:var(--m-2c4a7c-bg);animation:mzBlink 1s step-end infinite;align-self:center"></span></div>
+            <span style="font-size:13px;color:{{ impactColor }}">{{ impact }}</span>
+          </div>
+          <div style="padding:20px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 14px;border:1px solid var(--m-e3e0d8-line);border-radius:10px;font-size:15px"><span>Migros Kadıköy</span><span style="font-size:12px;color:var(--m-77726a-fg)">Bonus ··9020 · Today</span></div>
+            <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:2px">
+              <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+                <button onClick="{{ c.pick }}" style="all:unset;cursor:pointer;flex:none;height:40px;padding:0 14px;border-radius:999px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.color }};font-size:14px;display:flex;align-items:center;gap:7px"><span style="width:7px;height:7px;border-radius:50%;background:{{ c.dot }}"></span>{{ c.l }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="margin-top:auto;padding:0 12px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+            <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
+              <button onClick="{{ k.press }}" style="all:unset;cursor:pointer;height:58px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:400;color:var(--m-1c1b19-fg);background:var(--m-f6f5f1-bg)" style-active="background:var(--m-e7e4dd-bg)">{{ k.l }}</button>
+            </sc-for>
+          </div>
+          <div style="padding:12px 16px 34px">
+            <button onClick="{{ saveTx }}" style="width:100%;height:52px;border-radius:10px;border:1px solid {{ saveBd }};background:{{ saveBg }};color:var(--m-faf9f6-fg);font-size:16px;font-weight:500;transition:background 200ms">{{ saveLabel }}</button>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div data-screen-label="M3 Bills" style="display:flex;flex-direction:column;gap:12px">
+      <span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">M3 · Bills</span>
+      <x-import dark="{{ isDark }}" component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+        <div style="min-height:100%;background:var(--m-f6f5f1-bg);font-family:'Geist',sans-serif;color:var(--m-1c1b19-fg);padding-bottom:30px">
+          <div style="padding:62px 20px 0;display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;color:var(--m-77726a-fg)">October</span><span style="font-size:22px;font-weight:600;letter-spacing:-0.025em">Bills</span></div>
+          <div style="margin:16px 16px 0;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:14px;color:var(--m-5c5852-fg)">Upcoming payments in the next 7 days</span>
+            <span style="font-size:40px;font-weight:500;letter-spacing:-0.035em;line-height:1">₺7,430</span>
+            <div style="display:flex;height:8px;gap:2px;border-radius:3px;overflow:hidden"><div style="flex:4860;background:var(--m-2c4a7c-bg)"></div><div style="flex:980;background:var(--m-5f79a8-bg)"></div><div style="flex:720;border:1px dashed var(--m-8a857c-line);background:var(--m-ffffff-bg)"></div><div style="flex:870;background:var(--m-9fb0cf-bg)"></div></div>
+            <span style="font-size:13px;color:var(--m-77726a-fg);line-height:1.45">Checking will be ₺17,110 after these — above your ₺5,000 minimum.</span>
+          </div>
+          <sc-for list="{{ billDays }}" as="g" hint-placeholder-count="4">
+            <div style="display:flex;flex-direction:column">
+              <span style="margin:20px 20px 8px;font-size:13px;font-weight:500;color:var(--m-5c5852-fg)">{{ g.label }}</span>
+              <div style="margin:0 16px;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:12px;overflow:hidden">
+                <sc-for list="{{ g.items }}" as="b" hint-placeholder-count="2">
+                  <div style="display:flex;align-items:center;gap:12px;padding:0 14px;min-height:62px;border-top:{{ b.bt }}">
+                    <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:500">{{ b.n }}</span><span style="font-size:12.5px;color:var(--m-77726a-fg)">{{ b.m }}</span></div>
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px"><span style="font-size:15px;font-weight:500">{{ b.a }}</span><span style="font-size:11px;font-weight:500;padding:1px 6px;border-radius:4px;color:{{ b.sc }};background:{{ b.sbg }};border:{{ b.sbd }}">{{ b.s }}</span></div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </x-import>
+    </div>
+
+    <div data-screen-label="M4 Goals" style="display:flex;flex-direction:column;gap:12px">
+      <span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">M4 · Goals</span>
+      <x-import dark="{{ isDark }}" component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+        <div style="min-height:100%;background:var(--m-f6f5f1-bg);font-family:'Geist',sans-serif;color:var(--m-1c1b19-fg);padding-bottom:30px">
+          <div style="padding:62px 20px 0;display:flex;align-items:flex-end;justify-content:space-between"><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;color:var(--m-77726a-fg)">₺440,500 saved · ₺6,000 / month</span><span style="font-size:22px;font-weight:600;letter-spacing:-0.025em">Goals</span></div><span style="font-size:15px;color:var(--m-2c4a7c-fg);font-weight:500">New</span></div>
+          <div style="margin:16px 16px 0;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:600">Emergency fund</span><span style="font-size:13px;color:var(--m-5c5852-fg)">55%</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:40px;font-weight:500;letter-spacing:-0.035em;line-height:1">3.3</span><span style="font-size:15px;color:var(--m-5c5852-fg)">months of essentials covered</span></div>
+            <div style="position:relative;height:10px;background:var(--m-efece6-bg);border-radius:5px"><div style="position:absolute;left:0;top:0;bottom:0;width:55%;background:var(--m-3f7e86-bg);border-radius:5px 0 0 5px"></div><div style="position:absolute;left:16.5%;top:-3px;bottom:-3px;width:2px;background:var(--m-ffffff-bg);box-shadow:0 0 0 1px var(--m-3f7e86-line)"></div><div style="position:absolute;left:49.6%;top:-3px;bottom:-3px;width:2px;background:var(--m-ffffff-bg);box-shadow:0 0 0 1px var(--m-3f7e86-line)"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--m-5c5852-fg)"><span>₺82,000</span><span>1 · 3 · 6 months</span><span>₺150,000</span></div>
+          </div>
+          <div style="margin:12px 16px 0;padding:14px;border-radius:12px;background:var(--m-fdf9f1-bg);border:1px solid var(--m-f0e2c4-line);display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:14px;font-weight:500">Car insurance isn’t funded yet</span>
+            <span style="font-size:13px;color:var(--m-5c5852-fg);line-height:1.45">₺15,000 due March 2027. ₺3,000 a month from November covers it.</span>
+            <button style="align-self:flex-start;height:40px;padding:0 14px;border-radius:8px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);font-size:14px">Add to November plan</button>
+          </div>
+          <div style="margin:12px 16px 0;background:var(--m-ffffff-bg);border:1px solid var(--m-e7e4dd-line);border-radius:12px;overflow:hidden">
+            <sc-for list="{{ mgoals }}" as="g" hint-placeholder-count="3">
+              <div style="padding:14px;border-top:{{ g.bt }};display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:500">{{ g.n }}</span><span style="font-size:11px;font-weight:500;padding:1px 6px;border-radius:4px;color:{{ g.sc }};background:{{ g.sbg }}">{{ g.s }}</span></div>
+                <div style="height:6px;background:var(--m-efece6-bg);border-radius:3px;overflow:hidden;display:flex;gap:1.5px"><sc-for list="{{ g.segs }}" as="x" hint-placeholder-count="1"><div style="width:{{ x.w }};background:{{ x.c }}"></div></sc-for></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--m-5c5852-fg)"><span><span style="color:var(--m-1c1b19-fg);font-weight:500">{{ g.cur }}</span> of {{ g.t }}</span><span>{{ g.d }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </x-import>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Dark&quot;,&quot;Light&quot;],&quot;default&quot;:&quot;Dark&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const CATS = [['Food & groceries', 'var(--m-2f3a4a-bg)', 1150], ['Dining out', 'var(--m-d2a857-bg)', 215], ['Transport', 'var(--m-8c96a8-bg)', 380], ['Shopping', 'var(--m-d2a857-bg)', 215]];
+const S = { up: ['Upcoming', 'var(--m-2c4a7c-bg)', 'var(--m-ebeff6-bg)', '1px solid var(--m-ebeff6-bg)'], est: ['Estimated', 'var(--m-5c5852-bg)', 'var(--m-ffffff-bg)', '1px dashed var(--m-a49e94-bg)'] };
+
+class Component extends DCLogic {
+  state = { amt: '245', cat: 0, saved: false };
+  componentDidMount() { this.applyTheme(); }
+  componentDidUpdate(p) { if (p.theme !== this.props.theme) this.applyTheme(); }
+  applyTheme() { document.documentElement.dataset.theme = (this.props.theme || 'Dark').toLowerCase(); }
+  press = (k) => () => this.setState((s) => {
+    let a = s.saved ? '' : s.amt;
+    if (k === '⌫') a = a.slice(0, -1);
+    else if (k === '.') { if (!a.includes('.')) a = (a || '0') + '.'; }
+    else if (a.includes('.') && a.split('.')[1].length >= 2) {}
+    else if (a.replace('.', '').length < 7) a = a === '0' ? k : a + k;
+    return { amt: a, saved: false };
+  });
+  renderVals() {
+    const { amt, cat, saved } = this.state;
+    const n = parseFloat(amt) || 0;
+    const [cn, , left] = CATS[cat];
+    const after = left - n;
+    const pool = cat === 1 || cat === 3;
+    const parts = amt.split('.');
+    const amtF = (parseInt(parts[0] || '0', 10)).toLocaleString('en-US') + (parts.length > 1 ? '.' + parts[1] : '');
+    return {
+      isDark: (this.props.theme || 'Dark') === 'Dark',
+      bills3: [['FRI', 23, 'Internet', 'Auto-pay · Garanti', '₺549'], ['SUN', 25, 'Bonus card statement', 'Auto-pay in full', '₺4,860'], ['MON', 26, 'Electricity', 'Estimated', '~₺720']].map(([dow, d, nn, s, a]) => ({ dow, d, n: nn, s, a })),
+      tabsToday: [['Today', true], ['Plan'], ['+'], ['Goals'], ['More']].map(([l, a]) => ({ l, plus: l === '+', tab: l !== '+', dot: a ? 'var(--m-2c4a7c-bg)' : 'transparent', w: a ? 600 : 400, c: a ? 'var(--m-1c1b19-fg)' : 'var(--m-77726a-fg)' })),
+      amtF: amt === '' ? '0' : amtF,
+      impact: n === 0 ? 'Enter an amount' : pool ? `Today’s allowance: ₺${left} → ${f0(after)} left` : `${cn}: ${f0(left)} → ${f0(after)} left this month`,
+      impactColor: after < 0 ? 'var(--m-b4423a-fg)' : 'var(--m-5c5852-fg)',
+      cats: CATS.map(([l, dot], i) => { const a = i === cat; return { l, dot, bd: a ? 'var(--m-1c1b19-line)' : 'var(--m-e3e0d8-line)', bg: a ? 'var(--m-1c1b19-bg)' : 'var(--m-ffffff-bg)', color: a ? 'var(--m-faf9f6-fg)' : 'var(--m-1c1b19-fg)', pick: () => this.setState({ cat: i, saved: false }) }; }),
+      keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '⌫'].map((l) => ({ l, press: this.press(l) })),
+      saveTx: () => n > 0 && this.setState({ saved: true }),
+      saveLabel: saved ? '✓ Saved to ' + cn : 'Save ' + (n ? f0(n).replace('₺', '₺') : ''),
+      saveBg: saved ? 'var(--m-2f7d57-bg)' : n ? 'var(--m-1c1b19-bg)' : 'var(--m-b8b2a7-bg)', saveBd: saved ? 'var(--m-2f7d57-line)' : n ? 'var(--m-1c1b19-line)' : 'var(--m-b8b2a7-line)',
+      billDays: [
+        ['Fri 23 Oct', [['Internet · Superonline', 'Auto-pay · Garanti', '₺549', 'up']]],
+        ['Sat 24 Oct', [['Spotify', 'Bonus card', '₺99', 'up']]],
+        ['Sun 25 Oct', [['Bonus card statement', 'Auto-pay in full from Garanti', '₺4,860', 'up']]],
+        ['Mon 26 – Wed 28 Oct', [['Electricity · Enerjisa', 'Based on last 6 bills', '~₺720', 'est'], ['MACFit', 'Bonus card', '₺980', 'up'], ['Netflix', 'Bonus card', '₺222', 'up']]],
+      ].map(([label, items]) => ({ label, items: items.map(([nn, m, a, st], i) => ({ n: nn, m, a, s: S[st][0], sc: S[st][1], sbg: S[st][2], sbd: S[st][3], bt: i ? '1px solid var(--m-f3f1ec-line)' : 'none' })) })),
+      mgoals: [
+        ['House deposit', 650000, 1500000, 'Dec 2029', 'Combined', [[300000, 'var(--m-3f7e86-bg)'], [200000, 'var(--m-3d5a99-bg)'], [150000, 'var(--m-d2a857-bg)']], 'var(--m-5c5852-bg)', 'var(--m-f3f1ec-bg)'],
+        ['Japan trip', 24500, 35000, 'Jul 2027', 'Behind', [[24500, 'var(--m-3f7e86-bg)']], 'var(--m-a86f12-bg)', 'var(--m-f8efdc-bg)'],
+        ['New computer', 27000, 40000, 'Dec 2027', 'On track', [[27000, 'var(--m-3f7e86-bg)']], 'var(--m-2f7d57-bg)', 'var(--m-e8f2ec-bg)'],
+      ].map(([nn, c, t, d, s, segs, sc, sbg], i) => ({ n: nn, cur: f0(c), t: f0(t), d, s, sc, sbg, bt: i ? '1px solid var(--m-f3f1ec-line)' : 'none', segs: segs.map(([v, col]) => ({ w: (v / t * 100) + '%', c: col })) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

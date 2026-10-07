@@ -13,7 +13,7 @@ export function Toaster() {
       toastOptions={{
         classNames: {
           toast:
-            '!bg-tip !text-tip-ink !border-transparent !rounded-card !shadow-raised !font-sans !text-body',
+            '!bg-tip !text-tip-ink !border-transparent !rounded-inset !shadow-raised !font-sans !text-body',
           actionButton: '!bg-transparent !text-accent !font-medium',
         },
       }}

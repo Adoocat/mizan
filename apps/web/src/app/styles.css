@@ -3,8 +3,10 @@
 @import '@fontsource-variable/geist-mono';
 
 /*
- * Mizan design tokens, ported from design/Mizan Design System.dc.html.
+ * Mizan design tokens, ported from design/new-design/Mizan Design System.dc.html (2.0).
  * The mockup's generated names (--m-f3f1ec-bg…) are replaced with semantic names.
+ * 2.0 keeps every colour of 1.0 and changes the shape: one canvas tone instead of
+ * panel borders, larger radii, pill controls and a light display type scale.
  * Dark is the design's default. Light applies with data-theme="light", or with the system
  * preference when the user hasn't chosen a theme.
  */
@@ -13,7 +15,7 @@
 
   /* Neutrals */
   --m-canvas: #0a0c0e; /* app background, sidebar */
-  --m-page: #0e1113; /* content area */
+  --m-inset: #0e1113; /* inset tiles: hover rows, notes, code */
   --m-surface: #14181b; /* cards, tables, inputs */
   --m-surface-hover: #1a1f23;
   --m-nav-hover: #171b1f;
@@ -36,6 +38,7 @@
   --m-tip-ink: #e6e9eb;
   --m-tabbar: rgb(11 14 16 / 0.92);
   --m-shadow: rgb(0 0 0 / 0.4);
+  --m-shadow-strong: rgb(0 0 0 / 0.5);
 
   /* Semantic: colour describes financial state, never decoration */
   --m-accent: #6cc3ae;
@@ -63,6 +66,19 @@
   --m-data-investments: #7e9be0;
   --m-data-pool: #d8b465;
 
+  /* Landing: the brand gradient, the hero shapes and their sheen (2.0 §00) */
+  --m-brand-gradient:
+    radial-gradient(55% 75% at 22% 78%, rgb(132 205 184 / 0.38) 0%, transparent 62%),
+    radial-gradient(45% 60% at 40% 26%, rgb(46 138 122 / 0.55) 0%, transparent 66%),
+    radial-gradient(60% 70% at 90% 10%, rgb(33 64 122 / 0.62) 0%, transparent 70%),
+    radial-gradient(35% 40% at 74% 98%, rgb(216 180 101 / 0.16) 0%, transparent 70%), #0c1114;
+  --m-shape-1-from: #84cdb8;
+  --m-shape-1-to: #1f5e4e;
+  --m-shape-2-from: #bfe8dc;
+  --m-shape-2-to: #2e8a7a;
+  --m-sheen: rgb(255 255 255 / 0.28);
+  --m-flow: rgb(232 235 237 / 0.14);
+
   /* Brand mark (same in both themes) */
   --m-logo-tile: #101417;
   --m-logo-tile-border: #232a2f;
@@ -74,7 +90,7 @@
   :root:not([data-theme='dark']) {
     color-scheme: light;
     --m-canvas: #f3f1ec;
-    --m-page: #faf9f6;
+    --m-inset: #faf9f6;
     --m-surface: #ffffff;
     --m-surface-hover: #f6f4f0;
     --m-nav-hover: #eae7e0;
@@ -97,6 +113,7 @@
     --m-tip-ink: #f3f1ec;
     --m-tabbar: rgb(246 245 241 / 0.94);
     --m-shadow: rgb(28 27 25 / 0.12);
+    --m-shadow-strong: rgb(28 27 25 / 0.2);
     --m-accent: #1f7266;
     --m-accent-strong: #1f7266;
     --m-accent-soft: #e4f1ee;
@@ -117,13 +134,24 @@
     --m-data-savings: #3f7e86;
     --m-data-investments: #3d5a99;
     --m-data-pool: #d2a857;
+    --m-brand-gradient:
+      radial-gradient(55% 75% at 22% 78%, rgb(132 205 184 / 0.7) 0%, transparent 62%),
+      radial-gradient(45% 60% at 40% 26%, rgb(90 158 150 / 0.42) 0%, transparent 66%),
+      radial-gradient(60% 70% at 90% 10%, rgb(126 155 224 / 0.38) 0%, transparent 70%),
+      radial-gradient(35% 40% at 74% 98%, rgb(216 180 101 / 0.3) 0%, transparent 70%), #edf0ec;
+    --m-shape-1-from: #a8dccd;
+    --m-shape-1-to: #3f8f84;
+    --m-shape-2-from: #e4f4ef;
+    --m-shape-2-to: #5fb3a2;
+    --m-sheen: rgb(255 255 255 / 0.6);
+    --m-flow: rgb(28 27 25 / 0.12);
   }
 }
 
 :root[data-theme='light'] {
   color-scheme: light;
   --m-canvas: #f3f1ec;
-  --m-page: #faf9f6;
+  --m-inset: #faf9f6;
   --m-surface: #ffffff;
   --m-surface-hover: #f6f4f0;
   --m-nav-hover: #eae7e0;
@@ -146,6 +174,7 @@
   --m-tip-ink: #f3f1ec;
   --m-tabbar: rgb(246 245 241 / 0.94);
   --m-shadow: rgb(28 27 25 / 0.12);
+  --m-shadow-strong: rgb(28 27 25 / 0.2);
   --m-accent: #1f7266;
   --m-accent-strong: #1f7266;
   --m-accent-soft: #e4f1ee;
@@ -166,12 +195,23 @@
   --m-data-savings: #3f7e86;
   --m-data-investments: #3d5a99;
   --m-data-pool: #d2a857;
+  --m-brand-gradient:
+    radial-gradient(55% 75% at 22% 78%, rgb(132 205 184 / 0.7) 0%, transparent 62%),
+    radial-gradient(45% 60% at 40% 26%, rgb(90 158 150 / 0.42) 0%, transparent 66%),
+    radial-gradient(60% 70% at 90% 10%, rgb(126 155 224 / 0.38) 0%, transparent 70%),
+    radial-gradient(35% 40% at 74% 98%, rgb(216 180 101 / 0.3) 0%, transparent 70%), #edf0ec;
+  --m-shape-1-from: #a8dccd;
+  --m-shape-1-to: #3f8f84;
+  --m-shape-2-from: #e4f4ef;
+  --m-shape-2-to: #5fb3a2;
+  --m-sheen: rgb(255 255 255 / 0.6);
+  --m-flow: rgb(28 27 25 / 0.12);
 }
 
 /* Expose tokens to Tailwind as utilities: bg-surface, text-ink-2, border-border… */
 @theme inline {
   --color-canvas: var(--m-canvas);
-  --color-page: var(--m-page);
+  --color-inset: var(--m-inset);
   --color-surface: var(--m-surface);
   --color-surface-hover: var(--m-surface-hover);
   --color-nav-hover: var(--m-nav-hover);
@@ -216,13 +256,50 @@
   --color-data-pool: var(--m-data-pool);
   --color-logo-tile: var(--m-logo-tile);
   --color-logo-tile-border: var(--m-logo-tile-border);
+  --color-shape-1-from: var(--m-shape-1-from);
+  --color-shape-1-to: var(--m-shape-1-to);
   --color-logo-left: var(--m-logo-left);
   --color-logo-right: var(--m-logo-right);
 
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
 
-  /* Type scale: size / line-height / letter-spacing / weight */
+  /*
+   * Editorial layer (design system 2.0 §00). Weight 300 is reserved for display sizes
+   * (≥ 24px); below that use 400/500. Large type is set tight and short.
+   */
+  --text-display-xl: clamp(54px, 9vw, 164px);
+  --text-display-xl--line-height: 0.9;
+  --text-display-xl--letter-spacing: -0.06em;
+  --text-display-xl--font-weight: 300;
+  --text-display-l: clamp(46px, 5.6vw, 96px);
+  --text-display-l--line-height: 0.96;
+  --text-display-l--letter-spacing: -0.055em;
+  --text-display-l--font-weight: 300;
+  /* The one figure that answers the screen's question, in a hero panel */
+  --text-display-figure: clamp(64px, 7.4vw, 112px);
+  --text-display-figure--line-height: 0.9;
+  --text-display-figure--letter-spacing: -0.06em;
+  --text-display-figure--font-weight: 300;
+  --text-page-display: 40px;
+  --text-page-display--line-height: 1.05;
+  --text-page-display--letter-spacing: -0.045em;
+  --text-page-display--font-weight: 300;
+  --text-panel-value: 30px;
+  --text-panel-value--line-height: 1.1;
+  --text-panel-value--letter-spacing: -0.045em;
+  --text-panel-value--font-weight: 300;
+  --text-panel-title: 15px;
+  --text-panel-title--line-height: 1.4;
+  --text-panel-title--letter-spacing: -0.015em;
+  --text-panel-title--font-weight: 500;
+  --text-lead: 18px;
+  --text-lead--line-height: 1.55;
+  --text-eyebrow: 12px;
+  --text-eyebrow--line-height: 1.4;
+  --text-eyebrow--letter-spacing: 0.08em;
+
+  /* Type scale (2.0 §02, unchanged from 1.0): size / line-height / letter-spacing / weight */
   --text-hero: 52px;
   --text-hero--line-height: 1;
   --text-hero--letter-spacing: -0.04em;
@@ -256,19 +333,113 @@
   --text-mono: 11px;
   --text-mono--line-height: 1.4;
 
-  /* Radii */
-  --radius-bar: 3px;
-  --radius-badge: 4px;
-  --radius-control: 6px;
-  --radius-card: 8px;
-  --radius-modal: 10px;
+  /* Radii (2.0 §03). Buttons, chips and segmented controls are pills: rounded-full. */
+  --radius-bar: 3px; /* bars, tracks */
+  --radius-control: 12px; /* inputs, nav items, rows */
+  --radius-inset: 16px; /* inset tiles, menus */
+  --radius-card: 24px; /* panels */
+  --radius-modal: 24px; /* modals, sheets, the assistant panel */
+  --radius-frame: 32px; /* hero frames */
 
-  /* Elevation: cards are flat (border only) */
+  /* Elevation: panels are a tonal surface on the canvas — no border, no shadow */
   --shadow-raised: 0 8px 24px var(--m-shadow);
-  --shadow-overlay: 0 12px 32px var(--m-shadow), 0 2px 6px var(--m-shadow);
+  --shadow-overlay: 0 24px 60px var(--m-shadow-strong);
+
+  /* Motion (2.0 §00): "Mizan out". 150ms hover/press, 600ms state changes. */
+  --ease-mizan: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Landing motion (2.0 §00). All of it is disabled under prefers-reduced-motion, below. */
+@keyframes mzSway {
+  0%,
+  100% {
+    transform: rotate(-1.4deg);
+  }
+  50% {
+    transform: rotate(1.4deg);
+  }
+}
+
+@keyframes mzBobA {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes mzBobB {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(14px);
+  }
+}
+
+@keyframes mzFlow {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+
+/* The brand gradient drifts slowly behind the landing hero (2.0 §00: 26s). */
+@keyframes mzDrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-4%, 3%, 0) scale(1.08);
+  }
 }
 
 @layer base {
+  /*
+   * Scroll reveals. Both the hidden and the revealed state live here, in the base layer: a
+   * Tailwind utility would sit in a later layer and win, leaving the element hidden for good.
+   * The hook adds data-revealed; reduced motion is handled in the hook (everything is revealed
+   * at once) and again below.
+   */
+  [data-reveal] {
+    transition-timing-function: var(--ease-mizan);
+  }
+
+  [data-reveal='mask'] {
+    transform: translateY(110%);
+  }
+
+  [data-reveal='up'] {
+    transform: translateY(56px);
+    opacity: 0;
+  }
+
+  [data-reveal='fade'] {
+    opacity: 0;
+    transition: opacity 700ms var(--ease-mizan);
+  }
+
+  [data-reveal='clip'] {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  [data-reveal][data-revealed='true'] {
+    transform: none;
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      transform: none !important;
+      opacity: 1 !important;
+      clip-path: none !important;
+    }
+  }
+
   html,
   body {
     background: var(--m-canvas);

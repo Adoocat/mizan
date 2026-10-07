@@ -121,7 +121,7 @@ export function CurrencyInput({
       </label>
       <div
         className={cn(
-          'flex h-9 items-center gap-1.5 rounded-control border bg-surface px-2.5 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus',
+          'flex h-10 items-center gap-1.5 rounded-control border bg-surface px-3.5 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus',
           showError ? 'border-negative' : 'border-border-strong hover:border-border-hover',
           disabled && 'bg-disabled',
         )}

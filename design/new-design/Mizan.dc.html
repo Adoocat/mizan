@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--m-tip:#262C31;--m-tip-fg:#E6E9EB;--m-tip-hover:#323940;--m-tabbar:rgba(11,14,16,0.92);--m-101417-bg:#101417;--m-1c1b19-bg:#6CC3AE;--m-1c1b19-fg:#E8EBED;--m-1c1b19-line:#6CC3AE;--m-1f3760-fg:#9BDCCB;--m-1f5e4e-bg:#1F5E4E;--m-21407a-bg:#21407A;--m-232a2f-line:#232A2F;--m-245f43-fg:#A8DCAB;--m-2c4a7c-bg:#2E8A7A;--m-2c4a7c-fg:#6CC3AE;--m-2c4a7c-line:#4FA898;--m-2f3a4a-bg:#6E8299;--m-2f3a4a-fg:#6E8299;--m-2f3a4a-line:#6E8299;--m-2f7d57-bg:#3F8F48;--m-2f7d57-fg:#7CC583;--m-2f7d57-line:#4F9E57;--m-33312d-bg:#8AD3C0;--m-33312d-line:#8AD3C0;--m-3a3833-bg:#353C42;--m-3a3833-line:#353C42;--m-3d5a99-bg:#7E9BE0;--m-3d5a99-fg:#7E9BE0;--m-3d5a99-line:#7E9BE0;--m-3e3b36-fg:#C5CBCF;--m-3f7e86-bg:#4EA3AB;--m-3f7e86-fg:#4EA3AB;--m-3f7e86-line:#4EA3AB;--m-4b3f8f-bg:#4B3F8F;--m-4f4b45-fg:#B0B8BD;--m-5a6577-bg:#7C8A9C;--m-5a6577-fg:#7C8A9C;--m-5a9e96-bg:#5A9E96;--m-5a9e96-line:#5A9E96;--m-5c5852-bg:#9AA3A9;--m-5c5852-fg:#9AA3A9;--m-5f79a8-bg:#5D78B0;--m-77726a-bg:#858D94;--m-77726a-fg:#858D94;--m-77726a-line:#858D94;--m-7a5410-bg:#EBC27A;--m-7a5410-fg:#EBC27A;--m-7f93bc-fg:#4F6491;--m-7f97c2-line:#4E9D8E;--m-84cdb8-bg:#84CDB8;--m-84cdb8-line:#84CDB8;--m-8a857c-bg:#79828A;--m-8a857c-fg:#79828A;--m-8a857c-line:#79828A;--m-8c3a33-fg:#F0A49B;--m-8c96a8-bg:#A8B2BE;--m-8c96a8-fg:#A8B2BE;--m-9a7b2f-bg:#9A7B2F;--m-9c3830-bg:#D2665B;--m-9c3830-line:#D2665B;--m-9fb0cf-bg:#3F4F70;--m-a49e94-bg:#646D74;--m-a49e94-fg:#646D74;--m-a49e94-line:#646D74;--m-a86f12-bg:#C9923A;--m-a86f12-fg:#E3AA4F;--m-a86f12-line:#C9923A;--m-afc0dc-line:#2F6B60;--m-b0674a-bg:#D08A6C;--m-b0674a-fg:#D08A6C;--m-b0674a-line:#D08A6C;--m-b4423a-bg:#C2574D;--m-b4423a-fg:#EC7F74;--m-b4423a-line:#C2574D;--m-b8b2a7-bg:#4D565D;--m-b8b2a7-fg:#4D565D;--m-b8b2a7-line:#4D565D;--m-bdb8ae-fg:#9AA3A9;--m-c48a2a-bg:#D69B3C;--m-c48a2a-fg:#D69B3C;--m-c8d0dd-bg:#3A4654;--m-c9a55a-line:#8A6B2C;--m-c9e0d2-bg:#2A5233;--m-cbd5e6-line:#275A51;--m-cfcac0-bg:#3A4248;--m-cfcac0-line:#3A4248;--m-d2a857-bg:#D8B465;--m-d2a857-fg:#D8B465;--m-d6d2c9-line:#353D43;--m-d9e2f0-bg:#1F4A42;--m-ddebe2-bg:#20402A;--m-dedad1-line:#2C3338;--m-e2a49d-line:#8A3E37;--m-e2ded5-bg:#232A2F;--m-e3dfd6-line:#2A3136;--m-e3e0d8-bg:#2A3136;--m-e3e0d8-line:#252B30;--m-e3e9f3-line:#1A3A34;--m-e4c9bc-bg:#5A3A2E;--m-e7c5bf-line:#5A2E2A;--m-e7e4dd-bg:#22282D;--m-e7e4dd-fg:#22282D;--m-e7e4dd-line:#1F2428;--m-e8f2ec-bg:#15281A;--m-e8f2ec-line:#15281A;--m-e9e6df-bg:#050607;--m-eae7e0-bg:#171B1F;--m-ebeff6-bg:#12302B;--m-ebeff6-line:#12302B;--m-ece9e2-bg:#0A0C0E;--m-eef1f6-bg:#18212F;--m-efe3e0-bg:#4A2622;--m-efece6-bg:#22282D;--m-efece6-fg:#22282D;--m-efece6-line:#1C2125;--m-f0e2c4-bg:#4A3A1A;--m-f0e2c4-line:#4A3A1A;--m-f1f4f9-bg:#13221F;--m-f3e6df-bg:#2C201B;--m-f3ebda-bg:#3A2F17;--m-f3f1ec-bg:#0A0C0E;--m-f3f1ec-line:#1A1F23;--m-f4f7fb-bg:#13201E;--m-f4f9f5-bg:#121C15;--m-f6ece7-bg:#2A1E19;--m-f6f4f0-bg:#1A1F23;--m-f6f5f1-bg:#0B0E10;--m-f6f8fb-bg:#111D1B;--m-f7fbf8-bg:#121C15;--m-f8eae7-bg:#2E1715;--m-f8eae7-line:#2E1715;--m-f8efdc-bg:#2B2210;--m-f8f6f2-bg:#181D21;--m-faf9f6-bg:#0E1113;--m-faf9f6-fg:#06201B;--m-faf9f6-line:#1A1F23;--m-fafcfa-bg:#121C15;--m-fdf5f3-bg:#241312;--m-fdf8ee-bg:#221B0E;--m-fdf9f1-bg:#1C170D;--m-fdfcfa-bg:#111518;--m-fdfcfb-bg:#111518;--m-ffffff-bg:#14181B;--m-ffffff-fg:#FFFFFF;--m-ffffff-line:#14181B}
+:root[data-theme="light"]{color-scheme:light;--m-tip:#1C1B19;--m-tip-fg:#F3F1EC;--m-tip-hover:#33312D;--m-tabbar:rgba(246,245,241,0.94);--m-101417-bg:#101417;--m-1c1b19-bg:#1C1B19;--m-1c1b19-fg:#1C1B19;--m-1c1b19-line:#1C1B19;--m-1f3760-fg:#17574E;--m-1f5e4e-bg:#1F5E4E;--m-21407a-bg:#21407A;--m-232a2f-line:#232A2F;--m-245f43-fg:#2D5F2C;--m-2c4a7c-bg:#1F7266;--m-2c4a7c-fg:#1F7266;--m-2c4a7c-line:#1F7266;--m-2f3a4a-bg:#2F3A4A;--m-2f3a4a-fg:#2F3A4A;--m-2f3a4a-line:#2F3A4A;--m-2f7d57-bg:#3B7D3A;--m-2f7d57-fg:#3B7D3A;--m-2f7d57-line:#3B7D3A;--m-33312d-bg:#33312D;--m-33312d-line:#33312D;--m-3a3833-bg:#3A3833;--m-3a3833-line:#3A3833;--m-3d5a99-bg:#3D5A99;--m-3d5a99-fg:#3D5A99;--m-3d5a99-line:#3D5A99;--m-3e3b36-fg:#3E3B36;--m-3f7e86-bg:#3F7E86;--m-3f7e86-fg:#3F7E86;--m-3f7e86-line:#3F7E86;--m-4b3f8f-bg:#4B3F8F;--m-4f4b45-fg:#4F4B45;--m-5a6577-bg:#5A6577;--m-5a6577-fg:#5A6577;--m-5a9e96-bg:#5A9E96;--m-5a9e96-line:#5A9E96;--m-5c5852-bg:#5C5852;--m-5c5852-fg:#5C5852;--m-5f79a8-bg:#5F79A8;--m-77726a-bg:#77726A;--m-77726a-fg:#77726A;--m-77726a-line:#77726A;--m-7a5410-bg:#7A5410;--m-7a5410-fg:#7A5410;--m-7f93bc-fg:#7F93BC;--m-7f97c2-line:#7DBDB0;--m-84cdb8-bg:#84CDB8;--m-84cdb8-line:#84CDB8;--m-8a857c-bg:#8A857C;--m-8a857c-fg:#8A857C;--m-8a857c-line:#8A857C;--m-8c3a33-fg:#8C3A33;--m-8c96a8-bg:#8C96A8;--m-8c96a8-fg:#8C96A8;--m-9a7b2f-bg:#9A7B2F;--m-9c3830-bg:#9C3830;--m-9c3830-line:#9C3830;--m-9fb0cf-bg:#9FB0CF;--m-a49e94-bg:#A49E94;--m-a49e94-fg:#A49E94;--m-a49e94-line:#A49E94;--m-a86f12-bg:#A86F12;--m-a86f12-fg:#A86F12;--m-a86f12-line:#A86F12;--m-afc0dc-line:#A3D1C7;--m-b0674a-bg:#B0674A;--m-b0674a-fg:#B0674A;--m-b0674a-line:#B0674A;--m-b4423a-bg:#B4423A;--m-b4423a-fg:#B4423A;--m-b4423a-line:#B4423A;--m-b8b2a7-bg:#B8B2A7;--m-b8b2a7-fg:#B8B2A7;--m-b8b2a7-line:#B8B2A7;--m-bdb8ae-fg:#BDB8AE;--m-c48a2a-bg:#C48A2A;--m-c48a2a-fg:#C48A2A;--m-c8d0dd-bg:#C8D0DD;--m-c9a55a-line:#C9A55A;--m-c9e0d2-bg:#CBE2C6;--m-cbd5e6-line:#BFDFD8;--m-cfcac0-bg:#CFCAC0;--m-cfcac0-line:#CFCAC0;--m-d2a857-bg:#D2A857;--m-d2a857-fg:#D2A857;--m-d6d2c9-line:#D6D2C9;--m-d9e2f0-bg:#CDE7E1;--m-ddebe2-bg:#DCEBD8;--m-dedad1-line:#DEDAD1;--m-e2a49d-line:#E2A49D;--m-e2ded5-bg:#E2DED5;--m-e3dfd6-line:#E3DFD6;--m-e3e0d8-bg:#E3E0D8;--m-e3e0d8-line:#E3E0D8;--m-e3e9f3-line:#D6EBE6;--m-e4c9bc-bg:#E4C9BC;--m-e7c5bf-line:#E7C5BF;--m-e7e4dd-bg:#E7E4DD;--m-e7e4dd-fg:#E7E4DD;--m-e7e4dd-line:#E7E4DD;--m-e8f2ec-bg:#EAF3E7;--m-e8f2ec-line:#EAF3E7;--m-e9e6df-bg:#E9E6DF;--m-eae7e0-bg:#EAE7E0;--m-ebeff6-bg:#E4F1EE;--m-ebeff6-line:#E4F1EE;--m-ece9e2-bg:#ECE9E2;--m-eef1f6-bg:#EEF1F6;--m-efe3e0-bg:#EFE3E0;--m-efece6-bg:#EFECE6;--m-efece6-fg:#EFECE6;--m-efece6-line:#EFECE6;--m-f0e2c4-bg:#F0E2C4;--m-f0e2c4-line:#F0E2C4;--m-f1f4f9-bg:#ECF5F3;--m-f3e6df-bg:#F3E6DF;--m-f3ebda-bg:#F3EBDA;--m-f3f1ec-bg:#F3F1EC;--m-f3f1ec-line:#F3F1EC;--m-f4f7fb-bg:#EFF7F5;--m-f4f9f5-bg:#F3F9F1;--m-f6ece7-bg:#F6ECE7;--m-f6f4f0-bg:#F6F4F0;--m-f6f5f1-bg:#F6F5F1;--m-f6f8fb-bg:#F2F8F6;--m-f7fbf8-bg:#F6FBF4;--m-f8eae7-bg:#F8EAE7;--m-f8eae7-line:#F8EAE7;--m-f8efdc-bg:#F8EFDC;--m-f8f6f2-bg:#F8F6F2;--m-faf9f6-bg:#FAF9F6;--m-faf9f6-fg:#FAF9F6;--m-faf9f6-line:#FAF9F6;--m-fafcfa-bg:#F9FCF8;--m-fdf5f3-bg:#FDF5F3;--m-fdf8ee-bg:#FDF8EE;--m-fdf9f1-bg:#FDF9F1;--m-fdfcfa-bg:#FDFCFA;--m-fdfcfb-bg:#FDFCFB;--m-ffffff-bg:#FFFFFF;--m-ffffff-fg:#FFFFFF;--m-ffffff-line:#FFFFFF}
+html,body{margin:0;padding:0;background:var(--m-f3f1ec-bg);color:var(--m-1c1b19-fg);font-family:'Geist',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1;}
+*{box-sizing:border-box}
+a{color:var(--m-2c4a7c-fg);text-decoration:none}a:hover{color:var(--m-1f3760-fg);text-decoration:underline}
+button,input,select,textarea{font-family:inherit;font-feature-settings:"tnum" 1}
+::selection{background:var(--m-d9e2f0-bg)}
+input[type=range]{accent-color:var(--m-2c4a7c-bg)}
+@keyframes mzToast{from{opacity:0;transform:translate(-50%,6px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes mzFade{from{opacity:0}to{opacity:1}}
+@keyframes mzSpin{to{transform:rotate(360deg)}}
+@keyframes mzRise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</helmet>
+<div style="display:flex;height:100vh;overflow:hidden;background:var(--m-f3f1ec-bg)">
+  <aside style="width:236px;flex:none;display:flex;flex-direction:column;background:var(--m-f3f1ec-bg)">
+    <div style="height:76px;display:flex;align-items:center;gap:10px;padding:0 22px;flex:none">
+      <div style="width:26px;height:26px;border-radius:7px;background:var(--m-101417-bg);border:1px solid var(--m-232a2f-line);display:flex;align-items:center;justify-content:center;flex:none"><svg viewBox="0 0 176 186" style="width:15px;height:16px;display:block"><path d="M8 6 L68 51 L68 178 L8 136 Z" style="fill:var(--m-5a9e96-bg);stroke:var(--m-5a9e96-line);stroke-width:8;stroke-linejoin:round"></path><path d="M168 6 L168 136 L112 178 L112 106 C112 96 100 92 100 82 L100 54 Z" style="fill:var(--m-84cdb8-bg);stroke:var(--m-84cdb8-line);stroke-width:8;stroke-linejoin:round"></path></svg></div>
+      <a href="Mizan Landing.dc.html" style="font-size:19px;font-weight:500;letter-spacing:-0.045em;color:var(--m-1c1b19-fg);text-decoration:none">Mizan</a>
+      <button style="all:unset;cursor:pointer;margin-left:auto;display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--m-5c5852-fg);border:1px solid var(--m-dedad1-line);border-radius:999px;padding:2px 9px" style-hover="border-color:var(--m-cfcac0-line)">Personal<span style="font-size:8px;color:var(--m-8a857c-fg)">▼</span></button>
+    </div>
+    <nav style="flex:1;overflow:auto;padding-bottom:12px">
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:1px;padding:0 12px;margin-top:14px">
+          <sc-if value="{{ g.hasLabel }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:11px;color:var(--m-8a857c-fg);padding:8px 8px 4px;font-weight:500;letter-spacing:0.01em">{{ g.label }}</div>
+          </sc-if>
+          <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+            <button onClick="{{ it.onClick }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;height:36px;padding:0 12px;border-radius:12px;font-size:13.5px;border:1px solid {{ it.bd }};background:{{ it.bg }};color:{{ it.color }};font-weight:{{ it.weight }};box-shadow:{{ it.shadow }};transition:background 120ms" style-hover="background:{{ it.hbg }}">
+              <span style="width:5px;height:5px;border-radius:1px;background:{{ it.dot }};flex:none"></span>
+              <span style="flex:1">{{ it.label }}</span>
+              <span style="font-size:11.5px;color:{{ it.metaColor }};font-weight:500">{{ it.meta }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-for>
+    </nav>
+    <div style="flex:none;padding:12px 12px 18px;display:flex;flex-direction:column;gap:2px">
+      <button onClick="{{ goAccounts }}" style="all:unset;cursor:pointer;display:flex;flex-direction:column;gap:3px;padding:8px;border-radius:6px" style-hover="background:var(--m-eae7e0-bg)">
+        <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--m-4f4b45-fg)"><span style="width:6px;height:6px;border-radius:50%;background:var(--m-2f7d57-bg)"></span>7 of 8 connections synced</div>
+        <div style="font-size:11.5px;color:var(--m-a86f12-fg);padding-left:13px">İş Bankası needs re-authorisation</div>
+      </button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button style="all:unset;cursor:pointer;flex:1;display:flex;align-items:center;height:30px;padding:0 8px;border-radius:6px;font-size:13px;color:var(--m-4f4b45-fg)" style-hover="background:var(--m-eae7e0-bg)">Settings</button>
+        <div style="display:flex;gap:2px;padding:2px;background:var(--m-ece9e2-bg);border:1px solid var(--m-e7e4dd-line);border-radius:6px">
+          <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2"><button onClick="{{ t.pick }}" style="all:unset;cursor:pointer;padding:3px 8px;border-radius:4px;font-size:11.5px;font-weight:500;background:{{ t.bg }};color:{{ t.color }};box-shadow:{{ t.shadow }}">{{ t.label }}</button></sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:9px;padding:6px 8px 0">
+        <div style="width:26px;height:26px;border-radius:50%;background:var(--m-e2ded5-bg);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;color:var(--m-4f4b45-fg)">EK</div>
+        <div style="display:flex;flex-direction:column;line-height:1.25">
+          <span style="font-size:12.5px;font-weight:500">Elif Kaya</span>
+          <span style="font-size:11px;color:var(--m-77726a-fg)">elif.kaya@posta.com</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div ref="{{ mainRef }}" style="flex:1;min-width:0;display:flex;flex-direction:column;background:var(--m-f3f1ec-bg)">
+    <header style="height:76px;flex:none;display:flex;align-items:center;gap:10px;padding:0 28px 0 40px;background:var(--m-f3f1ec-bg);overflow:hidden">
+      <sc-if value="{{ showSearch }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1 1 200px;min-width:120px;max-width:420px;height:40px;display:flex;align-items:center;gap:10px;padding:0 16px;border:1px solid transparent;border-radius:999px;background:var(--m-ffffff-bg);color:var(--m-77726a-fg);font-size:13px">
+          <span style="width:9px;height:9px;border:1.5px solid var(--m-8a857c-line);border-radius:50%;flex:none"></span>
+          <span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Search transactions, accounts, goals…</span>
+          <span style="font-family:'Geist Mono',monospace;font-size:11px;border:1px solid var(--m-e3e0d8-line);border-radius:4px;padding:0 5px;color:var(--m-8a857c-fg)">⌘K</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{ searchIcon }}" hint-placeholder-val="{{ false }}">
+        <button title="Search (⌘K)" style="flex:none;width:40px;height:40px;border:1px solid transparent;background:var(--m-ffffff-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer"><span style="width:9px;height:9px;border:1.5px solid var(--m-8a857c-line);border-radius:50%"></span></button>
+      </sc-if>
+      <div style="flex:1;min-width:0"></div>
+      <sc-if value="{{ showMonth }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:none;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--m-5c5852-fg);white-space:nowrap">
+          <span style="font-weight:500;color:var(--m-1c1b19-fg)">October 2026</span>
+          <span style="width:56px;height:3px;background:var(--m-e7e4dd-bg);border-radius:2px;overflow:hidden;display:inline-flex"><span style="width:71%;background:var(--m-5c5852-bg)"></span></span>
+          <span>10 days left</span>
+        </div>
+        <div style="flex:none;width:1px;height:20px;background:var(--m-e3e0d8-bg);margin:0 6px"></div>
+      </sc-if>
+      <button onClick="{{ goWhatIf }}" style="flex:none;height:40px;padding:0 18px;border:1px solid transparent;background:var(--m-ffffff-bg);border-radius:999px;font-size:13px;color:var(--m-1c1b19-fg);cursor:pointer;white-space:nowrap" style-hover="background:var(--m-f3f1ec-bg)">What-if</button>
+      <button onClick="{{ toggleA }}" style="flex:none;height:40px;padding:0 14px 0 18px;border:1px solid {{ askBd }};background:{{ askBg }};border-radius:999px;font-size:13px;color:var(--m-1c1b19-fg);cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap" style-hover="background:var(--m-f3f1ec-bg)">Ask <span style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--m-8a857c-fg)">⌘J</span></button>
+      <button onClick="{{ openAdd }}" title="Add transaction" style="flex:none;height:40px;padding:0 20px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap" style-hover="background:var(--m-33312d-bg)">{{ addLabel }}</button>
+    </header>
+    <main ref="{{ scrollRef }}" style="flex:1;overflow:auto">
+      <sc-if value="{{ is.dashboard }}" hint-placeholder-val="{{ true }}"><dc-import name="Dashboard" go="{{ go }}" ask="{{ ask }}" notify="{{ notify }}" hint-size="100%,1600px"></dc-import></sc-if>
+      <sc-if value="{{ is.plan }}" hint-placeholder-val="{{ false }}"><dc-import name="Plan" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1600px"></dc-import></sc-if>
+      <sc-if value="{{ is.transactions }}" hint-placeholder-val="{{ false }}"><dc-import name="Transactions" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1200px"></dc-import></sc-if>
+      <sc-if value="{{ is.calendar }}" hint-placeholder-val="{{ false }}"><dc-import name="Calendar" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1100px"></dc-import></sc-if>
+      <sc-if value="{{ is.savings }}" hint-placeholder-val="{{ false }}"><dc-import name="Savings" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1400px"></dc-import></sc-if>
+      <sc-if value="{{ is.investments }}" hint-placeholder-val="{{ false }}"><dc-import name="Investments" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1800px"></dc-import></sc-if>
+      <sc-if value="{{ is.goals }}" hint-placeholder-val="{{ false }}"><dc-import name="Goals" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1200px"></dc-import></sc-if>
+      <sc-if value="{{ is.debts }}" hint-placeholder-val="{{ false }}"><dc-import name="Debts" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1200px"></dc-import></sc-if>
+      <sc-if value="{{ is.networth }}" hint-placeholder-val="{{ false }}"><dc-import name="NetWorth" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1200px"></dc-import></sc-if>
+      <sc-if value="{{ is.reports }}" hint-placeholder-val="{{ false }}"><dc-import name="Reports" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1600px"></dc-import></sc-if>
+      <sc-if value="{{ is.accounts }}" hint-placeholder-val="{{ false }}"><dc-import name="Accounts" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1200px"></dc-import></sc-if>
+      <sc-if value="{{ is.whatif }}" hint-placeholder-val="{{ false }}"><dc-import name="WhatIf" go="{{ go }}" notify="{{ notify }}" hint-size="100%,1200px"></dc-import></sc-if>
+    </main>
+  </div>
+
+  <sc-if value="{{ assistant }}" hint-placeholder-val="{{ false }}">
+    <div style="width:392px;flex:none;height:calc(100vh - 24px);margin:12px 12px 12px 0;border-radius:24px;overflow:hidden;background:var(--m-ffffff-bg);animation:mzFade 160ms ease-out">
+      <dc-import name="Assistant" on-close="{{ toggleA }}" question="{{ assistantQ }}" go="{{ go }}" hint-size="380px,100%" style="width:100%;height:100%"></dc-import>
+    </div>
+  </sc-if>
+</div>
+
+<sc-if value="{{ add }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeAdd }}" style="position:fixed;inset:0;background:rgba(28,27,25,0.28);display:flex;align-items:flex-start;justify-content:center;padding-top:12vh;z-index:50;animation:mzFade 120ms ease-out">
+    <div onClick="{{ stop }}" style="width:460px;max-width:calc(100vw - 32px);background:var(--m-ffffff-bg);border:1px solid var(--m-e3e0d8-line);border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,0.28);animation:mzRise 160ms ease-out">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0">
+        <div style="font-size:15px;font-weight:600;letter-spacing:-0.01em">Add transaction</div>
+        <button onClick="{{ closeAdd }}" style="all:unset;cursor:pointer;font-size:12px;color:var(--m-77726a-fg);font-family:'Geist Mono',monospace;border:1px solid var(--m-e3e0d8-line);border-radius:4px;padding:1px 6px">esc</button>
+      </div>
+      <div style="padding:16px 20px 20px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;gap:2px;padding:2px;background:var(--m-f3f1ec-bg);border-radius:6px;width:max-content">
+          <sc-for list="{{ types }}" as="t" hint-placeholder-count="3">
+            <button onClick="{{ t.onClick }}" style="all:unset;cursor:pointer;padding:5px 12px;border-radius:5px;font-size:12.5px;background:{{ t.bg }};color:{{ t.color }};box-shadow:{{ t.shadow }};font-weight:500">{{ t.label }}</button>
+          </sc-for>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">Amount</span>
+          <div style="display:flex;align-items:center;gap:6px;height:52px;padding:0 14px;border:1px solid var(--m-2c4a7c-line);border-radius:6px;box-shadow:0 0 0 3px var(--m-e3e9f3-line)">
+            <span style="font-size:22px;color:var(--m-77726a-fg)">₺</span>
+            <input value="{{ amount }}" onChange="{{ setAmount }}" placeholder="0.00" autofocus="" style="all:unset;flex:1;font-size:24px;font-weight:500;letter-spacing:-0.02em">
+          </div>
+        </label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <label style="display:flex;flex-direction:column;gap:6px;grid-column:1 / -1">
+            <span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">Merchant or description</span>
+            <input value="{{ merchant }}" onChange="{{ setMerchant }}" placeholder="e.g. Migros Kadıköy" style="height:36px;padding:0 10px;border:1px solid var(--m-dedad1-line);border-radius:6px;font-size:13px;outline:none;color:var(--m-1c1b19-fg)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">Category</span>
+            <select value="{{ category }}" onChange="{{ setCategory }}" style="height:36px;padding:0 8px;border:1px solid var(--m-dedad1-line);border-radius:6px;font-size:13px;background:var(--m-ffffff-bg);color:var(--m-1c1b19-fg)">
+              <option>Food &amp; groceries</option><option>Dining out</option><option>Transport</option><option>Shopping</option><option>Personal care</option><option>Utilities</option>
+            </select>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">Account</span>
+            <select style="height:36px;padding:0 8px;border:1px solid var(--m-dedad1-line);border-radius:6px;font-size:13px;background:var(--m-ffffff-bg);color:var(--m-1c1b19-fg)">
+              <option>Garanti BBVA ··4471</option><option>Bonus Card ··9020</option><option>Cash wallet</option>
+            </select>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">Date</span>
+            <input value="22 Oct 2026" readonly="" style="height:36px;padding:0 10px;border:1px solid var(--m-dedad1-line);border-radius:6px;font-size:13px;color:var(--m-1c1b19-fg)">
+          </label>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:12px;color:var(--m-5c5852-fg);font-weight:500">Budget impact</span>
+            <div style="height:36px;display:flex;align-items:center;font-size:12.5px;color:var(--m-5c5852-fg)">{{ impact }}</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid var(--m-efece6-line);background:var(--m-faf9f6-bg);border-radius:0 0 24px 24px">
+        <button onClick="{{ closeAdd }}" style="height:32px;padding:0 14px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer" style-hover="background:var(--m-f3f1ec-bg)">Cancel</button>
+        <button onClick="{{ saveAdd }}" style="height:32px;padding:0 14px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:var(--m-33312d-bg)">Save transaction</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--m-tip);color:var(--m-tip-fg);border-radius:8px;font-size:13px;box-shadow:0 8px 24px rgba(28,27,25,0.18);animation:mzToast 180ms ease-out;white-space:nowrap">
+    <span style="width:16px;height:16px;border-radius:50%;background:var(--m-2f7d57-bg);display:flex;align-items:center;justify-content:center;font-size:10px">✓</span>
+    {{ toast }}
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Dark&quot;,&quot;Light&quot;],&quot;default&quot;:&quot;Dark&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Dashboard&quot;,&quot;Plan&quot;,&quot;Transactions&quot;,&quot;Calendar&quot;,&quot;Savings&quot;,&quot;Investments&quot;,&quot;Goals&quot;,&quot;Debts&quot;,&quot;Net Worth&quot;,&quot;Reports&quot;,&quot;Accounts&quot;,&quot;What-if&quot;],&quot;default&quot;:&quot;Dashboard&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;assistantOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const NAV = [
+  { label: null, items: [['dashboard', 'Dashboard'], ['plan', 'Plan'], ['transactions', 'Transactions', '4', 'var(--m-77726a-bg)'], ['calendar', 'Calendar', '1', 'var(--m-b4423a-bg)']] },
+  { label: 'Wealth', items: [['savings', 'Savings'], ['investments', 'Investments'], ['goals', 'Goals'], ['debts', 'Debts'], ['networth', 'Net Worth']] },
+  { label: 'Review', items: [['reports', 'Reports'], ['accounts', 'Accounts', '1', 'var(--m-a86f12-bg)']] },
+  { label: 'Tools', items: [['whatif', 'What-if simulator']] },
+];
+const START = { Dashboard: 'dashboard', Plan: 'plan', Transactions: 'transactions', Calendar: 'calendar', Savings: 'savings', Investments: 'investments', Goals: 'goals', Debts: 'debts', 'Net Worth': 'networth', Reports: 'reports', Accounts: 'accounts', 'What-if': 'whatif' };
+
+class Component extends DCLogic {
+  state = { theme: 'dark', screen: 'dashboard', assistant: false, assistantQ: null, add: false, toast: null, type: 'Expense', amount: '', merchant: '', category: 'Food & groceries' };
+  scrollRef = React.createRef();
+  mainRef = React.createRef();
+
+  componentDidMount() {
+    let saved = null; try { saved = localStorage.getItem('mizan-theme'); } catch (e) {}
+    this.applyTheme(saved || (this.props.theme || 'Dark').toLowerCase(), false);
+    this.ro = new ResizeObserver(([e]) => { const w = Math.round(e.contentRect.width); if (w !== this.state.mw) this.setState({ mw: w }); });
+    if (this.mainRef.current) this.ro.observe(this.mainRef.current);
+    this.setState({ screen: START[this.props.startScreen] || 'dashboard', assistant: !!this.props.assistantOpen });
+    this.onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j') { e.preventDefault(); this.toggleA(); }
+      if (e.key === 'Escape') this.setState({ add: false });
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentDidUpdate(prev) {
+    if (prev.theme !== this.props.theme && this.props.theme) this.applyTheme(this.props.theme.toLowerCase());
+    if (prev.startScreen !== this.props.startScreen) this.go(START[this.props.startScreen] || 'dashboard');
+    if (prev.assistantOpen !== this.props.assistantOpen) this.setState({ assistant: !!this.props.assistantOpen });
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); window.removeEventListener('keydown', this.onKey); clearTimeout(this.tt); }
+
+  applyTheme = (t, persist = true) => { document.documentElement.dataset.theme = t; this.setState({ theme: t }); if (persist) { try { localStorage.setItem('mizan-theme', t); } catch (e) {} } };
+  go = (s) => { this.setState({ screen: s }); if (this.scrollRef.current) this.scrollRef.current.scrollTop = 0; };
+  toggleA = () => this.setState((s) => ({ assistant: !s.assistant, assistantQ: null }));
+  ask = (q) => this.setState({ assistant: true, assistantQ: q });
+  notify = (msg) => { clearTimeout(this.tt); this.setState({ toast: msg }); this.tt = setTimeout(() => this.setState({ toast: null }), 2600); };
+
+  renderVals() {
+    const s = this.state.screen;
+    const groups = NAV.map((g) => ({
+      label: g.label, hasLabel: !!g.label,
+      items: g.items.map(([id, label, meta, mc]) => {
+        const a = id === s;
+        return {
+          label, meta: meta || '', metaColor: mc || 'var(--m-77726a-fg)',
+          bg: a ? 'var(--m-ffffff-bg)' : 'transparent', hbg: a ? 'var(--m-ffffff-bg)' : 'var(--m-eae7e0-bg)', bd: 'transparent',
+          color: a ? 'var(--m-1c1b19-fg)' : 'var(--m-4f4b45-fg)', weight: a ? 500 : 400, dot: a ? 'var(--m-2c4a7c-bg)' : 'transparent',
+          shadow: 'none', onClick: () => this.go(id),
+        };
+      }),
+    }));
+    const is = {}; Object.values(START).forEach((k) => { is[k] = k === s; });
+    const amt = parseFloat(String(this.state.amount).replace(/,/g, '')) || 0;
+    const left = { 'Food & groceries': 1150, 'Dining out': 3000, Transport: 380, Shopping: 3000, 'Personal care': -110, Utilities: 330 }[this.state.category];
+    const after = left - (this.state.type === 'Expense' ? amt : 0);
+    const fmt = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+    return {
+      themes: [['dark', 'Dark'], ['light', 'Light']].map(([id, label]) => { const a = this.state.theme === id; return { label, bg: a ? 'var(--m-ffffff-bg)' : 'transparent', color: a ? 'var(--m-1c1b19-fg)' : 'var(--m-77726a-fg)', shadow: a ? '0 1px 2px rgba(28,27,25,0.10)' : 'none', pick: () => this.applyTheme(id) }; }),
+      mainRef: this.mainRef,
+      showMonth: (this.state.mw || 1200) >= 860, showSearch: (this.state.mw || 1200) >= 560, searchIcon: (this.state.mw || 1200) < 560,
+      addLabel: (this.state.mw || 1200) < 420 ? '+ Add' : 'Add transaction',
+      groups, is, assistant: this.state.assistant, assistantQ: this.state.assistantQ, toast: this.state.toast, add: this.state.add,
+      askBg: this.state.assistant ? 'var(--m-f3f1ec-bg)' : 'var(--m-ffffff-bg)', askBd: this.state.assistant ? 'var(--m-cfcac0-line)' : 'transparent',
+      scrollRef: this.scrollRef, go: this.go, ask: this.ask, notify: this.notify, toggleA: this.toggleA,
+      goWhatIf: () => this.go('whatif'), goAccounts: () => this.go('accounts'),
+      openAdd: () => this.setState({ add: true, amount: '', merchant: '' }),
+      closeAdd: () => this.setState({ add: false }), stop: (e) => e.stopPropagation(),
+      types: ['Expense', 'Income', 'Transfer'].map((t) => ({ label: t, bg: t === this.state.type ? 'var(--m-ffffff-bg)' : 'transparent', color: t === this.state.type ? 'var(--m-1c1b19-fg)' : 'var(--m-5c5852-fg)', shadow: t === this.state.type ? '0 1px 2px rgba(28,27,25,0.08)' : 'none', onClick: () => this.setState({ type: t }) })),
+      amount: this.state.amount, merchant: this.state.merchant, category: this.state.category,
+      setAmount: (e) => this.setState({ amount: e.target.value.replace(/[^0-9.,]/g, '') }),
+      setMerchant: (e) => this.setState({ merchant: e.target.value }),
+      setCategory: (e) => this.setState({ category: e.target.value }),
+      impact: this.state.type === 'Expense' ? `${this.state.category}: ${fmt(left)} → ${fmt(after)} left` : 'No budget impact',
+      saveAdd: () => { this.setState({ add: false }); this.notify(`Saved · ${this.state.merchant || 'Transaction'} · ${fmt(amt)} · ${this.state.category}`); },
+    };
+  }
+}
+</script>
+</body>
+</html>

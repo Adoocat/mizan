@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--l-bg:#0A0C0E;--l-surf:#121619;--l-surf2:#191E22;--l-line:#1F2428;--l-line2:#2C3338;--l-ink:#E8EBED;--l-ink2:#9AA3A9;--l-ink3:#79828A;--l-teal:#6CC3AE;--l-teal2:#84CDB8;--l-teal3:#5A9E96;--l-tealdeep:#1F5E4E;--l-blue:#7E9BE0;--l-gold:#D8B465;--l-slate:#6E8299;--l-clay:#D08A6C;--l-sav:#4EA3AB;--l-track:#22282D;--l-btn:#E8EBED;--l-btnfg:#0A0C0E;--l-navbg:rgba(10,12,14,0.72);--l-s1a:#84CDB8;--l-s1b:#1F5E4E;--l-s2a:#BFE8DC;--l-s2b:#2E8A7A;--l-sheen:rgba(255,255,255,0.28);--l-flow:rgba(232,235,237,0.14);
+--l-grad:radial-gradient(55% 75% at 22% 78%,rgba(132,205,184,.38) 0%,transparent 62%),radial-gradient(45% 60% at 40% 26%,rgba(46,138,122,.55) 0%,transparent 66%),radial-gradient(60% 70% at 90% 10%,rgba(33,64,122,.62) 0%,transparent 70%),radial-gradient(35% 40% at 74% 98%,rgba(216,180,101,.16) 0%,transparent 70%),#0C1114}
+:root[data-theme="light"]{color-scheme:light;--l-bg:#F3F1EC;--l-surf:#FFFFFF;--l-surf2:#F6F4F0;--l-line:#E7E4DD;--l-line2:#D6D2C9;--l-ink:#1C1B19;--l-ink2:#5C5852;--l-ink3:#77726A;--l-teal:#1F7266;--l-teal2:#84CDB8;--l-teal3:#5A9E96;--l-tealdeep:#1F5E4E;--l-blue:#3D5A99;--l-gold:#D2A857;--l-slate:#2F3A4A;--l-clay:#B0674A;--l-sav:#3F7E86;--l-track:#EFECE6;--l-btn:#1C1B19;--l-btnfg:#F3F1EC;--l-navbg:rgba(243,241,236,0.78);--l-s1a:#A8DCCD;--l-s1b:#3F8F84;--l-s2a:#E4F4EF;--l-s2b:#5FB3A2;--l-sheen:rgba(255,255,255,0.6);--l-flow:rgba(28,27,25,0.12);
+--l-grad:radial-gradient(55% 75% at 22% 78%,rgba(132,205,184,.7) 0%,transparent 62%),radial-gradient(45% 60% at 40% 26%,rgba(90,158,150,.42) 0%,transparent 66%),radial-gradient(60% 70% at 90% 10%,rgba(126,155,224,.38) 0%,transparent 70%),radial-gradient(35% 40% at 74% 98%,rgba(216,180,101,.3) 0%,transparent 70%),#EDF0EC}
+html{scroll-behavior:smooth}
+html,body{margin:0;padding:0;background:var(--l-bg);color:var(--l-ink);font-family:'Geist',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1}
+*{box-sizing:border-box}
+a{color:var(--l-ink);text-decoration:none}a:hover{color:var(--l-teal)}
+button{font-family:inherit}
+::selection{background:var(--l-tealdeep);color:#fff}
+input[type=range]{accent-color:var(--l-teal)}
+@keyframes mzDrift{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-4%,3%,0) scale(1.08)}}
+@keyframes mzSway{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
+@keyframes mzBobA{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes mzBobB{0%,100%{transform:translateY(0)}50%{transform:translateY(14px)}}
+@keyframes mzFlow{to{stroke-dashoffset:-240}}
+@keyframes mzDots{0%,80%,100%{opacity:.25}40%{opacity:1}}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="overflow-x:clip;background:var(--l-bg);min-height:100vh">
+
+<sc-if value="{{ introOn }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ skipIntro }}" style="position:fixed;inset:0;z-index:100;background:var(--l-bg);display:flex;align-items:center;justify-content:center;cursor:pointer;clip-path:{{ introClip }};transition:clip-path 950ms cubic-bezier(.76,0,.24,1)">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:{{ introBand }};background:var(--l-grad);transition:height 750ms cubic-bezier(.76,0,.24,1)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:18px">
+      <svg viewBox="0 0 176 186" style="width:52px;height:55px;overflow:visible;display:block">
+        <path d="M8 6 L68 51 L68 178 L8 136 Z" style="fill:var(--l-teal3);stroke:var(--l-teal3);stroke-width:8;stroke-linejoin:round;transform:{{ introL }};opacity:{{ introO }};transition:transform 1000ms cubic-bezier(.16,1,.3,1),opacity 500ms"></path>
+        <path d="M168 6 L168 136 L112 178 L112 106 C112 96 100 92 100 82 L100 54 Z" style="fill:var(--l-teal2);stroke:var(--l-teal2);stroke-width:8;stroke-linejoin:round;transform:{{ introR }};opacity:{{ introO }};transition:transform 1000ms cubic-bezier(.16,1,.3,1),opacity 500ms"></path>
+      </svg>
+      <div style="overflow:hidden;padding-bottom:4px"><div style="font-size:46px;font-weight:400;letter-spacing:-0.045em;line-height:1;transform:{{ introW }};transition:transform 900ms cubic-bezier(.16,1,.3,1)">Mizan</div></div>
+    </div>
+  </div>
+</sc-if>
+
+<nav style="position:fixed;top:12px;left:12px;right:12px;z-index:40;height:72px;display:flex;align-items:center;gap:32px;padding:0 clamp(18px,3vw,36px);border-radius:24px;background:{{ navBg }};backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:background 400ms">
+  <a href="#top" style="display:flex;align-items:center;gap:10px;color:var(--l-ink)">
+    <svg viewBox="0 0 176 186" style="width:20px;height:21px;display:block"><path d="M8 6 L68 51 L68 178 L8 136 Z" style="fill:var(--l-teal3);stroke:var(--l-teal3);stroke-width:8;stroke-linejoin:round"></path><path d="M168 6 L168 136 L112 178 L112 106 C112 96 100 92 100 82 L100 54 Z" style="fill:var(--l-teal2);stroke:var(--l-teal2);stroke-width:8;stroke-linejoin:round"></path></svg>
+    <span style="font-size:20px;font-weight:500;letter-spacing:-0.04em">Mizan</span>
+  </a>
+  <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;gap:28px;font-size:14px;margin-left:auto;margin-right:auto">
+      <a href="#product" style="color:var(--l-ink2)">Product</a>
+      <a href="#features" style="color:var(--l-ink2)">Features</a>
+      <a href="#security" style="color:var(--l-ink2)">Security</a>
+      <a href="#about" style="color:var(--l-ink2)">About</a>
+    </div>
+  </sc-if>
+  <div style="display:flex;align-items:center;gap:20px;margin-left:auto">
+    <sc-if value="{{ notTiny }}" hint-placeholder-val="{{ true }}"><a href="Mizan.dc.html" style="font-size:14px;color:var(--l-ink)">Sign in</a></sc-if>
+    <a href="Mizan.dc.html" style="height:42px;padding:0 20px;border-radius:999px;background:var(--l-btn);color:var(--l-btnfg);font-size:14px;font-weight:500;display:flex;align-items:center;white-space:nowrap" style-hover="opacity:.88;color:var(--l-btnfg)">Start using Mizan</a>
+  </div>
+</nav>
+
+<section id="top" data-screen-label="L1 Hero" style="padding:12px">
+  <div style="position:relative;overflow:hidden;border-radius:36px;min-height:clamp(640px,96vh,1000px);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(120px,16vh,170px) clamp(22px,5vw,72px) clamp(28px,5vw,64px)">
+    <div style="position:absolute;inset:-12%;background:var(--l-grad);animation:mzDrift 26s ease-in-out infinite"></div>
+    <div data-par="-0.12" style="position:absolute;left:{{ shapeLeft }};top:8%;height:86%;aspect-ratio:176 / 186;opacity:{{ shapeOp }};pointer-events:none">
+      <div style="position:absolute;inset:6%;filter:blur(60px);opacity:.55;background:radial-gradient(closest-side,var(--l-teal2),transparent)"></div>
+      <svg viewBox="-20 -20 216 226" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform-origin:50% 90%;animation:mzSway 11s ease-in-out infinite">
+        <defs>
+          <linearGradient id="mzL" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" style="stop-color:var(--l-s1a)"></stop><stop offset="1" style="stop-color:var(--l-s1b)"></stop></linearGradient>
+          <linearGradient id="mzR" x1="1" y1="0" x2="0.5" y2="1"><stop offset="0" style="stop-color:var(--l-s2a)"></stop><stop offset="1" style="stop-color:var(--l-s2b)"></stop></linearGradient>
+          <linearGradient id="mzS" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0" style="stop-color:var(--l-sheen)"></stop><stop offset="0.55" style="stop-color:transparent"></stop></linearGradient>
+        </defs>
+        <g style="animation:mzBobA 9s ease-in-out infinite">
+          <path d="M8 6 L68 51 L68 178 L8 136 Z" style="fill:url(#mzL);stroke:url(#mzL);stroke-width:8;stroke-linejoin:round;opacity:.94"></path>
+          <path d="M8 6 L68 51 L68 178 L8 136 Z" style="fill:url(#mzS);stroke:none"></path>
+        </g>
+        <g style="animation:mzBobB 9s ease-in-out infinite">
+          <path d="M168 6 L168 136 L112 178 L112 106 C112 96 100 92 100 82 L100 54 Z" style="fill:url(#mzR);stroke:url(#mzR);stroke-width:8;stroke-linejoin:round;opacity:.94"></path>
+          <path d="M168 6 L168 136 L112 178 L112 106 C112 96 100 92 100 82 L100 54 Z" style="fill:url(#mzS);stroke:none"></path>
+        </g>
+      </svg>
+    </div>
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+      <sc-for list="{{ flowLines }}" as="f" hint-placeholder-count="5"><path d="{{ f.d }}" style="fill:none;stroke:var(--l-flow);stroke-width:1;stroke-dasharray:2 10;animation:mzFlow {{ f.dur }} linear infinite"></path></sc-for>
+    </svg>
+
+    <div style="position:relative;display:flex;justify-content:flex-end">
+      <p style="margin:0;max-width:330px;font-size:15px;line-height:1.55;color:var(--l-ink2);text-wrap:pretty;opacity:{{ heroO }};transform:{{ heroUp }};transition:opacity 1s ease 500ms,transform 1.2s cubic-bezier(.16,1,.3,1) 500ms">A personal finance system for your income, plans, savings, investments and net worth — so every lira has a job.</p>
+    </div>
+
+    <div style="position:relative;display:flex;flex-direction:column;align-items:{{ heroAlign }};gap:28px">
+      <h1 style="margin:0;font-size:clamp(54px,9.4vw,164px);font-weight:300;line-height:.9;letter-spacing:-0.06em;text-align:{{ heroText }}">
+        <span style="display:block;overflow:hidden;padding-bottom:.06em"><span style="display:block;transform:{{ heroL1 }};transition:transform 1.3s cubic-bezier(.16,1,.3,1) 80ms">Bring your money</span></span>
+        <span style="display:block;overflow:hidden;padding-bottom:.08em"><span style="display:block;transform:{{ heroL2 }};transition:transform 1.3s cubic-bezier(.16,1,.3,1) 200ms">into balance.</span></span>
+      </h1>
+      <div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap;opacity:{{ heroO }};transition:opacity 1s ease 700ms">
+        <a href="#product" style="font-size:15px;color:var(--l-ink2)">See how it works</a>
+        <a href="Mizan.dc.html" style="height:56px;padding:0 8px 0 26px;border-radius:999px;background:var(--l-btn);color:var(--l-btnfg);font-size:15px;font-weight:500;display:flex;align-items:center;gap:16px" style-hover="color:var(--l-btnfg);opacity:.9">Start using Mizan<span style="width:40px;height:40px;border-radius:50%;background:var(--l-teal);color:#0A0C0E;display:flex;align-items:center;justify-content:center;font-size:17px">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="L2 Statement" style="padding:clamp(110px,22vh,240px) clamp(22px,6vw,96px);display:flex;justify-content:center">
+  <h2 style="margin:0;max-width:1180px;font-size:clamp(34px,5.2vw,84px);font-weight:300;line-height:1.04;letter-spacing:-0.05em;text-align:center;text-wrap:balance">
+    <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" style="display:block">Most money apps tell you</span></span>
+    <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="80" style="display:block">where it went.</span></span>
+    <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="260" style="display:block;color:var(--l-teal)">Mizan helps you decide</span></span>
+    <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="340" style="display:block;color:var(--l-teal)">where it goes.</span></span>
+  </h2>
+</section>
+
+<section id="product" data-screen-label="L3 Plan" style="padding:clamp(60px,10vh,120px) clamp(22px,6vw,96px);display:flex;flex-wrap:wrap;align-items:center;gap:clamp(48px,6vw,110px);max-width:1520px;margin:0 auto">
+  <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:28px;max-width:540px">
+    <div data-r="fade" style="display:flex;align-items:center;gap:14px;font-family:'Geist Mono',monospace;font-size:12px;color:var(--l-ink3);letter-spacing:.08em"><span>01</span><span style="width:40px;height:1px;background:var(--l-line2)"></span><span>PLAN</span></div>
+    <h2 style="margin:0;font-size:clamp(46px,5.8vw,96px);font-weight:300;line-height:.96;letter-spacing:-0.055em">
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" style="display:block">Plan before</span></span>
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="90" style="display:block">you spend.</span></span>
+    </h2>
+    <p data-r="up" data-d="200" style="margin:0;font-size:18px;line-height:1.55;color:var(--l-ink2);max-width:400px;text-wrap:pretty">Your income is divided the day it arrives — bills, life, savings, investments, debt. What’s left is genuinely yours to spend.</p>
+  </div>
+  <div style="flex:1.35 1 480px;min-width:0;position:relative">
+    <div data-r="clip" style="background:var(--l-surf);border-radius:32px;padding:clamp(24px,3.2vw,48px);display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:14px;color:var(--l-ink3)">October income</span>
+          <span data-count="50000" data-pre="₺" style="font-size:clamp(40px,4.4vw,64px);font-weight:300;letter-spacing:-0.05em;line-height:1">₺50,000</span>
+        </div>
+        <span style="font-size:13px;color:var(--l-teal);display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--l-teal)"></span>Every lira assigned · ₺0 left over</span>
+      </div>
+      <div style="display:flex;gap:clamp(14px,2vw,28px);height:320px">
+        <svg data-r="wipe" viewBox="0 0 600 320" preserveAspectRatio="none" style="flex:1;min-width:0;height:100%;display:block">
+          <rect x="0" y="0" width="12" height="320" rx="3" style="fill:var(--l-ink)"></rect>
+          <sc-for list="{{ flows }}" as="f" hint-placeholder-count="5">
+            <path d="{{ f.d }}" style="fill:{{ f.c }};opacity:.3"></path>
+            <rect x="594" y="{{ f.y }}" width="6" height="{{ f.h }}" rx="2" style="fill:{{ f.c }}"></rect>
+          </sc-for>
+        </svg>
+        <div style="width:clamp(150px,30%,220px);flex:none;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ flows }}" as="f" hint-placeholder-count="5">
+            <div data-r="up" data-d="{{ f.delay }}" style="flex:{{ f.v }} 1 0;min-height:0;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px">
+              <span style="color:var(--l-ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.name }}</span>
+              <span style="font-weight:500">{{ f.amt }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="L4 Transactions" style="padding:clamp(60px,10vh,120px) clamp(22px,6vw,96px);display:flex;flex-direction:row-reverse;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:clamp(48px,6vw,110px);max-width:1520px;margin:0 auto">
+  <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:28px;max-width:540px">
+    <div data-r="fade" style="display:flex;align-items:center;gap:14px;font-family:'Geist Mono',monospace;font-size:12px;color:var(--l-ink3);letter-spacing:.08em"><span>02</span><span style="width:40px;height:1px;background:var(--l-line2)"></span><span>TRANSACTIONS</span></div>
+    <h2 style="margin:0;font-size:clamp(46px,5.8vw,96px);font-weight:300;line-height:.96;letter-spacing:-0.055em">
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" style="display:block">See where</span></span>
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="90" style="display:block">every lira goes.</span></span>
+    </h2>
+    <p data-r="up" data-d="200" style="margin:0;font-size:18px;line-height:1.55;color:var(--l-ink2);max-width:400px;text-wrap:pretty">Every payment is matched to your plan as it happens. You only review the few Mizan isn’t sure about.</p>
+  </div>
+  <div style="flex:1.35 1 480px;min-width:0;display:flex;flex-direction:column;gap:14px">
+    <div data-r="clip" style="background:var(--l-surf);border-radius:32px;padding:clamp(24px,3.2vw,44px);display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:14px;color:var(--l-ink3)">Spent in October, so far</span><span data-count="29329" data-pre="₺" style="font-size:clamp(36px,3.8vw,56px);font-weight:300;letter-spacing:-0.05em;line-height:1">₺29,329</span></div>
+        <span style="font-size:13px;color:var(--l-ink3)">22 of 31 days</span>
+      </div>
+      <div style="display:flex;height:10px;gap:3px;border-radius:5px;overflow:hidden">
+        <div data-r="grow" style="flex:16840;background:var(--l-slate)"></div>
+        <div data-r="grow" data-d="120" style="flex:4500;background:var(--l-clay)"></div>
+        <div data-r="grow" data-d="240" style="flex:7989;background:var(--l-gold)"></div>
+      </div>
+      <div style="display:flex;gap:28px;flex-wrap:wrap;font-size:13px;color:var(--l-ink2)">
+        <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:2px;background:var(--l-slate)"></span>Essentials ₺16,840</span>
+        <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:2px;background:var(--l-clay)"></span>Debt ₺4,500</span>
+        <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:2px;background:var(--l-gold)"></span>Flexible ₺7,989</span>
+      </div>
+    </div>
+    <sc-for list="{{ txs }}" as="t" hint-placeholder-count="4">
+      <div data-r="right" data-d="{{ t.delay }}" style="background:var(--l-surf);border-radius:22px;padding:18px 24px;display:flex;align-items:center;gap:16px;margin-left:{{ t.indent }}">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.m }}</span>
+          <span style="font-size:13px;color:{{ t.cc }};display:flex;align-items:center;gap:7px"><span style="width:6px;height:6px;border-radius:50%;background:{{ t.dot }}"></span>{{ t.cat }}</span>
+        </div>
+        <span style="font-size:15px;font-weight:500">{{ t.a }}</span>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="L5 Savings" style="padding:clamp(60px,10vh,120px) clamp(22px,6vw,96px);display:flex;flex-wrap:wrap;align-items:center;gap:clamp(48px,6vw,110px);max-width:1520px;margin:0 auto">
+  <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:28px;max-width:540px">
+    <div data-r="fade" style="display:flex;align-items:center;gap:14px;font-family:'Geist Mono',monospace;font-size:12px;color:var(--l-ink3);letter-spacing:.08em"><span>03</span><span style="width:40px;height:1px;background:var(--l-line2)"></span><span>SAVINGS</span></div>
+    <h2 style="margin:0;font-size:clamp(46px,5.8vw,96px);font-weight:300;line-height:.96;letter-spacing:-0.055em">
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" style="display:block">Turn saving</span></span>
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="90" style="display:block">into a system.</span></span>
+    </h2>
+    <p data-r="up" data-d="200" style="margin:0;font-size:18px;line-height:1.55;color:var(--l-ink2);max-width:400px;text-wrap:pretty">Savings move on the first of the month, before you can miss them. Every goal shows exactly when you’ll get there.</p>
+  </div>
+  <div style="flex:1.35 1 480px;min-width:0;position:relative">
+    <div data-par="0.06" style="position:absolute;right:-6%;top:-14%;width:70%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,var(--l-sav),transparent);opacity:.22;filter:blur(30px);pointer-events:none"></div>
+    <div data-r="clip" style="position:relative;background:var(--l-surf);border-radius:32px;padding:clamp(24px,3.2vw,48px);display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,56px);align-items:center">
+      <div style="position:relative;width:min(240px,100%);aspect-ratio:1;flex:none">
+        <svg viewBox="0 0 200 200" style="width:100%;height:100%;display:block;transform:rotate(-90deg)">
+          <circle cx="100" cy="100" r="88" style="fill:none;stroke:var(--l-track);stroke-width:8"></circle>
+          <circle data-r="draw" data-to="0.4533" cx="100" cy="100" r="88" pathLength="1" style="fill:none;stroke:var(--l-sav);stroke-width:8;stroke-linecap:round;stroke-dasharray:1 1;stroke-dashoffset:0.4533"></circle>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+          <span style="font-size:13px;color:var(--l-ink3)">Emergency fund</span>
+          <span data-count="55" data-suf="%" style="font-size:52px;font-weight:300;letter-spacing:-0.05em;line-height:1">55%</span>
+          <span style="font-size:13px;color:var(--l-ink2)">₺82,000 of ₺150,000</span>
+        </div>
+      </div>
+      <div style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:22px">
+        <sc-for list="{{ goals }}" as="g" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;justify-content:space-between;gap:10px;font-size:14px"><span>{{ g.n }}</span><span style="color:var(--l-ink3)">{{ g.p }}</span></div>
+            <div style="height:4px;border-radius:2px;background:var(--l-track);overflow:hidden"><div data-r="grow" data-d="{{ g.delay }}" style="height:100%;width:{{ g.w }};background:var(--l-sav);border-radius:2px"></div></div>
+            <span style="font-size:12.5px;color:{{ g.nc }}">{{ g.note }}</span>
+          </div>
+        </sc-for>
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:var(--l-surf2);font-size:13px"><span style="width:6px;height:6px;border-radius:50%;background:var(--l-teal);flex:none"></span><span style="color:var(--l-ink2);flex:1">1 Nov · ₺6,000 to savings</span><span style="color:var(--l-ink3)">Scheduled</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="L6 Investments" style="padding:clamp(60px,10vh,120px) clamp(22px,6vw,96px);display:flex;flex-direction:row-reverse;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:clamp(48px,6vw,110px);max-width:1520px;margin:0 auto">
+  <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:28px;max-width:540px">
+    <div data-r="fade" style="display:flex;align-items:center;gap:14px;font-family:'Geist Mono',monospace;font-size:12px;color:var(--l-ink3);letter-spacing:.08em"><span>04</span><span style="width:40px;height:1px;background:var(--l-line2)"></span><span>INVESTMENTS</span></div>
+    <h2 style="margin:0;font-size:clamp(46px,5.8vw,96px);font-weight:300;line-height:.96;letter-spacing:-0.055em">
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" style="display:block">Investing,</span></span>
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="90" style="display:block">part of the plan.</span></span>
+    </h2>
+    <p data-r="up" data-d="200" style="margin:0;font-size:18px;line-height:1.55;color:var(--l-ink2);max-width:400px;text-wrap:pretty">Your portfolio lives in the same plan as your rent — contributions, allocation and returns measured after inflation.</p>
+  </div>
+  <div style="flex:1.35 1 480px;min-width:0">
+    <div data-r="clip" style="background:var(--l-surf);border-radius:32px;padding:clamp(24px,3.2vw,48px);display:flex;flex-direction:column;gap:28px;overflow:hidden">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:14px;color:var(--l-ink3)">Portfolio</span><span data-count="1060200" data-pre="₺" style="font-size:clamp(36px,3.8vw,56px);font-weight:300;letter-spacing:-0.05em;line-height:1">₺1,060,200</span></div>
+        <div style="display:flex;gap:24px;font-size:13px"><div style="display:flex;flex-direction:column;gap:4px"><span style="color:var(--l-ink3)">Unrealised</span><span style="color:var(--l-teal);font-weight:500">+16.0%</span></div><div style="display:flex;flex-direction:column;gap:4px"><span style="color:var(--l-ink3)">Real, 12 mo</span><span style="font-weight:500">+3.5%</span></div></div>
+      </div>
+      <svg viewBox="0 0 600 200" style="width:100%;height:auto;display:block;overflow:visible">
+        <defs><linearGradient id="mzInv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--l-blue);stop-opacity:.32"></stop><stop offset="1" style="stop-color:var(--l-blue);stop-opacity:0"></stop></linearGradient></defs>
+        <path data-r="fade" data-d="500" d="{{ invArea }}" style="fill:url(#mzInv)"></path>
+        <path data-r="draw" d="{{ invLine }}" pathLength="1" style="fill:none;stroke:var(--l-blue);stroke-width:2;stroke-linecap:round"></path>
+        <circle cx="600" cy="{{ invEndY }}" r="4.5" style="fill:var(--l-blue)"></circle>
+      </svg>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;height:10px;gap:3px;border-radius:5px;overflow:hidden">
+          <sc-for list="{{ alloc }}" as="a" hint-placeholder-count="6"><div data-r="grow" data-d="{{ a.delay }}" style="flex:{{ a.v }};background:{{ a.c }}"></div></sc-for>
+        </div>
+        <div style="display:flex;gap:10px 22px;flex-wrap:wrap;font-size:12.5px;color:var(--l-ink2)">
+          <sc-for list="{{ alloc }}" as="a" hint-placeholder-count="6"><span style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:2px;background:{{ a.c }}"></span>{{ a.n }} {{ a.p }}</span></sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:var(--l-surf2);font-size:13px;flex-wrap:wrap"><span style="width:6px;height:6px;border-radius:50%;background:var(--l-gold);flex:none"></span><span style="color:var(--l-ink2);flex:1;min-width:200px">Equities are 11.8 pp above your 30% target.</span><span style="color:var(--l-teal);font-weight:500">Rebalance with November’s ₺8,000</span></div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="L7 Net worth" style="padding:clamp(60px,10vh,120px) clamp(22px,6vw,96px);max-width:1520px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(40px,6vh,72px)">
+  <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:28px">
+    <div style="display:flex;flex-direction:column;gap:28px;max-width:760px">
+      <div data-r="fade" style="display:flex;align-items:center;gap:14px;font-family:'Geist Mono',monospace;font-size:12px;color:var(--l-ink3);letter-spacing:.08em"><span>05</span><span style="width:40px;height:1px;background:var(--l-line2)"></span><span>NET WORTH</span></div>
+      <h2 style="margin:0;font-size:clamp(46px,5.8vw,96px);font-weight:300;line-height:.96;letter-spacing:-0.055em">
+        <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" style="display:block">Understand your</span></span>
+        <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="90" style="display:block">real net worth.</span></span>
+      </h2>
+    </div>
+    <p data-r="up" data-d="200" style="margin:0;font-size:18px;line-height:1.55;color:var(--l-ink2);max-width:380px;text-wrap:pretty">Everything you own, minus everything you owe. Switch to real terms to see what you actually gained.</p>
+  </div>
+  <div data-r="clip" style="background:var(--l-surf);border-radius:36px;padding:clamp(24px,4vw,64px);display:flex;flex-wrap:wrap;gap:clamp(36px,5vw,80px)">
+    <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:30px;justify-content:center">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;font-size:14px"><span style="color:var(--l-ink2)">Assets</span><span style="font-weight:500">₺2,167,950</span></div>
+        <div style="display:flex;height:14px;gap:3px;border-radius:7px;overflow:hidden">
+          <div data-r="grow" style="flex:465350;background:var(--l-sav)"></div>
+          <div data-r="grow" data-d="120" style="flex:1060200;background:var(--l-blue)"></div>
+          <div data-r="grow" data-d="240" style="flex:642400;background:var(--l-slate)"></div>
+        </div>
+        <div style="display:flex;gap:8px 20px;flex-wrap:wrap;font-size:12.5px;color:var(--l-ink3)"><span>Cash &amp; savings ₺465,350</span><span>Investments ₺1,060,200</span><span>Car &amp; other ₺642,400</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;font-size:14px"><span style="color:var(--l-ink2)">Liabilities</span><span style="font-weight:500">−₺101,200</span></div>
+        <div style="height:14px;border-radius:7px;background:var(--l-track);overflow:hidden"><div data-r="grow" data-d="360" style="width:4.67%;height:100%;background:var(--l-clay);border-radius:7px"></div></div>
+        <div style="font-size:12.5px;color:var(--l-ink3)">Credit card ₺18,400 · Loans ₺82,800</div>
+      </div>
+    </div>
+    <div style="flex:1.2 1 420px;min-width:0;display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <span style="font-size:14px;color:var(--l-ink3)">Net worth · 22 Oct 2026</span>
+        <div style="display:flex;padding:3px;border-radius:999px;background:var(--l-surf2)">
+          <sc-for list="{{ nwModes }}" as="m" hint-placeholder-count="2"><button onClick="{{ m.pick }}" style="all:unset;cursor:pointer;padding:7px 16px;border-radius:999px;font-size:13px;font-weight:500;background:{{ m.bg }};color:{{ m.c }};transition:background 200ms">{{ m.l }}</button></sc-for>
+        </div>
+      </div>
+      <span data-count="2066750" data-pre="₺" style="font-size:clamp(48px,6.4vw,104px);font-weight:300;letter-spacing:-0.06em;line-height:.95">₺2,066,750</span>
+      <span style="font-size:16px;color:{{ nwNoteC }};text-wrap:pretty">{{ nwNote }}</span>
+      <svg viewBox="0 0 600 120" style="width:100%;height:auto;display:block;overflow:visible">
+        <path d="{{ nwBase }}" style="fill:none;stroke:var(--l-line2);stroke-width:1.5;stroke-dasharray:3 5"></path>
+        <path d="{{ nwPath }}" style="fill:none;stroke:var(--l-teal);stroke-width:2;stroke-linecap:round;transition:d 700ms cubic-bezier(.16,1,.3,1)"></path>
+      </svg>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--l-ink3)"><span>Nov 2025</span><span>{{ nwLegend }}</span><span>Oct 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="features" data-screen-label="L8 What-if" style="padding:clamp(80px,14vh,160px) 12px">
+  <div style="position:relative;overflow:hidden;border-radius:36px;background:var(--l-surf);padding:clamp(28px,5vw,80px) clamp(22px,5vw,80px);display:flex;flex-wrap:wrap;gap:clamp(40px,5vw,90px);align-items:center">
+    <div data-par="0.08" style="position:absolute;left:-10%;bottom:-40%;width:60%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,var(--l-teal3),transparent);opacity:.18;filter:blur(40px);pointer-events:none"></div>
+    <div style="position:relative;flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:30px">
+      <div data-r="fade" style="display:flex;align-items:center;gap:14px;font-family:'Geist Mono',monospace;font-size:12px;color:var(--l-ink3);letter-spacing:.08em"><span>06</span><span style="width:40px;height:1px;background:var(--l-line2)"></span><span>WHAT-IF</span></div>
+      <h2 data-r="up" style="margin:0;font-size:clamp(40px,4.8vw,80px);font-weight:300;line-height:1;letter-spacing:-0.055em;text-wrap:balance">What if I saved <span style="color:var(--l-teal)">{{ extraF }}</span> more every month?</h2>
+      <div data-r="up" data-d="150" style="display:flex;flex-direction:column;gap:12px;max-width:440px">
+        <input type="range" min="0" max="9000" step="500" value="{{ extra }}" onChange="{{ setExtra }}" style="width:100%;height:28px;cursor:pointer">
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--l-ink3)"><span>₺0</span><span>₺9,000 · all of Available to spend</span></div>
+      </div>
+      <p data-r="up" data-d="250" style="margin:0;font-size:17px;line-height:1.55;color:var(--l-ink2);max-width:420px">Mizan reruns your plan as you move the slider — and shows the trade-off before you commit.</p>
+    </div>
+    <div data-r="clip" style="position:relative;flex:1.3 1 460px;min-width:0;background:var(--l-bg);border-radius:28px;padding:clamp(22px,3vw,40px);display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;flex-wrap:wrap;gap:20px 40px">
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--l-ink3)">Net worth by Oct 2031</span><span style="font-size:clamp(32px,3.4vw,48px);font-weight:300;letter-spacing:-0.05em;line-height:1">{{ fvF }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--l-ink3)">Versus today’s plan</span><span style="font-size:clamp(32px,3.4vw,48px);font-weight:300;letter-spacing:-0.05em;line-height:1;color:var(--l-teal)">{{ deltaF }}</span></div>
+      </div>
+      <svg viewBox="0 0 600 240" style="width:100%;height:auto;display:block;overflow:visible">
+        <defs><linearGradient id="mzWi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--l-teal);stop-opacity:.22"></stop><stop offset="1" style="stop-color:var(--l-teal);stop-opacity:0"></stop></linearGradient></defs>
+        <sc-for list="{{ wiGrid }}" as="g" hint-placeholder-count="4"><line x1="0" x2="600" y1="{{ g.y }}" y2="{{ g.y }}" style="stroke:var(--l-line);stroke-width:1"></line></sc-for>
+        <path d="{{ wiArea }}" style="fill:url(#mzWi)"></path>
+        <path d="{{ wiBase }}" style="fill:none;stroke:var(--l-ink3);stroke-width:1.5;stroke-dasharray:4 5"></path>
+        <path d="{{ wiLine }}" style="fill:none;stroke:var(--l-teal);stroke-width:2.2;stroke-linecap:round"></path>
+        <circle cx="600" cy="{{ wiEndY }}" r="5" style="fill:var(--l-teal)"></circle>
+      </svg>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--l-ink3)"><span>2026</span><span>2027</span><span>2028</span><span>2029</span><span>2030</span><span>2031</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:var(--l-surf2);font-size:13.5px;flex-wrap:wrap"><span style="width:6px;height:6px;border-radius:50%;background:var(--l-gold);flex:none"></span><span style="color:var(--l-ink2);flex:1;min-width:200px">Available to spend becomes <span style="color:var(--l-ink);font-weight:500">{{ atsF }}</span> a month</span><span style="color:var(--l-ink3)">Real terms · 3.5%/yr</span></div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="L9 Assistant" style="padding:clamp(40px,8vh,100px) clamp(22px,6vw,96px) clamp(80px,14vh,160px);display:flex;flex-wrap:wrap;align-items:center;gap:clamp(48px,6vw,110px);max-width:1520px;margin:0 auto">
+  <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:28px;max-width:540px">
+    <div data-r="fade" style="display:flex;align-items:center;gap:14px;font-family:'Geist Mono',monospace;font-size:12px;color:var(--l-ink3);letter-spacing:.08em"><span>07</span><span style="width:40px;height:1px;background:var(--l-line2)"></span><span>ASSISTANT</span></div>
+    <h2 style="margin:0;font-size:clamp(46px,5.8vw,96px);font-weight:300;line-height:.96;letter-spacing:-0.055em">
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" style="display:block">Ask before</span></span>
+      <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="90" style="display:block">you decide.</span></span>
+    </h2>
+    <p data-r="up" data-d="200" style="margin:0;font-size:18px;line-height:1.55;color:var(--l-ink2);max-width:400px;text-wrap:pretty">Answers come from your own accounts and plan — with the working shown, never a guess.</p>
+    <div data-r="up" data-d="300" style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+      <sc-for list="{{ qs }}" as="q" hint-placeholder-count="2"><button onClick="{{ q.pick }}" style="all:unset;cursor:pointer;padding:10px 16px;border-radius:999px;font-size:14px;border:1px solid {{ q.bd }};color:{{ q.c }};background:{{ q.bg }};transition:all 200ms" style-hover="border-color:var(--l-teal3)">{{ q.t }}</button></sc-for>
+    </div>
+  </div>
+  <div style="flex:1.35 1 480px;min-width:0">
+    <div data-r="clip" data-hook="assistant" style="background:var(--l-surf);border-radius:32px;padding:clamp(22px,3vw,40px);display:flex;flex-direction:column;gap:24px;min-height:460px">
+      <div style="align-self:flex-end;max-width:80%;background:var(--l-surf2);border-radius:22px 22px 6px 22px;padding:14px 20px;font-size:16px">{{ ans.q }}</div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--l-ink3)">
+          <svg viewBox="0 0 176 186" style="width:14px;height:15px;display:block"><path d="M8 6 L68 51 L68 178 L8 136 Z" style="fill:var(--l-teal3)"></path><path d="M168 6 L168 136 L112 178 L112 106 C112 96 100 92 100 82 L100 54 Z" style="fill:var(--l-teal2)"></path></svg>Mizan
+          <sc-if value="{{ thinking }}" hint-placeholder-val="{{ false }}"><span style="display:flex;gap:4px;margin-left:4px"><span style="width:5px;height:5px;border-radius:50%;background:var(--l-ink3);animation:mzDots 1.2s infinite"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--l-ink3);animation:mzDots 1.2s infinite 150ms"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--l-ink3);animation:mzDots 1.2s infinite 300ms"></span></span></sc-if>
+        </div>
+        <div style="font-size:clamp(24px,2.4vw,32px);font-weight:400;letter-spacing:-0.035em;line-height:1.15;opacity:{{ ans.vo }};transform:{{ ans.vt }};transition:opacity 600ms,transform 800ms cubic-bezier(.16,1,.3,1)">{{ ans.verdict }}</div>
+        <sc-for list="{{ ans.lines }}" as="l" hint-placeholder-count="3">
+          <div style="display:flex;gap:14px;font-size:15.5px;line-height:1.55;color:var(--l-ink2);opacity:{{ l.o }};transform:{{ l.t }};transition:opacity 600ms,transform 800ms cubic-bezier(.16,1,.3,1)"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:var(--l-ink3);padding-top:3px">{{ l.n }}</span><span style="text-wrap:pretty">{{ l.text }}</span></div>
+        </sc-for>
+      </div>
+      <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:18px;border-top:1px solid var(--l-line);font-size:12.5px;color:var(--l-ink3);opacity:{{ ans.so }};transition:opacity 600ms;flex-wrap:wrap"><span>{{ ans.src }}</span><span style="color:var(--l-teal)">Show the working</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="security" data-screen-label="L10 Security" style="padding:clamp(60px,10vh,120px) clamp(22px,6vw,96px);max-width:1520px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(48px,8vh,96px)">
+  <h2 style="margin:0;font-size:clamp(40px,5vw,84px);font-weight:300;line-height:1;letter-spacing:-0.055em;max-width:900px">
+    <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" style="display:block">Built for your money,</span></span>
+    <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="90" style="display:block;color:var(--l-ink3)">not for your attention.</span></span>
+  </h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:40px">
+    <sc-for list="{{ trust }}" as="t" hint-placeholder-count="3">
+      <div data-r="up" data-d="{{ t.delay }}" style="display:flex;flex-direction:column;gap:14px;padding-top:24px;border-top:1px solid var(--l-line2)">
+        <span style="font-family:'Geist Mono',monospace;font-size:12px;color:var(--l-ink3)">{{ t.n }}</span>
+        <span style="font-size:22px;font-weight:400;letter-spacing:-0.025em">{{ t.h }}</span>
+        <span style="font-size:15px;line-height:1.55;color:var(--l-ink2);text-wrap:pretty;max-width:340px">{{ t.p }}</span>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="L11 CTA" style="padding:clamp(60px,10vh,120px) 12px 12px">
+  <div data-r="clip" style="position:relative;overflow:hidden;border-radius:36px;min-height:clamp(480px,74vh,760px);display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(28px,5vw,72px)">
+    <div style="position:absolute;inset:-12%;background:var(--l-grad);animation:mzDrift 30s ease-in-out infinite reverse"></div>
+    <div style="position:relative;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:36px">
+      <h2 style="margin:0;font-size:clamp(50px,8.4vw,148px);font-weight:300;line-height:.9;letter-spacing:-0.06em">
+        <span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-r="mask" style="display:block">Every lira,</span></span>
+        <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-r="mask" data-d="100" style="display:block">accounted for.</span></span>
+      </h2>
+      <a href="Mizan.dc.html" style="height:56px;padding:0 8px 0 26px;border-radius:999px;background:var(--l-btn);color:var(--l-btnfg);font-size:15px;font-weight:500;display:flex;align-items:center;gap:16px" style-hover="color:var(--l-btnfg);opacity:.9">Start using Mizan<span style="width:40px;height:40px;border-radius:50%;background:var(--l-teal);color:#0A0C0E;display:flex;align-items:center;justify-content:center;font-size:17px">→</span></a>
+    </div>
+  </div>
+  <footer id="about" style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:32px;padding:56px clamp(10px,4vw,60px) 44px">
+    <div style="display:flex;flex-direction:column;gap:14px;max-width:340px">
+      <div style="display:flex;align-items:center;gap:10px"><svg viewBox="0 0 176 186" style="width:18px;height:19px;display:block"><path d="M8 6 L68 51 L68 178 L8 136 Z" style="fill:var(--l-teal3)"></path><path d="M168 6 L168 136 L112 178 L112 106 C112 96 100 92 100 82 L100 54 Z" style="fill:var(--l-teal2)"></path></svg><span style="font-size:18px;font-weight:500;letter-spacing:-0.04em">Mizan</span></div>
+      <span style="font-size:14px;line-height:1.55;color:var(--l-ink2)">Mizan means balance. A personal finance system made in İstanbul.</span>
+    </div>
+    <div style="display:flex;gap:56px;flex-wrap:wrap;font-size:14px">
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="color:var(--l-ink3)">Product</span><a href="#product">Plan</a><a href="#features">What-if</a><a href="Mizan.dc.html">Sign in</a></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="color:var(--l-ink3)">Company</span><a href="#about">About</a><a href="#security">Security</a><a href="#about">Contact</a></div>
+    </div>
+    <span style="width:100%;font-size:12.5px;color:var(--l-ink3);padding-top:28px;border-top:1px solid var(--l-line)">© 2026 Mizan</span>
+  </footer>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Dark&quot;,&quot;Light&quot;],&quot;default&quot;:&quot;Dark&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;intro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const smooth = (p) => { let d = `M${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}`; for (let i = 0; i < p.length - 1; i++) { const a = p[i - 1] || p[i], b = p[i], c = p[i + 1], e = p[i + 2] || c; d += ` C${(b[0] + (c[0] - a[0]) / 6).toFixed(1)} ${(b[1] + (c[1] - a[1]) / 6).toFixed(1)} ${(c[0] - (e[0] - b[0]) / 6).toFixed(1)} ${(c[1] - (e[1] - b[1]) / 6).toFixed(1)} ${c[0].toFixed(1)} ${c[1].toFixed(1)}`; } return d; };
+const tl = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const FLOWS = [['Essentials', 22500, '--l-slate'], ['Available to spend', 9000, '--l-gold'], ['Savings', 6000, '--l-sav'], ['Investments', 8000, '--l-blue'], ['Debt payments', 4500, '--l-clay']];
+const INV = [842000, 861500, 879000, 868200, 902400, 921800, 944100, 968900, 991500, 1012300, 1038700, 1060200];
+const NW = [1612000, 1648500, 1701200, 1688400, 1742900, 1781300, 1820600, 1866000, 1915400, 1972800, 2028350, 2066750];
+const ANS = [
+  { q: 'Can I afford to spend ₺8,000 this month?', verdict: 'Not from spending money alone.', lines: ['You have ₺3,000 left to spend, with 10 days of October to go.', 'Covering ₺8,000 means finding ₺5,000 more — the cleanest way is to skip the ₺4,000 investment due 29 Oct and take ₺1,000 from savings.', 'Or wait 10 days: November starts with ₺9,000 to spend.'], src: 'October plan · 8 accounts · synced 14:58' },
+  { q: 'How much can I safely invest this month?', verdict: 'Your planned ₺4,000 — but not more.', lines: ['After this week’s bills (₺7,430), checking will hold ₺17,110.', 'Investing ₺4,000 on 29 Oct leaves ₺13,110, above your ₺12,000 safety buffer.', 'Anything beyond that dips into the buffer until salary day on 1 Nov.'], src: 'Calendar · Investments · Garanti ··4471' },
+];
+
+class Component extends DCLogic {
+  state = { phase: 0, intro: true, scrolled: false, w: 1280, extra: 5000, real: false, q: 0, step: 0 };
+  rootRef = React.createRef();
+
+  componentDidMount() {
+    this.applyTheme();
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.reduce = reduce;
+    if (this.props.intro !== false && !reduce) {
+      this.timers = [[60, { phase: 1 }], [620, { phase: 2 }], [1250, { phase: 3 }], [1850, { phase: 4 }], [2850, { intro: false, phase: 5 }]].map(([t, s]) => setTimeout(() => this.setState(s), t));
+    } else this.setState({ intro: false, phase: 5 });
+    this.onResize = () => { const w = Math.round(document.documentElement.clientWidth || window.innerWidth); if (w && w !== this.state.w) this.setState({ w }); };
+    this.onResize();
+    requestAnimationFrame(this.onResize);
+    window.addEventListener('resize', this.onResize);
+    this.ro = new ResizeObserver(this.onResize);
+    this.ro.observe(document.documentElement);
+    this.onScroll = () => { const s = window.scrollY > 40; if (s !== this.state.scrolled) this.setState({ scrolled: s }); if (!this.raf) this.raf = requestAnimationFrame(() => { this.raf = null; this.parallax(); }); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    requestAnimationFrame(() => this.setupReveal());
+  }
+  componentDidUpdate(p) { if (p.theme !== this.props.theme) this.applyTheme(); }
+  componentWillUnmount() { (this.timers || []).forEach(clearTimeout); clearInterval(this.typer); window.removeEventListener('resize', this.onResize); this.ro && this.ro.disconnect(); window.removeEventListener('scroll', this.onScroll); this.io && this.io.disconnect(); }
+  applyTheme() { document.documentElement.dataset.theme = (this.props.theme || 'Dark').toLowerCase(); }
+
+  parallax() {
+    const root = this.rootRef.current; if (!root || this.reduce) return;
+    const vh = window.innerHeight;
+    root.querySelectorAll('[data-par]').forEach((el) => {
+      const r = el.parentElement.getBoundingClientRect();
+      const off = (r.top + r.height / 2 - vh / 2) * parseFloat(el.dataset.par);
+      el.style.transform = `translate3d(0,${off.toFixed(1)}px,0)`;
+    });
+  }
+
+  setupReveal() {
+    const root = this.rootRef.current; if (!root) return;
+    if (this.reduce) { root.querySelectorAll('[data-hook="assistant"]').forEach(() => this.playAssistant()); return; }
+    const E = 'cubic-bezier(.16,1,.3,1)';
+    const hide = { up: 'translateY(56px)', mask: 'translateY(110%)', right: 'translateX(22vw)', left: 'translateX(-22vw)', scale: 'scale(.92)', grow: 'scaleX(0)' };
+    const groups = new Map();
+    root.querySelectorAll('[data-r],[data-count]').forEach((el) => {
+      const t = el.dataset.r, d = +(el.dataset.d || 0);
+      if (t) {
+        el.style.transition = `transform 1.25s ${E} ${d}ms, opacity 1s ease ${d}ms, clip-path 1.4s ${E} ${d}ms, stroke-dashoffset 1.9s ${E} ${d}ms`;
+        if (t === 'draw') { el.style.strokeDasharray = '1 1'; el.style.strokeDashoffset = '1'; }
+        else if (t === 'wipe') el.style.clipPath = 'inset(0 100% 0 0)';
+        else if (t === 'clip') { el.style.clipPath = 'inset(10% 6% 10% 6% round 32px)'; el.style.opacity = '0'; }
+        else if (t === 'fade') el.style.opacity = '0';
+        else { el.style.transform = hide[t]; if (t === 'grow') el.style.transformOrigin = 'left center'; else if (t !== 'mask') el.style.opacity = '0'; }
+      }
+      if (el.dataset.count) el.textContent = this.fmtCount(el, 0);
+      const host = el.parentElement;
+      if (!groups.has(host)) groups.set(host, []);
+      groups.get(host).push(el);
+    });
+    this.io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      this.io.unobserve(e.target);
+      (groups.get(e.target) || []).forEach((el) => this.reveal(el));
+    }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    groups.forEach((_, host) => this.io.observe(host));
+    this.parallax();
+  }
+  reveal(el) {
+    const t = el.dataset.r;
+    if (t === 'draw') el.style.strokeDashoffset = el.dataset.to || '0';
+    else if (t === 'wipe') el.style.clipPath = 'inset(0 0% 0 0)';
+    else if (t === 'clip') { el.style.clipPath = 'inset(0% 0% 0% 0% round 32px)'; el.style.opacity = '1'; setTimeout(() => { el.style.clipPath = ''; }, 1500); }
+    else if (t) { el.style.transform = 'none'; el.style.opacity = '1'; }
+    if (el.dataset.count) this.count(el);
+    if (el.dataset.hook === 'assistant') this.playAssistant();
+  }
+  fmtCount(el, v) { return (el.dataset.pre || '') + Math.round(v).toLocaleString('en-US') + (el.dataset.suf || ''); }
+  count(el) {
+    const to = parseFloat(el.dataset.count), t0 = performance.now(), D = 1700;
+    const step = (t) => { const p = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - p, 4); el.textContent = this.fmtCount(el, to * e); if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
+  playAssistant(q) {
+    clearInterval(this.typer);
+    this.setState({ step: 0, ...(q !== undefined ? { q } : {}) });
+    this.typer = setInterval(() => this.setState((s) => { if (s.step >= 5) { clearInterval(this.typer); return null; } return { step: s.step + 1 }; }), 650);
+  }
+
+  renderVals() {
+    const { phase, w, extra, real, q, step } = this.state;
+    const wide = w >= 900, small = w < 640;
+    // sankey
+    let ys = 10, yd = 0; const g = 10, sS = 300 / 50000, sD = 280 / 50000;
+    const flows = FLOWS.map(([name, v, c], i) => {
+      const hs = v * sS, hd = v * sD, x0 = 12, x1 = 594, xm = 300;
+      const d = `M${x0} ${ys} C${xm} ${ys} ${xm} ${yd} ${x1} ${yd} L${x1} ${yd + hd} C${xm} ${yd + hd} ${xm} ${ys + hs} ${x0} ${ys + hs} Z`;
+      const o = { name, v, amt: tl(v), c: `var(${c})`, d, y: yd, h: hd, delay: 300 + i * 90 };
+      ys += hs; yd += hd + g; return o;
+    });
+    const series = (arr, H, pad) => { const lo = Math.min(...arr), hi = Math.max(...arr); return arr.map((v, k) => [k / (arr.length - 1) * 600, pad + (1 - (v - lo) / (hi - lo)) * (H - pad * 2)]); };
+    const ip = series(INV, 200, 10); const invLine = smooth(ip);
+    // net worth real/nominal
+    const realS = NW.map((v, k) => v * Math.pow(1.269, (11 - k) / 11));
+    const all = [...NW, ...realS], lo = Math.min(...all), hi = Math.max(...all);
+    const toPts = (arr) => arr.map((v, k) => [k / 11 * 600, 8 + (1 - (v - lo) / (hi - lo)) * 104]);
+    const nwPath = smooth(toPts(real ? realS : NW)), nwBase = smooth(toPts(real ? NW : realS));
+    const realGain = NW[11] - realS[0];
+    // what-if
+    const r = 0.035 / 12, P = 2066750, base = 14000;
+    const fv = (c, n) => P * Math.pow(1 + r, n) + c * (Math.pow(1 + r, n) - 1) / r;
+    const N = 60, pts = 21;
+    const bArr = [], sArr = [];
+    for (let i = 0; i < pts; i++) { const n = i * N / (pts - 1); bArr.push(fv(base, n)); sArr.push(fv(base + extra, n)); }
+    const wLo = P * 0.96, wHi = fv(base + 9000, N) * 1.02;
+    const wp = (arr) => arr.map((v, i) => [i / (pts - 1) * 600, 10 + (1 - (v - wLo) / (wHi - wLo)) * 220]);
+    const sp = wp(sArr), wiLine = smooth(sp);
+    const ans = ANS[q];
+    return {
+      rootRef: this.rootRef,
+      introOn: this.state.intro, skipIntro: () => { (this.timers || []).forEach(clearTimeout); this.setState({ phase: 4 }); setTimeout(() => this.setState({ intro: false, phase: 5 }), 950); },
+      introClip: phase >= 4 ? 'inset(0 0 100% 0)' : 'inset(0 0 0% 0)', introBand: phase >= 3 ? '100%' : '0%',
+      introL: phase >= 1 ? 'translateY(0)' : 'translateY(-34px)', introR: phase >= 1 ? 'translateY(0)' : 'translateY(34px)', introO: phase >= 1 ? 1 : 0,
+      introW: phase >= 2 ? 'translateY(0)' : 'translateY(115%)',
+      heroL1: phase >= 4 ? 'translateY(0)' : 'translateY(110%)', heroL2: phase >= 4 ? 'translateY(0)' : 'translateY(110%)',
+      heroO: phase >= 4 ? 1 : 0, heroUp: phase >= 4 ? 'translateY(0)' : 'translateY(24px)',
+      heroAlign: small ? 'flex-start' : 'flex-end', heroText: small ? 'left' : 'right',
+      shapeLeft: small ? '-18%' : '3%', shapeOp: small ? 0.55 : 1,
+      navBg: this.state.scrolled ? 'var(--l-navbg)' : 'transparent', wide, notTiny: w >= 480,
+      flowLines: [0, 1, 2, 3, 4].map((i) => ({ d: `M${-40} ${520 - i * 40} C ${300} ${560 - i * 70}, ${640} ${260 + i * 60}, ${1240} ${180 + i * 85}`, dur: (14 + i * 3) + 's' })),
+      flows,
+      txs: [['Migros Kadıköy', 'Food & groceries', '--l-slate', '−₺642.40'], ['Shell Acıbadem', 'Transport', '--l-slate', '−₺920.00'], ['Yemeksepeti', 'Dining out · Available to spend', '--l-gold', '−₺412.50'], ['Getir', 'Suggested: Food & groceries — confirm?', '--l-gold', '−₺318.75']].map(([m, cat, c, a], i) => ({ m, cat, a, dot: `var(${c})`, cc: i === 3 ? 'var(--l-gold)' : 'var(--l-ink3)', delay: 200 + i * 120, indent: small ? '0' : ['0', '6%', '3%', '9%'][i] })),
+      goals: [['Japan trip', 24500, 35000, 'Target Jul 2027 · about 2 months behind', 'var(--l-gold)'], ['New computer', 27000, 40000, 'On track for Dec 2027', 'var(--l-teal)'], ['House deposit', 650000, 1500000, 'Target Dec 2029', 'var(--l-ink3)']].map(([n, c, t, note, nc], i) => ({ n, p: tl(c) + ' / ' + tl(t), w: (c / t * 100).toFixed(1) + '%', note, nc, delay: 300 + i * 120 })),
+      invLine, invArea: invLine + ' L600 200 L0 200 Z', invEndY: ip[11][1].toFixed(1),
+      alloc: [['Equities', 41.8, '--l-blue'], ['Funds', 24.6, '--l-sav'], ['Gold', 19.4, '--l-gold'], ['Eurobonds', 8.2, '--l-slate'], ['FX', 3.7, '--l-clay'], ['Cash', 2.3, '--l-ink3']].map(([n, v, c], i) => ({ n, v, p: v + '%', c: `var(${c})`, delay: 200 + i * 80 })),
+      nwModes: [['Nominal', false], ['Real terms', true]].map(([l, v]) => ({ l, bg: real === v ? 'var(--l-surf)' : 'transparent', c: real === v ? 'var(--l-ink)' : 'var(--l-ink3)', pick: () => this.setState({ real: v }) })),
+      nwPath, nwBase, nwLegend: real ? 'Teal: today’s lira · dashed: nominal' : 'Teal: nominal · dashed: today’s lira',
+      nwNote: real ? `After 26.9% inflation you’re up ${tl(realGain)} in real terms — 1.0% in a year.` : `Up ${tl(NW[11] - NW[0])} in twelve months, +28.2% on paper.`,
+      nwNoteC: real ? 'var(--l-gold)' : 'var(--l-teal)',
+      extra, extraF: tl(extra), setExtra: (e) => this.setState({ extra: +e.target.value }),
+      fvF: tl(sArr[pts - 1]), deltaF: '+' + tl(sArr[pts - 1] - bArr[pts - 1]), atsF: tl(9000 - extra),
+      wiLine, wiBase: smooth(wp(bArr)), wiArea: wiLine + ' L600 240 L0 240 Z', wiEndY: sp[pts - 1][1].toFixed(1),
+      wiGrid: [30, 90, 150, 210].map((y) => ({ y })),
+      qs: ANS.map((a, i) => ({ t: a.q, pick: () => this.playAssistant(i), bd: i === q ? 'var(--l-teal3)' : 'var(--l-line2)', c: i === q ? 'var(--l-ink)' : 'var(--l-ink2)', bg: i === q ? 'var(--l-surf)' : 'transparent' })),
+      thinking: step === 0,
+      ans: { q: ans.q, verdict: ans.verdict, src: ans.src, vo: step >= 1 ? 1 : 0, vt: step >= 1 ? 'none' : 'translateY(10px)', so: step >= 5 ? 1 : 0, lines: ans.lines.map((text, i) => ({ text, n: '0' + (i + 1), o: step >= i + 2 ? 1 : 0, t: step >= i + 2 ? 'none' : 'translateY(10px)' })) },
+      trust: [['01', 'Read-only by design', 'Mizan connects through open banking with view-only access. It can see your balances; it can never move your money.'], ['02', 'Encrypted, always', 'Your data is encrypted in transit and at rest, and every access is logged where you can see it.'], ['03', 'Yours, not ours', 'No ads, no selling data. Export or delete everything whenever you like.']].map(([n, h, p], i) => ({ n, h, p, delay: i * 120 })),
+    };
+  }
+}
+</script>
+</body>
+</html>

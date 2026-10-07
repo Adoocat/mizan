@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="04 Calendar" style="padding:32px 40px 80px;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">Recurring and scheduled money movements</div>
+      <h1 style="margin:6px 0 0;font-size:40px;font-weight:300;letter-spacing:-0.045em;line-height:1.05">Calendar</h1>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <div style="display:flex;gap:2px;padding:2px;background:var(--m-ece9e2-bg);border-radius:6px">
+        <sc-for list="{{ views }}" as="v" hint-placeholder-count="2">
+          <button onClick="{{ v.pick }}" style="all:unset;cursor:pointer;padding:5px 12px;border-radius:5px;font-size:12.5px;font-weight:500;background:{{ v.bg }};color:{{ v.color }};box-shadow:{{ v.shadow }}">{{ v.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;border:1px solid var(--m-e3e0d8-line);border-radius:6px;background:var(--m-ffffff-bg);height:32px">
+        <button style="all:unset;cursor:pointer;padding:0 10px;height:100%;display:flex;align-items:center;color:var(--m-5c5852-fg);border-right:1px solid var(--m-e3e0d8-line)" style-hover="background:var(--m-f3f1ec-bg)">‹</button>
+        <span style="padding:0 14px;font-size:13px;font-weight:500">October 2026</span>
+        <button style="all:unset;cursor:pointer;padding:0 10px;height:100%;display:flex;align-items:center;color:var(--m-5c5852-fg);border-left:1px solid var(--m-e3e0d8-line)" style-hover="background:var(--m-f3f1ec-bg)">›</button>
+      </div>
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Add recurring</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px">
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)">
+      <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Upcoming payments in the next 7 days</span>
+      <span style="font-size:24px;font-weight:500;letter-spacing:-0.025em">₺7,430</span>
+      <span style="font-size:11.5px;color:var(--m-77726a-fg)">5 confirmed ₺6,710 · 1 estimated ~₺720</span>
+    </div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)">
+      <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Overdue</span>
+      <span style="font-size:24px;font-weight:500;letter-spacing:-0.025em;color:var(--m-b4423a-fg)">₺310</span>
+      <span style="font-size:11.5px;color:var(--m-77726a-fg)">İSKİ Water · due 19 Oct</span>
+    </div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)">
+      <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Lowest projected checking balance</span>
+      <span style="font-size:24px;font-weight:500;letter-spacing:-0.025em">₺10,720</span>
+      <span style="font-size:11.5px;color:var(--m-77726a-fg)">31 Oct, the day before salary</span>
+    </div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Next income</span>
+      <span style="font-size:24px;font-weight:500;letter-spacing:-0.025em;color:var(--m-2f7d57-fg)">+₺46,000</span>
+      <span style="font-size:11.5px;color:var(--m-77726a-fg)">Salary · expected 1 Nov</span>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+    <section style="flex:2.4 1 640px;min-width:0;background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;overflow:hidden">
+      <div style="display:flex;flex-wrap:wrap;gap:14px;padding:12px 16px;border-bottom:1px solid var(--m-efece6-line);font-size:12px;color:var(--m-5c5852-fg)">
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:var(--m-f3f1ec-bg);border:1px solid var(--m-dedad1-line)"></span>Paid</span>
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:var(--m-ebeff6-bg);border-left:2px solid var(--m-2c4a7c-line)"></span>Upcoming</span>
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;border:1px dashed var(--m-8a857c-line)"></span>Estimated</span>
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:var(--m-f8eae7-bg);border-left:2px solid var(--m-b4423a-line)"></span>Overdue</span>
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:var(--m-e8f2ec-bg);border-left:2px solid var(--m-2f7d57-line)"></span>Income</span>
+        <span style="margin-left:auto;color:var(--m-77726a-fg)">Grey figure = checking balance at end of day</span>
+      </div>
+
+      <sc-if value="{{ isMonth }}" hint-placeholder-val="{{ true }}">
+        <div style="overflow-x:auto">
+          <div style="min-width:700px">
+            <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-bottom:1px solid var(--m-efece6-line);background:var(--m-faf9f6-bg)">
+              <span style="padding:8px 10px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Mon</span><span style="padding:8px 10px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Tue</span><span style="padding:8px 10px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Wed</span><span style="padding:8px 10px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Thu</span><span style="padding:8px 10px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Fri</span><span style="padding:8px 10px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Sat</span><span style="padding:8px 10px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500">Sun</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr))">
+              <sc-for list="{{ cells }}" as="c" hint-placeholder-count="35">
+                <button onClick="{{ c.pick }}" style="all:unset;cursor:pointer;box-sizing:border-box;min-height:118px;padding:7px 7px 6px;border-right:{{ c.br }};border-bottom:1px solid var(--m-efece6-line);display:flex;flex-direction:column;gap:3px;background:{{ c.bg }};box-shadow:{{ c.ring }};position:relative" style-hover="background:{{ c.hbg }}">
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:0 2px 2px">
+                    <span style="font-size:12px;font-weight:{{ c.dw }};color:{{ c.dc }};background:{{ c.todayBg }};border-radius:4px;padding:1px 5px;margin-left:-5px">{{ c.d }}</span>
+                    <span style="font-size:10.5px;color:var(--m-2c4a7c-fg);font-weight:500">{{ c.tag }}</span>
+                  </div>
+                  <sc-for list="{{ c.ev }}" as="e" hint-placeholder-count="1">
+                    <div style="display:flex;align-items:center;gap:4px;font-size:11px;line-height:1.2;padding:3px 5px;border-radius:3px;background:{{ e.bg }};border:{{ e.bd }};border-left:{{ e.bl }};color:{{ e.color }};text-decoration:{{ e.td }}">
+                      <span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ e.name }}</span>
+                      <span style="font-weight:500;white-space:nowrap">{{ e.amt }}</span>
+                    </div>
+                  </sc-for>
+                  <span style="margin-top:auto;font-size:10.5px;color:{{ c.balColor }};text-align:right;padding-right:2px">{{ c.bal }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAgenda }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ agenda }}" as="a" hint-placeholder-count="10">
+            <div style="display:grid;grid-template-columns:84px minmax(0,1fr) 110px 110px 110px;align-items:center;column-gap:14px;padding:0 16px;height:44px;border-bottom:1px solid var(--m-f3f1ec-line);font-size:13px" style-hover="background:var(--m-faf9f6-bg)">
+              <span style="color:var(--m-77726a-fg)">{{ a.date }}</span>
+              <span style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.name }}</span>
+              <span><span style="font-size:11px;font-weight:500;padding:2px 6px;border-radius:4px;color:{{ a.sc }};background:{{ a.sbg }};border:{{ a.sbd }}">{{ a.status }}</span></span>
+              <span style="text-align:right;font-weight:500;color:{{ a.amtColor }}">{{ a.amt }}</span>
+              <span style="text-align:right;color:var(--m-77726a-fg);font-size:12px">{{ a.bal }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </section>
+
+    <aside style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:20px">
+      <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <span style="font-size:12px;color:var(--m-77726a-fg)">{{ selDow }}</span>
+          <h2 style="font-size:15px;font-weight:600;letter-spacing:-0.01em;margin:0">{{ selTitle }}</h2>
+        </div>
+        <sc-if value="{{ selHasEv }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ selEv }}" as="e" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column;gap:3px;padding:10px 0;border-top:1px solid var(--m-f3f1ec-line)">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="font-size:13px;font-weight:500;flex:1">{{ e.name }}</span>
+                  <span style="font-size:13px;font-weight:500;color:{{ e.amtColor }}">{{ e.amtFull }}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="font-size:11px;font-weight:500;padding:1px 6px;border-radius:4px;color:{{ e.sc }};background:{{ e.sbg }};border:{{ e.sbd }}">{{ e.status }}</span>
+                  <span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ e.meta }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ selNoEv }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:12.5px;color:var(--m-77726a-fg)">Nothing scheduled. Only daily spending affects this day.</span>
+        </sc-if>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;padding-top:10px;border-top:1px solid var(--m-efece6-line)">
+          <span style="color:var(--m-5c5852-fg)">{{ selBalLabel }}</span><span style="font-weight:500">{{ selBal }}</span>
+        </div>
+      </section>
+
+      <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Checking balance, next 14 days</h2>
+          <span style="font-size:12px;color:var(--m-77726a-fg);line-height:1.45">Includes scheduled payments and ₺300/day of spending.</span>
+        </div>
+        <svg viewBox="0 0 280 110" preserveAspectRatio="none" style="width:100%;height:110px;display:block;overflow:visible">
+          <line x1="0" y1="{{ zeroY }}" x2="280" y2="{{ zeroY }}" style="stroke:var(--m-efece6-line);stroke-width:1"></line>
+          <path d="{{ projArea }}" style="fill:var(--m-eef1f6-bg)"></path>
+          <path d="{{ projLine }}" style="fill:none;stroke:var(--m-3d5a99-line);stroke-width:1.5" vectorEffect="non-scaling-stroke"></path>
+          <circle cx="{{ lowX }}" cy="{{ lowY }}" r="3.5" style="fill:var(--m-ffffff-bg);stroke:var(--m-1c1b19-line);stroke-width:1.5"></circle>
+        </svg>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--m-77726a-fg)"><span>22 Oct</span><span>31 Oct</span><span>4 Nov</span></div>
+        <div style="font-size:12px;color:var(--m-5c5852-fg);line-height:1.5;text-wrap:pretty">Lowest point is <span style="color:var(--m-1c1b19-fg);font-weight:500">₺10,720</span> on 31 Oct. Your ₺5,000 minimum-balance alert won’t trigger.</div>
+      </section>
+
+      <section style="background:var(--m-faf9f6-bg);border:1px solid transparent;border-radius:24px;padding:22px 28px;display:flex;flex-direction:column;gap:10px">
+        <h2 style="font-size:13px;font-weight:600;margin:0">Recurring each month</h2>
+        <div style="display:grid;grid-template-columns:1fr auto;row-gap:7px;font-size:12.5px">
+          <span style="color:var(--m-5c5852-fg)">Housing &amp; utilities</span><span style="font-weight:500">₺11,509</span>
+          <span style="color:var(--m-5c5852-fg)">Debt payments</span><span style="font-weight:500">₺5,500</span>
+          <span style="color:var(--m-5c5852-fg)">Subscriptions · 5</span><span style="font-weight:500">₺1,399</span>
+          <span style="color:var(--m-5c5852-fg)">Savings &amp; investing</span><span style="font-weight:500">₺14,000</span>
+          <span style="border-top:1px solid var(--m-e3e0d8-line);padding-top:7px;font-weight:500">Committed before spending</span><span style="border-top:1px solid var(--m-e3e0d8-line);padding-top:7px;font-weight:600">₺32,408</span>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+// [day, name, amount, status, meta]   status: paid | up | est | over | inc | incx
+const EV = {
+  1: [['Salary · Koç Digital', 46000, 'inc', 'Received · Garanti ··4471'], ['Auto-transfer to goals', -6000, 'paid', 'To Enpara · 4 goals']],
+  3: [['YouTube Premium', -58, 'paid', 'Bonus card']], 5: [['Rent', -9500, 'paid', 'Standing order to landlord']],
+  8: [['iCloud+', -40, 'paid', 'Bonus card']], 10: [['Personal loan', -4200, 'paid', 'İş Bankası · instalment 13 of 36']],
+  12: [['KYK student loan', -1300, 'paid', 'Garanti ··4471']],
+  15: [['Freelance · Atölye Studio', 4000, 'inc', 'Invoice #0412'], ['Fund purchase · PPF', -4000, 'paid', 'İş Yatırım · monthly plan']],
+  17: [['İGDAŞ Natural gas', -430, 'paid', 'Auto-pay']], 19: [['İSKİ Water', -310, 'over', 'Not matched to a payment yet']],
+  23: [['Internet · Superonline', -549, 'up', 'Auto-pay · Garanti']], 24: [['Spotify', -99, 'up', 'Bonus card']],
+  25: [['Bonus card statement', -4860, 'up', 'Auto-pay full statement from Garanti']], 26: [['Electricity · Enerjisa', -720, 'est', 'Estimated from last 6 bills (₺640–₺810)']],
+  27: [['MACFit', -980, 'up', 'Bonus card']], 28: [['Netflix', -222, 'up', 'Bonus card']],
+  29: [['Gold + BIST purchase', -4000, 'up', 'Monthly investment plan']],
+  32: [['Salary · Koç Digital', 46000, 'incx', 'Expected · Garanti ··4471'], ['Auto-transfer to goals', -6000, 'up', 'To Enpara · 4 goals']],
+};
+const PAST = { 1: 47800, 2: 47300, 3: 46900, 4: 46500, 5: 36700, 6: 36300, 7: 35900, 8: 35500, 9: 35100, 10: 30750, 11: 30400, 12: 28950, 13: 28600, 14: 28300, 15: 27900, 16: 27600, 17: 27100, 18: 26100, 19: 25700, 20: 25420, 21: 25120, 22: 24850 };
+const TODAY = 22;
+const S = {
+  paid: { label: 'Paid', bg: 'var(--m-f3f1ec-bg)', bd: '1px solid var(--m-f3f1ec-line)', bl: '2px solid var(--m-cfcac0-line)', color: 'var(--m-77726a-fg)', sc: 'var(--m-5c5852-fg)', sbg: 'var(--m-f3f1ec-bg)', sbd: '1px solid var(--m-f3f1ec-line)' },
+  up: { label: 'Upcoming', bg: 'var(--m-ebeff6-bg)', bd: '1px solid var(--m-ebeff6-line)', bl: '2px solid var(--m-2c4a7c-line)', color: 'var(--m-1f3760-fg)', sc: 'var(--m-2c4a7c-fg)', sbg: 'var(--m-ebeff6-bg)', sbd: '1px solid var(--m-ebeff6-line)' },
+  est: { label: 'Estimated', bg: 'var(--m-ffffff-bg)', bd: '1px dashed var(--m-a49e94-line)', bl: '1px dashed var(--m-a49e94-line)', color: 'var(--m-4f4b45-fg)', sc: 'var(--m-5c5852-fg)', sbg: 'var(--m-ffffff-bg)', sbd: '1px dashed var(--m-a49e94-line)' },
+  over: { label: 'Overdue', bg: 'var(--m-f8eae7-bg)', bd: '1px solid var(--m-f8eae7-line)', bl: '2px solid var(--m-b4423a-line)', color: 'var(--m-8c3a33-fg)', sc: 'var(--m-b4423a-fg)', sbg: 'var(--m-f8eae7-bg)', sbd: '1px solid var(--m-f8eae7-line)' },
+  inc: { label: 'Received', bg: 'var(--m-e8f2ec-bg)', bd: '1px solid var(--m-e8f2ec-line)', bl: '2px solid var(--m-2f7d57-line)', color: 'var(--m-245f43-fg)', sc: 'var(--m-2f7d57-fg)', sbg: 'var(--m-e8f2ec-bg)', sbd: '1px solid var(--m-e8f2ec-line)' },
+  incx: { label: 'Expected', bg: 'var(--m-ffffff-bg)', bd: '1px dashed var(--m-2f7d57-line)', bl: '1px dashed var(--m-2f7d57-line)', color: 'var(--m-245f43-fg)', sc: 'var(--m-2f7d57-fg)', sbg: 'var(--m-ffffff-bg)', sbd: '1px dashed var(--m-2f7d57-line)' },
+};
+const k = (n) => (Math.abs(n) >= 1000 ? (n / 1000).toFixed(Math.abs(n) % 1000 ? 1 : 0).replace('.0', '') + 'k' : String(Math.abs(n)));
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const DOWS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+function balances() {
+  const b = { ...PAST };
+  let cur = PAST[TODAY];
+  for (let d = TODAY + 1; d <= 36; d++) {
+    (EV[d] || []).forEach((e) => { cur += e[1]; });
+    cur -= 300; b[d] = cur;
+  }
+  return b;
+}
+
+class Component extends DCLogic {
+  state = { sel: 25, view: 'month' };
+  renderVals() {
+    const bal = balances();
+    const cells = [];
+    for (let i = 0; i < 35; i++) {
+      const d = i - 2; // Mon 28 Sep = -2
+      const inMonth = d >= 1 && d <= 31;
+      const label = d < 1 ? 30 + d : d > 31 ? d - 31 : d;
+      const ev = (EV[d] || []).map(([name, amt, st]) => ({ name, amt: (amt > 0 ? '+' : '') + (st === 'est' ? '~' : '') + k(amt), ...S[st], td: 'none' }));
+      const isToday = d === TODAY, isSel = d === this.state.sel;
+      cells.push({
+        d: label, tag: isToday ? 'Today' : d === 32 ? 'Nov' : '', ev,
+        dw: isToday ? 600 : 500, dc: isToday ? 'var(--m-faf9f6-fg)' : inMonth ? 'var(--m-1c1b19-fg)' : 'var(--m-a49e94-fg)', todayBg: isToday ? 'var(--m-1c1b19-bg)' : 'transparent',
+        bal: bal[d] !== undefined && d >= 1 ? f0(bal[d]) : '', balColor: d > TODAY ? 'var(--m-77726a-fg)' : 'var(--m-a49e94-fg)',
+        bg: isSel ? 'var(--m-f6f8fb-bg)' : inMonth ? (d < TODAY ? 'var(--m-fdfcfb-bg)' : 'var(--m-ffffff-bg)') : 'var(--m-faf9f6-bg)', hbg: isSel ? 'var(--m-f6f8fb-bg)' : 'var(--m-faf9f6-bg)',
+        ring: isSel ? 'inset 0 0 0 1.5px var(--m-2c4a7c-line)' : 'none', br: i % 7 === 6 ? 'none' : '1px solid var(--m-efece6-line)',
+        pick: () => this.setState({ sel: d }),
+      });
+    }
+    const sd = this.state.sel;
+    const selEvRaw = EV[sd] || [];
+    const sdLabel = sd < 1 ? 30 + sd : sd > 31 ? sd - 31 : sd;
+    const sdMonth = sd < 1 ? 'September' : sd > 31 ? 'November' : 'October';
+    const dowIdx = ((sd + 2) % 7 + 7) % 7;
+    // projection chart 22 Oct -> 4 Nov
+    const series = []; for (let d = TODAY; d <= 35; d++) series.push(bal[d]);
+    const hi = 70000, lo = 0;
+    const X = (i) => i / (series.length - 1) * 280, Y = (v) => 110 - (v - lo) / (hi - lo) * 104;
+    const line = series.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+    const minV = Math.min(...series), minI = series.indexOf(minV);
+    const agenda = [];
+    Object.keys(EV).map(Number).sort((a, b) => a - b).forEach((d) => EV[d].forEach(([name, amt, st]) => {
+      agenda.push({ date: (d > 31 ? d - 31 + ' Nov' : d + ' Oct'), name, status: S[st].label, sc: S[st].sc, sbg: S[st].sbg, sbd: S[st].sbd, amt: (amt > 0 ? '+' : '') + (st === 'est' ? '~' : '') + f0(amt), amtColor: amt > 0 ? 'var(--m-2f7d57-fg)' : 'var(--m-1c1b19-fg)', bal: bal[d] !== undefined ? f0(bal[d]) : '' });
+    }));
+    return {
+      views: [['month', 'Month'], ['agenda', 'Agenda']].map(([id, label]) => { const a = this.state.view === id; return { label, bg: a ? 'var(--m-ffffff-bg)' : 'transparent', color: a ? 'var(--m-1c1b19-fg)' : 'var(--m-5c5852-fg)', shadow: a ? '0 1px 2px rgba(28,27,25,0.08)' : 'none', pick: () => this.setState({ view: id }) }; }),
+      isMonth: this.state.view === 'month', isAgenda: this.state.view === 'agenda', cells, agenda,
+      selDow: DOWS[dowIdx] + (sd === TODAY ? ' · Today' : ''), selTitle: sdLabel + ' ' + sdMonth + ' 2026',
+      selHasEv: selEvRaw.length > 0, selNoEv: selEvRaw.length === 0,
+      selEv: selEvRaw.map(([name, amt, st, meta]) => ({ name, meta, status: S[st].label, sc: S[st].sc, sbg: S[st].sbg, sbd: S[st].sbd, amtFull: (amt > 0 ? '+' : '') + (st === 'est' ? '~' : '') + f0(amt), amtColor: amt > 0 ? 'var(--m-2f7d57-fg)' : 'var(--m-1c1b19-fg)' })),
+      selBalLabel: sd > TODAY ? 'Projected checking at end of day' : 'Checking at end of day', selBal: bal[sd] !== undefined ? f0(bal[sd]) : '—',
+      projLine: line, projArea: line + ' L280 110 L0 110 Z', lowX: X(minI), lowY: Y(minV), zeroY: Y(0),
+    };
+  }
+}
+</script>
+</body>
+</html>

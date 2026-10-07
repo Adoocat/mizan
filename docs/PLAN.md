@@ -2,7 +2,7 @@
 
 > **Status:** Approved as the working plan. Implementation in progress (see the phase tracker).
 > **Open items:** D1, D2, D3 and D8 in [§22](#22-decisions) are confirmed; the others are recorded with their recommended defaults and are still **pending confirmation**.
-> **Design reference:** high-fidelity mockups live in [`design/`](../design/). They depict the long-term product; the MVP ships a subset (see §3 and §13).
+> **Design reference:** the current high-fidelity mockups live in [`design/new-design/`](../design/new-design/) (design system **2.0**, ADR 0006); the 1.0 files at the top of [`design/`](../design/) are superseded. They depict the long-term product; the MVP ships a subset (see §3 and §13).
 
 ## Phase tracker
 
@@ -24,6 +24,11 @@
 | 13–21 | v1.1 (see §20) | ⬜ |
 
 Update this table when a phase is completed (✅) or in progress (🟡).
+
+> **Screens exist before their phases.** Every screen in `design/new-design/` was built at full
+> visual fidelity during the 2.0 design revision — including the v1.1 ones — reading placeholder
+> data from `apps/web/src/lib/sample-data.ts` and `apps/web/src/lib/wealth-data.ts` (ADR 0007). A phase still owns its screen's behaviour: wiring it to the API, its mutations and
+> its domain tests — and deleting its slice of the sample data.
 
 ---
 
@@ -559,7 +564,7 @@ Changes from the mockup: Savings + Goals merged; Debts become a liability group 
 - **Charts** (visx wrappers): `BarChart`, `LineChart`, `Sparkline`, `Donut`, reading theme tokens.
 - **Feedback/layout:** `AppShell`, `SideNav`, `MobileTabBar`, `PeriodSwitcher`, `DateField`, `EmptyState`, `Toast` with undo, `ConfirmDialog`, `Skeleton`, `AttentionItem`.
 
-**Theming:** port the `--m-*` tokens from `design/Mizan Design System.dc.html` (dark + light, Geist, `tnum`) into Tailwind theme variables. **Do not reuse mockup code** — it calculates money with JS floats and `Math.round`.
+**Theming:** port the `--m-*` tokens from `design/new-design/Mizan Design System.dc.html` (dark + light, Geist, `tnum`) into Tailwind theme variables. **Do not reuse mockup code** — it calculates money with JS floats and `Math.round`.
 
 ---
 

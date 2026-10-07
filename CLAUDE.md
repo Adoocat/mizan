@@ -11,6 +11,7 @@ Guide for Claude Code sessions working on **Mizan**, a planning-first personal f
 ## How we work
 
 - **One phase at a time.** The user hands over a single phase per prompt. Implement only that phase's scope; don't pull in features from later phases.
+- **The screens already exist.** Every MVP screen was built during the 2.0 design revision and reads placeholder data from `apps/web/src/lib/sample-data.ts` through `useSampleData()` (ADR 0007). A phase wires its screen to the API, adds its mutations and domain tests, and **deletes its slice of the sample data**. Don't add new sample data to pages; don't rebuild the UI.
 - **Ask before starting** if a pending decision in §22 blocks the current phase. Otherwise use the recommended default and say so.
 - **Stop at the end of a phase** and summarize what was done, what was tested and anything deferred. Wait for approval before starting the next phase.
 - **Keep the plan current.** When a phase is done, update the phase tracker. When a decision changes, update §22 and add an ADR in `docs/adr/`.
@@ -108,9 +109,10 @@ Tests: unit tests are `*.test.ts(x)`, integration tests are `*.int.test.ts`. `ap
 
 ## Design reference
 
-- `design/*.dc.html` are high-fidelity mockups of the **long-term** product. Use them for layout, copy and visual language.
-- Design tokens are ported to semantic names in `apps/web/src/app/styles.css` and are the source of truth for code (ADR 0005). Use the Tailwind utilities (`bg-surface`, `text-ink-3`, `text-value-m`, `rounded-card`), not hex values. A few light-mode text colours are darker than the mockup for WCAG AA; Playwright runs axe with contrast checks in both themes.
+- `design/new-design/*.dc.html` are the current (**2.0**) high-fidelity mockups of the **long-term** product. Use them for layout, copy and visual language. The 1.0 files at the top of `design/` (and their copies in `design/new-design/v1/`) are superseded — don't port from them (ADR 0006).
+- 2.0 keeps every colour of 1.0 and changes the shape: one canvas tone instead of panel borders, panels at 24px radius with no border or shadow, pill controls at 40px, and a light (weight 300) display type scale on top of the unchanged §02 scale.
+- Design tokens are ported to semantic names in `apps/web/src/app/styles.css` and are the source of truth for code (ADR 0005). Use the Tailwind utilities (`bg-surface`, `bg-inset`, `text-ink-3`, `text-page-display`, `rounded-card`), not hex values. A few light-mode text colours are darker than the mockup for WCAG AA; Playwright runs axe with contrast checks in both themes.
 - Use `cn()` from `apps/web/src/lib/cn.ts` to combine classes. If you add a type-scale token, register it there too.
 - `/showcase` renders every design-system component; add new shared components to it.
 - **Do not copy mockup code.** It computes money with JavaScript floats and `Math.round`.
-- Mockups show features beyond the current phase (open banking, assistant, health score). Don't build them early.
+- Mockups show features beyond the current phase (open banking, assistant, health score, the 2.0 landing page). Don't build them early.

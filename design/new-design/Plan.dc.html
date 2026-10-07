@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="02 Plan" style="padding:32px 40px 80px;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">Monthly plan</div>
+      <h1 style="margin:6px 0 0;font-size:40px;font-weight:300;letter-spacing:-0.045em;line-height:1.05">Give every lira a job</h1>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="display:flex;align-items:center;border:1px solid var(--m-e3e0d8-line);border-radius:6px;background:var(--m-ffffff-bg);height:32px">
+        <button style="all:unset;cursor:pointer;padding:0 10px;height:100%;display:flex;align-items:center;color:var(--m-5c5852-fg);font-size:13px;border-right:1px solid var(--m-e3e0d8-line)" style-hover="background:var(--m-f3f1ec-bg)">‹ Sep</button>
+        <span style="padding:0 14px;font-size:13px;font-weight:500">October 2026</span>
+        <button style="all:unset;cursor:pointer;padding:0 10px;height:100%;display:flex;align-items:center;color:var(--m-5c5852-fg);font-size:13px;border-left:1px solid var(--m-e3e0d8-line)" style-hover="background:var(--m-f3f1ec-bg)">Nov ›</button>
+      </div>
+      <button onClick="{{ copyNext }}" style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Copy to November</button>
+    </div>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:26px 32px;display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;flex-wrap:wrap;gap:12px 48px;align-items:flex-end">
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Income available</span>
+        <span style="font-size:26px;font-weight:500;letter-spacing:-0.025em">{{ incomeF }}</span>
+        <span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ incomeNote }}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Allocated</span>
+        <span style="font-size:26px;font-weight:500;letter-spacing:-0.025em">{{ allocatedF }}</span>
+        <span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ allocatedPct }} of income</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Left to allocate</span>
+        <span style="font-size:26px;font-weight:500;letter-spacing:-0.025em;color:{{ leftColor }};transition:color 200ms">{{ leftF }}</span>
+        <span style="font-size:11.5px;color:{{ leftColor }}">{{ leftNote }}</span>
+      </div>
+      <div style="margin-left:auto;font-size:12px;color:var(--m-77726a-fg);max-width:260px;line-height:1.5;text-wrap:pretty">Edit any amount below. Totals, the bar and today’s safe-to-spend update as you type.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;height:14px;border-radius:3px;overflow:hidden;gap:2px;background:var(--m-f3f1ec-bg)">
+        <sc-for list="{{ segs }}" as="s" hint-placeholder-count="6">
+          <div title="{{ s.title }}" style="flex:{{ s.flex }};background:{{ s.color }};transition:flex 300ms ease"></div>
+        </sc-for>
+        <div style="flex:{{ leftFlex }};background-image:repeating-linear-gradient(135deg,var(--m-e3e0d8-bg) 0 2px,transparent 2px 6px);transition:flex 300ms ease"></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px 18px">
+        <sc-for list="{{ segs }}" as="s" hint-placeholder-count="6">
+          <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--m-5c5852-fg)"><span style="width:8px;height:8px;border-radius:2px;background:{{ s.color }}"></span>{{ s.name }} <span style="color:var(--m-1c1b19-fg);font-weight:500">{{ s.pct }}</span></span>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:22px 28px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px">
+    <div style="flex:1 1 360px;display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:15px;font-weight:500;letter-spacing:-0.015em">September left ₺2,350 unspent</span>
+        <sc-if value="{{ surplusDone }}" hint-placeholder-val="{{ false }}"><span style="font-size:11.5px;color:var(--m-2f7d57-fg);background:var(--m-e8f2ec-bg);border-radius:4px;padding:2px 7px;font-weight:500;animation:mzFade 200ms">{{ surplusLabel }}</span></sc-if>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--m-5c5852-fg)">
+        <span>Food &amp; groceries ₺1,150</span><span>Transport ₺480</span><span>Subscriptions ₺320</span><span>Available to spend ₺400</span>
+      </div>
+    </div>
+    <sc-if value="{{ surplusOpen }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button onClick="{{ sRoll }}" style="height:32px;padding:0 12px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Move to this month</button>
+        <button onClick="{{ sSav }}" style="height:32px;padding:0 12px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Move to Emergency fund</button>
+        <button onClick="{{ sInv }}" style="height:32px;padding:0 12px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Move to investments</button>
+      </div>
+    </sc-if>
+    <sc-if value="{{ surplusDone }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ sUndo }}" style="all:unset;cursor:pointer;font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500" style-hover="text-decoration:underline">Undo</button>
+    </sc-if>
+  </section>
+
+  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+    <section style="flex:2.2 1 660px;min-width:0;background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;overflow:hidden">
+      <div style="overflow-x:auto">
+        <div style="min-width:640px">
+          <div style="display:grid;grid-template-columns:minmax(200px,1.7fr) 116px 96px 108px minmax(90px,1fr);column-gap:14px;align-items:center;padding:10px 20px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;border-bottom:1px solid var(--m-efece6-line);background:var(--m-faf9f6-bg)">
+            <span>Category</span><span style="text-align:right">Budgeted</span><span style="text-align:right">Spent</span><span style="text-align:right">Remaining</span><span>Progress</span>
+          </div>
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="6">
+            <div style="border-bottom:1px solid var(--m-efece6-line)">
+              <div onClick="{{ g.toggle }}" style="display:grid;grid-template-columns:minmax(200px,1.7fr) 116px 96px 108px minmax(90px,1fr);column-gap:14px;align-items:center;padding:0 20px;height:46px;cursor:pointer;background:var(--m-fdfcfa-bg)" style-hover="background:var(--m-f8f6f2-bg)">
+                <span style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600">
+                  <span style="font-size:10px;color:var(--m-8a857c-fg);width:10px;display:inline-block;transform:rotate({{ g.rot }});transition:transform 150ms">▾</span>
+                  <span style="width:9px;height:9px;border-radius:2px;background:{{ g.color }}"></span>{{ g.name }}
+                  <span style="font-size:11.5px;color:var(--m-77726a-fg);font-weight:400">{{ g.pct }}</span>
+                </span>
+                <span style="text-align:right;font-size:13px;font-weight:600;padding-right:7px">{{ g.budgetF }}</span>
+                <span style="text-align:right;font-size:13px;color:var(--m-5c5852-fg)">{{ g.spentF }}</span>
+                <span style="text-align:right;font-size:13px;font-weight:500;color:{{ g.remColor }}">{{ g.remF }}</span>
+                <div style="height:6px;background:var(--m-efece6-bg);border-radius:3px;overflow:hidden"><div style="height:100%;width:{{ g.w }};background:{{ g.color }};transition:width 300ms"></div></div>
+              </div>
+              <sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}">
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+                  <div style="display:grid;grid-template-columns:minmax(200px,1.7fr) 116px 96px 108px minmax(90px,1fr);column-gap:14px;align-items:center;padding:0 20px;min-height:48px;border-top:1px solid var(--m-f3f1ec-line)" style-hover="background:var(--m-faf9f6-bg)">
+                    <div style="display:flex;flex-direction:column;padding:7px 0 7px 38px;line-height:1.35">
+                      <span style="font-size:13px">{{ it.name }}</span>
+                      <span style="font-size:11.5px;color:{{ it.noteColor }}">{{ it.note }}</span>
+                    </div>
+                    <sc-if value="{{ it.editable }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex;align-items:center;justify-content:flex-end;gap:2px;border:1px solid transparent;border-radius:5px;padding:0 6px;height:30px;transition:border-color 120ms" style-hover="border-color:var(--m-dedad1-line);background:var(--m-ffffff-bg)">
+                        <span style="font-size:13px;color:var(--m-8a857c-fg)">₺</span>
+                        <input value="{{ it.val }}" onChange="{{ it.set }}" onFocus="{{ it.sel }}" style="all:unset;width:70px;text-align:right;font-size:13px;font-weight:500;color:var(--m-1c1b19-fg)">
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ it.pooled }}" hint-placeholder-val="{{ false }}">
+                      <span style="text-align:right;font-size:12px;color:var(--m-8a857c-fg);padding-right:7px">from pool</span>
+                    </sc-if>
+                    <span style="text-align:right;font-size:13px;color:var(--m-5c5852-fg)">{{ it.spentF }}</span>
+                    <span style="text-align:right;font-size:13px;font-weight:500;color:{{ it.remColor }}">{{ it.remF }}</span>
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div style="flex:1;height:4px;background:var(--m-efece6-bg);border-radius:2px;overflow:hidden"><div style="height:100%;width:{{ it.w }};background:{{ it.barColor }};transition:width 300ms"></div></div>
+                      <span style="font-size:11px;color:var(--m-8a857c-fg);width:30px;text-align:right">{{ it.pctF }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <aside style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:20px">
+      <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Allocation mix</h2>
+          <span style="font-size:12px;color:var(--m-77726a-fg);line-height:1.45">Compared with the common 50 / 30 / 20 guideline. Ticks mark the guideline.</span>
+        </div>
+        <sc-for list="{{ mix }}" as="m" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;font-size:12.5px"><span>{{ m.name }}</span><span><span style="font-weight:500">{{ m.pct }}</span> <span style="color:var(--m-8a857c-fg)">· guideline {{ m.ref }}</span></span></div>
+            <div style="position:relative;height:6px;background:var(--m-efece6-bg);border-radius:3px">
+              <div style="position:absolute;inset:0 auto 0 0;width:{{ m.w }};background:{{ m.color }};border-radius:3px;transition:width 300ms"></div>
+              <div style="position:absolute;left:{{ m.refW }};top:-4px;bottom:-4px;width:1.5px;background:var(--m-1c1b19-fg);opacity:0.5"></div>
+            </div>
+            <span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ m.desc }}</span>
+          </div>
+        </sc-for>
+      </section>
+
+      <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">When October closes</h2>
+          <span style="font-size:12px;color:var(--m-77726a-fg);line-height:1.45">Projected unspent: <span style="color:var(--m-1c1b19-fg);font-weight:500">{{ projUnspent }}</span> across categories with rollover off.</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <sc-for list="{{ policies }}" as="p" hint-placeholder-count="4">
+            <button onClick="{{ p.pick }}" style="all:unset;cursor:pointer;display:flex;align-items:flex-start;gap:10px;padding:8px;border-radius:6px;background:{{ p.bg }}" style-hover="background:var(--m-f6f4f0-bg)">
+              <span style="width:14px;height:14px;border-radius:50%;border:1.5px solid {{ p.ring }};flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center"><span style="width:6px;height:6px;border-radius:50%;background:{{ p.fill }}"></span></span>
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px">{{ p.label }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ p.desc }}</span></span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="background:var(--m-faf9f6-bg);border:1px solid transparent;border-radius:24px;padding:22px 28px;display:flex;flex-direction:column;gap:10px">
+        <h2 style="font-size:13px;font-weight:600;margin:0">Changes from September</h2>
+        <div style="display:grid;grid-template-columns:1fr auto;row-gap:7px;font-size:12.5px">
+          <span style="color:var(--m-5c5852-fg)">Investments</span><span style="font-weight:500">+₺1,000</span>
+          <span style="color:var(--m-5c5852-fg)">Food &amp; groceries</span><span style="font-weight:500">+₺500</span>
+          <span style="color:var(--m-5c5852-fg)">Available to spend</span><span style="font-weight:500">−₺1,000</span>
+          <span style="color:var(--m-5c5852-fg)">Sinking funds</span><span style="font-weight:500">−₺500</span>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const G = [
+  { id: 'ess', name: 'Essential expenses', color: 'var(--m-2f3a4a-fg)', items: [
+    ['Rent', 9500, 9500, 'Paid 5 Oct'], ['Food & groceries', 6000, 4850, '↻ Rollover on · includes ₺350 from September', 'roll'],
+    ['Utilities', 1400, 1070, 'Electricity ~₺720 estimated for 26 Oct'], ['Internet & phone', 600, 0, '₺549 scheduled for 23 Oct'] ] },
+  { id: 'flex', name: 'Flexible spending', color: 'var(--m-8c96a8-fg)', items: [
+    ['Transport', 1800, 1420, 'Fuel, İstanbulkart, taxis'], ['Subscriptions', 700, 379, '₺321 scheduled this week'],
+    ['Personal care', 500, 610, ''], ['Gym', 1000, 0, '₺980 scheduled for 27 Oct'] ] },
+  { id: 'debt', name: 'Debt payments', color: 'var(--m-b0674a-fg)', items: [
+    ['Personal loan · İş Bankası', 4200, 4200, 'Paid 10 Oct · 23 payments left'], ['KYK student loan', 1300, 1300, 'Paid 12 Oct'] ] },
+  { id: 'sav', name: 'Savings', color: 'var(--m-3f7e86-fg)', moved: true, items: [
+    ['Emergency fund', 2500, 2500, 'Auto-transfer 1 Oct'], ['Japan trip', 1000, 1000, 'Auto-transfer 1 Oct'],
+    ['New computer', 1000, 1000, 'Auto-transfer 1 Oct'], ['Sinking funds', 1500, 1500, 'Car tax, New Year gifts, car insurance'] ] },
+  { id: 'inv', name: 'Investments', color: 'var(--m-3d5a99-fg)', moved: true, items: [
+    ['Money market fund · PPF', 4000, 4000, 'Bought 15 Oct'], ['Gram gold', 2000, 0, 'Scheduled for 29 Oct'], ['BIST & ETFs', 2000, 0, 'Scheduled for 29 Oct'] ] },
+  { id: 'free', name: 'Available to spend', color: 'var(--m-d2a857-fg)', pool: 9000, items: [
+    ['Dining out', 0, 2850, '14 transactions'], ['Shopping', 0, 1900, '5 transactions'], ['Entertainment', 0, 750, '3 transactions'], ['Other', 0, 500, '4 transactions'] ] },
+];
+const BASE_INCOME = 50000, SURPLUS = 2350;
+
+class Component extends DCLogic {
+  state = { b: {}, collapsed: {}, surplus: null, policy: 'ask' };
+  bud(id, def) { const v = this.state.b[id]; return v === undefined ? def : v; }
+  setB = (id) => (e) => { const n = parseInt(String(e.target.value).replace(/[^0-9]/g, ''), 10); this.setState((s) => ({ b: { ...s.b, [id]: isNaN(n) ? 0 : n } })); };
+  applySurplus = (kind) => () => {
+    const b = { ...this.state.b };
+    if (kind === 'sav') b['sav0'] = this.bud('sav0', 2500) + SURPLUS;
+    if (kind === 'inv') b['inv0'] = this.bud('inv0', 4000) + SURPLUS;
+    this.setState({ surplus: kind, b });
+    const msg = { roll: '₺2,350 added to October income', sav: '₺2,350 moved to Emergency fund', inv: '₺2,350 added to Money market fund' }[kind];
+    this.props.notify && this.props.notify(msg);
+  };
+  undo = () => {
+    const b = { ...this.state.b }, k = this.state.surplus;
+    if (k === 'sav') b['sav0'] = this.bud('sav0', 2500) - SURPLUS;
+    if (k === 'inv') b['inv0'] = this.bud('inv0', 4000) - SURPLUS;
+    this.setState({ surplus: null, b });
+  };
+  renderVals() {
+    const income = BASE_INCOME + (this.state.surplus ? SURPLUS : 0);
+    let allocated = 0;
+    const totals = {};
+    const groups = G.map((g) => {
+      let gb = 0, gs = 0;
+      const items = g.items.map(([name, bdef, spent, note, flag], k) => {
+        const id = g.id + k;
+        const pooled = !!g.pool;
+        const b = pooled ? 0 : this.bud(id, bdef);
+        gb += b; gs += spent;
+        const rem = b - spent, over = !pooled && spent > b;
+        const isSurplus = (g.id === 'sav' && k === 0 && this.state.surplus === 'sav') || (g.id === 'inv' && k === 0 && this.state.surplus === 'inv');
+        return {
+          name, editable: !pooled, pooled, val: b.toLocaleString('en-US'), set: this.setB(id), sel: (e) => e.target.select(),
+          spentF: f0(spent), remF: pooled ? '' : over ? f0(rem) : f0(rem), remColor: over ? 'var(--m-b4423a-fg)' : rem === 0 ? 'var(--m-8a857c-fg)' : 'var(--m-1c1b19-fg)',
+          note: isSurplus ? 'Includes ₺2,350 September surplus' : over ? f0(spent - b) + ' over budget' : note,
+          noteColor: over ? 'var(--m-b4423a-fg)' : flag === 'roll' || isSurplus ? 'var(--m-2c4a7c-fg)' : 'var(--m-77726a-fg)',
+          w: pooled ? (spent / this.bud('free', g.pool) * 100) + '%' : (b ? Math.min(spent / b, 1) * 100 : 0) + '%',
+          pctF: pooled ? Math.round(spent / this.bud('free', g.pool) * 100) + '%' : b ? Math.round(spent / b * 100) + '%' : '—',
+          barColor: over ? 'var(--m-b4423a-fg)' : g.color,
+        };
+      });
+      if (g.pool) gb = this.bud('free', g.pool);
+      allocated += gb; totals[g.id] = gb;
+      const open = !this.state.collapsed[g.id];
+      return {
+        name: g.name, color: g.color, items, open, rot: open ? '0deg' : '-90deg',
+        toggle: () => this.setState((s) => ({ collapsed: { ...s.collapsed, [g.id]: !s.collapsed[g.id] } })),
+        budgetF: f0(gb), spentF: f0(gs), remF: f0(gb - gs), remColor: gb - gs < 0 ? 'var(--m-b4423a-fg)' : 'var(--m-1c1b19-fg)',
+        pct: Math.round(gb / income * 1000) / 10 + '%', w: (gb ? Math.min(gs / gb, 1) * 100 : 0) + '%',
+      };
+    });
+    // editable pool budget in header: expose via first row? keep header total; pool editable via groups[5] items? add a row
+    const freeIdx = groups.length - 1;
+    groups[freeIdx].items.unshift({
+      name: 'Monthly pool', editable: true, pooled: false, val: this.bud('free', 9000).toLocaleString('en-US'), set: this.setB('free'), sel: (e) => e.target.select(),
+      spentF: f0(6000), remF: f0(this.bud('free', 9000) - 6000), remColor: 'var(--m-1c1b19-fg)',
+      note: 'Safe to spend today: ' + f0(Math.max(0, (this.bud('free', 9000) - 6000) / 10)), noteColor: 'var(--m-2c4a7c-fg)',
+      w: Math.min(6000 / Math.max(this.bud('free', 9000), 1), 1) * 100 + '%', pctF: Math.round(6000 / Math.max(this.bud('free', 9000), 1) * 100) + '%', barColor: 'var(--m-d2a857-fg)',
+    });
+    const left = income - allocated;
+    const segs = G.map((g) => ({ name: g.name, color: g.color, flex: totals[g.id], pct: Math.round(totals[g.id] / income * 100) + '%', title: g.name + ' ' + f0(totals[g.id]) }));
+    const needs = totals.ess + totals.debt, wants = totals.flex + totals.free, save = totals.sav + totals.inv;
+    const mix = [
+      ['Needs', needs, 50, 'var(--m-2f3a4a-bg)', 'Essentials and debt payments'],
+      ['Wants', wants, 30, 'var(--m-d2a857-bg)', 'Flexible spending and Available to spend'],
+      ['Saving & investing', save, 20, 'var(--m-3f7e86-bg)', 'Savings goals and investment contributions'],
+    ].map(([name, v, ref, color, desc]) => ({ name, pct: Math.round(v / income * 100) + '%', w: Math.min(v / income, 1) * 100 + '%', ref: ref + '%', refW: ref + '%', color, desc }));
+    const POL = [['ask', 'Ask me', 'Review leftovers in a month-end summary'], ['roll', 'Roll over to November', 'Each category starts November with its leftover'], ['sav', 'Move to Emergency fund', 'Transfer on 1 Nov at 09:00'], ['inv', 'Add to investments', 'Added to the 1 Nov fund purchase']];
+    return {
+      incomeF: f0(income), incomeNote: this.state.surplus === 'roll' ? 'Salary, freelance, + September surplus' : 'Salary ₺46,000 · Freelance ₺4,000',
+      allocatedF: f0(allocated), allocatedPct: Math.round(allocated / income * 100) + '%',
+      leftF: f0(left), leftColor: left === 0 ? 'var(--m-2f7d57-fg)' : left > 0 ? 'var(--m-2c4a7c-fg)' : 'var(--m-b4423a-fg)',
+      leftNote: left === 0 ? 'Every lira has a job' : left > 0 ? 'Ready to assign' : 'Over-allocated — reduce a category',
+      leftFlex: Math.max(left, 0), segs, groups, mix,
+      surplusOpen: !this.state.surplus, surplusDone: !!this.state.surplus,
+      surplusLabel: { roll: 'Added to October', sav: 'Moved to Emergency fund', inv: 'Moved to investments' }[this.state.surplus] || '',
+      sRoll: this.applySurplus('roll'), sSav: this.applySurplus('sav'), sInv: this.applySurplus('inv'), sUndo: this.undo,
+      projUnspent: '₺1,890',
+      policies: POL.map(([id, label, desc]) => { const a = this.state.policy === id; return { label, desc, bg: a ? 'var(--m-f6f4f0-bg)' : 'transparent', ring: a ? 'var(--m-2c4a7c-line)' : 'var(--m-cfcac0-line)', fill: a ? 'var(--m-2c4a7c-bg)' : 'transparent', pick: () => this.setState({ policy: id }) }; }),
+      copyNext: () => this.props.notify && this.props.notify('October plan copied to November as a draft'),
+    };
+  }
+}
+</script>
+</body>
+</html>

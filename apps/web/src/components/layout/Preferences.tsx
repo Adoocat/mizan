@@ -25,7 +25,7 @@ function Segmented<T extends string>({
     <div
       role="radiogroup"
       aria-label={label}
-      className="flex gap-0.5 rounded-control border border-border bg-canvas p-0.5"
+      className="flex gap-0.5 rounded-full border border-transparent bg-canvas p-1"
     >
       {options.map((option) => {
         const checked = option.value === value
@@ -37,8 +37,8 @@ function Segmented<T extends string>({
             aria-checked={checked}
             onClick={() => onChange(option.value)}
             className={cn(
-              'flex-1 cursor-pointer rounded-badge px-2 py-0.5 text-caption font-medium whitespace-nowrap',
-              checked ? 'bg-surface text-ink shadow-sm' : 'text-ink-3 hover:text-ink',
+              'flex-1 cursor-pointer rounded-full px-3 py-1 text-caption font-medium whitespace-nowrap transition-colors duration-150 ease-mizan',
+              checked ? 'bg-surface text-ink' : 'text-ink-3 hover:text-ink',
             )}
           >
             {option.label}
@@ -87,7 +87,7 @@ export function PrivacyToggle({ className }: { className?: string }) {
       aria-pressed={hideAmounts}
       onClick={() => setHideAmounts(!hideAmounts)}
       className={cn(
-        'inline-flex h-8 cursor-pointer items-center gap-2 rounded-control border border-border-strong bg-surface px-3 text-body text-ink hover:bg-canvas',
+        'inline-flex h-10 cursor-pointer items-center gap-2 rounded-full border border-transparent bg-surface px-4 text-body text-ink transition-colors duration-150 ease-mizan hover:bg-canvas',
         className,
       )}
     >

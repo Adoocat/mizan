@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="06 Investments" style="padding:32px 40px 80px;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">5 accounts · BIST prices delayed 15 min · updated 22 Oct, 15:42</div>
+      <h1 style="margin:6px 0 0;font-size:40px;font-weight:300;letter-spacing:-0.045em;line-height:1.05">Investments</h1>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Record dividend</button>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:var(--m-33312d-bg)">Add holding</button>
+    </div>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;display:flex;flex-wrap:wrap">
+    <div style="flex:1.3 1 260px;padding:20px 24px;display:flex;flex-direction:column;gap:6px;border-right:1px solid var(--m-efece6-line)">
+      <span style="font-size:12.5px;color:var(--m-5c5852-fg)">Total portfolio value</span>
+      <span style="font-size:34px;font-weight:500;letter-spacing:-0.035em;line-height:1.1">₺1,060,200</span>
+      <span style="font-size:12px;color:var(--m-77726a-fg)">Market value incl. ₺24,600 uninvested cash</span>
+    </div>
+    <div style="flex:3 1 520px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+      <div style="padding:20px 20px;display:flex;flex-direction:column;gap:5px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12px;color:var(--m-77726a-fg)">Total invested</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em">₺913,870</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">Net of withdrawals</span></div>
+      <div style="padding:20px 20px;display:flex;flex-direction:column;gap:5px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12px;color:var(--m-77726a-fg)">Unrealised profit</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;color:var(--m-2f7d57-fg)">+₺146,330</span><span style="font-size:11.5px;color:var(--m-2f7d57-fg)">+16.0%</span></div>
+      <div style="padding:20px 20px;display:flex;flex-direction:column;gap:5px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12px;color:var(--m-77726a-fg)">Return, 12 months</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em">+31.4%</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">Time-weighted</span></div>
+      <div style="padding:20px 20px;display:flex;flex-direction:column;gap:5px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12px;color:var(--m-77726a-fg)">Real return after inflation</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em">+3.5%</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">TÜİK CPI 26.9%, Sep</span></div>
+      <div style="padding:20px 20px;display:flex;flex-direction:column;gap:5px"><span style="font-size:12px;color:var(--m-77726a-fg)">Monthly contribution</span><span style="font-size:18px;font-weight:500;letter-spacing:-0.02em">₺8,000</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">16% of income</span></div>
+    </div>
+  </section>
+
+  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:stretch">
+    <section style="flex:1.5 1 520px;min-width:0;background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Growth vs. contributions</h2>
+          <span style="font-size:12px;color:var(--m-77726a-fg)">The gap between the lines is what the market added.</span>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:14px;font-size:12px;color:var(--m-5c5852-fg)">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:2px;background:var(--m-3d5a99-bg)"></span>Market value</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:0;border-top:1.5px dashed var(--m-8a857c-line)"></span>Net invested</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div style="display:flex;flex-direction:column;justify-content:space-between;height:200px;font-size:11px;color:var(--m-8a857c-fg);text-align:right;width:36px;padding-bottom:20px">
+          <span>1.1M</span><span>1.0M</span><span>900k</span><span>800k</span>
+        </div>
+        <div style="flex:1;position:relative;height:200px">
+          <div style="position:absolute;inset:0 0 20px 0;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none">
+            <div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px dashed var(--m-efece6-line)"></div><div style="border-top:1px solid var(--m-e3e0d8-line)"></div>
+          </div>
+          <svg viewBox="0 0 600 180" preserveAspectRatio="none" style="position:absolute;left:0;top:0;width:100%;height:180px;overflow:visible">
+            <path d="{{ gapArea }}" style="fill:var(--m-eef1f6-bg)"></path>
+            <path d="{{ invLine }}" style="fill:none;stroke:var(--m-8a857c-line);stroke-width:1.5;stroke-dasharray:4 3" vectorEffect="non-scaling-stroke"></path>
+            <path d="{{ valLine }}" style="fill:none;stroke:var(--m-3d5a99-line);stroke-width:2" vectorEffect="non-scaling-stroke"></path>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex">
+            <sc-for list="{{ months }}" as="m" hint-placeholder-count="12">
+              <div onMouseEnter="{{ m.enter }}" onMouseLeave="{{ m.leave }}" style="flex:1;position:relative;display:flex;flex-direction:column">
+                <div style="flex:1;border-left:1px solid {{ m.guide }}"></div>
+                <div style="height:20px;display:flex;align-items:flex-end;font-size:11px;color:{{ m.lc }};transform:translateX(-50%)">{{ m.label }}</div>
+                <sc-if value="{{ m.tip }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;top:0;left:{{ m.tipLeft }};z-index:4;width:180px;background:var(--m-tip);color:var(--m-tip-fg);border-radius:6px;padding:10px 12px;font-size:12px;box-shadow:0 6px 18px rgba(28,27,25,0.18);pointer-events:none">
+                    <div style="font-weight:500;color:var(--m-ffffff-fg);margin-bottom:6px">{{ m.full }}</div>
+                    <div style="display:grid;grid-template-columns:1fr auto;row-gap:3px">
+                      <span style="color:var(--m-bdb8ae-fg)">Market value</span><span>{{ m.val }}</span>
+                      <span style="color:var(--m-bdb8ae-fg)">Net invested</span><span>{{ m.inv }}</span>
+                      <span style="color:var(--m-bdb8ae-fg)">Market gain</span><span>{{ m.gain }}</span>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="flex:1 1 360px;min-width:0;background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Asset allocation</h2>
+        <span style="font-size:12px;color:var(--m-77726a-fg)">Current portfolio compared with your target</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11.5px;color:var(--m-5c5852-fg);width:46px">Current</span>
+          <div style="flex:1;display:flex;height:22px;border-radius:3px;overflow:hidden;gap:2px">
+            <sc-for list="{{ classes }}" as="c" hint-placeholder-count="6"><div onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="flex:{{ c.cur }};background:{{ c.color }};opacity:{{ c.op }};transition:opacity 150ms"></div></sc-for>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:11.5px;color:var(--m-5c5852-fg);width:46px">Target</span>
+          <div style="flex:1;display:flex;height:22px;border-radius:3px;overflow:hidden;gap:2px">
+            <sc-for list="{{ classes }}" as="c" hint-placeholder-count="6"><div onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="flex:{{ c.tgt }};background:{{ c.color }};opacity:{{ c.op2 }};transition:opacity 150ms"></div></sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:grid;grid-template-columns:minmax(110px,1fr) 92px 56px 56px 60px;column-gap:10px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;padding-bottom:6px;border-bottom:1px solid var(--m-efece6-line)">
+          <span>Class</span><span style="text-align:right">Value</span><span style="text-align:right">Now</span><span style="text-align:right">Target</span><span style="text-align:right">Drift</span>
+        </div>
+        <sc-for list="{{ classes }}" as="c" hint-placeholder-count="6">
+          <div onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="display:grid;grid-template-columns:minmax(110px,1fr) 92px 56px 56px 60px;column-gap:10px;align-items:center;height:34px;font-size:12.5px;border-bottom:1px solid var(--m-f3f1ec-line);background:{{ c.rowBg }}">
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:2px;background:{{ c.color }}"></span>{{ c.name }}</span>
+            <span style="text-align:right">{{ c.valF }}</span>
+            <span style="text-align:right;font-weight:500">{{ c.curF }}</span>
+            <span style="text-align:right;color:var(--m-5c5852-fg)">{{ c.tgtF }}</span>
+            <span style="text-align:right;font-weight:500;color:{{ c.driftColor }}">{{ c.driftF }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;display:flex;flex-wrap:wrap">
+    <div style="flex:1.2 1 420px;min-width:0;padding:20px 24px;display:flex;flex-direction:column;gap:20px;border-right:1px solid var(--m-efece6-line)">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Rebalancing</h2>
+        <span style="font-size:12px;color:var(--m-77726a-fg)">Tolerance band</span>
+        <div style="display:flex;gap:2px;padding:2px;background:var(--m-f3f1ec-bg);border-radius:6px">
+          <sc-for list="{{ bands }}" as="b" hint-placeholder-count="3"><button onClick="{{ b.pick }}" style="all:unset;cursor:pointer;padding:3px 9px;border-radius:4px;font-size:12px;font-weight:500;background:{{ b.bg }};color:{{ b.color }};box-shadow:{{ b.shadow }}">{{ b.label }}</button></sc-for>
+        </div>
+      </div>
+      <p style="margin:0;font-size:15px;line-height:1.5;letter-spacing:-0.01em;text-wrap:pretty">{{ headline }}</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ classes }}" as="c" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:120px 1fr 64px;align-items:center;column-gap:12px;font-size:12.5px">
+            <span style="color:var(--m-5c5852-fg)">{{ c.name }}</span>
+            <div style="position:relative;height:16px">
+              <div style="position:absolute;left:{{ bandL }};width:{{ bandW }};top:0;bottom:0;background:var(--m-f3f1ec-bg);border-radius:2px;transition:all 200ms"></div>
+              <div style="position:absolute;left:33.33%;top:-2px;bottom:-2px;width:1px;background:var(--m-8a857c-bg)"></div>
+              <div style="position:absolute;top:4px;height:8px;left:{{ c.barL }};width:{{ c.barW }};background:{{ c.barColor }};border-radius:2px;transition:background 200ms"></div>
+            </div>
+            <span style="text-align:right;font-weight:500;color:{{ c.driftColor }}">{{ c.driftF }}</span>
+          </div>
+        </sc-for>
+        <div style="display:grid;grid-template-columns:120px 1fr 64px;column-gap:12px;font-size:11px;color:var(--m-8a857c-fg)"><span></span><div style="position:relative;height:14px"><span style="position:absolute;left:0">−6 pp</span><span style="position:absolute;left:33.33%;transform:translateX(-50%)">Target</span><span style="position:absolute;right:0">+12 pp</span></div><span></span></div>
+      </div>
+    </div>
+    <div style="flex:1 1 340px;min-width:0;padding:20px 24px;display:flex;flex-direction:column;gap:14px;background:var(--m-fdfcfa-bg);border-radius:0 8px 8px 0">
+      <h3 style="font-size:13px;font-weight:600;margin:0">Two ways to close the gap</h3>
+      <div style="display:flex;flex-direction:column;gap:6px;padding:12px 14px;border:1px solid var(--m-e7e4dd-line);border-radius:6px;background:var(--m-ffffff-bg)">
+        <span style="font-size:12.5px;font-weight:500">Redirect new contributions</span>
+        <span style="font-size:12px;color:var(--m-5c5852-fg);line-height:1.5">Send future contributions only to under-weight classes. At ₺8,000/month this reaches target in about <span style="color:var(--m-1c1b19-fg);font-weight:500">{{ contribMonths }} months</span>, with no selling.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding:12px 14px;border:1px solid var(--m-e7e4dd-line);border-radius:6px;background:var(--m-ffffff-bg)">
+        <span style="font-size:12.5px;font-weight:500">Rebalance now</span>
+        <span style="font-size:12px;color:var(--m-5c5852-fg);line-height:1.5">Moving <span style="color:var(--m-1c1b19-fg);font-weight:500">{{ sellF }}</span> out of stocks would restore the target:</span>
+        <div style="display:grid;grid-template-columns:1fr auto;row-gap:4px;font-size:12px">
+          <sc-for list="{{ buys }}" as="b" hint-placeholder-count="5"><span style="color:var(--m-5c5852-fg)">{{ b.name }}</span><span style="font-weight:500">{{ b.amt }}</span></sc-for>
+        </div>
+      </div>
+      <span style="font-size:11.5px;color:var(--m-77726a-fg);line-height:1.5">Informational only, not investment advice. Selling may trigger fees or withholding tax.</span>
+    </div>
+  </section>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:12px;padding:16px 20px 12px">
+      <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Holdings</h2>
+      <span style="font-size:12px;color:var(--m-77726a-fg)">13 positions</span>
+    </div>
+    <div style="overflow-x:auto">
+      <div style="min-width:880px">
+        <div style="display:grid;grid-template-columns:minmax(200px,1.8fr) 110px 100px 100px 120px 130px 90px;column-gap:14px;padding:8px 20px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;background:var(--m-faf9f6-bg);border-top:1px solid var(--m-efece6-line);border-bottom:1px solid var(--m-efece6-line)">
+          <span>Asset</span><span style="text-align:right">Quantity</span><span style="text-align:right">Avg. cost</span><span style="text-align:right">Price</span><span style="text-align:right">Current value</span><span style="text-align:right">Profit / loss</span><span style="text-align:right">Weight</span>
+        </div>
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="6">
+          <div>
+            <div style="display:grid;grid-template-columns:minmax(200px,1.8fr) 110px 100px 100px 120px 130px 90px;column-gap:14px;align-items:center;padding:0 20px;height:38px;background:var(--m-fdfcfa-bg);border-bottom:1px solid var(--m-f3f1ec-line);font-size:12.5px">
+              <span style="display:flex;align-items:center;gap:8px;font-weight:600"><span style="width:8px;height:8px;border-radius:2px;background:{{ g.color }}"></span>{{ g.name }} <span style="font-weight:400;color:var(--m-77726a-fg);font-size:11.5px">{{ g.source }}</span></span>
+              <span></span><span></span><span></span>
+              <span style="text-align:right;font-weight:600">{{ g.valF }}</span>
+              <span style="text-align:right;font-weight:500;color:{{ g.plColor }}">{{ g.plF }}</span>
+              <span style="text-align:right;font-weight:500">{{ g.wF }}</span>
+            </div>
+            <sc-for list="{{ g.rows }}" as="h" hint-placeholder-count="2">
+              <div style="display:grid;grid-template-columns:minmax(200px,1.8fr) 110px 100px 100px 120px 130px 90px;column-gap:14px;align-items:center;padding:0 20px;height:46px;border-bottom:1px solid var(--m-f3f1ec-line);font-size:13px" style-hover="background:var(--m-faf9f6-bg)">
+                <div style="display:flex;flex-direction:column;padding-left:16px;line-height:1.3"><span style="font-weight:500">{{ h.code }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ h.name }}</span></div>
+                <span style="text-align:right;color:var(--m-3e3b36-fg)">{{ h.qty }}</span>
+                <span style="text-align:right;color:var(--m-5c5852-fg)">{{ h.avg }}</span>
+                <span style="text-align:right;color:var(--m-5c5852-fg)">{{ h.px }}</span>
+                <span style="text-align:right;font-weight:500">{{ h.val }}</span>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;line-height:1.3"><span style="font-weight:500;color:{{ h.plColor }}">{{ h.pct }}</span><span style="font-size:11.5px;color:{{ h.plColor }}">{{ h.pl }}</span></div>
+                <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px"><div style="width:34px;height:3px;background:var(--m-efece6-bg);border-radius:2px;overflow:hidden"><div style="height:100%;width:{{ h.wBar }};background:var(--m-8c96a8-bg)"></div></div><span style="width:38px;text-align:right">{{ h.w }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <div style="display:flex;flex-wrap:wrap;gap:20px">
+    <section style="flex:1 1 380px;min-width:0;background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px"><h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Dividend income</h2><span style="font-size:12px;color:var(--m-77726a-fg)">Net of 10% withholding · 2026</span></div>
+        <span style="margin-left:auto;font-size:18px;font-weight:500;letter-spacing:-0.02em">₺4,800</span>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:6px;height:90px;border-bottom:1px solid var(--m-e3e0d8-line)">
+        <sc-for list="{{ divs }}" as="d" hint-placeholder-count="12">
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:4px">
+            <span style="font-size:10.5px;color:var(--m-5c5852-fg)">{{ d.v }}</span>
+            <div style="width:100%;max-width:22px;height:{{ d.h }};background:{{ d.color }};border-radius:2px 2px 0 0;border:{{ d.bd }}"></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:-8px"><sc-for list="{{ divs }}" as="d" hint-placeholder-count="12"><span style="flex:1;text-align:center;font-size:10.5px;color:var(--m-8a857c-fg)">{{ d.m }}</span></sc-for></div>
+      <div style="display:grid;grid-template-columns:1fr auto auto;column-gap:20px;row-gap:6px;font-size:12.5px;border-top:1px solid var(--m-efece6-line);padding-top:12px">
+        <span>TUPRS</span><span style="color:var(--m-77726a-fg)">Jun</span><span style="font-weight:500;text-align:right">₺2,100</span>
+        <span>THYAO</span><span style="color:var(--m-77726a-fg)">May</span><span style="font-weight:500;text-align:right">₺1,980</span>
+        <span>BIMAS</span><span style="color:var(--m-77726a-fg)">Apr</span><span style="font-weight:500;text-align:right">₺720</span>
+        <span style="color:var(--m-77726a-fg)">BIMAS · announced</span><span style="color:var(--m-77726a-fg)">Dec</span><span style="color:var(--m-77726a-fg);text-align:right">~₺650</span>
+      </div>
+    </section>
+
+    <section style="flex:1 1 380px;min-width:0;background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:3px"><h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Monthly investment plan</h2><span style="font-size:12px;color:var(--m-77726a-fg)">₺8,000 from the October plan</span></div>
+        <button onClick="{{ goPlan }}" style="all:unset;cursor:pointer;margin-left:auto;font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500" style-hover="text-decoration:underline">Edit in plan</button>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ plan }}" as="p" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:1fr 90px 92px;align-items:center;column-gap:12px;padding:10px 0;border-top:1px solid var(--m-f3f1ec-line);font-size:13px">
+            <div style="display:flex;flex-direction:column;line-height:1.35"><span style="font-weight:500">{{ p.name }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ p.meta }}</span></div>
+            <span style="text-align:right;font-weight:500">{{ p.amt }}</span>
+            <span style="text-align:right"><span style="font-size:11px;font-weight:500;padding:2px 6px;border-radius:4px;color:{{ p.sc }};background:{{ p.sbg }}">{{ p.status }}</span></span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size:12px;color:var(--m-5c5852-fg);line-height:1.5;padding:10px 12px;background:var(--m-faf9f6-bg);border-radius:6px;text-wrap:pretty">The 29 Oct BIST &amp; ETF purchase adds to stocks, which are already above target. Redirecting it to funds would reduce drift slightly.</div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const fs = (n) => (n < 0 ? '−₺' : '+₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const fp = (n, d = 2) => '₺' + n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const CLS = [
+  { id: 'stk', name: 'Stocks', color: 'var(--m-3d5a99-fg)', tgt: 30, source: 'Midas · synced 15:42', rows: [
+    ['THYAO', 'Türk Hava Yolları', 180, 276, 299, 'sh'], ['ASELS', 'Aselsan', 1100, 118.5, 142, 'sh'], ['BIMAS', 'BİM Mağazalar', 120, 455, 512, 'sh'],
+    ['TUPRS', 'Tüpraş', 300, 168, 159.2, 'sh'], ['VOO', 'Vanguard S&P 500 ETF · USD', 5, 21400, 24860, 'units'] ] },
+  { id: 'fnd', name: 'Funds (TEFAS)', color: 'var(--m-3f7e86-fg)', tgt: 30, source: 'İş Yatırım · NAV 21 Oct', rows: [
+    ['PPF', 'Money market fund', 41000, 4.2, 4.88, 'units', 4], ['TTE', 'Technology equity fund', 18000, 2.95, 3.36, 'units', 4] ] },
+  { id: 'gld', name: 'Gold & silver', color: 'var(--m-d2a857-fg)', tgt: 20, source: 'Kuveyt Türk · buy price', rows: [
+    ['XAU', 'Gram gold', 30, 4620, 5850, 'g'], ['XAG', 'Silver', 400, 61, 74.5, 'g'] ] },
+  { id: 'fx', name: 'Foreign currency', color: 'var(--m-8c96a8-fg)', tgt: 10, source: 'Garanti FX account', rows: [
+    ['USD', 'US dollar', 1500, 39.8, 44.2, ''], ['EUR', 'Euro', 400, 46.1, 51.4, ''] ] },
+  { id: 'cry', name: 'Crypto', color: 'var(--m-b0674a-fg)', tgt: 5, source: 'Manual · BTC/TRY 15:40', rows: [['BTC', 'Bitcoin', 0.008, 3850000, 4920000, '', 0]] },
+  { id: 'csh', name: 'Cash', color: 'var(--m-2f3a4a-fg)', tgt: 5, source: 'Midas · uninvested', rows: [['TRY', 'Brokerage cash', 24600, 1, 1, 'cash']] },
+];
+const VAL = [838000, 851200, 879400, 872100, 901300, 925800, 941200, 968400, 989100, 1012600, 1041900, 1060200];
+const INV = VAL.map((_, i) => 913870 - (11 - i) * 8500);
+const ML = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
+const MF = ['Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026', 'May 2026', 'Jun 2026', 'Jul 2026', 'Aug 2026', 'Sep 2026', 'Oct 2026'];
+
+class Component extends DCLogic {
+  state = { hover: -1, hc: null, band: 5 };
+  renderVals() {
+    let total = 0;
+    const groups0 = CLS.map((c) => {
+      let v = 0, cost = 0;
+      const rows = c.rows.map(([code, name, q, avg, px, unit, dp]) => { const val = q * px, cst = q * avg; v += val; cost += cst; return { code, name, q, avg, px, unit, dp, val, cst }; });
+      total += v;
+      return { ...c, v, cost, rows };
+    });
+    const groups = groups0.map((c) => ({
+      name: c.name, color: c.color, source: c.source, valF: f0(c.v), plF: c.id === 'csh' ? '—' : ((c.v - c.cost) / c.cost * 100 >= 0 ? '+' : '') + ((c.v - c.cost) / c.cost * 100).toFixed(1) + '%',
+      plColor: c.v >= c.cost ? 'var(--m-2f7d57-fg)' : 'var(--m-b4423a-fg)', wF: (c.v / total * 100).toFixed(1) + '%',
+      rows: c.rows.map((r) => {
+        const pl = r.val - r.cst, pct = r.cst ? pl / r.cst * 100 : 0, cash = r.unit === 'cash';
+        const dp = r.dp === undefined ? 2 : r.dp;
+        return {
+          code: r.code, name: r.name, qty: cash ? '—' : r.q.toLocaleString('en-US', { maximumFractionDigits: 4 }) + (r.unit && r.unit !== 'cash' ? ' ' + r.unit : ''),
+          avg: cash ? '—' : fp(r.avg, dp), px: cash ? '—' : fp(r.px, dp), val: f0(r.val),
+          pct: cash ? '—' : (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%', pl: cash ? '' : fs(pl), plColor: cash ? 'var(--m-77726a-fg)' : pl >= 0 ? 'var(--m-2f7d57-fg)' : 'var(--m-b4423a-fg)',
+          w: (r.val / total * 100).toFixed(1) + '%', wBar: Math.min(r.val / total * 100 / 20 * 100, 100) + '%',
+        };
+      }),
+    }));
+    const band = this.state.band, hc = this.state.hc;
+    const classes = groups0.map((c) => {
+      const cur = c.v / total * 100, drift = cur - c.tgt, out = Math.abs(drift) > band;
+      const toPct = (pp) => (pp + 6) / 18 * 100;
+      return {
+        name: c.name.replace(' (TEFAS)', ''), color: c.color, cur, tgt: c.tgt, valF: f0(c.v), curF: cur.toFixed(1) + '%', tgtF: c.tgt + '%',
+        driftF: (drift >= 0 ? '+' : '−') + Math.abs(drift).toFixed(1) + ' pp', driftColor: out ? (drift > 0 ? 'var(--m-a86f12-fg)' : 'var(--m-2c4a7c-fg)') : 'var(--m-77726a-fg)',
+        barL: Math.min(toPct(0), toPct(drift)) + '%', barW: Math.abs(toPct(drift) - toPct(0)) + '%', barColor: out ? (drift > 0 ? 'var(--m-c48a2a-fg)' : 'var(--m-3d5a99-fg)') : 'var(--m-b8b2a7-fg)',
+        op: hc && hc !== c.id ? 0.25 : 1, op2: hc && hc !== c.id ? 0.18 : 0.55, rowBg: hc === c.id ? 'var(--m-faf9f6-bg)' : 'transparent',
+        enter: () => this.setState({ hc: c.id }), leave: () => this.setState({ hc: null }), drift, v: c.v, id: c.id,
+      };
+    });
+    const stk = classes[0];
+    const outs = classes.filter((c) => Math.abs(c.drift) > band);
+    const headline = 'Equities are currently ' + Math.abs(stk.drift).toFixed(0) + ' percentage points above your target allocation.' +
+      (outs.length > 1 ? ' ' + outs.filter((c) => c.id !== 'stk').map((c) => c.name.toLowerCase() + ' ' + Math.abs(c.drift).toFixed(0) + ' pp ' + (c.drift < 0 ? 'below' : 'above')).join(', ').replace(/^./, (s) => s.toUpperCase()) + ' — outside your ±' + band + ' pp band.' : ' Other classes are within your ±' + band + ' pp band.');
+    const contribMonths = Math.round((stk.v / 0.3 - total) / 8000);
+    const buys = classes.filter((c) => c.id !== 'stk').map((c) => ({ name: c.name, amt: '+' + f0(c.tgt / 100 * total - c.v), raw: c.tgt / 100 * total - c.v })).sort((a, b) => b.raw - a.raw);
+    // chart
+    const lo = 780000, hi = 1100000;
+    const X = (i) => i / 11 * 600, Y = (v) => 180 - (v - lo) / (hi - lo) * 180;
+    const vl = VAL.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+    const il = INV.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ');
+    const gap = vl + ' ' + INV.slice().reverse().map((v, j) => 'L' + X(11 - j).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' ') + ' Z';
+    const months = VAL.map((v, i) => ({
+      label: i % 2 === 1 || i === 11 ? ML[i] : '', full: MF[i], val: f0(v), inv: f0(INV[i]), gain: fs(v - INV[i]),
+      tip: this.state.hover === i, tipLeft: i > 7 ? '-190px' : '8px', guide: this.state.hover === i ? 'var(--m-1c1b19-line)' : 'transparent', lc: this.state.hover === i ? 'var(--m-1c1b19-fg)' : 'var(--m-8a857c-fg)',
+      enter: () => this.setState({ hover: i }), leave: () => this.setState({ hover: -1 }),
+    }));
+    const DIV = [0, 0, 0, 720, 1980, 2100, 0, 0, 0, 0, 0, 650];
+    return {
+      groups, classes, headline, contribMonths, sellF: f0(stk.v - 0.3 * total), buys,
+      bandL: (100 / 3 - band / 18 * 100) + '%', bandW: (band * 2 / 18 * 100) + '%',
+      bands: [3, 5, 10].map((b) => { const a = band === b; return { label: '±' + b + ' pp', bg: a ? 'var(--m-ffffff-bg)' : 'transparent', color: a ? 'var(--m-1c1b19-fg)' : 'var(--m-5c5852-fg)', shadow: a ? '0 1px 2px rgba(28,27,25,0.08)' : 'none', pick: () => this.setState({ band: b }) }; }),
+      valLine: vl, invLine: il, gapArea: gap, months,
+      divs: DIV.map((v, i) => ({ m: 'JFMAMJJASOND'[i], v: v ? (v / 1000).toFixed(1) + 'k' : '', h: (v / 2100 * 62) + 'px', color: i === 11 ? 'transparent' : 'var(--m-3d5a99-fg)', bd: i === 11 ? '1px dashed var(--m-8a857c-line)' : 'none' })),
+      plan: [
+        ['Money market fund · PPF', 'Towards House deposit · 15th', 4000, 'Bought', 'var(--m-2f7d57-bg)', 'var(--m-e8f2ec-bg)'],
+        ['Gram gold', 'Towards House deposit · 29th', 2000, 'Scheduled', 'var(--m-2c4a7c-bg)', 'var(--m-ebeff6-bg)'],
+        ['BIST & ETFs', 'Long-term portfolio · 29th', 2000, 'Scheduled', 'var(--m-2c4a7c-bg)', 'var(--m-ebeff6-bg)'],
+      ].map(([name, meta, a, status, sc, sbg]) => ({ name, meta, amt: f0(a), status, sc, sbg })),
+      goPlan: () => this.props.go && this.props.go('plan'),
+    };
+  }
+}
+</script>
+</body>
+</html>

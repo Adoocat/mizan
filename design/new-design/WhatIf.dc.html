@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="12 What-if" style="padding:32px 40px 80px;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">Test a decision against your real plan before you make it</div>
+      <h1 style="margin:6px 0 0;font-size:40px;font-weight:300;letter-spacing:-0.045em;line-height:1.05">What-if simulator</h1>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onClick="{{ save }}" style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Save scenario</button>
+    </div>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:22px 26px;display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;height:44px;padding:0 14px;border:1px solid var(--m-dedad1-line);border-radius:6px;background:var(--m-fdfcfa-bg)">
+      <span style="font-size:12px;color:var(--m-77726a-fg);font-weight:500;white-space:nowrap">What happens if</span>
+      <span style="flex:1;font-size:15px;font-weight:500;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ question }}</span>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:12px;color:var(--m-77726a-fg);margin-right:4px">Try</span>
+      <sc-for list="{{ presets }}" as="p" hint-placeholder-count="4">
+        <button onClick="{{ p.pick }}" style="all:unset;cursor:pointer;font-size:12.5px;padding:4px 10px;border-radius:999px;border:1px solid {{ p.bd }};background:{{ p.bg }};color:{{ p.color }}" style-hover="border-color:var(--m-cfcac0-line)">{{ p.label }}</button>
+      </sc-for>
+    </div>
+  </section>
+
+  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+    <section style="flex:1 1 300px;max-width:100%;background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:20px">
+      <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Scenario</h2>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:12.5px;color:var(--m-5c5852-fg)">{{ amountLabel }}</span><span style="font-size:20px;font-weight:500;letter-spacing:-0.02em">{{ amountF }}</span></div>
+        <input type="range" min="2500" max="100000" step="500" value="{{ amount }}" onChange="{{ setAmount }}" style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--m-8a857c-fg)"><span>₺2,500</span><span>₺100,000</span></div>
+      </div>
+      <sc-if value="{{ isPurchase }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:12.5px;color:var(--m-5c5852-fg)">How it’s paid</span>
+          <sc-for list="{{ fundings }}" as="f" hint-placeholder-count="3">
+            <button onClick="{{ f.pick }}" style="all:unset;cursor:pointer;display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:6px;border:1px solid {{ f.bd }};background:{{ f.bg }}" style-hover="border-color:var(--m-cfcac0-line)">
+              <span style="width:14px;height:14px;border-radius:50%;border:1.5px solid {{ f.ring }};flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center"><span style="width:6px;height:6px;border-radius:50%;background:{{ f.fill }}"></span></span>
+              <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:500">{{ f.label }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg);line-height:1.4">{{ f.desc }}</span></span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <div style="display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:1px solid var(--m-efece6-line)">
+        <span style="font-size:12.5px;color:var(--m-5c5852-fg)">If cash runs short, cover it in this order</span>
+        <sc-for list="{{ order }}" as="o" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:10px;font-size:12.5px"><span style="width:18px;height:18px;border-radius:4px;background:var(--m-f3f1ec-bg);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;color:var(--m-5c5852-fg)">{{ o.n }}</span>{{ o.label }}</div>
+        </sc-for>
+        <span style="font-size:11.5px;color:var(--m-77726a-fg)">Checking keeps your ₺5,000 minimum balance.</span>
+      </div>
+    </section>
+
+    <div style="flex:2.4 1 600px;min-width:0;display:flex;flex-direction:column;gap:20px">
+      <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:26px 32px;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <span style="width:8px;height:8px;border-radius:50%;background:{{ vColor }};margin-top:8px;flex:none"></span>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:12px;font-weight:500;color:{{ vColor }}">{{ vLabel }}</span>
+            <p style="margin:0;font-size:16px;line-height:1.5;letter-spacing:-0.01em;text-wrap:pretty">{{ verdict }}</p>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--m-efece6-bg);border:1px solid var(--m-efece6-line);border-radius:6px;overflow:hidden">
+          <sc-for list="{{ impacts }}" as="m" hint-placeholder-count="6">
+            <div style="background:var(--m-ffffff-bg);padding:14px 16px;display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:12px;color:var(--m-77726a-fg)">{{ m.label }}</span>
+              <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+                <span style="font-size:13px;color:var(--m-8a857c-fg);text-decoration:{{ m.strike }}">{{ m.before }}</span>
+                <span style="font-size:12px;color:var(--m-8a857c-fg)">→</span>
+                <span style="font-size:18px;font-weight:500;letter-spacing:-0.02em;color:{{ m.color }}">{{ m.after }}</span>
+              </div>
+              <span style="font-size:11.5px;color:{{ m.noteColor }}">{{ m.note }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Future cash flow</h2>
+            <span style="font-size:12px;color:var(--m-77726a-fg)">Month-end cash cushion: checking plus emergency fund</span>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:14px;font-size:12px;color:var(--m-5c5852-fg)">
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:0;border-top:1.5px dashed var(--m-8a857c-line)"></span>Without this</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:2px;background:var(--m-3d5a99-bg)"></span>With this</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:0">
+          <sc-for list="{{ cf }}" as="c" hint-placeholder-count="7">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px">
+              <div style="height:120px;width:100%;display:flex;align-items:flex-end;justify-content:center;gap:4px">
+                <div style="width:22%;max-width:18px;height:{{ c.bH }};border:1.5px dashed var(--m-a49e94-line);border-bottom:none;border-radius:2px 2px 0 0;box-sizing:border-box"></div>
+                <div style="width:22%;max-width:18px;height:{{ c.sH }};background:{{ c.sColor }};border-radius:2px 2px 0 0;transition:height 300ms"></div>
+              </div>
+              <span style="font-size:11px;color:var(--m-77726a-fg)">{{ c.m }}</span>
+              <span style="font-size:11px;font-weight:500;color:{{ c.dColor }}">{{ c.d }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--m-efece6-line)">
+          <span style="flex:1 1 300px;font-size:12px;color:var(--m-5c5852-fg);line-height:1.5">{{ recovery }}</span>
+          <button onClick="{{ toggleCalc }}" style="all:unset;cursor:pointer;font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500" style-hover="text-decoration:underline">{{ calcLabel }}</button>
+        </div>
+        <sc-if value="{{ showCalc }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:1fr auto;row-gap:6px;font-size:12.5px;padding:12px 14px;background:var(--m-faf9f6-bg);border-radius:6px;animation:mzFade 150ms">
+            <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5"><span style="color:var(--m-5c5852-fg)">{{ s.k }}</span><span style="font-weight:500;text-align:right">{{ s.v }}</span></sc-for>
+          </div>
+        </sc-if>
+      </section>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const END = 10720, MIN = 5000, INV_LEFT = 4000, EF = 82000, ESS = 24800, GOAL = 27000;
+const MS = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
+
+class Component extends DCLogic {
+  state = { kind: 'purchase', amount: 40000, fund: 'goal', calc: false };
+  renderVals() {
+    const { kind, amount: A, fund } = this.state;
+    const purchase = kind === 'purchase';
+    let fromGoal = 0, fromChecking = 0, inst = 0;
+    if (purchase && fund === 'goal') { fromGoal = Math.min(GOAL, A); fromChecking = A - fromGoal; }
+    else if (purchase && fund === 'inst') { inst = A / 6; }
+    else fromChecking = A;
+    let need = fromChecking, head = END - MIN;
+    const useHead = Math.min(need, head); need -= useHead;
+    const pause = purchase && need > 0 ? Math.min(need + 0, INV_LEFT) : 0; need -= pause;
+    const efDraw = Math.max(0, need);
+    const monthEnd = END - useHead + pause - pause; // pause keeps cash in checking
+    const checkEnd = END - fromChecking + pause + efDraw;
+    const efAfter = EF - efDraw;
+    const invAfter = purchase ? 8000 - pause : 8000 + (A - efDraw > 0 ? A : 0);
+    const goalAfter = GOAL - fromGoal;
+    const freed = purchase && fund === 'goal' && goalAfter === 0 ? 1000 : 0;
+    const freeAfter = 9000 - inst;
+    // severity
+    let vLabel, vColor, verdict;
+    if (inst > 0) {
+      const tight = freeAfter < 4500;
+      vLabel = tight ? 'Affordable, with a tighter budget' : 'Affordable';
+      vColor = tight ? 'var(--m-a86f12-bg)' : 'var(--m-2f7d57-bg)';
+      if (freeAfter < 0) { vLabel = 'Doesn’t fit the current plan'; vColor = 'var(--m-b4423a-bg)'; }
+      verdict = freeAfter < 0 ? `Instalments of ${f0(inst)} a month are more than your ₺9,000 Available to spend. About ${f0(-freeAfter)} a month for 6 months would have to come from savings or investment contributions.` : `Nothing changes this month. From November, ${f0(inst)} a month for 6 months comes out of Available to spend, leaving ${f0(Math.max(freeAfter, 0))} a month — about ${f0(Math.max(freeAfter, 0) / 30)} a day instead of ₺300.`;
+    } else if (efDraw === 0 && pause === 0) {
+      vLabel = 'Affordable'; vColor = 'var(--m-2f7d57-bg)';
+      verdict = `This fits within this month’s cash. Checking ends October at ${f0(checkEnd)}, above your ₺5,000 minimum, and no goals are touched` + (fromGoal ? ` except New computer, which is used as intended.` : '.');
+    } else if (efDraw === 0) {
+      vLabel = 'Affordable, with one change'; vColor = 'var(--m-2f7d57-bg)';
+      verdict = `Affordable if you pause the 29 Oct investment purchase (${f0(pause)}). Your emergency fund stays at ${f0(EF)}.`;
+    } else {
+      const big = efDraw > 15000;
+      vLabel = big ? 'Possible, but it weakens your safety net' : 'Affordable, using a little of your safety net';
+      vColor = big ? 'var(--m-b4423a-bg)' : 'var(--m-a86f12-bg)';
+      verdict = (purchase ? (pause ? `After pausing the 29 Oct investment, ` : '') : '') + `${f0(efDraw)} would come from your emergency fund, taking it from ${(EF / ESS).toFixed(1)} to ${(efAfter / ESS).toFixed(1)} months of essential expenses.` +
+        (purchase && fund === 'checking' ? ' Using the New computer goal first would reduce this to ' + f0(Math.max(0, A - GOAL - (END - MIN) - INV_LEFT)) + '.' : '');
+    }
+    const months = (efAfter / ESS).toFixed(1);
+    const impacts = [
+      { label: 'Checking at month-end', before: f0(END), after: f0(inst ? END : checkEnd), note: checkEnd <= MIN && !inst ? 'Held at your ₺5,000 minimum' : inst ? 'First instalment on November statement' : 'Above ₺5,000 minimum', bad: !inst && checkEnd < END },
+      { label: 'Savings goals', before: 'New computer ' + f0(GOAL), after: purchase && fund === 'goal' ? f0(goalAfter) : 'unchanged', note: purchase && fund === 'goal' ? (goalAfter === 0 ? 'Goal fulfilled and closed' : f0(fromGoal) + ' used for its purpose') : 'Other goals unaffected', bad: false },
+      { label: 'Investment contribution, Oct', before: '₺8,000', after: f0(invAfter), note: pause ? '29 Oct purchase paused' : purchase ? 'Plan unchanged' : 'One-off addition to funds', bad: pause > 0 },
+      { label: 'Available to spend', before: '₺300 / day', after: inst ? f0(Math.max(freeAfter, 0) / 30) + ' / day' : '₺300 / day', note: inst ? 'Nov – Apr' : 'Daily allowance unchanged', bad: inst > 0 },
+      { label: 'Emergency fund', before: f0(EF), after: f0(efAfter), note: months + ' months of essentials covered', bad: efDraw > 0 },
+      { label: 'Future monthly cash flow', before: '₺0', after: freed ? '+₺1,000' : inst ? '−' + f0(inst).replace('₺', '₺') : '₺0', note: freed ? 'Computer contribution freed from Nov' : inst ? 'For 6 months' : 'No ongoing change', bad: inst > 0 },
+    ].map((m) => ({ ...m, after: m.after.replace('−−', '−'), color: m.bad ? (m.label === 'Emergency fund' && efDraw > 15000 ? 'var(--m-b4423a-fg)' : 'var(--m-a86f12-fg)') : 'var(--m-1c1b19-fg)', noteColor: m.bad ? 'var(--m-a86f12-fg)' : 'var(--m-77726a-fg)', strike: m.before === m.after ? 'none' : 'none' }));
+    // 7-month cushion
+    let base = END + EF, sc = (inst ? END : checkEnd) + efAfter;
+    const cf = []; let refill = efDraw;
+    const rebuild = 2500 + freed;
+    for (let i = 0; i < 7; i++) {
+      if (i > 0) { base += 2500; let add = 2500 + freed; sc += add; }
+      cf.push([base, sc]);
+    }
+    const hi = Math.max(...cf.map((x) => Math.max(x[0], x[1]))) * 1.05;
+    const recM = efDraw ? Math.ceil(efDraw / (freed + (pause ? 0 : 0) || 2500)) : 0;
+    return {
+      question: purchase ? `I buy a ${f0(A)} laptop this month?` : `I invest an extra ${f0(A)} this month?`,
+      presets: [['purchase', 40000, 'goal', 'Buy a ₺40,000 laptop'], ['purchase', 15000, 'checking', 'Pay ₺15,000 car insurance upfront'], ['invest', 10000, 'checking', 'Invest an extra ₺10,000'], ['purchase', 85000, 'inst', 'Buy a ₺85,000 sofa set in instalments']].map(([k, a, f, label]) => {
+        const on = k === kind && a === A && (k === 'invest' || f === fund);
+        return { label, bd: on ? 'var(--m-2c4a7c-line)' : 'var(--m-e3e0d8-line)', bg: on ? 'var(--m-f4f7fb-bg)' : 'var(--m-ffffff-bg)', color: on ? 'var(--m-1f3760-fg)' : 'var(--m-3e3b36-fg)', pick: () => this.setState({ kind: k, amount: a, fund: f }) };
+      }),
+      amount: A, amountF: f0(A), amountLabel: purchase ? 'Purchase amount' : 'Extra contribution', isPurchase: purchase,
+      setAmount: (e) => this.setState({ amount: Number(e.target.value) }),
+      fundings: [['goal', 'New computer goal first', 'Uses the ₺27,000 saved for this purpose, then checking'], ['checking', 'Checking account only', 'Pays in full from Garanti ··4471'], ['inst', '6 card instalments', 'Bonus card, 0% interest · ' + f0(A / 6) + ' a month from November']].map(([id, label, desc]) => {
+        const a = fund === id; return { label, desc, bd: a ? 'var(--m-2c4a7c-line)' : 'var(--m-e3e0d8-line)', bg: a ? 'var(--m-f6f8fb-bg)' : 'var(--m-ffffff-bg)', ring: a ? 'var(--m-2c4a7c-line)' : 'var(--m-cfcac0-line)', fill: a ? 'var(--m-2c4a7c-bg)' : 'transparent', pick: () => this.setState({ fund: id }) };
+      }),
+      order: (purchase ? ['Spare cash in checking', 'Pause the 29 Oct investment (₺4,000)', 'Emergency fund'] : ['Spare cash in checking', 'Emergency fund']).map((label, i) => ({ n: i + 1, label })),
+      vLabel, vColor, verdict, impacts,
+      cf: cf.map(([b, s], i) => ({ m: MS[i], bH: (b / hi * 100) + '%', sH: (s / hi * 100) + '%', sColor: s < b ? 'var(--m-3d5a99-fg)' : 'var(--m-3d5a99-fg)', d: s === b ? '—' : (s > b ? '+' : '−') + f0(Math.abs(s - b)).replace('₺', '₺'), dColor: s < b ? 'var(--m-a86f12-fg)' : s > b ? 'var(--m-2f7d57-fg)' : 'var(--m-8a857c-fg)' })),
+      recovery: efDraw ? (freed ? `Redirecting the freed ₺1,000/month to the emergency fund would replace the ${f0(efDraw)} by ${MS[Math.min(6, Math.ceil(efDraw / 1000))] || 'mid-2027'}.` : `At the current ₺2,500/month, replacing the ${f0(efDraw)} adds about ${Math.ceil(efDraw / 2500)} months to your 6-month emergency-fund date.`)
+        : inst ? 'The cushion is unchanged; the cost shows up as lower daily spending for six months instead.' : 'Your cushion keeps growing as planned.',
+      calcLabel: this.state.calc ? 'Hide calculation' : 'How this is calculated',
+      showCalc: this.state.calc, toggleCalc: () => this.setState({ calc: !this.state.calc }),
+      steps: [
+        ['Cost', f0(A)], ['From New computer goal', fromGoal ? '−' + f0(fromGoal) : '—'], ['Projected checking on 31 Oct before this', f0(END)],
+        ['Usable above ₺5,000 minimum', f0(END - MIN)], ['Investment purchase paused', pause ? f0(pause) : '—'], ['Drawn from emergency fund', efDraw ? f0(efDraw) : '—'],
+        ['Card instalments', inst ? '6 × ' + f0(inst) : '—'],
+      ].map(([k, v]) => ({ k, v })),
+      save: () => this.props.notify && this.props.notify('Scenario saved · compare it later from Reports'),
+    };
+  }
+}
+</script>
+</body>
+</html>

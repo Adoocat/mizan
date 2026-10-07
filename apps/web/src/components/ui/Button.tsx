@@ -32,8 +32,8 @@ export function Button({
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       className={cn(
-        'inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-control border text-body whitespace-nowrap transition-colors',
-        size === 'md' ? 'h-8 px-3.5' : 'h-7 px-2.5 text-label',
+        'inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border text-body whitespace-nowrap transition-colors duration-150 ease-mizan',
+        size === 'md' ? 'h-10 px-5' : 'h-[34px] px-4 text-label',
         VARIANTS[variant],
         'disabled:cursor-not-allowed disabled:border-border-strong disabled:bg-disabled disabled:text-ink-disabled disabled:opacity-100',
         className,

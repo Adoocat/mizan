@@ -16,7 +16,9 @@
     "skipToContent": "İçeriğe geç",
     "groups": {
       "daily": "Günlük",
-      "wealth": "Varlıklar"
+      "wealth": "Varlıklar",
+      "review": "Değerlendirme",
+      "tools": "Araçlar"
     },
     "home": "Ana sayfa",
     "plan": "Plan",
@@ -28,18 +30,51 @@
     "showcase": "Tasarım sistemi",
     "more": "Daha fazla",
     "tabBar": "Sekme çubuğu",
-    "add": "İşlem ekle"
+    "add": "İşlem ekle",
+    "landing": "Tanıtım sayfası",
+    "calendar": "Takvim",
+    "savings": "Birikim",
+    "investments": "Yatırımlar",
+    "debts": "Borçlar",
+    "netWorth": "Net değer",
+    "reports": "Raporlar",
+    "whatIf": "Ya olsaydı simülatörü",
+    "search": "Ara"
   },
   "pages": {
     "placeholder": "Bu sayfa planın {{phase}}. aşamasında gelecek.",
-    "home": { "title": "Ana sayfa", "emptyTitle": "Günlük özetin burada görünecek" },
-    "plan": { "title": "Plan", "emptyTitle": "Henüz plan yok" },
-    "transactions": { "title": "İşlemler", "emptyTitle": "Henüz işlem yok" },
-    "upcoming": { "title": "Yaklaşanlar", "emptyTitle": "Yaklaşan ödeme yok" },
-    "goals": { "title": "Hedefler", "emptyTitle": "Henüz hedef yok" },
-    "accounts": { "title": "Hesaplar", "emptyTitle": "Henüz hesap yok" },
-    "settings": { "title": "Ayarlar", "appearance": "Görünüm" },
-    "notFound": { "title": "Sayfa bulunamadı", "emptyTitle": "Bu adreste bir şey yok" }
+    "home": {
+      "title": "Ana sayfa",
+      "emptyTitle": "Günlük özetin burada görünecek"
+    },
+    "plan": {
+      "title": "Plan",
+      "emptyTitle": "Henüz plan yok"
+    },
+    "transactions": {
+      "title": "İşlemler",
+      "emptyTitle": "Henüz işlem yok"
+    },
+    "upcoming": {
+      "title": "Yaklaşanlar",
+      "emptyTitle": "Yaklaşan ödeme yok"
+    },
+    "goals": {
+      "title": "Hedefler",
+      "emptyTitle": "Henüz hedef yok"
+    },
+    "accounts": {
+      "title": "Hesaplar",
+      "emptyTitle": "Henüz hesap yok"
+    },
+    "settings": {
+      "title": "Ayarlar",
+      "appearance": "Görünüm"
+    },
+    "notFound": {
+      "title": "Sayfa bulunamadı",
+      "emptyTitle": "Bu adreste bir şey yok"
+    }
   },
   "health": {
     "label": "API durumu",
@@ -86,6 +121,29 @@
   "showcase": {
     "title": "Tasarım sistemi",
     "intro": "Tüm bileşenler, seçili tema ve dilde. İkisini de kontrol etmek için temayı buradan, dili yan menüden değiştir.",
+    "editorial": "Editöryel katman",
+    "weight300": "300 ağırlığı yalnızca 24 piksel ve üzeri başlıklar içindir. Altındaki boyutlarda 400 veya 500 kullanılır. Büyük puntolar sıkı (-%4 ile -%6) ve kısa yazılır — en çok iki satır, asla paragraf değil.",
+    "surfaces": "Yüzeyler",
+    "surfaceCanvas": "Zemin · uygulama ve sayfa arka planı",
+    "surfacePanel": "Panel · 24 piksel köşe, 28 piksel iç boşluk",
+    "surfaceInset": "Gömülü alan · satır vurguları, notlar",
+    "surfacesNote": "Ayrımı çizgiler değil ton sağlar. Kenarlık yalnızca girdilerde ve çerçeveli düğmelerde kullanılır. Daha az ve daha büyük panel — bir ekranda 20 değil 4-6 panel olmalı.",
+    "radii": "Köşe yarıçapları",
+    "radius": {
+      "bar": "Çubuklar, raylar",
+      "control": "Girdiler, menü öğeleri, satırlar",
+      "inset": "Gömülü alanlar, menüler",
+      "card": "Paneller, kipler",
+      "frame": "Kahraman çerçeveler",
+      "pill": "Düğmeler, çipler, bölmeli denetim"
+    },
+    "heroPanel": "Kahraman panel",
+    "heroFootnote": "bu ay ₺9.000'nin kalanı · 10 gün kaldı",
+    "octoberPlan": "Ekim planı",
+    "monthlyIncome": "Aylık gelir",
+    "plannedExpenses": "Planlanan giderler",
+    "aDay": "günlük",
+    "leftToday": "₺85 harcandı · bugün ₺215 kaldı",
     "colours": "Renkler",
     "typography": "Tipografi",
     "buttons": "Düğmeler",
@@ -135,5 +193,752 @@
     "emptyTitle": "Henüz hesap yok",
     "emptyDescription": "Harcama ve birikim için kullandığın hesapları ekle. Bakiyeleri planının başlangıcı olur.",
     "addAccount": "Hesap ekle"
+  },
+  "days": {
+    "mon": "Pzt",
+    "tue": "Sal",
+    "wed": "Çar",
+    "thu": "Per",
+    "fri": "Cum",
+    "sat": "Cmt",
+    "sun": "Paz"
+  },
+  "months": {
+    "jan": "Oca",
+    "feb": "Şub",
+    "mar": "Mar",
+    "apr": "Nis",
+    "may": "May",
+    "jun": "Haz",
+    "jul": "Tem",
+    "aug": "Ağu",
+    "sep": "Eyl",
+    "oct": "Eki",
+    "nov": "Kas",
+    "dec": "Ara"
+  },
+  "categories": {
+    "groceries": "Market",
+    "transport": "Ulaşım",
+    "personalCare": "Kişisel bakım",
+    "utilities": "Faturalar",
+    "pool": "Harcanabilir",
+    "subscriptions": "Abonelikler",
+    "diningOut": "Dışarıda yemek",
+    "shopping": "Alışveriş",
+    "income": "Gelir",
+    "rent": "Kira",
+    "internet": "İnternet",
+    "cardPayment": "Kart ödemesi",
+    "gym": "Spor salonu",
+    "emergency": "Acil durum fonu",
+    "japan": "Japonya gezisi",
+    "funds": "Fonlar",
+    "gold": "Altın",
+    "debtPayments": "Borç ödemeleri",
+    "health": "Sağlık",
+    "other": "Diğer"
+  },
+  "home": {
+    "date": "22 Ekim 2026, Perşembe",
+    "greeting": "İyi günler {{name}}",
+    "lastSync": "Son eşitleme",
+    "figuresIn": "Para birimi",
+    "availableToSpend": "Harcanabilir tutar",
+    "heroFootnote": "bu ayki {{total}} tutarından kalan · {{days}} gün var",
+    "aDay": "günlük",
+    "spent": "harcandı",
+    "leftToday": "bugün kaldı",
+    "todayAllowance": "Bugünün payı",
+    "carryNote": "Harcanmayan pay yarına devreder.",
+    "monthPlan": "Ekim planı",
+    "openPlan": "Planı aç",
+    "incomeReceived": "₺50.000 gelir · tamamı alındı",
+    "unassignedZero": "₺0 dağıtılmamış",
+    "planNote": {
+      "plannedExpenses": "₺3.671 ödenecek",
+      "savings": "1 Eki aktarıldı",
+      "investments": "29 Eki ₺4.000 daha",
+      "pool": "₺6.000 harcandı"
+    },
+    "needsAttention": "İlgi bekleyenler",
+    "openCount": "{{count}} açık",
+    "allClear": "Her şey yolunda",
+    "alertKind": {
+      "overdue": "Gecikmiş",
+      "atRisk": "Riskli",
+      "overBudget": "Bütçe aşımı",
+      "data": "Veri"
+    },
+    "alerts": {
+      "water": "₺310 tutarındaki İSKİ su faturasının son ödeme tarihi 19 Ekim'di ve bir ödemeyle eşleşmedi.",
+      "insurance": "Kasko (₺15.000, Mar 2027) için henüz katkı yok. Kasımdan itibaren ayda ₺3.000 hedefi korur.",
+      "care": "Kişisel bakım, ₺500 bütçesini ₺110 aştı. Harcanabilir tutardan karşılamak bugünün payını ₺289'a düşürür.",
+      "sync": "İş Bankası erişimi 19 Ekim'de sona erdi. Ev birikimi bakiyesi 3 güne kadar eski olabilir."
+    },
+    "alertAction": {
+      "water": "Ödendi işaretle",
+      "insurance": "Kasım planına ekle",
+      "care": "Harcamadan karşıla",
+      "sync": "Yeniden yetkilendir"
+    },
+    "alertDone": {
+      "water": "Ödendi olarak işaretlendi",
+      "insurance": "Kasım planına eklendi",
+      "care": "Karşılandı",
+      "sync": "Yeniden bağlandı"
+    },
+    "cashFlow": "Nakit akışı",
+    "cashFlowNote": "Gelire karşı harcama. Kendi birikim ve yatırımlarınıza yaptığınız aktarımlar hariçtir.",
+    "cashFlowChartLabel": "Son altı ayın geliri ve harcaması",
+    "income": "Gelir",
+    "spending": "Harcama",
+    "octoberSoFar": "Ekim şu ana dek",
+    "kept": "kaldı",
+    "averageSpending": "Ort. harcama, 5 ay",
+    "spentThisMonth": "Bu ay harcanan",
+    "comingUp": "Yaklaşanlar",
+    "comingUpRange": "6 ödeme · 23–29 Eki",
+    "checkingAfter": "Bunlardan sonra vadesiz",
+    "budgets": "Bütçeler",
+    "paceNote": "İşaret beklenen hızı gösterir — Ekim'in %{{percent}}'i geçti",
+    "allBudgets": "Tüm bütçeler",
+    "savingsGoals": "Birikim hedefleri",
+    "savedAcross": "tutarı {{count}} hedefte birikti",
+    "allGoals": "Tüm hedefler",
+    "recentTransactions": "Son işlemler",
+    "toReview": "{{count}} inceleme bekliyor",
+    "allTransactions": "Tüm işlemler",
+    "sampleNote": "Maketlerden örnek değerler. Gerçek veri {{phase}}. aşamada geliyor."
+  },
+  "plan": {
+    "eyebrow": "Aylık plan",
+    "title": "Her liraya bir görev verin",
+    "currentMonth": "Ekim 2026",
+    "previousMonth": "Önceki ay",
+    "nextMonth": "Sonraki ay",
+    "copyToNext": "Kasım'a kopyala",
+    "totals": {
+      "income": "Kullanılabilir gelir",
+      "allocated": "Dağıtılan",
+      "left": "Dağıtılmayı bekleyen"
+    },
+    "incomeNote": "Maaş ₺46.000 · serbest iş ₺4.000",
+    "allocatedNote": "gelirin %{{percent}}'i",
+    "leftNote": "Hedef sıfır — her liranın bir görevi olsun",
+    "allocation": "Dağılım",
+    "allocationNote": "Bu ayki gelir nereye gidiyor",
+    "groups": {
+      "plannedExpenses": "Planlı giderler",
+      "savings": "Birikim",
+      "investments": "Yatırımlar",
+      "pool": "Harcanabilir"
+    },
+    "groups2": {
+      "essentials": "Zorunlu",
+      "flexible": "Esnek",
+      "savings": "Birikim",
+      "investments": "Yatırımlar",
+      "pool": "Harcanabilir"
+    },
+    "ofIncome": "gelire oranla",
+    "categories": "Kategoriler",
+    "columns": {
+      "category": "Kategori",
+      "budgeted": "Bütçe",
+      "spent": "Harcanan",
+      "remaining": "Kalan"
+    },
+    "mix": "Dağılım karması",
+    "mixNote": "Yaygın 50 / 30 / 20 ölçütüyle karşılaştırıldı",
+    "mixRows": {
+      "needs": "İhtiyaçlar",
+      "wants": "İstekler",
+      "future": "Gelecekteki siz"
+    },
+    "mixDesc": {
+      "needs": "Kira, faturalar, market, ulaşım",
+      "wants": "Dışarıda yemek, abonelikler, kişisel bakım",
+      "future": "Birikim, hedefler ve yatırımlar"
+    },
+    "guideline": "ölçüt",
+    "changes": "Eylül'e göre değişimler",
+    "changeRows": {
+      "investments": "Yatırımlar",
+      "groceries": "Market",
+      "pool": "Harcanabilir",
+      "sinkingFunds": "Birikim fonları"
+    }
+  },
+  "transactions": {
+    "eyebrow": "1–22 Ekim 2026 · 6 hesap",
+    "import": "Ekstre içe aktar",
+    "summary": {
+      "income": "Gelir",
+      "spending": "Harcama",
+      "transfers": "Birikim ve yatırıma aktarım",
+      "needsReview": "İnceleme bekleyen"
+    },
+    "reviewThem": "İnceleyin",
+    "list": "Tüm işlemler",
+    "shown": "{{count}} işlem",
+    "filter": "İşlemleri süz",
+    "filters": {
+      "all": "Tümü",
+      "needsReview": "İnceleme bekleyen",
+      "spending": "Harcama",
+      "income": "Gelir"
+    },
+    "columns": {
+      "date": "Tarih",
+      "merchant": "İşyeri",
+      "category": "Kategori",
+      "account": "Hesap",
+      "amount": "Tutar"
+    },
+    "needsReview": "İnceleme bekliyor",
+    "noMatches": "Bu süzgece uyan işlem yok.",
+    "importNote": "Açık bankacılık ile otomatik aktarıldı. Nakit cüzdan elle girilir."
+  },
+  "upcoming": {
+    "eyebrow": "Yinelenen ve planlanmış para hareketleri",
+    "addRecurring": "Yinelenen ekle",
+    "tiles": {
+      "next7": "Önümüzdeki 7 gün",
+      "overdue": "Gecikmiş",
+      "lowest": "En düşük öngörülen bakiye",
+      "income": "Sonraki gelir"
+    },
+    "next7Note": "5 kesin · 1 tahmini",
+    "overdueNote": "İSKİ Su · son tarih 19 Eki",
+    "lowestNote": "31 Eki, maaştan bir gün önce",
+    "incomeNote": "Maaş · 1 Kas bekleniyor",
+    "schedule": "Takvim",
+    "overdueDays": "{{count}} gün gecikti",
+    "estimated": "tahmini",
+    "recurring": "Her ay yinelenen",
+    "recurringRows": {
+      "housing": "Konut ve faturalar",
+      "debt": "Borç ödemeleri",
+      "subscriptions": "Abonelikler",
+      "saving": "Birikim ve yatırım"
+    },
+    "committed": "Harcamadan önce bağlanan",
+    "month": "Ekim 2026",
+    "monthNote": "Gri rakam = gün sonu vadesiz bakiye",
+    "legend": {
+      "paid": "Ödendi",
+      "upcoming": "Yaklaşan",
+      "estimated": "Tahmini",
+      "overdue": "Gecikmiş",
+      "income": "Gelir"
+    }
+  },
+  "goals": {
+    "eyebrow": "Hedefler birikim ve yatırımlardan birlikte beslenebilir",
+    "newGoal": "Yeni hedef",
+    "summary": "{{count}} hedef",
+    "committed": "bağlandı",
+    "of": "/",
+    "names": {
+      "emergency": "Acil durum fonu",
+      "japan": "Japonya gezisi",
+      "computer": "Yeni bilgisayar",
+      "house": "Ev peşinatı"
+    },
+    "notes": {
+      "emergency": "3,3 aylık zorunlu gider karşılanıyor",
+      "japan": "Hedef Tem 2027 · yaklaşık 2 ay geride",
+      "computer": "Ara 2027 için yolunda",
+      "house": "Nakit, fon ve altın · hedef Ara 2029"
+    },
+    "howItWorks": "Hedefler nasıl çalışır",
+    "howItWorksBody": "Hedef, hâlihazırda sahip olduğunuz parayı ayırır. Katkı vermek parayı Harcanabilir tutardan hedefe taşır; serbest bırakmak geri getirir. Bakiyeler gerçek hesaplarınızda kalır — Mizan yalnızca her liranın ne için olduğunu hatırlar."
+  },
+  "accounts": {
+    "eyebrow": "{{count}} hesap · bakiyeler diğer tüm ekranları besler",
+    "addManual": "Elle varlık ekle",
+    "connect": "Hesap bağla",
+    "readOnly": "Yalnızca okuma erişimi. Mizan paranızı asla hareket ettiremez.",
+    "readOnlyBody": "Bağlantılar her bankanın açık bankacılık onayını kullanır; buradan ya da bankanızın uygulamasından istediğiniz an iptal edebilirsiniz.",
+    "security": {
+      "twoStep": {
+        "label": "İki adımlı giriş",
+        "value": "Açık · kimlik doğrulama uygulaması"
+      },
+      "devices": {
+        "label": "Giriş yapılmış cihazlar",
+        "value": "2 · bu Mac, iPhone"
+      },
+      "encryption": {
+        "label": "Şifreleme",
+        "value": "Beklerken ve aktarımda"
+      }
+    },
+    "kinds": {
+      "checking": "Vadesiz",
+      "cash": "Nakit",
+      "savings": "Birikim",
+      "card": "Kredi kartları"
+    },
+    "statement": "ekstre {{date}}",
+    "synced": "Eşitlendi {{time}}",
+    "accessExpired": "Erişim sona erdi",
+    "total": "Toplam",
+    "totalNote": "Kart bakiyeleri düşüldükten sonra bütçeye dahil her şey. Hesap bakiyeleri işlemlerden türetilir, saklanmaz."
+  },
+  "landing": {
+    "nav": "Tanıtım gezinmesi",
+    "links": {
+      "product": "Ürün",
+      "features": "Özellikler",
+      "security": "Güvenlik",
+      "about": "Hakkında"
+    },
+    "signIn": "Giriş yap",
+    "cta": "Mizan'ı kullanmaya başla",
+    "seeHow": "Nasıl çalışır",
+    "skipIntro": "Girişi atla",
+    "heroLead": "Geliriniz, planlarınız, birikimleriniz, yatırımlarınız ve net değeriniz için bir kişisel finans sistemi — böylece her liranın bir görevi olur.",
+    "heroLine1": "Paranızı dengeye",
+    "heroLine2": "kavuşturun.",
+    "statementLabel": "Mizan ne işe yarar",
+    "statement1": "Çoğu uygulama paranın",
+    "statement2": "nereye gittiğini söyler.",
+    "statement3": "Mizan nereye gideceğine",
+    "statement4": "karar vermenizi sağlar.",
+    "scenes": {
+      "plan": {
+        "eyebrow": "Plan",
+        "title1": "Harcamadan önce",
+        "title2": "planlayın.",
+        "body": "Geliriniz geldiği gün bölüşülür — faturalar, yaşam, birikim, yatırım, borç. Geriye kalan gerçekten sizindir."
+      },
+      "transactions": {
+        "eyebrow": "İşlemler",
+        "title1": "Her liranın",
+        "title2": "izini görün.",
+        "body": "Her ödeme gerçekleştikçe planınızla eşleştirilir. Yalnızca Mizan'ın emin olmadıklarını incelersiniz."
+      },
+      "savings": {
+        "eyebrow": "Birikim",
+        "title1": "Birikimi bir",
+        "title2": "düzene bağlayın.",
+        "body": "Birikim, ayın ilk günü, siz atlamadan önce ayrılır. Her hedef, ona ne zaman ulaşacağınızı gösterir."
+      },
+      "investments": {
+        "eyebrow": "Yatırımlar",
+        "title1": "Yatırım da",
+        "title2": "planın parçası.",
+        "body": "Portföyünüz kiranızla aynı planda yaşar — katkılar, dağılım ve enflasyon sonrası ölçülen getiriler."
+      },
+      "netWorth": {
+        "eyebrow": "Net değer",
+        "title1": "Gerçek net değerinizi",
+        "title2": "anlayın.",
+        "body": "Sahip olduklarınız eksi borçlarınız. Gerçekten ne kazandığınızı görmek için reel değerlere geçin."
+      },
+      "whatIf": {
+        "eyebrow": "Ya olsaydı",
+        "body": "Siz sürgeyi oynattıkça Mizan planınızı yeniden hesaplar — ve karar vermeden önce bedelini gösterir."
+      },
+      "assistant": {
+        "eyebrow": "Asistan",
+        "title1": "Karar vermeden",
+        "title2": "önce sorun.",
+        "body": "Yanıtlar kendi hesaplarınızdan ve planınızdan gelir — hesabı açıkça gösterilir, asla tahmin değil."
+      }
+    },
+    "octoberIncome": "Ekim geliri",
+    "everyLira": "Her lira dağıtıldı · ₺0 artı",
+    "sankeyLabel": "Ekim geliri nereye gidiyor",
+    "flows": {
+      "essentials": "Zorunlu",
+      "pool": "Harcanabilir",
+      "savings": "Birikim",
+      "investments": "Yatırımlar",
+      "debt": "Borç ödemeleri"
+    },
+    "spentSoFar": "Ekim'de şu ana dek harcanan",
+    "spendRows": {
+      "essentials": "Zorunlu",
+      "debt": "Borç",
+      "flexible": "Esnek"
+    },
+    "scheduled": "1 Kas · birikime ₺6.000 · planlandı",
+    "portfolio": "Portföy",
+    "portfolioChart": "On iki aylık portföy değeri",
+    "unrealised": "Gerçekleşmemiş",
+    "real12": "Reel, 12 ay",
+    "allocation": "Dağılım",
+    "holdings": {
+      "equities": "Hisseler",
+      "funds": "Fonlar",
+      "gold": "Altın",
+      "eurobonds": "Eurobond",
+      "fx": "Döviz",
+      "cash": "Nakit"
+    },
+    "rebalance": "Hisseler %30 hedefinizin 11,8 puan üzerinde. Kasım'daki ₺8.000 ile dengeleyin.",
+    "assets": "Varlıklar",
+    "assetRows": {
+      "cash": "Nakit ve birikim",
+      "investments": "Yatırımlar",
+      "other": "Araç ve diğer"
+    },
+    "liabilities": "Yükümlülükler",
+    "liabilityNote": "Kredi kartı ₺18.400 · Krediler ₺82.800",
+    "netWorthOn": "Net değer · 22 Eki 2026",
+    "netWorthBasis": "Net değer ölçütü",
+    "nominal": "Nominal",
+    "realTerms": "Reel",
+    "netWorthNominalNote": "On iki ayda {{gain}} arttı, kâğıt üzerinde +%28,2.",
+    "netWorthRealNote": "%26,9 enflasyon sonrası reel artış {{gain}} — yılda %1,0.",
+    "netWorthChart": "On iki aylık net değer",
+    "legendNominal": "Yeşil: nominal · kesikli: bugünün lirası",
+    "legendReal": "Yeşil: bugünün lirası · kesikli: nominal",
+    "nov2025": "Kas 2025",
+    "oct2026": "Eki 2026",
+    "whatIfQuestion": "Her ay",
+    "whatIfQuestionTail": "daha fazla biriktirseydim?",
+    "extraEachMonth": "Her ay ek birikim",
+    "allOfPool": "₺9.000 · harcanabilirin tamamı",
+    "netWorthBy": "Eki 2031'de net değer",
+    "versusToday": "Bugünkü plana göre",
+    "whatIfChart": "Beş yıllık öngörülen net değer",
+    "poolBecomes": "Harcanabilir tutar aylık",
+    "aMonth": "olur.",
+    "realTermsNote": "Reel · yılda %3,5",
+    "assistant": {
+      "afford": {
+        "question": "Bu ay ₺8.000 harcayabilir miyim?",
+        "verdict": "Yalnızca harcama parasıyla hayır.",
+        "lines": [
+          "Ekim'in 10 günü kalırken harcayabileceğiniz ₺3.000 var.",
+          "₺8.000'i karşılamak ₺5.000 daha bulmak demek — en temiz yol, 29 Ekim'deki ₺4.000 yatırımı atlayıp birikimden ₺1.000 almak.",
+          "Ya da 10 gün bekleyin: Kasım ₺9.000 harcanabilir tutarla başlıyor."
+        ],
+        "source": "Ekim planı · 8 hesap · 14:58'de eşitlendi"
+      },
+      "invest": {
+        "question": "Bu ay gönül rahatlığıyla ne kadar yatırım yapabilirim?",
+        "verdict": "Planladığınız ₺4.000 — fazlası değil.",
+        "lines": [
+          "Bu haftanın faturalarından (₺7.430) sonra vadesizde ₺17.110 kalacak.",
+          "29 Ekim'de ₺4.000 yatırım, ₺12.000'lik güvenlik tamponunuzun üzerinde, ₺13.110 bırakır.",
+          "Bunun ötesi, 1 Kasım maaş gününe dek tampona dokunur."
+        ],
+        "source": "Takvim · Yatırımlar · Garanti ··4471"
+      }
+    },
+    "showWorking": "Hesabı göster",
+    "trustTitle1": "Dikkatiniz için değil,",
+    "trustTitle2": "paranız için.",
+    "trust": {
+      "readOnly": {
+        "title": "Tasarım gereği salt okunur",
+        "body": "Mizan, açık bankacılığa yalnızca görüntüleme erişimiyle bağlanır. Bakiyelerinizi görebilir; paranızı asla hareket ettiremez."
+      },
+      "encrypted": {
+        "title": "Her zaman şifreli",
+        "body": "Verileriniz aktarımda ve beklerken şifrelenir; her erişim, sizin de görebileceğiniz bir kayda işlenir."
+      },
+      "yours": {
+        "title": "Bizim değil, sizin",
+        "body": "Reklam yok, veri satışı yok. Dilediğiniz an her şeyi dışa aktarın ya da silin."
+      }
+    },
+    "closingLine1": "Her lira,",
+    "closingLine2": "hesaplı.",
+    "footerBlurb": "Mizan denge demektir. İstanbul'da yapılmış bir kişisel finans sistemi.",
+    "sampleNote": "Bu sayfadaki değerler maketlerdeki örnek plandan alındı.",
+    "preferences": "Tercihler",
+    "copyright": "© 2026 Mizan"
+  },
+  "assistant": {
+    "title": "Asistan",
+    "subtitle": "Yalnızca Mizan verilerinizden yanıtlar",
+    "newChat": "Yeni sohbet",
+    "intro": "Harcamalarınız, planınız, hedefleriniz ya da yatırımlarınız hakkında sorun. Sayıları ve nereden geldiklerini göstereceğim.",
+    "suggested": "Öneriler",
+    "placeholder": "Paranız hakkında sorun…",
+    "ask": "Sor",
+    "disclaimer": "Bu hesaptaki bakiye ve işlemleri kullanır. Yatırım tavsiyesi değildir."
+  },
+  "savings": {
+    "eyebrow": "3 hedef · 3 birikim fonu · 1 ortak hedef",
+    "newFund": "Yeni birikim fonu",
+    "tiles": {
+      "total": "Toplam birikim",
+      "totalNote": "Ev peşinatı için ₺300.000 dahil",
+      "monthly": "Aylık katkı",
+      "monthlyNote": "gelirin %{{percent}}'i · ayın 1'inde otomatik",
+      "interest": "2026'da kazanılan faiz",
+      "interestNote": "Enpara ve İş Bankası birikimleri",
+      "rate": "Birikim oranı, son 12 ay",
+      "rateNote": "Birikim + yatırım ÷ gelir"
+    },
+    "priority": "Öncelik 1 · Enpara Birikim ··0912 · anında erişim",
+    "funded": "%{{percent}} toplandı",
+    "ofTarget": "/",
+    "milestones": {
+      "oneMonth": "1 ay",
+      "threeMonths": "3 ay",
+      "sixMonths": "6 ay"
+    },
+    "reached": "Ulaşıldı",
+    "monthsNote": "₺82.000 ÷ ₺24.800 = {{months}} aylık zorunlu gider. Altı ay için {{toGo}} kaldı.",
+    "essentials": "Zorunlu aylık giderler",
+    "essentialsNote": "Gelir kesilse de ödemeniz gerekenler",
+    "perMonth": "Aylık",
+    "interestNote": "Faiz (yıllık %39) projeksiyonlara dahil edilmedi.",
+    "otherGoals": "Diğer hedefler",
+    "monthly": "Aylık",
+    "sinkingFunds": "Birikim fonları",
+    "sinkingNote": "Bilinen gelecek giderler için her ay biraz ayrılır, böylece sürpriz olmazlar",
+    "saved": "Biriken",
+    "of": "/",
+    "funds": {
+      "insurance": "Kasko",
+      "tax": "Emlak vergisi",
+      "school": "Okul ücreti"
+    },
+    "due": {
+      "mar2027": "Mart 2027'de",
+      "feb2027": "Şubat 2027'de",
+      "sep2027": "Eylül 2027'de"
+    }
+  },
+  "investments": {
+    "eyebrow": "5 hesap · BIST fiyatları 15 dk gecikmeli · 22 Eki 15:42 güncellendi",
+    "recordDividend": "Temettü kaydet",
+    "addHolding": "Varlık ekle",
+    "totalValue": "Toplam portföy değeri",
+    "inclCash": "{{amount}} yatırılmamış nakit dahil piyasa değeri",
+    "stats": {
+      "invested": "Toplam yatırılan",
+      "unrealised": "Gerçekleşmemiş kâr",
+      "return12": "12 aylık getiri",
+      "real": "Enflasyon sonrası reel getiri"
+    },
+    "statNotes": {
+      "invested": "Çekimler düşülmüş",
+      "unrealised": "+%16,0",
+      "return12": "Zaman ağırlıklı",
+      "real": "TÜİK TÜFE %26,9, Eyl"
+    },
+    "growth": "Büyüme ve katkılar",
+    "growthNote": "İki çizgi arasındaki fark, piyasanın kattığıdır",
+    "marketValue": "Piyasa değeri",
+    "netInvested": "Net yatırılan",
+    "allocation": "Varlık dağılımı",
+    "allocationNote": "Mevcut portföy, hedefinizle karşılaştırıldı",
+    "current": "Mevcut",
+    "target": "Hedef",
+    "columns": {
+      "class": "Sınıf",
+      "value": "Değer",
+      "now": "Şimdi",
+      "target": "Hedef",
+      "drift": "Sapma"
+    },
+    "rebalancing": "Yeniden dengeleme",
+    "rebalanceHeadline": "Hisseler %30 hedefinizin 11,8 puan üzerinde; fonlar 5,4 puan altında.",
+    "redirect": "Yeni katkıları yönlendir",
+    "redirectBody": "Gelecek katkıları yalnızca eksik ağırlıktaki sınıflara gönderin. Ayda ₺8.000 ile hedefe yaklaşık {{months}} ayda ulaşılır, satış yapmadan.",
+    "rebalanceNow": "Şimdi dengele",
+    "rebalanceNowBody": "Hisselerden {{amount}} çıkarmak hedefi bugün geri getirir.",
+    "disclaimer": "Yalnızca bilgilendirme amaçlıdır, yatırım tavsiyesi değildir."
+  },
+  "debts": {
+    "eyebrow": "2 kredi · 1 kredi kartı",
+    "addDebt": "Borç ekle",
+    "tiles": {
+      "total": "Toplam borç",
+      "totalNote": "₺82.800 kredi · ₺18.400 kart",
+      "monthly": "Aylık kredi ödemeleri",
+      "monthlyNote": "gelirin %{{percent}}'i · %20 altı sağlıklı",
+      "interest": "2026'da ödenen faiz",
+      "interestNote": "Tamamı ihtiyaç kredisinden",
+      "free": "Kredisiz kalış",
+      "freeNote": "Mevcut takvime göre"
+    },
+    "lines": "Borçlarınız",
+    "columns": {
+      "debt": "Borç",
+      "remaining": "Kalan",
+      "rate": "Faiz oranı",
+      "monthly": "Aylık",
+      "payoff": "Bitiş"
+    },
+    "names": {
+      "personal": "İhtiyaç kredisi",
+      "student": "Öğrenim kredisi",
+      "card": "Bonus kart"
+    },
+    "lenders": {
+      "personal": "İş Bankası",
+      "student": "KYK",
+      "card": "Garanti ··9020"
+    },
+    "next": "sonraki",
+    "interestFree": "%0",
+    "dates": {
+      "sep2028": "Eyl 2028",
+      "jan2028": "Oca 2028",
+      "monthly": "Aylık ödenir"
+    },
+    "simulator": "Ek ödeme simülatörü",
+    "simulatorNote": "Yalnızca kredilere uygulanır — kart zaten tamamen ödeniyor",
+    "extra": "Aylık ek ödeme",
+    "avalanche": "Önce en yüksek faiz; biten kredinin taksiti bir sonrakine eklenir.",
+    "monthsLeft": "Kredisiz kalmaya kalan ay",
+    "wasMonths": "önceden {{months}} ay",
+    "timeSaved": "Kazanılan süre",
+    "months_one": "{{count}} ay",
+    "months_other": "{{count}} ay",
+    "interestSaved": "Kazanılan faiz",
+    "ofRemaining": "kalan ₺{{amount}} içinden",
+    "addToPlan": "Kasım planına ekle"
+  },
+  "netWorth": {
+    "eyebrow": "Sahip olduklarınız eksi borçlarınız",
+    "onDate": "Net değer · 22 Eki 2026",
+    "sinceLastMonth": "30 Eyl'den beri",
+    "assets": "Varlıklar",
+    "liabilities": "Yükümlülükler",
+    "chart": "On iki aylık net değer",
+    "columns": {
+      "category": "Kategori",
+      "value": "Değer",
+      "month": "1 ay"
+    },
+    "rows": {
+      "assets": {
+        "cash": "Nakit ve vadesiz",
+        "savings": "Birikim hesapları",
+        "investments": "Yatırımlar",
+        "vehicles": "Araçlar"
+      },
+      "liabilities": {
+        "loans": "Krediler",
+        "cards": "Kredi kartları"
+      }
+    },
+    "sources": {
+      "assets": {
+        "cash": "Garanti ··4471, nakit cüzdan",
+        "savings": "Enpara, İş Bankası",
+        "investments": "5 hesap · piyasa değeri",
+        "vehicles": "2017 Fiat Egea · piyasa tahmini, Eyl"
+      },
+      "liabilities": {
+        "loans": "İş Bankası, KYK",
+        "cards": "Bonus ··9020 · her ay tamamen ödenir"
+      }
+    },
+    "total": "Toplam",
+    "liquid": "Likit net değer",
+    "liquidNote": "Aracı içermez",
+    "debtRatio": "Borç / varlık oranı",
+    "debtRatioNote": "₺101.200 ÷ ₺2.167.950",
+    "changeFrom": "Bu ayki değişim nereden geldi",
+    "changeBreakdown": "Katkılar {{contributions}} · Piyasa {{markets}} · Ödenen borç {{debt}}",
+    "changeNote": "Araç değerlemesi değişmedi"
+  },
+  "reports": {
+    "eyebrow": "Yalnızca tamamlanmış aylar · Eki 2025 – Eyl 2026",
+    "exportPdf": "PDF dışa aktar",
+    "health": "Finansal sağlık",
+    "bands": {
+      "needsAttention": "İlgi gerekiyor",
+      "fair": "Orta",
+      "good": "İyi",
+      "strong": "Güçlü"
+    },
+    "scoreSummary": "Güçlü birikim alışkanlığı ve düşük borç. Puanı Güçlü aralığından uzak tutan, acil durum fonu ve iki dağılım sapması. Temmuz'dan beri {{points}} puan arttı.",
+    "scoreDisclaimer": "Her ay kendi verilerinizden yeniden hesaplanır. Kredi notu değildir.",
+    "factors": {
+      "emergency": "Acil durum fonu",
+      "savingsRate": "Birikim oranı",
+      "debtBurden": "Borç yükü",
+      "budgetConsistency": "Bütçe tutarlılığı",
+      "allocation": "Yatırım dağılımı"
+    },
+    "factorMeta": {
+      "emergency": "6 ayın 3,3'ü",
+      "savingsRate": "gelirin %27'si",
+      "debtBurden": "gelirin %11'i",
+      "budgetConsistency": "10 kategorinin 7'si",
+      "allocation": "2 sınıf hedef dışı"
+    },
+    "factorText": {
+      "emergency": "3,3 aylık zorunlu gideri karşılıyor. 6 aya ulaşmak, yapılabilecek en büyük tek iyileştirme.",
+      "savingsRate": "Gelirin dörtte birinden fazlasını düzenli olarak ayırıyorsunuz. Bu, %20 ölçütünün oldukça üzerinde.",
+      "debtBurden": "Kredi ödemeleri gelirin makul bir payı ve kart tamamen ödeniyor. İhtiyaç kredisinin faizi, birikim getirisine göre yüksek.",
+      "budgetConsistency": "Son 3 ayda kategorilerin çoğu bütçe içinde kaldı. Dışarıda yemek ve kişisel bakım iki kez aştı.",
+      "allocation": "Altı sınıfa yayılmış. Hisseler kendi hedefinizin 12 puan üzerinde, fonlar 5 puan altında."
+    },
+    "incomeVsExpenses": "Gelir ve gider",
+    "incomeVsExpensesNote": "Kazandığımdan az mı harcıyorum?",
+    "avgIncome": "Ort. gelir",
+    "avgSpending": "Ort. aylık harcama",
+    "avgRate": "Ort. birikim oranı",
+    "spendingByCategory": "Kategoriye göre harcama · Eylül",
+    "spendingNote": "Param nereye gidiyor? İşaret 3 aylık ortalamadır",
+    "vsAverage": "ort. fark",
+    "spendingSummary": "Dışarıda yemek 3 aylık ortalamanın %16 üzerinde; alışveriş %15 altında kaldı. Sabit giderler (kira, borç) harcamanın %40'ıydı."
+  },
+  "whatIf": {
+    "eyebrow": "Bir kararı, vermeden önce gerçek planınızda deneyin",
+    "saveScenario": "Senaryoyu kaydet",
+    "question": "Ya şu olursa…",
+    "presets": {
+      "car": "Araba alırsam",
+      "move": "Taşınırsam",
+      "sabbatical": "Ara verirsem",
+      "course": "Kursa öderse m"
+    },
+    "presetAmounts": {
+      "car": "85000",
+      "move": "45000",
+      "sabbatical": "70000",
+      "course": "18000"
+    },
+    "amount": "Tek seferlik tutar",
+    "howPaid": "Nasıl ödenecek",
+    "funding": {
+      "savings": {
+        "label": "Birikimden",
+        "desc": "Acil durum fonu ve hedeflerden alınır"
+      },
+      "pool": {
+        "label": "Harcanabilir tutardan",
+        "desc": "Önümüzdeki ayların harcama parasına yayılır"
+      },
+      "instalments": {
+        "label": "Taksitle",
+        "desc": "Kartla 12 aylık taksit"
+      }
+    },
+    "minimumNote": "Vadesiz hesap ₺5.000 asgari bakiyeyi korur.",
+    "verdictSafe": "Bu işe yarar",
+    "verdictTight": "Bu sizi zorlar",
+    "verdictSafeBody": "Tamponunuz boyunca asgarinin üzerinde kalır ve yaklaşık {{months}} ayda plana geri döner.",
+    "verdictTightBody": "Tamponunuz ₺5.000 asgarinin altına düşer. Taksite yayın ya da sonraki maaşı bekleyin.",
+    "lowestCushion": "En düşük tampon",
+    "minimumBalance": "Asgari bakiye",
+    "recovery": "Plana dönüş",
+    "futureCashFlow": "Gelecek nakit akışı",
+    "futureCashFlowNote": "Ay sonu nakit tamponu: vadesiz artı acil durum fonu",
+    "withThis": "Bununla",
+    "withoutThis": "Bu olmadan",
+    "calculation": "Bu nasıl hesaplandı",
+    "calc": {
+      "amount": "Tek seferlik tutar",
+      "source": "Ödeme kaynağı",
+      "monthlySurplus": "Aylık fazla",
+      "cushionToday": "Bugünkü tampon"
+    }
   }
 }

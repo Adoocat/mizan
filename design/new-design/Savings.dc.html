@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="05 Savings" style="padding:32px 40px 80px;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">3 goals · 3 sinking funds · 1 shared goal</div>
+      <h1 style="margin:6px 0 0;font-size:40px;font-weight:300;letter-spacing:-0.045em;line-height:1.05">Savings</h1>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">New sinking fund</button>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:var(--m-33312d-bg)">New goal</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px">
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12.5px;color:var(--m-5c5852-fg)">Total saved</span><span style="font-size:24px;font-weight:500;letter-spacing:-0.025em">₺440,500</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">Incl. ₺300,000 for House deposit</span></div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12.5px;color:var(--m-5c5852-fg)">Monthly contribution</span><span style="font-size:24px;font-weight:500;letter-spacing:-0.025em">{{ monthlyF }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ monthlyPct }} of income · auto-transfer on the 1st</span></div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--m-efece6-line)"><span style="font-size:12.5px;color:var(--m-5c5852-fg)">Interest earned in 2026</span><span style="font-size:24px;font-weight:500;letter-spacing:-0.025em;color:var(--m-2f7d57-fg)">+₺38,920</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">Enpara and İş Bankası savings</span></div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12.5px;color:var(--m-5c5852-fg)">Savings rate, last 12 months</span><span style="font-size:24px;font-weight:500;letter-spacing:-0.025em">27.4%</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">Savings + investments ÷ income</span></div>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;display:flex;flex-wrap:wrap">
+    <div style="flex:2 1 520px;min-width:0;padding:22px 24px;display:flex;flex-direction:column;gap:20px;border-right:1px solid var(--m-efece6-line)">
+      <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div style="display:flex;align-items:center;gap:8px"><h2 style="font-size:15px;font-weight:600;letter-spacing:-0.01em;margin:0">Emergency fund</h2><span style="font-size:11.5px;color:var(--m-5c5852-fg);background:var(--m-f3f1ec-bg);border-radius:4px;padding:2px 7px">Priority 1</span></div>
+          <span style="font-size:12px;color:var(--m-77726a-fg)">Enpara Savings ··0912 · instant access</span>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div style="font-size:30px;font-weight:500;letter-spacing:-0.03em">₺82,000 <span style="font-size:16px;color:var(--m-8a857c-fg);font-weight:400">/ ₺150,000</span></div>
+          <div style="font-size:12.5px;color:var(--m-5c5852-fg)">55% funded</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;padding-top:8px">
+        <div style="position:relative;height:28px">
+          <div style="position:absolute;left:0;right:0;top:10px;height:8px;background:var(--m-efece6-bg);border-radius:4px"></div>
+          <div style="position:absolute;left:0;top:10px;height:8px;width:54.7%;background:var(--m-3f7e86-bg);border-radius:4px 0 0 4px"></div>
+          <div style="position:absolute;left:16.5%;top:4px;bottom:4px;width:2px;background:var(--m-ffffff-bg);box-shadow:0 0 0 1px var(--m-3f7e86-line)"></div>
+          <div style="position:absolute;left:49.6%;top:4px;bottom:4px;width:2px;background:var(--m-ffffff-bg);box-shadow:0 0 0 1px var(--m-3f7e86-line)"></div>
+          <div style="position:absolute;left:99.2%;top:4px;bottom:4px;width:2px;background:var(--m-ffffff-bg);box-shadow:0 0 0 1px var(--m-a49e94-line)"></div>
+          <div style="position:absolute;left:54.7%;top:0;transform:translateX(-50%);font-size:10.5px;font-weight:600;color:var(--m-faf9f6-fg);background:var(--m-1c1b19-bg);border-radius:3px;padding:1px 5px;top:-14px">3.3 mo</div>
+        </div>
+        <div style="position:relative;height:40px;font-size:12px">
+          <div style="position:absolute;left:16.5%;transform:translateX(-50%);text-align:center;white-space:nowrap"><div style="font-weight:500">1 month</div><div style="color:var(--m-2f7d57-fg)">✓ ₺24,800</div></div>
+          <div style="position:absolute;left:49.6%;transform:translateX(-50%);text-align:center;white-space:nowrap"><div style="font-weight:500">3 months</div><div style="color:var(--m-2f7d57-fg)">✓ ₺74,400</div></div>
+          <div style="position:absolute;right:0;text-align:right;white-space:nowrap"><div style="font-weight:500">6 months</div><div style="color:var(--m-77726a-fg)">₺148,800 · ₺66,800 to go</div></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:20px 32px;align-items:center;padding-top:16px;border-top:1px solid var(--m-efece6-line)">
+        <div style="flex:1 1 260px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;font-size:12.5px"><span style="color:var(--m-5c5852-fg)">Monthly contribution</span><span style="font-weight:500">{{ efF }}</span></div>
+          <input type="range" min="1000" max="8000" step="250" value="{{ ef }}" onChange="{{ setEf }}" style="width:100%">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--m-8a857c-fg)"><span>₺1,000</span><span>₺8,000</span></div>
+        </div>
+        <div style="flex:1 1 220px;display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:12.5px;color:var(--m-5c5852-fg)">6 months covered by</span>
+          <span style="font-size:20px;font-weight:500;letter-spacing:-0.02em">{{ efDate }}</span>
+          <span style="font-size:11.5px;color:{{ efNoteColor }}">{{ efNote }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1 1 280px;min-width:0;padding:22px 24px;display:flex;flex-direction:column;gap:12px;background:var(--m-fdfcfa-bg);border-radius:0 8px 8px 0">
+      <div style="display:flex;align-items:center"><h3 style="font-size:13px;font-weight:600;margin:0">Essential monthly expenses</h3><button style="all:unset;cursor:pointer;margin-left:auto;font-size:12.5px;color:var(--m-2c4a7c-fg);font-weight:500" style-hover="text-decoration:underline">Edit</button></div>
+      <span style="font-size:12px;color:var(--m-77726a-fg);line-height:1.45;margin-top:-6px">What you’d still need to pay if income stopped. Taken from your plan.</span>
+      <div style="display:grid;grid-template-columns:1fr auto;row-gap:8px;font-size:12.5px">
+        <span style="color:var(--m-5c5852-fg)">Rent</span><span>₺9,500</span>
+        <span style="color:var(--m-5c5852-fg)">Food &amp; groceries</span><span>₺6,000</span>
+        <span style="color:var(--m-5c5852-fg)">Debt payments</span><span>₺5,500</span>
+        <span style="color:var(--m-5c5852-fg)">Transport</span><span>₺1,800</span>
+        <span style="color:var(--m-5c5852-fg)">Utilities</span><span>₺1,400</span>
+        <span style="color:var(--m-5c5852-fg)">Internet &amp; phone</span><span>₺600</span>
+        <span style="border-top:1px solid var(--m-e3e0d8-line);padding-top:8px;font-weight:500">Per month</span><span style="border-top:1px solid var(--m-e3e0d8-line);padding-top:8px;font-weight:600">₺24,800</span>
+      </div>
+      <div style="font-size:11.5px;color:var(--m-77726a-fg);line-height:1.5;margin-top:auto">₺82,000 ÷ ₺24,800 = 3.3 months. Interest (39% p.a.) is not included in projections.</div>
+    </div>
+  </section>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px">
+    <sc-for list="{{ goals }}" as="g" hint-placeholder-count="3">
+      <section onClick="{{ g.open }}" style="cursor:{{ g.cursor }};background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:14px" style-hover="border-color:var(--m-d6d2c9-line)">
+        <div style="display:flex;align-items:flex-start;gap:8px">
+          <div style="display:flex;flex-direction:column;gap:3px;flex:1">
+            <h2 style="font-size:14px;font-weight:600;letter-spacing:-0.01em;margin:0">{{ g.name }}</h2>
+            <span style="font-size:12px;color:var(--m-77726a-fg)">{{ g.source }}</span>
+          </div>
+          <span style="font-size:11px;font-weight:500;color:{{ g.sc }};background:{{ g.sbg }};border-radius:4px;padding:2px 7px;white-space:nowrap">{{ g.status }}</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:22px;font-weight:500;letter-spacing:-0.025em">{{ g.cur }}</span><span style="font-size:13px;color:var(--m-8a857c-fg)">/ {{ g.target }}</span><span style="margin-left:auto;font-size:12.5px;color:var(--m-5c5852-fg)">{{ g.pct }}</span></div>
+        <div style="height:6px;background:var(--m-efece6-bg);border-radius:3px;overflow:hidden;display:flex;gap:1.5px">
+          <sc-for list="{{ g.segs }}" as="s" hint-placeholder-count="1"><div style="width:{{ s.w }};background:{{ s.color }}"></div></sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;font-size:12px">
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="color:var(--m-77726a-fg)">Target date</span><span style="font-weight:500">{{ g.date }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="color:var(--m-77726a-fg)">Monthly</span><span style="font-weight:500">{{ g.monthly }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="color:var(--m-77726a-fg)">Estimated completion</span><span style="font-weight:500;color:{{ g.estColor }}">{{ g.est }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="color:var(--m-77726a-fg)">Left to save</span><span style="font-weight:500">{{ g.left }}</span></div>
+        </div>
+        <sc-if value="{{ g.hasHint }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:var(--m-5c5852-fg);padding:9px 11px;background:var(--m-faf9f6-bg);border-radius:6px;line-height:1.45">{{ g.hint }}</div></sc-if>
+      </section>
+    </sc-for>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;overflow:hidden">
+    <div style="display:flex;align-items:flex-start;gap:12px;padding:16px 20px 12px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">Sinking funds</h2>
+        <span style="font-size:12px;color:var(--m-77726a-fg)">Known future costs, saved for a little each month so they never arrive as a surprise.</span>
+      </div>
+      <span style="margin-left:auto;font-size:12.5px;color:var(--m-5c5852-fg)">Saved <span style="font-weight:500;color:var(--m-1c1b19-fg)">₺7,000</span> of ₺25,800</span>
+    </div>
+    <div style="overflow-x:auto">
+      <div style="min-width:760px">
+        <div style="display:grid;grid-template-columns:minmax(180px,1.6fr) 100px 100px 100px minmax(150px,1fr) 150px minmax(130px,1fr);column-gap:14px;padding:8px 20px;font-size:11.5px;color:var(--m-77726a-fg);font-weight:500;background:var(--m-faf9f6-bg);border-top:1px solid var(--m-efece6-line);border-bottom:1px solid var(--m-efece6-line)">
+          <span>Fund</span><span style="text-align:right">Needed</span><span style="text-align:right">Saved</span><span>Due</span><span>Progress</span><span style="text-align:right">Monthly · current / needed</span><span style="text-align:right">Status</span>
+        </div>
+        <sc-for list="{{ sinking }}" as="s" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:minmax(180px,1.6fr) 100px 100px 100px minmax(150px,1fr) 150px minmax(130px,1fr);column-gap:14px;align-items:center;padding:0 20px;min-height:54px;border-bottom:1px solid var(--m-f3f1ec-line);font-size:13px;background:{{ s.bg }};transition:background 300ms">
+            <div style="display:flex;flex-direction:column;line-height:1.35"><span style="font-weight:500">{{ s.name }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">{{ s.note }}</span></div>
+            <span style="text-align:right">{{ s.needed }}</span>
+            <span style="text-align:right">{{ s.saved }}</span>
+            <span style="color:var(--m-5c5852-fg)">{{ s.due }}</span>
+            <div style="height:4px;background:var(--m-efece6-bg);border-radius:2px;overflow:hidden"><div style="height:100%;width:{{ s.w }};background:var(--m-3f7e86-bg)"></div></div>
+            <span style="text-align:right"><span style="font-weight:500;color:{{ s.curColor }}">{{ s.cur }}</span> <span style="color:var(--m-8a857c-fg)">/ {{ s.rec }}</span></span>
+            <div style="display:flex;justify-content:flex-end">
+              <sc-if value="{{ s.canFix }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ s.fix }}" style="height:28px;padding:0 10px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap" style-hover="background:var(--m-f3f1ec-bg)">Add {{ s.rec }} to plan</button>
+              </sc-if>
+              <sc-if value="{{ s.ok }}" hint-placeholder-val="{{ true }}">
+                <span style="font-size:11px;font-weight:500;color:var(--m-2f7d57-fg);background:var(--m-e8f2ec-bg);border-radius:4px;padding:2px 7px">{{ s.status }}</span>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const addMonths = (n) => { const t = 2026 * 12 + 9 + Math.ceil(n); return MON[t % 12] + ' ' + Math.floor(t / 12); };
+
+class Component extends DCLogic {
+  state = { ef: 2500, kasko: false };
+  renderVals() {
+    const ef = this.state.ef;
+    const months = (148800 - 82000) / ef;
+    const goals = [
+      { name: 'Japan trip', source: 'Enpara Savings ··0912', cur: 24500, target: 35000, date: 'Jul 2027', monthly: 1000, targetM: 9,
+        hint: '₺1,170/month would reach the target by July 2027.' },
+      { name: 'New computer', source: 'Enpara Savings ··0912', cur: 27000, target: 40000, date: 'Dec 2027', monthly: 1000, targetM: 14 },
+      { name: 'House deposit', source: 'Cash, investment funds and gold', cur: 650000, target: 1500000, date: 'Dec 2029', monthly: 6000, targetM: 38, link: true,
+        segs: [[300000, 'var(--m-3f7e86-bg)'], [200000, 'var(--m-3d5a99-bg)'], [150000, 'var(--m-d2a857-bg)']], hint: 'Combined goal — open Goals to see how each account contributes.' },
+    ].map((g) => {
+      const n = (g.target - g.cur) / g.monthly;
+      const behind = n > g.targetM;
+      return {
+        name: g.name, source: g.source, cur: f0(g.cur), target: f0(g.target), pct: Math.round(g.cur / g.target * 100) + '%',
+        segs: (g.segs || [[g.cur, 'var(--m-3f7e86-bg)']]).map(([v, c]) => ({ w: (v / g.target * 100) + '%', color: c })),
+        date: g.date, monthly: f0(g.monthly), left: f0(g.target - g.cur),
+        est: g.link ? 'Mar 2033 at current pace' : addMonths(n), estColor: behind ? 'var(--m-a86f12-fg)' : 'var(--m-1c1b19-fg)',
+        status: behind ? 'Behind' : 'On track', sc: behind ? 'var(--m-a86f12-fg)' : 'var(--m-2f7d57-fg)', sbg: behind ? 'var(--m-f8efdc-bg)' : 'var(--m-e8f2ec-bg)',
+        hint: g.hint || '', hasHint: !!g.hint, cursor: g.link ? 'pointer' : 'default',
+        open: g.link ? () => this.props.go && this.props.go('goals') : undefined,
+      };
+    });
+    const kasko = this.state.kasko;
+    const sinking = [
+      ['Car insurance (kasko)', 'Renewal · Anadolu Sigorta', 15000, 0, 'Mar 2027', kasko ? 3000 : 0, 3000],
+      ['Motor vehicle tax · 1st instalment', 'MTV · 2017 Fiat Egea', 4800, 2400, 'Jan 2027', 800, 800],
+      ['New Year gifts', 'Family, 6 people', 6000, 4600, 'Dec 2026', 700, 700],
+    ].map(([name, note, need, saved, due, cur, rec], i) => {
+      const short = cur < rec;
+      return {
+        name, note: i === 0 && kasko ? 'First ₺3,000 transfer on 1 Nov' : note, needed: f0(need), saved: f0(saved), due, w: (saved / need * 100) + '%',
+        cur: f0(cur), rec: f0(rec), curColor: short ? 'var(--m-b4423a-fg)' : 'var(--m-1c1b19-fg)',
+        canFix: short, ok: !short, status: i === 0 && kasko ? 'Funded from Nov' : 'On track',
+        bg: i === 0 && kasko ? 'var(--m-f7fbf8-bg)' : 'transparent',
+        fix: () => { this.setState({ kasko: true }); this.props.notify && this.props.notify('Car insurance: ₺3,000/month added to November plan'); },
+      };
+    });
+    const monthly = 6000 + (ef - 2500) + (kasko ? 3000 : 0);
+    return {
+      ef, efF: f0(ef) + ' / month', setEf: (e) => this.setState({ ef: Number(e.target.value) }),
+      efDate: addMonths(months), efNote: ef === 2500 ? 'At the current ₺2,500/month' : (ef > 2500 ? Math.round((66800 / 2500) - months) + ' months sooner than now · ' + f0(ef - 2500) + ' more per month' : Math.round(months - 66800 / 2500) + ' months later than now'),
+      efNoteColor: ef > 2500 ? 'var(--m-2f7d57-fg)' : 'var(--m-77726a-fg)',
+      goals, sinking, monthlyF: f0(monthly), monthlyPct: Math.round(monthly / 50000 * 100) + '%',
+    };
+  }
+}
+</script>
+</body>
+</html>

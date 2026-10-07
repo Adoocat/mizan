@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div data-screen-label="11 Accounts" style="padding:32px 40px 80px;max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:4px">
+    <div>
+      <div style="font-size:12.5px;color:var(--m-77726a-fg)">{{ subtitle }}</div>
+      <h1 style="margin:6px 0 0;font-size:40px;font-weight:300;letter-spacing:-0.045em;line-height:1.05">Accounts</h1>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button style="height:32px;padding:0 12px;border:1px solid var(--m-e3e0d8-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer;color:var(--m-1c1b19-fg)" style-hover="background:var(--m-f3f1ec-bg)">Add manual asset</button>
+      <button style="height:32px;padding:0 14px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:var(--m-33312d-bg)">Connect account</button>
+    </div>
+  </div>
+
+  <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:22px 28px;display:flex;flex-wrap:wrap;gap:14px 32px;align-items:center">
+    <div style="display:flex;align-items:center;gap:12px;flex:1 1 320px">
+      <div style="width:32px;height:32px;border-radius:6px;background:var(--m-ebeff6-bg);display:flex;align-items:center;justify-content:center;flex:none"><div style="width:10px;height:12px;border:1.5px solid var(--m-2c4a7c-line);border-radius:2px;position:relative;top:2px"></div></div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <span style="font-size:13px;font-weight:500">Read-only access. Mizan can never move your money.</span>
+        <span style="font-size:12px;color:var(--m-5c5852-fg);line-height:1.45">Connections use each bank’s open banking consent and can be revoked here or in your bank app at any time.</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:28px;flex-wrap:wrap;font-size:12px">
+      <div style="display:flex;flex-direction:column;gap:2px"><span style="color:var(--m-77726a-fg)">Two-step sign-in</span><span style="font-weight:500;color:var(--m-2f7d57-fg)">On · authenticator app</span></div>
+      <div style="display:flex;flex-direction:column;gap:2px"><span style="color:var(--m-77726a-fg)">Signed-in devices</span><span style="font-weight:500">2 · this Mac, iPhone</span></div>
+      <div style="display:flex;flex-direction:column;gap:2px"><span style="color:var(--m-77726a-fg)">Encryption</span><span style="font-weight:500">At rest and in transit</span></div>
+    </div>
+  </section>
+
+  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+    <div style="flex:2.2 1 640px;min-width:0;display:flex;flex-direction:column;gap:20px">
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+        <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px">
+          <div style="display:flex;align-items:baseline;padding:14px 20px 10px">
+            <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0">{{ g.name }}</h2>
+            <span style="margin-left:auto;font-size:14px;font-weight:500">{{ g.total }}</span>
+          </div>
+          <sc-for list="{{ g.rows }}" as="a" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;gap:14px;padding:12px 20px;border-top:1px solid var(--m-f3f1ec-line);background:{{ a.bg }};flex-wrap:nowrap;position:relative;transition:background 200ms">
+              <div style="width:32px;height:32px;border-radius:6px;background:{{ a.mono }};color:var(--m-ffffff-fg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex:none;letter-spacing:0.02em">{{ a.init }}</div>
+              <div style="flex:1 1 140px;min-width:0;display:flex;flex-direction:column;gap:2px;line-height:1.3">
+                <span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.name }}</span>
+                <span style="font-size:11.5px;color:var(--m-77726a-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.meta }}</span>
+              </div>
+              <span style="flex:none;font-size:11px;color:var(--m-5c5852-fg);border:1px solid var(--m-e3e0d8-line);border-radius:4px;padding:1px 6px;white-space:nowrap">{{ a.source }}</span>
+              <div style="flex:0 1 170px;min-width:0;display:flex;align-items:center;gap:7px;font-size:12px;color:{{ a.sc }};white-space:nowrap;overflow:hidden">
+
+                <sc-if value="{{ a.syncing }}" hint-placeholder-val="{{ false }}"><span style="width:10px;height:10px;border-radius:50%;border:1.5px solid var(--m-cfcac0-line);border-top-color:var(--m-2c4a7c-line);animation:mzSpin 700ms linear infinite;flex:none"></span></sc-if>
+                <sc-if value="{{ a.dotOn }}" hint-placeholder-val="{{ true }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ a.sc }};flex:none"></span></sc-if>
+                <span>{{ a.status }}</span>
+              </div>
+              <span style="flex:none;width:100px;text-align:right;font-size:13px;font-weight:500;color:{{ a.balColor }}">{{ a.bal }}</span>
+              <sc-if value="{{ a.err }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ a.fix }}" style="height:28px;padding:0 10px;border:1px solid var(--m-1c1b19-line);background:var(--m-1c1b19-bg);color:var(--m-faf9f6-fg);border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap" style-hover="background:var(--m-33312d-bg)">Re-authorise</button>
+              </sc-if>
+              <button onClick="{{ a.menu }}" style="all:unset;cursor:pointer;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--m-5c5852-fg);font-size:14px;letter-spacing:1px" style-hover="background:var(--m-f3f1ec-bg)">···</button>
+              <sc-if value="{{ a.menuOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;right:20px;top:48px;z-index:10;width:200px;background:var(--m-ffffff-bg);border:1px solid var(--m-e3e0d8-line);border-radius:8px;box-shadow:0 8px 24px rgba(28,27,25,0.12);padding:6px;animation:mzRise 120ms ease-out">
+                  <button onClick="{{ a.sync }}" style="all:unset;cursor:pointer;display:block;width:100%;box-sizing:border-box;padding:7px 8px;border-radius:5px;font-size:13px" style-hover="background:var(--m-f3f1ec-bg)">Sync now</button>
+                  <button style="all:unset;cursor:pointer;display:block;width:100%;box-sizing:border-box;padding:7px 8px;border-radius:5px;font-size:13px" style-hover="background:var(--m-f3f1ec-bg)">Rename</button>
+                  <button style="all:unset;cursor:pointer;display:block;width:100%;box-sizing:border-box;padding:7px 8px;border-radius:5px;font-size:13px" style-hover="background:var(--m-f3f1ec-bg)">Exclude from net worth</button>
+                  <div style="height:1px;background:var(--m-efece6-bg);margin:4px 0"></div>
+                  <button onClick="{{ a.disconnect }}" style="all:unset;cursor:pointer;display:block;width:100%;box-sizing:border-box;padding:7px 8px;border-radius:5px;font-size:13px;color:var(--m-b4423a-fg)" style-hover="background:var(--m-f8eae7-bg)">Disconnect…</button>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </section>
+      </sc-for>
+    </div>
+
+    <aside style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:20px">
+      <section style="background:var(--m-ffffff-bg);border:1px solid transparent;border-radius:24px;padding:24px 28px;display:flex;flex-direction:column;gap:4px">
+        <h2 style="font-size:15px;font-weight:500;letter-spacing:-0.015em;margin:0 0 8px">Privacy</h2>
+        <sc-for list="{{ privacy }}" as="p" hint-placeholder-count="4">
+          <button onClick="{{ p.toggle }}" style="all:unset;cursor:pointer;display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-top:{{ p.bt }}">
+            <span style="display:flex;flex-direction:column;gap:2px;flex:1"><span style="font-size:13px">{{ p.label }}</span><span style="font-size:11.5px;color:var(--m-77726a-fg);line-height:1.45">{{ p.desc }}</span></span>
+            <span style="width:30px;height:18px;border-radius:9px;background:{{ p.bg }};position:relative;transition:background 150ms;flex:none;margin-top:2px"><span style="position:absolute;top:2px;left:{{ p.l }};width:14px;height:14px;border-radius:50%;background:var(--m-ffffff-bg);box-shadow:0 1px 2px rgba(0,0,0,0.2);transition:left 150ms"></span></span>
+          </button>
+        </sc-for>
+      </section>
+      <section style="background:var(--m-faf9f6-bg);border:1px solid transparent;border-radius:24px;padding:22px 28px;display:flex;flex-direction:column;gap:10px">
+        <h2 style="font-size:13px;font-weight:600;margin:0">Your data</h2>
+        <span style="font-size:12px;color:var(--m-5c5852-fg);line-height:1.5">Export everything as CSV and JSON, or permanently delete your Mizan account and all imported data.</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button style="height:30px;padding:0 12px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:12.5px;cursor:pointer" style-hover="background:var(--m-f3f1ec-bg)">Export data</button>
+          <button style="height:30px;padding:0 12px;border:1px solid var(--m-e7c5bf-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:12.5px;cursor:pointer;color:var(--m-b4423a-fg)" style-hover="background:var(--m-f8eae7-bg)">Delete account…</button>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<sc-if value="{{ confirm }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ cancel }}" style="position:fixed;inset:0;background:rgba(28,27,25,0.28);display:flex;align-items:center;justify-content:center;z-index:50;animation:mzFade 120ms ease-out">
+    <div onClick="{{ stop }}" style="width:440px;max-width:calc(100vw - 32px);background:var(--m-ffffff-bg);border:1px solid var(--m-e3e0d8-line);border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);animation:mzRise 160ms ease-out">
+      <div style="padding:20px 22px 0;display:flex;flex-direction:column;gap:10px">
+        <h3 style="font-size:15px;font-weight:600;margin:0;letter-spacing:-0.01em">Disconnect {{ cName }}?</h3>
+        <p style="margin:0;font-size:13px;color:var(--m-3e3b36-fg);line-height:1.55">Balances and new transactions will stop updating. Plans, goals and reports that use this account will keep its last known balance from {{ cWhen }}.</p>
+        <button onClick="{{ toggleDel }}" style="all:unset;cursor:pointer;display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid {{ delBd }};border-radius:6px;background:{{ delBg }};margin-top:4px">
+          <span style="width:14px;height:14px;border-radius:3px;border:1.5px solid {{ cbBd }};background:{{ cbBg }};color:var(--m-ffffff-fg);font-size:10px;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px">{{ cbMark }}</span>
+          <span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:13px">Also delete {{ cTx }} imported transactions</span><span style="font-size:11.5px;color:var(--m-77726a-fg)">This can’t be undone. Reports for past months will change.</span></span>
+        </button>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;padding:18px 22px">
+        <button onClick="{{ cancel }}" style="height:32px;padding:0 14px;border:1px solid var(--m-dedad1-line);background:var(--m-ffffff-bg);border-radius:6px;font-size:13px;cursor:pointer" style-hover="background:var(--m-f3f1ec-bg)">Keep connected</button>
+        <button onClick="{{ doDisconnect }}" style="height:32px;padding:0 14px;border:1px solid var(--m-b4423a-line);background:var(--m-b4423a-bg);color:var(--m-ffffff-fg);border-radius:6px;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:var(--m-9c3830-bg)">{{ confirmLabel }}</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const f0 = (n) => (n < 0 ? '−₺' : '₺') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const G = [
+  ['Cash & checking', [
+    ['gar', 'GB', 'var(--m-1f5e4e-bg)', 'Garanti BBVA · Checking', 'TR·· 4471 · Primary spending account', 'Open banking', 'ok', 24850, 1284],
+    ['cash', 'CW', 'var(--m-77726a-bg)', 'Cash wallet', 'Manual · last counted 13 Oct', 'Manual', 'manual', 2400, 41] ]],
+  ['Savings', [
+    ['enp', 'EN', 'var(--m-4b3f8f-bg)', 'Enpara · Goals savings', '··0912 · Emergency fund, Japan trip, New computer, sinking funds', 'Open banking', 'ok', 140500, 96],
+    ['isb', 'İŞ', 'var(--m-21407a-bg)', 'İş Bankası · House deposit', '··2208 · Time deposit, 32 days', 'Open banking', 'err', 300000, 22] ]],
+  ['Investments', [
+    ['mid', 'MI', 'var(--m-2f3a4a-bg)', 'Midas · Brokerage', 'BIST stocks, US ETF, cash', 'Brokerage API', 'ok', 468120, 64],
+    ['isy', 'İY', 'var(--m-21407a-bg)', 'İş Yatırım · Funds', 'TEFAS funds · PPF, TTE', 'Open banking', 'ok', 260560, 18],
+    ['kt', 'KT', 'var(--m-9a7b2f-bg)', 'Kuveyt Türk · Precious metals', 'Gold and silver accounts', 'Open banking', 'ok', 205300, 12],
+    ['gfx', 'GB', 'var(--m-1f5e4e-bg)', 'Garanti BBVA · FX account', 'USD and EUR', 'Open banking', 'ok', 86860, 9],
+    ['btc', 'BT', 'var(--m-b0674a-bg)', 'Bitcoin wallet', 'Manual quantity · price from BTC/TRY feed', 'Price feed', 'manual', 39360, 3] ]],
+  ['Credit & loans', [
+    ['bon', 'GB', 'var(--m-1f5e4e-bg)', 'Bonus card ··9020', 'Limit ₺60,000 · statement 25 Oct', 'Open banking', 'ok', -18400, 412],
+    ['isl', 'İŞ', 'var(--m-21407a-bg)', 'İş Bankası · Personal loan', '36 months · 13 paid', 'Open banking', 'err', -68400, 13],
+    ['kyk', 'KY', 'var(--m-77726a-bg)', 'KYK student loan', 'Manual · schedule entered', 'Manual', 'manual', -14400, 0] ]],
+  ['Other assets', [['car', 'FE', 'var(--m-77726a-bg)', '2017 Fiat Egea', 'Market estimate, updated 30 Sep', 'Manual', 'manual', 640000, 0]]],
+];
+
+class Component extends DCLogic {
+  state = { menu: null, fixed: {}, syncing: {}, gone: {}, confirm: null, del: false, priv: { hide: false, mask: true, share: false, notes: true } };
+  sync = (id) => {
+    this.setState((s) => ({ syncing: { ...s.syncing, [id]: true }, menu: null }));
+    setTimeout(() => { this.setState((s) => ({ syncing: { ...s.syncing, [id]: false }, fixed: { ...s.fixed, [id]: true } })); }, 1400);
+  };
+  renderVals() {
+    const st = this.state;
+    let connected = 0, total = 0;
+    const groups = G.map(([name, rows]) => {
+      const list = rows.filter((r) => !st.gone[r[0]]);
+      let t = 0;
+      const out = list.map(([id, init, mono, nm, meta, source, status, bal, tx]) => {
+        t += bal; total++;
+        const isb = id === 'isb' || id === 'isl';
+        const err = status === 'err' && !st.fixed.isb;
+        const syncing = !!st.syncing[id] || (isb && st.syncing.isb);
+        if (status !== 'err' || !err) connected++;
+        const lbl = syncing ? 'Waiting for İş Bankası…' : err ? 'Access expired 19 Oct' : status === 'manual' ? 'Manual · you update it' : (st.fixed[id] || (isb && st.fixed.isb)) ? 'Synced just now' : 'Synced 14:58';
+        return {
+          init, mono, name: nm, meta, source, bal: f0(bal), balColor: err ? 'var(--m-77726a-fg)' : 'var(--m-1c1b19-fg)',
+          status: lbl, sc: syncing ? 'var(--m-2c4a7c-fg)' : err ? 'var(--m-a86f12-fg)' : status === 'manual' ? 'var(--m-5c5852-fg)' : 'var(--m-2f7d57-fg)',
+          syncing, dotOn: !syncing, err: err && !syncing, bg: err ? 'var(--m-fdf9f1-bg)' : 'transparent',
+          fix: () => this.sync('isb'),
+          menu: () => this.setState({ menu: st.menu === id ? null : id }), menuOpen: st.menu === id,
+          sync: () => this.sync(id),
+          disconnect: () => this.setState({ menu: null, confirm: { id, name: nm, tx } , del: false }),
+        };
+      });
+      return { name, total: f0(t), rows: out };
+    }).filter((g) => g.rows.length);
+    const P = [['hide', 'Hide balances when the app opens', 'Amounts stay blurred until you click them.'], ['mask', 'Mask amounts while screen sharing', 'Detected automatically in video calls.'], ['share', 'Help improve categorisation', 'Shares anonymised merchant names only. Never amounts or account details.'], ['notes', 'Let the assistant read transaction notes', 'Answers stay inside your account.']];
+    const c = st.confirm;
+    return {
+      subtitle: connected + ' of ' + total + ' connected · balances in TRY',
+      groups,
+      privacy: P.map(([id, label, desc], i) => { const on = st.priv[id]; return { label, desc, bt: i ? '1px solid var(--m-f3f1ec-line)' : 'none', bg: on ? 'var(--m-2c4a7c-bg)' : 'var(--m-cfcac0-bg)', l: on ? '14px' : '2px', toggle: () => this.setState({ priv: { ...st.priv, [id]: !on } }) }; }),
+      confirm: !!c, cName: c ? c.name : '', cTx: c ? c.tx.toLocaleString('en-US') : '', cWhen: '22 Oct 2026',
+      cancel: () => this.setState({ confirm: null }), stop: (e) => e.stopPropagation(),
+      toggleDel: () => this.setState({ del: !st.del }), delBd: st.del ? 'var(--m-e7c5bf-line)' : 'var(--m-e3e0d8-line)', delBg: st.del ? 'var(--m-fdf5f3-bg)' : 'var(--m-ffffff-bg)',
+      cbBd: st.del ? 'var(--m-b4423a-line)' : 'var(--m-cfcac0-line)', cbBg: st.del ? 'var(--m-b4423a-bg)' : 'var(--m-ffffff-bg)', cbMark: st.del ? '✓' : '',
+      confirmLabel: st.del ? 'Disconnect and delete' : 'Disconnect',
+      doDisconnect: () => { this.setState({ gone: { ...st.gone, [c.id]: true }, confirm: null }); this.props.notify && this.props.notify(c.name + ' disconnected' + (st.del ? ' · transactions deleted' : '')); },
+    };
+  }
+}
+</script>
+</body>
+</html>
