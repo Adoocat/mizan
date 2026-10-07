@@ -30,7 +30,7 @@
   "devDependencies": {
     "@mizan/config": "workspace:*",
     "@testcontainers/postgresql": "^12.2.0",
-    "@types/node": "^24.0.0",
+    "@types/node": "^26.6.4",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "^0.31.11",
     "testcontainers": "^12.2.0",
