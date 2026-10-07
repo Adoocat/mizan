@@ -4,11 +4,17 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { axeViolations, renderApp, setLanguage } from '../../test/render'
+import { accountHandlers } from '../../test/accounts'
+import { sessionHandlers } from '../../test/session'
 
 const server = setupServer(
   http.get('*/api/v1/health', () =>
     HttpResponse.json({ status: 'ok', checks: { database: 'ok' } }),
   ),
+  // Every page inside the shell renders behind the session gate.
+  ...sessionHandlers(),
+  // Accounts is wired to the API as of phase 4.
+  ...accountHandlers(),
 )
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))

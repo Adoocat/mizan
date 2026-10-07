@@ -36,7 +36,9 @@ export const NAV_GROUPS: { labelKey: string | null; items: NavItem[] }[] = [
     labelKey: 'nav.groups.review',
     items: [
       { to: '/reports', labelKey: 'nav.reports' },
-      { to: '/accounts', labelKey: 'nav.accounts', badge: { count: 1, tone: 'warning' } },
+      // No badge: the mockup's count stood for an expired open-banking consent, which the MVP
+      // does not build. Accounts reads real data as of phase 4.
+      { to: '/accounts', labelKey: 'nav.accounts' },
     ],
   },
   {

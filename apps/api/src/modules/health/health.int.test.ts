@@ -1,23 +1,22 @@
 import { sql } from 'drizzle-orm'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { buildApp, type App } from '../../app.ts'
+import type { Database } from '../../db/client.ts'
+import type { App } from '../../app.ts'
 import { currencies } from '../../db/schema/index.ts'
-import { startTestPostgres, type TestPostgres } from '../../testing/postgres.ts'
+import { buildTestApp } from '../../testing/app.ts'
+import { connectTestDatabase } from '../../testing/postgres.ts'
 
-let pg: TestPostgres
+let database: Database
 let app: App
 
 beforeAll(async () => {
-  pg = await startTestPostgres()
-  app = await buildApp({
-    config: { logLevel: 'silent', webOrigin: 'http://localhost:5173', trustProxy: false },
-    database: pg.database,
-  })
+  database = connectTestDatabase()
+  app = (await buildTestApp(database)).app
 })
 
 afterAll(async () => {
   await app?.close()
-  await pg?.stop()
+  await database?.close()
 })
 
 describe('health against a real Postgres', () => {
@@ -30,7 +29,7 @@ describe('health against a real Postgres', () => {
 
 describe('initial migration', () => {
   it('seeds the supported currencies', async () => {
-    const rows = await pg.database.db.select().from(currencies).orderBy(currencies.code)
+    const rows = await database.db.select().from(currencies).orderBy(currencies.code)
     expect(rows).toEqual([
       { code: 'EUR', minorUnits: 2, symbol: '€' },
       { code: 'GBP', minorUnits: 2, symbol: '£' },
@@ -41,7 +40,7 @@ describe('initial migration', () => {
 
   it('rejects malformed currency codes', async () => {
     await expect(
-      pg.database.db.execute(
+      database.db.execute(
         sql`insert into currencies (code, minor_units, symbol) values ('try', 2, 'x')`,
       ),
     ).rejects.toThrow()
@@ -49,6 +48,6 @@ describe('initial migration', () => {
 
   it('is idempotent when applied twice', async () => {
     const { runMigrations } = await import('../../db/migrate.ts')
-    await expect(runMigrations(pg.database)).resolves.toBeUndefined()
+    await expect(runMigrations(database)).resolves.toBeUndefined()
   })
 })

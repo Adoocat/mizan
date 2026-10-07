@@ -9,6 +9,7 @@ import {
 } from '../../app/navigation'
 import { cn } from '../../lib/cn'
 import { AssistantPanel } from '../../features/assistant/AssistantPanel'
+import { AccountFooter } from '../../features/auth/AccountFooter'
 import { Button } from '../ui/Button'
 import { Dialog, DialogContent } from '../ui/Dialog'
 import { Toaster } from '../ui/Toaster'
@@ -101,6 +102,7 @@ function SideNav() {
         )}
         <ThemeSwitch />
         <LanguageSwitch />
+        <AccountFooter />
       </div>
     </aside>
   )
@@ -174,6 +176,7 @@ function MobileTabBar() {
             <ThemeSwitch />
             <LanguageSwitch />
             <PrivacyToggle className="justify-center" />
+            <AccountFooter />
           </div>
         </DialogContent>
       </Dialog>

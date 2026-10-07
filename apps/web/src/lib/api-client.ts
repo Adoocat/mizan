@@ -9,9 +9,14 @@ export class ApiError extends Error {
   readonly problem: Problem | undefined
 
   constructor(status: number, problem: Problem | undefined) {
-    super(problem?.title ?? `Request failed with status ${status}`)
+    super(problem?.detail ?? problem?.title ?? `Request failed with status ${status}`)
     this.status = status
     this.problem = problem
+  }
+
+  /** The message to show a user: the server's `detail`, never an internal title or stack. */
+  get detail(): string | undefined {
+    return this.problem?.detail
   }
 }
 
@@ -29,24 +34,64 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
+async function send<Schema extends z.ZodType>(
+  method: string,
+  path: string,
+  schema: Schema,
+  body: unknown,
+  options: RequestOptions,
+): Promise<z.infer<Schema>> {
+  const response = await fetch(`${API_BASE}${path}`, {
+    method,
+    credentials: 'same-origin',
+    headers: {
+      accept: 'application/json',
+      ...(body === undefined ? {} : { 'content-type': 'application/json' }),
+    },
+    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    signal: options.signal ?? null,
+  })
+  const payload = await readJson(response)
+
+  if (!response.ok && !options.acceptStatuses?.includes(response.status)) {
+    const problem = problemSchema.safeParse(payload)
+    throw new ApiError(response.status, problem.success ? problem.data : undefined)
+  }
+
+  return schema.parse(payload)
+}
+
 /** GET a JSON resource and validate it against a shared contract schema. */
-export async function apiGet<Schema extends z.ZodType>(
+export function apiGet<Schema extends z.ZodType>(
   path: string,
   schema: Schema,
   options: RequestOptions = {},
 ): Promise<z.infer<Schema>> {
-  const response = await fetch(`${API_BASE}${path}`, {
-    method: 'GET',
-    credentials: 'same-origin',
-    headers: { accept: 'application/json' },
-    signal: options.signal ?? null,
-  })
-  const body = await readJson(response)
+  return send('GET', path, schema, undefined, options)
+}
 
-  if (!response.ok && !options.acceptStatuses?.includes(response.status)) {
-    const problem = problemSchema.safeParse(body)
-    throw new ApiError(response.status, problem.success ? problem.data : undefined)
-  }
+export function apiPost<Schema extends z.ZodType>(
+  path: string,
+  body: unknown,
+  schema: Schema,
+  options: RequestOptions = {},
+): Promise<z.infer<Schema>> {
+  return send('POST', path, schema, body, options)
+}
 
-  return schema.parse(body)
+export function apiPatch<Schema extends z.ZodType>(
+  path: string,
+  body: unknown,
+  schema: Schema,
+  options: RequestOptions = {},
+): Promise<z.infer<Schema>> {
+  return send('PATCH', path, schema, body, options)
+}
+
+export function apiDelete<Schema extends z.ZodType>(
+  path: string,
+  schema: Schema,
+  options: RequestOptions = {},
+): Promise<z.infer<Schema>> {
+  return send('DELETE', path, schema, undefined, options)
 }

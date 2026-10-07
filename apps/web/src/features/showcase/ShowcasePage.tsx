@@ -2,6 +2,7 @@ import { decimal, Money } from '@mizan/domain'
 import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CurrencyInput } from '../../components/finance/CurrencyInput'
+import { FormError, FormNotice, SelectField, TextField } from '../../components/ui/Field'
 import { HeroPanel, MetricCard, MetricRow } from '../../components/finance/MetricCard'
 import { MoneyText } from '../../components/finance/MoneyText'
 import { DeltaText, PercentText } from '../../components/finance/PercentText'
@@ -328,6 +329,32 @@ export function ShowcasePage() {
               {amount ? JSON.stringify(amount.toDto()) : 'null'}
             </code>
           </div>
+        </Card>
+      </Section>
+
+      <Section id="sc-fields" title={t('showcase.fields')}>
+        <Card className="grid gap-4 md:grid-cols-2">
+          <TextField
+            label={t('auth.fields.email')}
+            type="email"
+            defaultValue="elif@example.test"
+            hint={t('showcase.fieldHint')}
+          />
+          <TextField
+            label={t('auth.fields.password')}
+            type="password"
+            defaultValue="short"
+            error={t('auth.errors.passwordTooShort')}
+          />
+          <SelectField
+            label={t('settings.workspace.periodStartDay')}
+            defaultValue="15"
+            options={['1', '15', '28'].map((value) => ({ value, label: value }))}
+            hint={t('settings.workspace.periodStartDayHint')}
+          />
+          <TextField label={t('auth.fields.name')} defaultValue="Elif Demir" disabled />
+          <FormError>{t('auth.errors.invalidCredentials')}</FormError>
+          <FormNotice>{t('settings.saved')}</FormNotice>
         </Card>
       </Section>
 

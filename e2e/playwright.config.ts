@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig, devices } from '@playwright/test'
+import { STORAGE_STATE } from './tests/support/accounts.ts'
 
 const repoRoot = fileURLToPath(new URL('..', import.meta.url))
 const API_PORT = '3100'
@@ -22,8 +23,26 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   projects: [
-    { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
-    { name: 'mobile', use: { ...devices['Pixel 7'] } },
+    // Creates the account the signed-in specs share.
+    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    {
+      name: 'desktop',
+      use: { ...devices['Desktop Chrome'], storageState: STORAGE_STATE },
+      dependencies: ['setup'],
+      testIgnore: /auth\.spec\.ts/,
+    },
+    {
+      name: 'mobile',
+      use: { ...devices['Pixel 7'], storageState: STORAGE_STATE },
+      dependencies: ['setup'],
+      testIgnore: /auth\.spec\.ts/,
+    },
+    // The credential screens need a browser with no session at all.
+    {
+      name: 'auth',
+      use: { ...devices['Desktop Chrome'], storageState: { cookies: [], origins: [] } },
+      testMatch: /auth\.spec\.ts/,
+    },
   ],
   webServer: [
     {
@@ -37,6 +56,10 @@ export default defineConfig({
         DATABASE_URL: databaseUrl,
         WEB_ORIGIN: WEB_URL,
         LOG_LEVEL: 'warn',
+        AUTH_SECRET: 'e2e-only-secret-at-least-thirty-two-chars',
+        // Keeps the suite off the network: the breached-password check is an outbound call to
+        // api.pwnedpasswords.com on every sign-up.
+        AUTH_BREACHED_PASSWORD_CHECK: 'false',
       },
     },
     {

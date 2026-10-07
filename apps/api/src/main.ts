@@ -1,10 +1,18 @@
 import { buildApp } from './app.ts'
+import { createAuth } from './auth/auth.ts'
+import { createConsoleMailer } from './auth/mailer.ts'
 import { loadConfig } from './config/env.ts'
 import { createDatabase } from './db/client.ts'
 
 const config = loadConfig(process.env)
 const database = createDatabase(config.databaseUrl)
-const app = await buildApp({ config, database })
+
+// The app's own logger only exists once Fastify is built, and the mailer is needed before that,
+// so it logs to the console. Reset links are printed only in development (see createConsoleMailer).
+const mailer = createConsoleMailer(console, config.nodeEnv === 'development')
+
+const auth = createAuth({ config, database, mailer })
+const app = await buildApp({ config, database, auth })
 
 let shuttingDown = false
 async function shutdown(signal: string) {

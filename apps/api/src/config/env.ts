@@ -13,6 +13,20 @@ const envSchema = z.object({
   DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/ }),
   WEB_ORIGIN: z.url({ protocol: /^https?$/ }).default('http://localhost:5173'),
   TRUST_PROXY: booleanString,
+  /**
+   * Signs session cookies and hashes reset tokens. Rotating it invalidates every session.
+   * 32 bytes of randomness, e.g. `openssl rand -base64 32`.
+   */
+  AUTH_SECRET: z.string().min(32, 'must be at least 32 characters'),
+  /**
+   * Rejects passwords found in the Have I Been Pwned corpus (PLAN §15). On by default; set to
+   * false only where an outbound call to a third-party service is unwanted — the automated test
+   * suites, or an air-gapped environment.
+   */
+  AUTH_BREACHED_PASSWORD_CHECK: z
+    .enum(['true', 'false'])
+    .default('true')
+    .transform((value) => value === 'true'),
 })
 
 export interface AppConfig {
@@ -23,6 +37,8 @@ export interface AppConfig {
   databaseUrl: string
   webOrigin: string
   trustProxy: boolean
+  authSecret: string
+  breachedPasswordCheck: boolean
 }
 
 export class ConfigError extends Error {
@@ -49,6 +65,8 @@ export function loadConfig(env: Record<string, string | undefined>): AppConfig {
     databaseUrl: parsed.DATABASE_URL,
     webOrigin: new URL(parsed.WEB_ORIGIN).origin,
     trustProxy: parsed.TRUST_PROXY,
+    authSecret: parsed.AUTH_SECRET,
+    breachedPasswordCheck: parsed.AUTH_BREACHED_PASSWORD_CHECK,
   }
 
   if (config.nodeEnv === 'production' && new URL(config.webOrigin).protocol !== 'https:') {

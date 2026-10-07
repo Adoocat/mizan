@@ -1,26 +1,12 @@
-import { PostgreSqlContainer, type StartedPostgreSqlContainer } from '@testcontainers/postgresql'
+import { inject } from 'vitest'
 import { createDatabase, type Database } from '../db/client.ts'
-import { runMigrations } from '../db/migrate.ts'
 
-export const POSTGRES_IMAGE = 'postgres:18-alpine'
+export { POSTGRES_IMAGE } from './global-setup.ts'
 
-export interface TestPostgres {
-  container: StartedPostgreSqlContainer
-  database: Database
-  stop(): Promise<void>
-}
-
-/** Starts a throwaway Postgres in Docker with all migrations applied. */
-export async function startTestPostgres(): Promise<TestPostgres> {
-  const container = await new PostgreSqlContainer(POSTGRES_IMAGE).start()
-  const database = createDatabase(container.getConnectionUri())
-  await runMigrations(database)
-  return {
-    container,
-    database,
-    async stop() {
-      await database.close()
-      await container.stop()
-    },
-  }
+/**
+ * A connection pool onto the integration database that `global-setup.ts` started and migrated.
+ * Each test file opens its own pool and closes it in `afterAll`.
+ */
+export function connectTestDatabase(): Database {
+  return createDatabase(inject('databaseUrl'))
 }

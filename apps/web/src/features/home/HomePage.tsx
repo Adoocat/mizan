@@ -12,6 +12,7 @@ import { Button } from '../../components/ui/Button'
 import { Panel, panelLinkClass } from '../../components/ui/Panel'
 import { useSampleData } from '../../lib/sample-data'
 import { useNumberLocale } from '../../lib/use-locale'
+import { useCurrentSession } from '../auth/session'
 import { HealthIndicator } from '../health/HealthIndicator'
 import { TransactionTable } from '../transactions/TransactionTable'
 import { UpcomingList } from '../calendar/UpcomingList'
@@ -156,19 +157,23 @@ export function HomePage() {
   const { t } = useTranslation()
   const data = useSampleData()
   const locale = useNumberLocale()
+  // The greeting and the currency note are real as of phase 3; the figures below still come from
+  // the mockups and are replaced by their own phases.
+  const { user, workspace } = useCurrentSession()
 
   return (
     <PageContainer>
       <PageHeader
         eyebrow={t('home.date')}
-        title={t('home.greeting', { name: data.userName })}
+        title={t('home.greeting', { name: user.name.split(' ')[0] })}
         actions={
           <div className="flex flex-wrap gap-5 text-body text-ink-2">
             <span>
               {t('home.lastSync')} <span className="font-medium text-ink">{data.lastSync}</span>
             </span>
             <span>
-              {t('home.figuresIn')} <span className="font-medium text-ink">{data.currency}</span>
+              {t('home.figuresIn')}{' '}
+              <span className="font-medium text-ink">{workspace.baseCurrency}</span>
             </span>
             <HealthIndicator />
           </div>

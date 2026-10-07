@@ -69,16 +69,6 @@ export interface CashFlowMonth {
   spending: Money
 }
 
-export interface AccountLine {
-  id: string
-  name: string
-  institution: string
-  kind: 'checking' | 'card' | 'savings' | 'cash'
-  balance: Money
-  /** Cards carry a negative balance and a statement date. */
-  meta?: string
-}
-
 const CASH_FLOW: CashFlowMonth[] = [
   { key: 'may', income: tl('48500'), spending: tl('38900') },
   { key: 'jun', income: tl('49000'), spending: tl('41200') },
@@ -251,32 +241,6 @@ const TRANSACTIONS: TransactionLine[] = [
   },
 ]
 
-const ACCOUNTS: AccountLine[] = [
-  {
-    id: 'garanti',
-    name: 'Garanti BBVA',
-    institution: '··4471',
-    kind: 'checking',
-    balance: tl('24850'),
-  },
-  {
-    id: 'bonus',
-    name: 'Bonus card',
-    institution: '··9020',
-    kind: 'card',
-    balance: tl('-4860'),
-    meta: '25 Oct',
-  },
-  {
-    id: 'house',
-    name: 'House deposit',
-    institution: 'İş Bankası',
-    kind: 'savings',
-    balance: tl('650000'),
-  },
-  { id: 'cash', name: 'Cash', institution: '', kind: 'cash', balance: tl('1250') },
-]
-
 export interface PlanCategoryGroup {
   key: 'essentials' | 'flexible' | 'savings' | 'investments' | 'pool'
   colorClass: string
@@ -352,11 +316,8 @@ const RECURRING: RecurringGroup[] = [
 
 /** Everything the screens read. One object, so a later query hook can replace it wholesale. */
 export interface SampleData {
-  /** Replaced by the signed-in user in phase 3. */
-  userName: string
   today: PlainDate
   lastSync: string
-  currency: string
   hero: {
     availableThisMonth: Money
     spentSoFar: Money
@@ -384,7 +345,6 @@ export interface SampleData {
   goals: GoalLine[]
   goalsTotal: Money
   transactions: TransactionLine[]
-  accounts: AccountLine[]
   planCategories: PlanCategoryGroup[]
   allocationMix: AllocationMixRow[]
   recurring: RecurringGroup[]
@@ -394,10 +354,8 @@ export interface SampleData {
 }
 
 export const SAMPLE_DATA: SampleData = {
-  userName: 'Elif',
   today: SAMPLE_TODAY,
   lastSync: '14:58',
-  currency: 'TRY',
   hero: {
     availableThisMonth: tl('9000'),
     spentSoFar: tl('6000'),
@@ -430,7 +388,6 @@ export const SAMPLE_DATA: SampleData = {
   goals: GOALS,
   goalsTotal: tl('440500'),
   transactions: TRANSACTIONS,
-  accounts: ACCOUNTS,
   planCategories: PLAN_CATEGORIES,
   allocationMix: ALLOCATION_MIX,
   recurring: RECURRING,

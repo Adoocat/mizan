@@ -192,7 +192,9 @@
     "restoredToast": "Transaction restored",
     "emptyTitle": "No accounts yet",
     "emptyDescription": "Add the accounts you use for spending and saving. Their balances start your plan.",
-    "addAccount": "Add account"
+    "addAccount": "Add account",
+    "fields": "Form fields",
+    "fieldHint": "One message line, used for hints and errors alike."
   },
   "days": {
     "mon": "Mon",
@@ -456,36 +458,81 @@
     "howItWorksBody": "A goal earmarks money you already have. Contributing moves money from Available to spend into the goal; releasing it moves the money back. Balances stay in your real accounts — Mizan only remembers what each lira is for."
   },
   "accounts": {
-    "eyebrow": "{{count}} accounts · balances drive every other screen",
-    "addManual": "Add manual asset",
-    "connect": "Connect account",
-    "readOnly": "Read-only access. Mizan can never move your money.",
-    "readOnlyBody": "Connections use each bank's open banking consent and can be revoked here or in your bank's app at any time.",
-    "security": {
-      "twoStep": {
-        "label": "Two-step sign-in",
-        "value": "On · authenticator app"
-      },
-      "devices": {
-        "label": "Signed-in devices",
-        "value": "2 · this Mac, iPhone"
-      },
-      "encryption": {
-        "label": "Encryption",
-        "value": "At rest and in transit"
-      }
-    },
-    "kinds": {
-      "checking": "Checking",
+    "eyebrow_one": "{{count}} account · balances drive every other screen",
+    "eyebrow_other": "{{count}} accounts · balances drive every other screen",
+    "add": "Add account",
+    "showArchived": "Show archived",
+    "hideArchived": "Hide archived",
+    "loadFailed": "Could not load your accounts.",
+    "emptyBody": "Add your cash, current accounts, savings and credit cards. Each opening balance becomes the account’s first transaction, so every balance stays the sum of its movements.",
+    "archived": "Archived",
+    "onBudget": "On budget",
+    "offBudget": "Off budget",
+    "excludedFromNetWorth": "Not in net worth",
+    "netWorth": "Net worth",
+    "netWorthNote": "Everything you own minus what you owe, after card balances. Balances are derived from transactions, never stored.",
+    "groups": {
       "cash": "Cash",
-      "savings": "Savings",
+      "bank": "Bank accounts",
       "card": "Credit cards"
     },
-    "statement": "statement {{date}}",
-    "synced": "Synced {{time}}",
-    "accessExpired": "Access expired",
-    "total": "Total",
-    "totalNote": "Everything on budget, after card balances. Account balances are derived from transactions, never stored."
+    "types": {
+      "checking": "Current account",
+      "savings": "Savings",
+      "cash": "Cash",
+      "credit_card": "Credit card"
+    },
+    "entryTypes": {
+      "expense": "Expense",
+      "income": "Income",
+      "transfer": "Transfer",
+      "adjustment": "Reconciliation adjustment",
+      "opening_balance": "Opening balance"
+    },
+    "form": {
+      "addTitle": "Add an account",
+      "addLead": "What it holds today becomes its opening balance, dated today.",
+      "editTitle": "Edit account",
+      "name": "Account name",
+      "nameRequired": "Give the account a name.",
+      "type": "Type",
+      "typeFixed": "The type is fixed once an account has movements.",
+      "institution": "Bank or last four digits",
+      "institutionHint": "Optional, for telling two accounts apart.",
+      "openingBalance": "Balance today",
+      "openingBalanceHint": "Leave empty to start at zero. A credit card starts negative.",
+      "submit": "Add account",
+      "failed": "Could not save that account."
+    },
+    "reconcile": {
+      "title": "Reconcile {{name}}",
+      "lead": "Type the balance your statement shows. Mizan records the one adjustment that closes the gap.",
+      "inMizan": "Balance in Mizan",
+      "statementBalance": "Balance on your statement",
+      "statementHint": "Exactly as it appears, including minus signs.",
+      "difference": "Adjustment to record",
+      "noDifference": "Nothing to adjust",
+      "submit": "Reconcile",
+      "adjusted": "Adjustment recorded. The balance now matches your statement.",
+      "alreadyMatched": "Already matched — nothing was recorded.",
+      "failed": "Could not reconcile that account."
+    },
+    "detail": {
+      "backToAccounts": "All accounts",
+      "notFound": "That account no longer exists",
+      "balance": "Balance",
+      "balanceNote": "The sum of every movement on this account. Mizan stores no balance of its own, so this figure cannot drift.",
+      "edit": "Edit",
+      "reconcile": "Reconcile",
+      "archive": "Archive",
+      "unarchive": "Restore",
+      "archiveTitle": "Archive {{name}}?",
+      "archiveBody": "It leaves your account list but keeps every transaction, so past months still add up. You can restore it at any time.",
+      "archiveFailed": "Could not change that account.",
+      "activity": "Recent activity",
+      "activityMeta": "The full transaction list arrives in a later phase",
+      "noActivity": "Nothing has moved through this account yet."
+    }
   },
   "landing": {
     "nav": "Landing navigation",
@@ -940,5 +987,90 @@
       "monthlySurplus": "Monthly surplus",
       "cushionToday": "Cushion today"
     }
+  },
+  "auth": {
+    "signOut": "Sign out",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password"
+    },
+    "signIn": {
+      "title": "Welcome back",
+      "lead": "Sign in to pick up your plan where you left it.",
+      "submit": "Sign in",
+      "forgot": "Forgot your password?",
+      "noAccount": "Don’t have an account?",
+      "createOne": "Create one"
+    },
+    "signUp": {
+      "title": "Start planning",
+      "lead": "One account, one personal workspace. No bank connection needed.",
+      "submit": "Create account",
+      "passwordHint": "At least {{count}} characters. Length beats symbols.",
+      "haveAccount": "Already have an account?",
+      "signInInstead": "Sign in"
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "lead": "Enter your email and we’ll send a link to set a new password.",
+      "submit": "Send reset link",
+      "sent": "If that email has an account, a reset link is on its way. The link expires in an hour.",
+      "backToSignIn": "Back to sign in"
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "lead": "This also signs you out everywhere else.",
+      "submit": "Save new password",
+      "done": "Your password is set. Sign in with it.",
+      "requestAnother": "Request a new link"
+    },
+    "errors": {
+      "invalidCredentials": "That email and password do not match an account.",
+      "invalidEmail": "Enter a valid email address.",
+      "emailTaken": "An account already uses that email.",
+      "passwordCompromised": "That password appears in a known data breach. Please pick a different one.",
+      "passwordTooShort": "Use at least 12 characters.",
+      "passwordTooLong": "That password is too long.",
+      "passwordRequired": "Enter your password.",
+      "passwordMismatch": "The two passwords do not match.",
+      "nameRequired": "Enter your name.",
+      "resetLinkInvalid": "That reset link is invalid or has expired.",
+      "sessionExpired": "Your session expired. Sign in again.",
+      "emailNotVerified": "Verify your email address first.",
+      "tooManyAttempts": "Too many attempts. Wait a few minutes and try again.",
+      "unknown": "Something went wrong. Please try again."
+    }
+  },
+  "settings": {
+    "save": "Save changes",
+    "saved": "Saved.",
+    "saveFailed": "Could not save those changes.",
+    "moreLater": "Categories, data export and account deletion arrive in later phases.",
+    "profile": {
+      "title": "Profile",
+      "emailFixed": "Changing your email arrives in a later version."
+    },
+    "workspace": {
+      "title": "Workspace",
+      "lead": "These settings shape every plan, period and balance in Mizan.",
+      "name": "Workspace name",
+      "nameRequired": "Give the workspace a name.",
+      "periodStartDay": "Plan month starts on day",
+      "periodStartDayHint": "Usually your payday. 1 to 28, so every month has that day.",
+      "baseCurrency": "Base currency",
+      "baseCurrencyFixed": "The MVP is Turkish lira only; more currencies arrive in v1.1."
+    },
+    "password": {
+      "title": "Password",
+      "submit": "Change password",
+      "changed": "Your password has been changed."
+    }
+  },
+  "dates": {
+    "dayMonthYear": "{{day}} {{month}} {{year}}"
   }
 }

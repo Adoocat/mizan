@@ -39,3 +39,6 @@ Thumbs.db
 *.dump
 *.sql.gz
 *.backup
+
+# Playwright session state created by e2e/tests/auth.setup.ts
+e2e/playwright/.auth/

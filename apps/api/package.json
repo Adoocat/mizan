@@ -18,6 +18,8 @@
     "@fastify/helmet": "^13.1.1",
     "@mizan/contracts": "workspace:*",
     "@mizan/domain": "workspace:*",
+    "@node-rs/argon2": "^2.2.1",
+    "better-auth": "^1.7.7",
     "drizzle-orm": "^0.45.3",
     "fastify": "^5.12.5",
     "fastify-type-provider-zod": "^7.0.0",

@@ -1,10 +1,19 @@
 import { getCurrency, type CurrencyCode } from './currency.ts'
 import { Decimal, decimal, type DecimalInput } from './decimal.ts'
 
-/** Wire format for money: `{"amount": "12000.00", "currency": "TRY"}`. */
+/** Wire format for money as it *arrives*: the currency is still an unchecked string. */
 export interface MoneyDto {
   amount: string
   currency: string
+}
+
+/**
+ * The same shape as it *leaves*: the currency has been validated, so it is a known code. Lets the
+ * API's response schemas type-check against `Money.toDto()` without a cast.
+ */
+export interface MoneyValue {
+  amount: string
+  currency: CurrencyCode
 }
 
 /** Largest absolute amount that fits NUMERIC(20,4): 16 integer digits. */
@@ -173,14 +182,14 @@ export class Money {
   }
 
   /** Wire format, rounded half-up to minor units with a fixed number of decimals. */
-  toDto(): MoneyDto {
+  toDto(): MoneyValue {
     return {
       amount: this.amount.toFixed(this.minorUnits, Decimal.ROUND_HALF_UP),
       currency: this.currency,
     }
   }
 
-  toJSON(): MoneyDto {
+  toJSON(): MoneyValue {
     return this.toDto()
   }
 

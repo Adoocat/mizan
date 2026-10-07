@@ -192,7 +192,9 @@
     "restoredToast": "İşlem geri yüklendi",
     "emptyTitle": "Henüz hesap yok",
     "emptyDescription": "Harcama ve birikim için kullandığın hesapları ekle. Bakiyeleri planının başlangıcı olur.",
-    "addAccount": "Hesap ekle"
+    "addAccount": "Hesap ekle",
+    "fields": "Form alanları",
+    "fieldHint": "Tek mesaj satırı; ipuçları ve hatalar aynı yerde görünür."
   },
   "days": {
     "mon": "Pzt",
@@ -456,36 +458,81 @@
     "howItWorksBody": "Hedef, hâlihazırda sahip olduğunuz parayı ayırır. Katkı vermek parayı Harcanabilir tutardan hedefe taşır; serbest bırakmak geri getirir. Bakiyeler gerçek hesaplarınızda kalır — Mizan yalnızca her liranın ne için olduğunu hatırlar."
   },
   "accounts": {
-    "eyebrow": "{{count}} hesap · bakiyeler diğer tüm ekranları besler",
-    "addManual": "Elle varlık ekle",
-    "connect": "Hesap bağla",
-    "readOnly": "Yalnızca okuma erişimi. Mizan paranızı asla hareket ettiremez.",
-    "readOnlyBody": "Bağlantılar her bankanın açık bankacılık onayını kullanır; buradan ya da bankanızın uygulamasından istediğiniz an iptal edebilirsiniz.",
-    "security": {
-      "twoStep": {
-        "label": "İki adımlı giriş",
-        "value": "Açık · kimlik doğrulama uygulaması"
-      },
-      "devices": {
-        "label": "Giriş yapılmış cihazlar",
-        "value": "2 · bu Mac, iPhone"
-      },
-      "encryption": {
-        "label": "Şifreleme",
-        "value": "Beklerken ve aktarımda"
-      }
-    },
-    "kinds": {
-      "checking": "Vadesiz",
+    "eyebrow_one": "{{count}} hesap · bakiyeler diğer tüm ekranları besler",
+    "eyebrow_other": "{{count}} hesap · bakiyeler diğer tüm ekranları besler",
+    "add": "Hesap ekle",
+    "showArchived": "Arşivlenenleri göster",
+    "hideArchived": "Arşivlenenleri gizle",
+    "loadFailed": "Hesaplarınız yüklenemedi.",
+    "emptyBody": "Nakit, vadesiz hesap, birikim ve kredi kartlarınızı ekleyin. Her açılış bakiyesi hesabın ilk işlemi olur; böylece her bakiye kendi hareketlerinin toplamı olarak kalır.",
+    "archived": "Arşivlendi",
+    "onBudget": "Bütçe içi",
+    "offBudget": "Bütçe dışı",
+    "excludedFromNetWorth": "Net değere dahil değil",
+    "netWorth": "Net değer",
+    "netWorthNote": "Sahip olduğunuz her şey eksi borçlarınız, kart bakiyeleri dahil. Bakiyeler işlemlerden türetilir, saklanmaz.",
+    "groups": {
       "cash": "Nakit",
-      "savings": "Birikim",
+      "bank": "Banka hesapları",
       "card": "Kredi kartları"
     },
-    "statement": "ekstre {{date}}",
-    "synced": "Eşitlendi {{time}}",
-    "accessExpired": "Erişim sona erdi",
-    "total": "Toplam",
-    "totalNote": "Kart bakiyeleri düşüldükten sonra bütçeye dahil her şey. Hesap bakiyeleri işlemlerden türetilir, saklanmaz."
+    "types": {
+      "checking": "Vadesiz hesap",
+      "savings": "Birikim",
+      "cash": "Nakit",
+      "credit_card": "Kredi kartı"
+    },
+    "entryTypes": {
+      "expense": "Gider",
+      "income": "Gelir",
+      "transfer": "Transfer",
+      "adjustment": "Mutabakat düzeltmesi",
+      "opening_balance": "Açılış bakiyesi"
+    },
+    "form": {
+      "addTitle": "Hesap ekle",
+      "addLead": "Bugün içindeki tutar, bugün tarihli açılış bakiyesi olur.",
+      "editTitle": "Hesabı düzenle",
+      "name": "Hesap adı",
+      "nameRequired": "Hesaba bir ad verin.",
+      "type": "Tür",
+      "typeFixed": "Hesapta hareket olduktan sonra tür değişmez.",
+      "institution": "Banka veya son dört hane",
+      "institutionHint": "İsteğe bağlı; iki hesabı birbirinden ayırmak için.",
+      "openingBalance": "Bugünkü bakiye",
+      "openingBalanceHint": "Sıfırdan başlamak için boş bırakın. Kredi kartı negatif başlar.",
+      "submit": "Hesap ekle",
+      "failed": "Bu hesap kaydedilemedi."
+    },
+    "reconcile": {
+      "title": "{{name}} mutabakatı",
+      "lead": "Ekstrenizdeki bakiyeyi yazın. Mizan, farkı kapatan tek düzeltmeyi kaydeder.",
+      "inMizan": "Mizan'daki bakiye",
+      "statementBalance": "Ekstrenizdeki bakiye",
+      "statementHint": "Eksi işaretleri dahil, göründüğü gibi.",
+      "difference": "Kaydedilecek düzeltme",
+      "noDifference": "Düzeltme gerekmiyor",
+      "submit": "Mutabakat yap",
+      "adjusted": "Düzeltme kaydedildi. Bakiye artık ekstrenizle aynı.",
+      "alreadyMatched": "Zaten aynı — hiçbir şey kaydedilmedi.",
+      "failed": "Bu hesabın mutabakatı yapılamadı."
+    },
+    "detail": {
+      "backToAccounts": "Tüm hesaplar",
+      "notFound": "Bu hesap artık yok",
+      "balance": "Bakiye",
+      "balanceNote": "Bu hesaptaki tüm hareketlerin toplamı. Mizan kendi bakiyesini saklamadığı için bu tutar sapamaz.",
+      "edit": "Düzenle",
+      "reconcile": "Mutabakat",
+      "archive": "Arşivle",
+      "unarchive": "Geri yükle",
+      "archiveTitle": "{{name}} arşivlensin mi?",
+      "archiveBody": "Hesap listenizden çıkar ama tüm işlemleri kalır; geçmiş aylar yine doğru toplanır. İstediğiniz zaman geri yükleyebilirsiniz.",
+      "archiveFailed": "Bu hesap değiştirilemedi.",
+      "activity": "Son hareketler",
+      "activityMeta": "Tüm işlem listesi sonraki bir fazda geliyor",
+      "noActivity": "Bu hesapta henüz bir hareket yok."
+    }
   },
   "landing": {
     "nav": "Tanıtım gezinmesi",
@@ -940,5 +987,90 @@
       "monthlySurplus": "Aylık fazla",
       "cushionToday": "Bugünkü tampon"
     }
+  },
+  "auth": {
+    "signOut": "Çıkış yap",
+    "fields": {
+      "name": "Ad",
+      "email": "E-posta",
+      "password": "Şifre",
+      "currentPassword": "Mevcut şifre",
+      "newPassword": "Yeni şifre",
+      "confirmPassword": "Yeni şifreyi doğrula"
+    },
+    "signIn": {
+      "title": "Tekrar hoş geldiniz",
+      "lead": "Giriş yapın ve planınıza kaldığınız yerden devam edin.",
+      "submit": "Giriş yap",
+      "forgot": "Şifrenizi mi unuttunuz?",
+      "noAccount": "Hesabınız yok mu?",
+      "createOne": "Hesap oluşturun"
+    },
+    "signUp": {
+      "title": "Planlamaya başlayın",
+      "lead": "Tek hesap, tek kişisel çalışma alanı. Banka bağlantısı gerekmez.",
+      "submit": "Hesap oluştur",
+      "passwordHint": "En az {{count}} karakter. Uzunluk, simgelerden önemlidir.",
+      "haveAccount": "Hesabınız var mı?",
+      "signInInstead": "Giriş yap"
+    },
+    "forgot": {
+      "title": "Şifrenizi sıfırlayın",
+      "lead": "E-postanızı girin, yeni şifre belirlemek için bir bağlantı gönderelim.",
+      "submit": "Sıfırlama bağlantısı gönder",
+      "sent": "Bu e-postaya ait bir hesap varsa sıfırlama bağlantısı yolda. Bağlantı bir saat geçerli.",
+      "backToSignIn": "Girişe dön"
+    },
+    "reset": {
+      "title": "Yeni bir şifre seçin",
+      "lead": "Bu işlem diğer tüm oturumlarınızı da kapatır.",
+      "submit": "Yeni şifreyi kaydet",
+      "done": "Şifreniz belirlendi. Bu şifreyle giriş yapabilirsiniz.",
+      "requestAnother": "Yeni bir bağlantı isteyin"
+    },
+    "errors": {
+      "invalidCredentials": "Bu e-posta ve şifre bir hesapla eşleşmiyor.",
+      "invalidEmail": "Geçerli bir e-posta adresi girin.",
+      "emailTaken": "Bu e-posta zaten bir hesapta kullanılıyor.",
+      "passwordCompromised": "Bu şifre bilinen bir veri sızıntısında görünüyor. Lütfen başka bir şifre seçin.",
+      "passwordTooShort": "En az 12 karakter kullanın.",
+      "passwordTooLong": "Bu şifre çok uzun.",
+      "passwordRequired": "Şifrenizi girin.",
+      "passwordMismatch": "İki şifre birbiriyle aynı değil.",
+      "nameRequired": "Adınızı girin.",
+      "resetLinkInvalid": "Bu sıfırlama bağlantısı geçersiz veya süresi dolmuş.",
+      "sessionExpired": "Oturumunuzun süresi doldu. Yeniden giriş yapın.",
+      "emailNotVerified": "Önce e-posta adresinizi doğrulayın.",
+      "tooManyAttempts": "Çok fazla deneme. Birkaç dakika sonra tekrar deneyin.",
+      "unknown": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+    }
+  },
+  "settings": {
+    "save": "Değişiklikleri kaydet",
+    "saved": "Kaydedildi.",
+    "saveFailed": "Bu değişiklikler kaydedilemedi.",
+    "moreLater": "Kategoriler, veri aktarımı ve hesap silme sonraki fazlarda geliyor.",
+    "profile": {
+      "title": "Profil",
+      "emailFixed": "E-posta değiştirme sonraki bir sürümde geliyor."
+    },
+    "workspace": {
+      "title": "Çalışma alanı",
+      "lead": "Bu ayarlar Mizan’daki her planı, dönemi ve bakiyeyi şekillendirir.",
+      "name": "Çalışma alanı adı",
+      "nameRequired": "Çalışma alanına bir ad verin.",
+      "periodStartDay": "Plan ayının başladığı gün",
+      "periodStartDayHint": "Genellikle maaş gününüz. 1–28 arası, böylece her ayda o gün vardır.",
+      "baseCurrency": "Ana para birimi",
+      "baseCurrencyFixed": "MVP yalnızca Türk lirası; diğer para birimleri v1.1 ile geliyor."
+    },
+    "password": {
+      "title": "Şifre",
+      "submit": "Şifreyi değiştir",
+      "changed": "Şifreniz değiştirildi."
+    }
+  },
+  "dates": {
+    "dayMonthYear": "{{day}} {{month}} {{year}}"
   }
 }

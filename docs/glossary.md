@@ -21,5 +21,12 @@ the UI wording and may be refined as the Turkish copy is reviewed.
 | Goal contribution | Hedef katkısı | An earmark (or release) of money for a goal |
 | Sinking fund | Birikim fonu | A goal for a known future expense, optionally repeating |
 | Emergency fund | Acil durum fonu | Goal sized as months × essential monthly expenses |
+| Opening balance | Açılış bakiyesi | What an account held when it was added, stored as a dated transaction, not a column |
+| Derived balance | Türetilmiş bakiye | An account balance computed as the sum of its transaction lines; Mizan stores none |
+| Transaction line | İşlem satırı | One signed movement on one account; several on one account are a split, two on different accounts a transfer |
+| Reconcile | Mutabakat | Match an account against a statement; the difference is written as one adjustment |
+| Adjustment | Düzeltme | The single transaction that makes a derived balance match a statement |
+| Archive | Arşivle | Take an account, category or goal out of use while keeping its history |
+| Base amount | Ana para tutarı | A line’s amount in the workspace base currency, frozen at transaction time |
 | Minor units | Alt birim | Decimal places of a currency (2 for TRY: kuruş) |
 | Installment | Taksit | Credit-card purchase paid in monthly parts (v1.1) |

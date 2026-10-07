@@ -21,25 +21,45 @@ function titleFor(status: number): string {
   return STATUS_TITLES[status] ?? (status >= 500 ? 'Internal Server Error' : 'Error')
 }
 
-function sendProblem(
+/**
+ * An error a service raises on purpose, with the status and the message the client should see.
+ * Anything else becomes a bare 500 with no detail.
+ */
+export class ApiProblem extends Error {
+  override name = 'ApiProblem'
+  readonly status: number
+
+  constructor(status: number, detail: string) {
+    super(detail)
+    this.status = status
+  }
+}
+
+export const notFound = (detail = 'Not found.') => new ApiProblem(404, detail)
+export const conflict = (detail: string) => new ApiProblem(409, detail)
+export const badRequest = (detail: string) => new ApiProblem(400, detail)
+export const forbidden = (detail = 'You may not do that.') => new ApiProblem(403, detail)
+
+/** Sends an RFC 9457 problem+json body. Route handlers should `return` the result. */
+export function problem(
   reply: FastifyReply,
   request: FastifyRequest,
-  problem: Omit<Problem, 'type' | 'title'>,
+  details: Omit<Problem, 'type' | 'title'>,
 ) {
   const body: Problem = {
     type: 'about:blank',
-    title: titleFor(problem.status),
-    ...problem,
+    title: titleFor(details.status),
+    ...details,
     requestId: request.id,
   }
-  return reply.status(problem.status).type(PROBLEM_CONTENT_TYPE).send(body)
+  return reply.status(details.status).type(PROBLEM_CONTENT_TYPE).send(body)
 }
 
 /** Every error leaves the API as RFC 9457 problem+json. Internal details are logged, never sent. */
 export function registerErrorHandlers(app: FastifyInstance) {
   app.setErrorHandler((error: FastifyError, request, reply) => {
     if (hasZodFastifySchemaValidationErrors(error)) {
-      return sendProblem(reply, request, {
+      return problem(reply, request, {
         status: 400,
         detail: 'The request is invalid.',
         // Paths and messages only. Input values are never echoed back or logged.
@@ -50,6 +70,10 @@ export function registerErrorHandlers(app: FastifyInstance) {
       })
     }
 
+    if (error instanceof ApiProblem) {
+      return problem(reply, request, { status: error.status, detail: error.message })
+    }
+
     const status =
       typeof error.statusCode === 'number' && error.statusCode >= 400 && error.statusCode < 600
         ? error.statusCode
@@ -57,11 +81,11 @@ export function registerErrorHandlers(app: FastifyInstance) {
 
     if (status >= 500) {
       request.log.error({ err: error }, 'request failed')
-      return sendProblem(reply, request, { status })
+      return problem(reply, request, { status })
     }
 
-    return sendProblem(reply, request, { status, detail: error.message })
+    return problem(reply, request, { status, detail: error.message })
   })
 
-  app.setNotFoundHandler((request, reply) => sendProblem(reply, request, { status: 404 }))
+  app.setNotFoundHandler((request, reply) => problem(reply, request, { status: 404 }))
 }
