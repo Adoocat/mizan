@@ -11,7 +11,9 @@ import type { AppConfig } from './config/env.ts'
 import type { Database } from './db/client.ts'
 import { systemClock } from './lib/clock.ts'
 import { accountRoutes } from './modules/accounts/routes.ts'
+import { categoryRoutes } from './modules/categories/routes.ts'
 import { healthRoutes } from './modules/health/routes.ts'
+import { transactionRoutes } from './modules/transactions/routes.ts'
 import { workspaceRoutes } from './modules/workspace/routes.ts'
 import { registerAuth } from './plugins/auth.ts'
 import { registerBodyParsing } from './plugins/body.ts'
@@ -73,6 +75,8 @@ export async function buildApp({ config, database, auth, clock = systemClock }: 
       await registerAuth(api, { auth, database, webOrigin: config.webOrigin })
       await api.register(workspaceRoutes, { database })
       await api.register(accountRoutes, { database, clock })
+      await api.register(categoryRoutes, { database })
+      await api.register(transactionRoutes, { database })
     },
     { prefix: '/api/v1' },
   )

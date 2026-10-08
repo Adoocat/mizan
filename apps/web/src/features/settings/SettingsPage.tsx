@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { PageContainer, PageHeader } from '../../components/layout/AppShell'
 import { PrivacyToggle, ThemeSwitch } from '../../components/layout/Preferences'
 import { Card, CardTitle } from '../../components/ui/Card'
+import { CategorySettings } from '../categories/CategorySettings'
 import { PasswordCard } from './PasswordCard'
 import { ProfileCard } from './ProfileCard'
 import { WorkspaceCard } from './WorkspaceCard'
@@ -15,6 +16,7 @@ export function SettingsPage() {
       <ProfileCard />
       <WorkspaceCard />
       <PasswordCard />
+      <CategorySettings />
 
       <Card className="flex max-w-md flex-col gap-4">
         <CardTitle>{t('pages.settings.appearance')}</CardTitle>
@@ -28,7 +30,7 @@ export function SettingsPage() {
         </div>
       </Card>
 
-      {/* Categories, export and account deletion arrive with their own phases (PLAN §13). */}
+      {/* Data export and account deletion arrive with their own phases (PLAN §13). */}
       <p className="m-0 text-caption text-ink-3">{t('settings.moreLater')}</p>
     </PageContainer>
   )

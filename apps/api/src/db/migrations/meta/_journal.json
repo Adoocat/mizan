@@ -29,6 +29,20 @@
       "when": 1791361556885,
       "tag": "0003_ledger",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791489261140,
+      "tag": "0004_categories",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791489262140,
+      "tag": "0005_seed_categories",
+      "breakpoints": true
     }
   ]
 }

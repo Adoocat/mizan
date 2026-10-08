@@ -18,6 +18,13 @@ if (!window.matchMedia) {
     }) as MediaQueryList
 }
 
+// jsdom implements no pointer capture; Sonner calls it when a toast is pressed (e.g. Undo).
+for (const method of ['setPointerCapture', 'releasePointerCapture', 'hasPointerCapture'] as const) {
+  if (!(method in Element.prototype)) {
+    Object.defineProperty(Element.prototype, method, { value: () => false, writable: true })
+  }
+}
+
 await initI18n('en')
 
 afterEach(() => {

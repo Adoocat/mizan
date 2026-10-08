@@ -42,9 +42,10 @@ function EntryRow({ entry }: { entry: LedgerEntryDto }) {
 /**
  * One account: its derived balance, what it is, and what has moved through it.
  *
- * The activity list is deliberately small — phase 5 brings the real transaction table with
- * filters, search and splits. Everything here is read back from the API after each change, so the
- * balance on screen is always the sum of the lines rather than something the client worked out.
+ * The activity list is deliberately short: it shows the most recent movements and links to the
+ * Transactions page filtered to this account, which is where filters, search and splits live.
+ * Everything here is read back from the API after each change, so the balance on screen is always
+ * the sum of the lines rather than something the client worked out.
  */
 export function AccountDetailPage() {
   const { t } = useTranslation()
@@ -154,8 +155,16 @@ export function AccountDetailPage() {
 
       <Panel
         title={t('accounts.detail.activity')}
-        meta={t('accounts.detail.activityMeta')}
         flush={entries.length > 0}
+        action={
+          <Link
+            to="/transactions"
+            search={{ view: 'all' as const, accountId: [account.id] }}
+            className={panelLinkClass}
+          >
+            {t('accounts.detail.allActivity')}
+          </Link>
+        }
       >
         {entries.length === 0 ? (
           <p className="m-0 text-body text-ink-2">{t('accounts.detail.noActivity')}</p>

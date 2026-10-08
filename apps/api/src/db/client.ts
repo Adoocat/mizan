@@ -12,10 +12,18 @@ export interface Database {
   close(): Promise<void>
 }
 
-export function createDatabase(connectionString: string): Database {
+export interface DatabaseOptions {
+  /** Connections the pool may open. See `DATABASE_POOL_MAX`. */
+  max?: number
+}
+
+export function createDatabase(
+  connectionString: string,
+  { max = 10 }: DatabaseOptions = {},
+): Database {
   const pool = new pg.Pool({
     connectionString,
-    max: 10,
+    max,
     connectionTimeoutMillis: 5_000,
     idleTimeoutMillis: 30_000,
     // Keep any single statement from holding a connection forever.

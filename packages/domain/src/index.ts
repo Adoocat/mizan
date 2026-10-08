@@ -1,5 +1,6 @@
 /** Pure financial logic for Mizan. No I/O, no system clock, no globals. */
 export * from './allocate.ts'
+export * from './categories.ts'
 export * from './clock.ts'
 export * from './currency.ts'
 export * from './dates.ts'
@@ -10,4 +11,5 @@ export * from './locale.ts'
 export * from './money.ts'
 export * from './parse.ts'
 export * from './period.ts'
+export * from './search.ts'
 export * from './uuid.ts'

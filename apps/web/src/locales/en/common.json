@@ -239,7 +239,25 @@
     "gold": "Gold",
     "debtPayments": "Debt payments",
     "health": "Health",
-    "other": "Other"
+    "other": "Other",
+    "salary": "Salary",
+    "freelance": "Freelance",
+    "otherIncome": "Other income",
+    "insurance": "Insurance",
+    "entertainment": "Entertainment",
+    "education": "Education",
+    "gifts": "Gifts & donations",
+    "loanPayment": "Loan payment",
+    "savingsTransfer": "Transfer to savings",
+    "investmentContribution": "Investment contribution",
+    "groups": {
+      "income": "Income",
+      "essentials": "Essentials",
+      "flexible": "Flexible spending",
+      "debt": "Debt",
+      "savings": "Savings",
+      "investments": "Investments"
+    }
   },
   "home": {
     "date": "Thursday, 22 October 2026",
@@ -373,8 +391,6 @@
     }
   },
   "transactions": {
-    "eyebrow": "1–22 October 2026 · 6 accounts",
-    "import": "Import statement",
     "summary": {
       "income": "Income",
       "spending": "Spending",
@@ -383,13 +399,13 @@
     },
     "reviewThem": "Review them",
     "list": "All transactions",
-    "shown": "{{count}} shown",
     "filter": "Filter transactions",
     "filters": {
       "all": "All",
       "needsReview": "Needs review",
       "spending": "Spending",
-      "income": "Income"
+      "income": "Income",
+      "transfers": "Transfers"
     },
     "columns": {
       "date": "Date",
@@ -400,7 +416,71 @@
     },
     "needsReview": "Needs review",
     "noMatches": "No transactions match this filter.",
-    "importNote": "Imported automatically via open banking. The cash wallet is entered manually."
+    "add": "Add transaction",
+    "matched_one": "{{count}} transaction",
+    "matched_other": "{{count}} transactions",
+    "loadFailed": "Could not load your transactions.",
+    "searchLabel": "Search transactions",
+    "searchPlaceholder": "Search payee or note",
+    "clearFilters": "Clear filters",
+    "emptyBody": "Record what you spend and earn, and every other screen follows: balances, the plan and what is safe to spend today.",
+    "noMatchesTitle": "No transactions match these filters",
+    "split_one": "Split across {{count}} category",
+    "split_other": "Split across {{count}} categories",
+    "splitBadge": "Split",
+    "showParts": "Show parts",
+    "hideParts": "Hide parts",
+    "deleteOne": "Delete {{payee}}",
+    "deleted": "Transaction deleted.",
+    "deleteFailed": "Could not delete that transaction.",
+    "undoFailed": "Could not bring that transaction back.",
+    "loadEarlier": "Load earlier",
+    "transferBetween": "{{from}} → {{to}}",
+    "untitled": "No description",
+    "types": {
+      "expense": "Expense",
+      "income": "Income",
+      "transfer": "Transfer",
+      "adjustment": "Reconciliation adjustment",
+      "opening_balance": "Opening balance"
+    },
+    "kinds": {
+      "expense": "Expense",
+      "income": "Income",
+      "transfer": "Transfer"
+    },
+    "form": {
+      "add": {
+        "expense": "New expense",
+        "income": "New income",
+        "transfer": "New transfer"
+      },
+      "editTitle": "Edit transaction",
+      "kind": "Kind",
+      "amount": "Amount",
+      "category": "Category",
+      "categoryPlaceholder": "Search categories",
+      "categoryRequired": "Choose a category.",
+      "noCategory": "No category",
+      "noCategoryMatches": "No category matches",
+      "account": "Account",
+      "from": "From",
+      "to": "To",
+      "pickAnotherAccount": "Pick a different account to move the money to.",
+      "date": "Date",
+      "payee": "Payee",
+      "notes": "Note",
+      "memo": "Memo",
+      "part": "Part {{number}}",
+      "addPart": "Split this",
+      "removePart": "Remove",
+      "splitTotal": "Total",
+      "unassigned": "Left to assign",
+      "submit": "Save",
+      "failed": "Could not save that transaction.",
+      "noAccounts": "Add an account first — a transaction has to move money somewhere."
+    },
+    "addFirst": "Record your first transaction"
   },
   "upcoming": {
     "eyebrow": "Recurring and scheduled money movements",
@@ -530,8 +610,8 @@
       "archiveBody": "It leaves your account list but keeps every transaction, so past months still add up. You can restore it at any time.",
       "archiveFailed": "Could not change that account.",
       "activity": "Recent activity",
-      "activityMeta": "The full transaction list arrives in a later phase",
-      "noActivity": "Nothing has moved through this account yet."
+      "noActivity": "Nothing has moved through this account yet.",
+      "allActivity": "All activity"
     }
   },
   "landing": {
@@ -1072,5 +1152,31 @@
   },
   "dates": {
     "dayMonthYear": "{{day}} {{month}} {{year}}"
+  },
+  "categorySettings": {
+    "title": "Categories",
+    "lead": "Every workspace starts with a template you can rename, regroup or add to. Categories are archived rather than deleted, and merged rather than replaced, so past months keep adding up.",
+    "loadFailed": "Could not load your categories.",
+    "failed": "Could not save that category.",
+    "edit": "Edit",
+    "merge": "Merge",
+    "add": "Add",
+    "addTo": "Add to {{group}}",
+    "newName": "New category",
+    "name": "Name",
+    "nameRequired": "Give the category a name.",
+    "group": "Group",
+    "essential": "Counts as essential",
+    "essentialHint": "Essential categories set the emergency fund target and are the last thing a month should cut.",
+    "essentialTag": "Essential",
+    "used_one": "{{count}} transaction",
+    "used_other": "{{count}} transactions",
+    "editTitle": "Edit category",
+    "mergeTitle": "Merge {{name}}",
+    "mergeLead_one": "Its {{count}} transaction moves to the category you pick, and this one is archived.",
+    "mergeLead_other": "Its {{count}} transactions move to the category you pick, and this one is archived.",
+    "mergeInto": "Merge into",
+    "archive": "Archive",
+    "unarchive": "Restore"
   }
 }

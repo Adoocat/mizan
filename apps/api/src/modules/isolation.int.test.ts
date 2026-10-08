@@ -1,4 +1,4 @@
-import type { MeResponse } from '@mizan/contracts'
+import type { CategoryListResponse, MeResponse } from '@mizan/contracts'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { Database } from '../db/client.ts'
 import { buildTestApp, type TestApp } from '../testing/app.ts'
@@ -11,6 +11,8 @@ import {
 import { connectTestDatabase } from '../testing/postgres.ts'
 import { signUpActor, type Actor } from '../testing/session.ts'
 import { accountIsolationCases } from './accounts/isolation.ts'
+import { categoryIsolationCases } from './categories/isolation.ts'
+import { transactionIsolationCases } from './transactions/isolation.ts'
 import { workspaceIsolationCases } from './workspace/isolation.ts'
 
 /**
@@ -18,7 +20,12 @@ import { workspaceIsolationCases } from './workspace/isolation.ts'
  * its cases to its module's `isolation.ts` and, if the endpoint addresses a resource by id, its
  * fixture to `createFixtures` below. Nothing else changes here.
  */
-const CASES: readonly IsolationCase[] = [...workspaceIsolationCases, ...accountIsolationCases]
+const CASES: readonly IsolationCase[] = [
+  ...workspaceIsolationCases,
+  ...accountIsolationCases,
+  ...categoryIsolationCases,
+  ...transactionIsolationCases,
+]
 
 /** Resources owned by the victim's workspace, keyed by the name the cases use. */
 async function createFixtures(victim: Actor): Promise<IsolationIds> {
@@ -35,7 +42,38 @@ async function createFixtures(victim: Actor): Promise<IsolationIds> {
     throw new Error(`fixture account failed (${account.statusCode}): ${account.body}`)
   }
 
-  return { accountId: account.json<{ id: string }>().id }
+  const accountId = account.json<{ id: string }>().id
+
+  const categories = await victim.request({ method: 'GET', url: '/api/v1/categories' })
+  const groups = categories.json<CategoryListResponse>().groups
+  const flexible = groups.find((group) => group.kind === 'flexible')
+  const [category, otherCategory] = flexible?.categories ?? []
+  if (!flexible || !category || !otherCategory) {
+    throw new Error('fixture categories missing: the workspace was not seeded')
+  }
+
+  const transaction = await victim.request({
+    method: 'POST',
+    url: '/api/v1/transactions',
+    payload: {
+      type: 'expense',
+      date: '2026-10-22',
+      accountId,
+      payee: 'Migros Kadıköy',
+      parts: [{ categoryId: category.id, amount: { amount: '85.00', currency: 'TRY' } }],
+    },
+  })
+  if (transaction.statusCode !== 201) {
+    throw new Error(`fixture transaction failed (${transaction.statusCode}): ${transaction.body}`)
+  }
+
+  return {
+    accountId,
+    categoryGroupId: flexible.id,
+    categoryId: category.id,
+    otherCategoryId: otherCategory.id,
+    transactionId: transaction.json<{ id: string }>().id,
+  }
 }
 
 let database: Database

@@ -15,6 +15,12 @@ if (!databaseUrl) {
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
+  /*
+   * Two browser projects share one API, one Vite dev server and one Postgres container. Left to
+   * its own default (half the cores), Playwright oversubscribes a development machine badly
+   * enough that writes start timing out — which looks like a product bug and is not one.
+   */
+  workers: process.env.CI ? 4 : 3,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
@@ -54,6 +60,9 @@ export default defineConfig({
         NODE_ENV: 'test',
         PORT: API_PORT,
         DATABASE_URL: databaseUrl,
+        // Both browser projects drive this one API in parallel, and a page that lists
+        // transactions holds several connections while it loads. The default 10 runs out.
+        DATABASE_POOL_MAX: '40',
         WEB_ORIGIN: WEB_URL,
         LOG_LEVEL: 'warn',
         AUTH_SECRET: 'e2e-only-secret-at-least-thirty-two-chars',

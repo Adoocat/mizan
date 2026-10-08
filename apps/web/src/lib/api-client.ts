@@ -88,6 +88,15 @@ export function apiPatch<Schema extends z.ZodType>(
   return send('PATCH', path, schema, body, options)
 }
 
+export function apiPut<Schema extends z.ZodType>(
+  path: string,
+  body: unknown,
+  schema: Schema,
+  options: RequestOptions = {},
+): Promise<z.infer<Schema>> {
+  return send('PUT', path, schema, body, options)
+}
+
 export function apiDelete<Schema extends z.ZodType>(
   path: string,
   schema: Schema,

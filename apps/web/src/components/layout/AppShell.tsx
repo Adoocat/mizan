@@ -10,6 +10,7 @@ import {
 import { cn } from '../../lib/cn'
 import { AssistantPanel } from '../../features/assistant/AssistantPanel'
 import { AccountFooter } from '../../features/auth/AccountFooter'
+import { QuickAddProvider, useQuickAdd } from '../../features/transactions/quick-add'
 import { Button } from '../ui/Button'
 import { Dialog, DialogContent } from '../ui/Dialog'
 import { Toaster } from '../ui/Toaster'
@@ -114,6 +115,7 @@ const tabActiveClass = 'font-semibold !text-ink'
 
 function MobileTabBar() {
   const { t } = useTranslation()
+  const quickAdd = useQuickAdd()
   const [moreOpen, setMoreOpen] = useState(false)
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const moreActive = MOBILE_MORE_ITEMS.some((item) => pathname.startsWith(item.to))
@@ -138,13 +140,14 @@ function MobileTabBar() {
     >
       {MOBILE_TABS.map(tab)}
       <div className="flex justify-center">
-        <Link
-          to="/transactions"
+        <button
+          type="button"
+          onClick={() => quickAdd?.open()}
           aria-label={t('nav.add')}
-          className="flex size-11 items-center justify-center rounded-full bg-primary text-[22px] text-on-primary no-underline hover:bg-primary-hover hover:text-on-primary hover:no-underline"
+          className="flex size-11 cursor-pointer items-center justify-center rounded-full border-0 bg-primary text-[22px] text-on-primary hover:bg-primary-hover"
         >
           <span aria-hidden>+</span>
-        </Link>
+        </button>
       </div>
       {MOBILE_TABS_AFTER_ADD.map(tab)}
       <Dialog open={moreOpen} onOpenChange={setMoreOpen}>
@@ -184,8 +187,10 @@ function MobileTabBar() {
   )
 }
 
-export function AppShell({ children }: { children: ReactNode }) {
+/** The shell itself. `AppShell` wraps it in the quick-add provider both halves of it use. */
+function Shell({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
+  const quickAdd = useQuickAdd()
   const [assistantOpen, setAssistantOpen] = useState(false)
   return (
     <div className="flex min-h-dvh bg-canvas md:h-dvh md:overflow-hidden">
@@ -227,7 +232,11 @@ export function AppShell({ children }: { children: ReactNode }) {
               ⌘K
             </span>
           </Button>
-          <Button variant="primary" className="hidden sm:inline-flex">
+          <Button
+            variant="primary"
+            onClick={() => quickAdd?.open()}
+            className="hidden sm:inline-flex"
+          >
             {t('nav.add')}
           </Button>
         </header>
@@ -248,6 +257,14 @@ export function AppShell({ children }: { children: ReactNode }) {
       <MobileTabBar />
       <Toaster />
     </div>
+  )
+}
+
+export function AppShell({ children }: { children: ReactNode }) {
+  return (
+    <QuickAddProvider>
+      <Shell>{children}</Shell>
+    </QuickAddProvider>
   )
 }
 

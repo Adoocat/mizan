@@ -107,6 +107,13 @@ export interface LedgerLine {
   amount: Money
   categoryId?: string | null
   goalId?: string | null
+  /**
+   * Whether the line's account is on-budget. The caller reads it from the account; the invariants
+   * below need it to decide when a category is required (§10). Left undefined, the category
+   * checks are skipped — which is right for an opening balance or a reconciliation, neither of
+   * which is ever categorized.
+   */
+  onBudget?: boolean
 }
 
 export interface LedgerTransaction {
@@ -126,6 +133,9 @@ export const LEDGER_VIOLATIONS = [
   'expenseMustBeNegative',
   'incomeMustBePositive',
   'splitNeedsOneAccount',
+  'categoryRequired',
+  'transferNeedsCategory',
+  'transferCategoryNotAllowed',
 ] as const
 
 export type LedgerViolation = (typeof LEDGER_VIOLATIONS)[number]
@@ -151,9 +161,9 @@ const fail = (violation: LedgerViolation): LedgerCheck => ({ ok: false, violatio
  * is the throwing form.
  *
  * Note what is *not* checked here, because the domain cannot see the database: that each line's
- * currency equals its account's currency (the composite foreign key guarantees it), that an
- * on-budget expense carries a category (phase 5, when categories exist), and that the period is
- * open (phase 10).
+ * currency equals its account's currency (the composite foreign key guarantees it), that a
+ * category id names a category of a plausible kind (the service checks it against the workspace),
+ * and that the period is open (phase 10).
  */
 export function checkLedgerTransaction({ type, lines }: LedgerTransaction): LedgerCheck {
   if (lines.length === 0) return fail('noLines')
@@ -165,6 +175,7 @@ export function checkLedgerTransaction({ type, lines }: LedgerTransaction): Ledg
   }
 
   const accounts = new Set(lines.map((line) => line.accountId))
+  const categorized = (line: LedgerLine) => Boolean(line.categoryId)
 
   switch (type) {
     case 'opening_balance':
@@ -175,22 +186,60 @@ export function checkLedgerTransaction({ type, lines }: LedgerTransaction): Ledg
       if (lines.length !== 2) return fail('transferNeedsTwoLines')
       if (accounts.size !== 2) return fail('transferNeedsTwoAccounts')
       // Same-currency transfers must net to zero: money moves, it is not created.
-      return Money.sum(
-        lines.map((line) => line.amount),
-        first.amount.currency,
-      ).isZero()
-        ? ok
-        : fail('transferMustNet')
+      if (
+        !Money.sum(
+          lines.map((line) => line.amount),
+          first.amount.currency,
+        ).isZero()
+      ) {
+        return fail('transferMustNet')
+      }
+      return checkTransferCategories(lines)
     }
 
     case 'expense':
       if (accounts.size !== 1) return fail('splitNeedsOneAccount')
-      return lines.every((line) => line.amount.isNegative()) ? ok : fail('expenseMustBeNegative')
+      if (!lines.every((line) => line.amount.isNegative())) return fail('expenseMustBeNegative')
+      return lines.every((line) => line.onBudget !== true || categorized(line))
+        ? ok
+        : fail('categoryRequired')
 
     case 'income':
       if (accounts.size !== 1) return fail('splitNeedsOneAccount')
-      return lines.every((line) => line.amount.isPositive()) ? ok : fail('incomeMustBePositive')
+      if (!lines.every((line) => line.amount.isPositive())) return fail('incomeMustBePositive')
+      return lines.every((line) => line.onBudget !== true || categorized(line))
+        ? ok
+        : fail('categoryRequired')
   }
+}
+
+/**
+ * Categories on a transfer (§10).
+ *
+ * A transfer between two on-budget accounts — current account to savings account, say — does not
+ * touch the plan: the money is still inside the budget, so a category on it would be counted as
+ * spending that never happened. Leaving an on-budget account for an off-budget one (an
+ * investment or loan account) *is* spending as far as the plan is concerned, and the on-budget
+ * side must say which category it leaves through.
+ *
+ * Between two off-budget accounts, and whenever the caller did not say which accounts are
+ * on-budget, there is nothing to check.
+ */
+function checkTransferCategories(lines: readonly LedgerLine[]): LedgerCheck {
+  if (lines.some((line) => line.onBudget === undefined)) return ok
+
+  const onBudgetLines = lines.filter((line) => line.onBudget === true)
+  // Both sides inside the budget, or both outside: the plan is untouched either way.
+  if (onBudgetLines.length !== 1) {
+    return lines.every((line) => !line.categoryId) ? ok : fail('transferCategoryNotAllowed')
+  }
+
+  const crossing = onBudgetLines[0]!
+  if (!crossing.categoryId) return fail('transferNeedsCategory')
+  // The off-budget side is not spending and must not be categorized a second time.
+  return lines.every((line) => line.onBudget === true || !line.categoryId)
+    ? ok
+    : fail('transferCategoryNotAllowed')
 }
 
 export function assertLedgerTransaction(transaction: LedgerTransaction): void {
@@ -242,6 +291,32 @@ export function reconcileAdjustment(derived: Money, statement: Money): Money {
 export function openingBalanceLine(accountId: string, amount: Money): LedgerLine | null {
   const rounded = amount.roundToMinor()
   return rounded.isZero() ? null : { accountId, amount: rounded, categoryId: null, goalId: null }
+}
+
+/* ------------------------------------------------------------------- splits */
+
+/**
+ * What is still unassigned while a split is being entered (flow F4).
+ *
+ * A split is several lines on one account, so the parts have to add up to the amount that left
+ * the account. The split editor shows this number live: positive means there is money left to
+ * assign, negative means the parts overshoot, zero means the split is complete.
+ */
+export function splitRemainder(total: Money, parts: readonly Money[]): Money {
+  return total
+    .abs()
+    .minus(
+      Money.sum(
+        parts.map((part) => part.abs()),
+        total.currency,
+      ),
+    )
+    .roundToMinor()
+}
+
+/** Whether the parts of a split account for the whole amount, to the currency's minor unit. */
+export function isSplitComplete(total: Money, parts: readonly Money[]): boolean {
+  return parts.length > 0 && splitRemainder(total, parts).isZero()
 }
 
 /** Groups account types the way the Accounts page lists them. */

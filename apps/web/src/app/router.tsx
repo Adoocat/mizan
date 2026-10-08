@@ -22,6 +22,7 @@ import { PlaceholderPage } from '../features/placeholder/PlaceholderPage'
 import { PlanPage } from '../features/plan/PlanPage'
 import { SettingsPage } from '../features/settings/SettingsPage'
 import { ShowcasePage } from '../features/showcase/ShowcasePage'
+import { transactionsSearchSchema } from '../features/transactions/search'
 import { TransactionsPage } from '../features/transactions/TransactionsPage'
 
 const rootRoute = createRootRoute({
@@ -99,7 +100,13 @@ export const routeTree = rootRoute.addChildren([
   appRoute.addChildren([
     createRoute({ ...parent, path: '/', component: HomePage }),
     createRoute({ ...parent, path: '/plan', component: PlanPage }),
-    createRoute({ ...parent, path: '/transactions', component: TransactionsPage }),
+    createRoute({
+      ...parent,
+      path: '/transactions',
+      component: TransactionsPage,
+      // The filters live in the URL, so a filtered list can be shared or reloaded (PLAN §13).
+      validateSearch: transactionsSearchSchema,
+    }),
     createRoute({ ...parent, path: '/calendar', component: CalendarPage }),
     createRoute({ ...parent, path: '/savings', component: SavingsPage }),
     createRoute({ ...parent, path: '/investments', component: InvestmentsPage }),

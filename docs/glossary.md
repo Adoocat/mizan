@@ -27,6 +27,13 @@ the UI wording and may be refined as the Turkish copy is reviewed.
 | Reconcile | Mutabakat | Match an account against a statement; the difference is written as one adjustment |
 | Adjustment | Düzeltme | The single transaction that makes a derived balance match a statement |
 | Archive | Arşivle | Take an account, category or goal out of use while keeping its history |
+| Category group | Kategori grubu | A group of categories with a kind the plan reasons about: income, essential, flexible, debt, savings, investment |
+| Essential category | Zorunlu kategori | A category that counts towards essential monthly expenses, and so towards the emergency fund target |
+| System key | Sistem anahtarı | The stable id of a seeded category, which is how the UI shows its name in both languages |
+| Split | Bölünmüş işlem | One transaction whose amount is divided across several categories on the same account |
+| Merge (categories) | Kategorileri birleştir | Move every line of one category onto another and archive the source |
+| Needs review | İnceleme bekliyor | An on-budget expense or income line with no category yet |
+| Soft delete | Yumuşak silme | Mark a transaction deleted (`deleted_at`) so it leaves every list but can be undone |
 | Base amount | Ana para tutarı | A line’s amount in the workspace base currency, frozen at transaction time |
 | Minor units | Alt birim | Decimal places of a currency (2 for TRY: kuruş) |
 | Installment | Taksit | Credit-card purchase paid in monthly parts (v1.1) |

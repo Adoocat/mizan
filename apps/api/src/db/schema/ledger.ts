@@ -15,6 +15,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core'
 import { users } from './auth.ts'
+import { categories } from './categories.ts'
 import { currencies } from './currencies.ts'
 import { workspaces } from './workspaces.ts'
 
@@ -102,6 +103,13 @@ export const transactions = pgTable(
     notes: text(),
     status: text().notNull().default('cleared'),
     source: text().notNull().default('manual'),
+    /**
+     * Payee, notes and line memos, folded to ASCII lower case by the domain's
+     * `searchTextFrom` (§7). The normalization rule lives in one place that way, and the
+     * database only has to match a substring against the trigram index below — which is what
+     * makes `MİGROS` findable by typing `migros`.
+     */
+    searchText: text().notNull().default(''),
     createdBy: uuid().references(() => users.id, { onDelete: 'set null' }),
     createdAt: instant().notNull().defaultNow(),
     updatedAt: instant().notNull().defaultNow(),
@@ -111,6 +119,11 @@ export const transactions = pgTable(
     // Cursor pagination for the transaction list (§7). UUIDv7 ids break date ties by creation.
     index('transactions_workspace_date_idx')
       .on(table.workspaceId, table.date.desc(), table.id.desc())
+      .where(sql`${table.deletedAt} IS NULL`),
+    // Substring search over the folded text. A trigram index is what makes `%migros%` — which
+    // cannot use a b-tree — fast enough to run on every keystroke.
+    index('transactions_search_idx')
+      .using('gin', sql`${table.searchText} gin_trgm_ops`)
       .where(sql`${table.deletedAt} IS NULL`),
     check(
       'transactions_type_known',
@@ -142,6 +155,12 @@ export const transactionLines = pgTable(
     workspaceId: uuid().notNull(),
     accountId: uuid().notNull(),
     currency: char({ length: 3 }).notNull(),
+    /**
+     * What this movement was for. Null on an opening balance, a reconciliation and both sides of
+     * a transfer that stays inside the budget; required on an on-budget expense or income, which
+     * the domain's ledger invariants enforce (§10). `goal_id` joins it in phase 8.
+     */
+    categoryId: uuid(),
     amount: money().notNull(),
     baseAmount: money().notNull(),
     fxRate: fxRate(),
@@ -154,7 +173,19 @@ export const transactionLines = pgTable(
       columns: [table.accountId, table.workspaceId, table.currency],
       foreignColumns: [accounts.id, accounts.workspaceId, accounts.currency],
     }),
+    // Same idea as the account key: a line can only point at a category of its own workspace.
+    foreignKey({
+      name: 'transaction_lines_category_fk',
+      columns: [table.categoryId, table.workspaceId],
+      foreignColumns: [categories.id, categories.workspaceId],
+    }),
     index('transaction_lines_account_date_idx').on(table.workspaceId, table.accountId, table.date),
+    // Spending per category in a period: the query behind every plan line (§16).
+    index('transaction_lines_category_date_idx').on(
+      table.workspaceId,
+      table.categoryId,
+      table.date,
+    ),
     index('transaction_lines_transaction_idx').on(table.transactionId),
     // A movement of zero is not a movement; the domain refuses it and so does the database.
     check('transaction_lines_amount_not_zero', sql`${table.amount} <> 0`),

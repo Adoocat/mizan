@@ -349,7 +349,6 @@ export interface SampleData {
   allocationMix: AllocationMixRow[]
   recurring: RecurringGroup[]
   committedBeforeSpending: Money
-  monthSummary: { income: Money; spending: Money; transfers: Money; needsReview: number }
   calendar: { overdue: Money; lowestBalance: Money; nextIncome: Money }
 }
 
@@ -392,12 +391,6 @@ export const SAMPLE_DATA: SampleData = {
   allocationMix: ALLOCATION_MIX,
   recurring: RECURRING,
   committedBeforeSpending: tl('32408'),
-  monthSummary: {
-    income: tl('50000.00'),
-    spending: tl('-29329.15'),
-    transfers: tl('10000.00'),
-    needsReview: 4,
-  },
   calendar: {
     overdue: tl('310'),
     lowestBalance: tl('10720'),

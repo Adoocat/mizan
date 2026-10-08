@@ -17,6 +17,11 @@ export interface WriteTransactionInput {
   notes?: string | null
   /** Per-line memos, aligned with `lines`. */
   memos?: readonly (string | null | undefined)[]
+  /**
+   * Payee, notes and memos folded by the domain's `searchTextFrom`, for the trigram index on
+   * `transactions.search_text`. Empty for a transaction nobody will search for by name.
+   */
+  searchText?: string
   source?: 'manual' | 'recurring' | 'import'
   /** Client-supplied id, which is what makes a create idempotent (PLAN §12). */
   id?: string
@@ -45,19 +50,48 @@ export async function insertTransaction(
     date: input.date,
     payee: input.payee ?? null,
     notes: input.notes ?? null,
+    searchText: input.searchText ?? '',
     source: input.source ?? 'manual',
     createdBy: input.createdBy,
   })
 
+  await insertLines(tx, {
+    transactionId,
+    workspaceId: input.workspaceId,
+    date: input.date,
+    lines: input.lines,
+    memos: input.memos,
+  })
+
+  return { id: transactionId }
+}
+
+export interface WriteLinesInput {
+  transactionId: string
+  workspaceId: string
+  date: PlainDate
+  lines: readonly LedgerLine[]
+  memos?: readonly (string | null | undefined)[]
+}
+
+/**
+ * Writes the lines of a transaction. Separate from the header so an edit can replace the whole
+ * set — the lines of a split have no identity a client could address, so replacing them is the
+ * only way an edit cannot leave half a split behind.
+ *
+ * Ids are UUIDv7, so reading the lines back in id order gives the order they were entered in.
+ */
+export async function insertLines(tx: Executor, input: WriteLinesInput): Promise<void> {
   await tx.insert(transactionLines).values(
     input.lines.map((line, index) => {
       const amount = line.amount.toDto()
       return {
         id: uuidv7(),
-        transactionId,
+        transactionId: input.transactionId,
         workspaceId: input.workspaceId,
         accountId: line.accountId,
         currency: amount.currency,
+        categoryId: line.categoryId ?? null,
         amount: amount.amount,
         baseAmount: amount.amount,
         fxRate: null,
@@ -66,8 +100,6 @@ export async function insertTransaction(
       }
     }),
   )
-
-  return { id: transactionId }
 }
 
 export interface AccountBalanceRow {

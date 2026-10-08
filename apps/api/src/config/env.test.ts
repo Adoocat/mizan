@@ -14,6 +14,7 @@ describe('loadConfig', () => {
       port: 3000,
       logLevel: 'info',
       databaseUrl: DATABASE_URL,
+      databasePoolMax: 10,
       webOrigin: 'http://localhost:5173',
       trustProxy: false,
       authSecret: AUTH_SECRET,
@@ -28,10 +29,20 @@ describe('loadConfig', () => {
       TRUST_PROXY: 'true',
       WEB_ORIGIN: 'https://app.example.com/',
       NODE_ENV: 'production',
+      DATABASE_POOL_MAX: '40',
     })
     expect(config.port).toBe(8080)
     expect(config.trustProxy).toBe(true)
     expect(config.webOrigin).toBe('https://app.example.com')
+    expect(config.databasePoolMax).toBe(40)
+  })
+
+  it('refuses a pool size that is not a usable number of connections', () => {
+    for (const value of ['0', '-1', 'ten', '1000']) {
+      expect(() => loadConfig({ ...required, DATABASE_POOL_MAX: value }), value).toThrow(
+        /DATABASE_POOL_MAX/,
+      )
+    }
   })
 
   it('requires DATABASE_URL', () => {

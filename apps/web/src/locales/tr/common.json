@@ -239,7 +239,25 @@
     "gold": "Altın",
     "debtPayments": "Borç ödemeleri",
     "health": "Sağlık",
-    "other": "Diğer"
+    "other": "Diğer",
+    "salary": "Maaş",
+    "freelance": "Serbest çalışma",
+    "otherIncome": "Diğer gelir",
+    "insurance": "Sigorta",
+    "entertainment": "Eğlence",
+    "education": "Eğitim",
+    "gifts": "Hediye ve bağış",
+    "loanPayment": "Kredi ödemesi",
+    "savingsTransfer": "Birikime aktarım",
+    "investmentContribution": "Yatırım katkısı",
+    "groups": {
+      "income": "Gelir",
+      "essentials": "Zorunlu giderler",
+      "flexible": "Esnek harcama",
+      "debt": "Borç",
+      "savings": "Birikim",
+      "investments": "Yatırımlar"
+    }
   },
   "home": {
     "date": "22 Ekim 2026, Perşembe",
@@ -373,8 +391,6 @@
     }
   },
   "transactions": {
-    "eyebrow": "1–22 Ekim 2026 · 6 hesap",
-    "import": "Ekstre içe aktar",
     "summary": {
       "income": "Gelir",
       "spending": "Harcama",
@@ -383,13 +399,13 @@
     },
     "reviewThem": "İnceleyin",
     "list": "Tüm işlemler",
-    "shown": "{{count}} işlem",
     "filter": "İşlemleri süz",
     "filters": {
       "all": "Tümü",
       "needsReview": "İnceleme bekleyen",
       "spending": "Harcama",
-      "income": "Gelir"
+      "income": "Gelir",
+      "transfers": "Aktarımlar"
     },
     "columns": {
       "date": "Tarih",
@@ -400,7 +416,71 @@
     },
     "needsReview": "İnceleme bekliyor",
     "noMatches": "Bu süzgece uyan işlem yok.",
-    "importNote": "Açık bankacılık ile otomatik aktarıldı. Nakit cüzdan elle girilir."
+    "add": "İşlem ekle",
+    "matched_one": "{{count}} işlem",
+    "matched_other": "{{count}} işlem",
+    "loadFailed": "İşlemleriniz yüklenemedi.",
+    "searchLabel": "İşlemlerde ara",
+    "searchPlaceholder": "İşyeri veya not ara",
+    "clearFilters": "Süzgeçleri temizle",
+    "emptyBody": "Harcadığınızı ve kazandığınızı kaydedin; bakiyeler, plan ve bugün güvenle harcayabileceğiniz tutar buradan beslenir.",
+    "noMatchesTitle": "Bu süzgeçlere uyan işlem yok",
+    "split_one": "{{count}} kategoriye bölündü",
+    "split_other": "{{count}} kategoriye bölündü",
+    "splitBadge": "Bölünmüş",
+    "showParts": "Parçaları göster",
+    "hideParts": "Parçaları gizle",
+    "deleteOne": "{{payee}} işlemini sil",
+    "deleted": "İşlem silindi.",
+    "deleteFailed": "Bu işlem silinemedi.",
+    "undoFailed": "Bu işlem geri getirilemedi.",
+    "loadEarlier": "Öncekileri yükle",
+    "transferBetween": "{{from}} → {{to}}",
+    "untitled": "Açıklama yok",
+    "types": {
+      "expense": "Harcama",
+      "income": "Gelir",
+      "transfer": "Aktarım",
+      "adjustment": "Mutabakat düzeltmesi",
+      "opening_balance": "Açılış bakiyesi"
+    },
+    "kinds": {
+      "expense": "Harcama",
+      "income": "Gelir",
+      "transfer": "Aktarım"
+    },
+    "form": {
+      "add": {
+        "expense": "Yeni harcama",
+        "income": "Yeni gelir",
+        "transfer": "Yeni aktarım"
+      },
+      "editTitle": "İşlemi düzenle",
+      "kind": "Tür",
+      "amount": "Tutar",
+      "category": "Kategori",
+      "categoryPlaceholder": "Kategorilerde ara",
+      "categoryRequired": "Bir kategori seçin.",
+      "noCategory": "Kategorisiz",
+      "noCategoryMatches": "Eşleşen kategori yok",
+      "account": "Hesap",
+      "from": "Nereden",
+      "to": "Nereye",
+      "pickAnotherAccount": "Parayı aktarmak için farklı bir hesap seçin.",
+      "date": "Tarih",
+      "payee": "İşyeri",
+      "notes": "Not",
+      "memo": "Açıklama",
+      "part": "{{number}}. parça",
+      "addPart": "Böl",
+      "removePart": "Kaldır",
+      "splitTotal": "Toplam",
+      "unassigned": "Dağıtılmayı bekleyen",
+      "submit": "Kaydet",
+      "failed": "Bu işlem kaydedilemedi.",
+      "noAccounts": "Önce bir hesap ekleyin — her işlem bir yerden para hareket ettirir."
+    },
+    "addFirst": "İlk işleminizi kaydedin"
   },
   "upcoming": {
     "eyebrow": "Yinelenen ve planlanmış para hareketleri",
@@ -530,8 +610,8 @@
       "archiveBody": "Hesap listenizden çıkar ama tüm işlemleri kalır; geçmiş aylar yine doğru toplanır. İstediğiniz zaman geri yükleyebilirsiniz.",
       "archiveFailed": "Bu hesap değiştirilemedi.",
       "activity": "Son hareketler",
-      "activityMeta": "Tüm işlem listesi sonraki bir fazda geliyor",
-      "noActivity": "Bu hesapta henüz bir hareket yok."
+      "noActivity": "Bu hesapta henüz bir hareket yok.",
+      "allActivity": "Tüm hareketler"
     }
   },
   "landing": {
@@ -1072,5 +1152,31 @@
   },
   "dates": {
     "dayMonthYear": "{{day}} {{month}} {{year}}"
+  },
+  "categorySettings": {
+    "title": "Kategoriler",
+    "lead": "Her çalışma alanı, yeniden adlandırabileceğiniz, taşıyabileceğiniz ve ekleme yapabileceğiniz bir şablonla başlar. Kategoriler silinmez arşivlenir, değiştirilmez birleştirilir; böylece geçmiş aylar tutarlı kalır.",
+    "loadFailed": "Kategorileriniz yüklenemedi.",
+    "failed": "Bu kategori kaydedilemedi.",
+    "edit": "Düzenle",
+    "merge": "Birleştir",
+    "add": "Ekle",
+    "addTo": "{{group}} grubuna ekle",
+    "newName": "Yeni kategori",
+    "name": "Ad",
+    "nameRequired": "Kategoriye bir ad verin.",
+    "group": "Grup",
+    "essential": "Zorunlu sayılsın",
+    "essentialHint": "Zorunlu kategoriler acil durum fonu hedefini belirler ve bir ayda en son kısılacak kalemlerdir.",
+    "essentialTag": "Zorunlu",
+    "used_one": "{{count}} işlem",
+    "used_other": "{{count}} işlem",
+    "editTitle": "Kategoriyi düzenle",
+    "mergeTitle": "{{name}} kategorisini birleştir",
+    "mergeLead_one": "{{count}} işlemi seçtiğiniz kategoriye taşınır ve bu kategori arşivlenir.",
+    "mergeLead_other": "{{count}} işlemi seçtiğiniz kategoriye taşınır ve bu kategori arşivlenir.",
+    "mergeInto": "Şununla birleştir",
+    "archive": "Arşivle",
+    "unarchive": "Geri al"
   }
 }

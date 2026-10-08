@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import type { MeResponse } from '@mizan/contracts'
 import type { InjectOptions, LightMyRequestResponse } from 'fastify'
 import type { App } from '../app.ts'
@@ -46,7 +47,12 @@ export async function signUpActor(
   overrides: { email?: string; name?: string; password?: string } = {},
 ): Promise<Actor> {
   counter += 1
-  const email = overrides.email ?? `actor-${counter}-${Date.now()}@example.test`
+  /*
+   * The counter is per module, and test files run in parallel workers, so two of them could mint
+   * the same address within one millisecond and collide on `users_email_unique`. A random suffix
+   * is what actually makes the address unique.
+   */
+  const email = overrides.email ?? `actor-${counter}-${randomUUID()}@example.test`
   const password = overrides.password ?? TEST_PASSWORD
 
   const signUp = await app.inject({

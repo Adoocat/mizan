@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
+import { categoryHandlers } from '../../test/categories'
 import { axeViolations, renderApp } from '../../test/render'
 import { TEST_SESSION } from '../../test/session'
 
@@ -16,6 +17,8 @@ const server = setupServer(
     HttpResponse.json({ status: 'ok', checks: { database: 'ok' } }),
   ),
   http.get('*/api/v1/me', () => HttpResponse.json(session)),
+  // Settings shows category management as of phase 5.
+  ...categoryHandlers(),
   http.patch('*/api/v1/me', async ({ request }) => {
     const patch = (await request.json()) as Record<string, string>
     profilePatches.push(patch)

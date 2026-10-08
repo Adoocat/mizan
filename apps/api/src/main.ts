@@ -5,7 +5,7 @@ import { loadConfig } from './config/env.ts'
 import { createDatabase } from './db/client.ts'
 
 const config = loadConfig(process.env)
-const database = createDatabase(config.databaseUrl)
+const database = createDatabase(config.databaseUrl, { max: config.databasePoolMax })
 
 // The app's own logger only exists once Fastify is built, and the mailer is needed before that,
 // so it logs to the console. Reset links are printed only in development (see createConsoleMailer).

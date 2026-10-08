@@ -1,7 +1,7 @@
 # Mizan — Master Implementation Plan
 
 > **Status:** Approved as the working plan. Implementation in progress (see the phase tracker).
-> **Open items:** D1, D2, D3, D6, D7 and D8 in [§22](#22-decisions) are confirmed; the others are recorded with their recommended defaults and are still **pending confirmation**.
+> **Open items:** D1, D2, D3, D5, D6, D7 and D8 in [§22](#22-decisions) are confirmed; the others are recorded with their recommended defaults and are still **pending confirmation**.
 > **Design reference:** the current high-fidelity mockups live in [`design/new-design/`](../design/new-design/) (design system **2.0**, ADR 0006); the 1.0 files at the top of [`design/`](../design/) are superseded. They depict the long-term product; the MVP ships a subset (see §3 and §13).
 
 ## Phase tracker
@@ -13,7 +13,7 @@
 | 2 | Design system and app shell | ✅ |
 | 3 | Auth, users, workspace | ✅ |
 | 4 | Accounts and ledger core | ✅ |
-| 5 | Categories and transactions | ⬜ |
+| 5 | Categories and transactions | ✅ |
 | 6 | Monthly plan I | ⬜ |
 | 7 | Available to spend and safe-to-spend | ⬜ |
 | 8 | Goals | ⬜ |
@@ -752,6 +752,9 @@ Every phase's Definition of Done also includes: CI green, tests written in the s
 - *Features:* default category template (groups, essential flags), category management, expense/income/transfer create/edit/soft-delete with undo, splits, list with URL filters and Turkish-aware search, quick add (desktop drawer, mobile sheet).
 - *Tests:* split and transfer validation, search normalization, pagination, E2E quick add.
 - *DoD:* the 1,600 TL supermarket split saves correctly; balances update.
+- *Deferred (ADR 0010):* **bulk recategorize** — listed for the Transactions screen in §13 but not
+  in this phase's features; it needs row selection the list does not have yet. The Dashboard's
+  recent-activity panel still reads sample data until phase 11 owns that screen.
 
 **Phase 6 — Monthly plan I**
 - *Features:* periods, income items, category plan lines, the pool, Allocated, Unassigned, actual per line, copy previous month, inline editing with live domain preview, overspend status.
@@ -848,7 +851,7 @@ Status legend: **Pending** = recommended default recorded, awaiting confirmation
 | D2 | Language and number format | i18n from day one; **English UI default, Turkish available** (changed from Turkish default); numbers formatted by locale (mockups use English/`₺50,000`) | Phases 0–2 | **Confirmed (changed)** — [ADR 0002](adr/0002-default-language-english.md) |
 | D3 | Plan month anchor | Monthly periods with a configurable start day (1–28) chosen at onboarding, default 1st (not fixed-length periods) | Phase 1 | **Confirmed** — [ADR 0003](adr/0003-plan-period-anchor.md) |
 | D4 | Overspending vs safe-to-spend | Conservative: uncovered overspending reduces ATS automatically; "Cover" records the source (the Dashboard mockup instead lowers the allowance only after clicking Cover — design to be updated) | Phase 7 | Pending |
-| D5 | Credit card installments | MVP records the full amount on the purchase date; installment budgeting in v1.1 (Phase 17). Move into MVP after Phase 9 if central to usage (+~1 phase) | Phase 5/17 | Pending |
+| D5 | Credit card installments | MVP records the full amount on the purchase date; installment budgeting in v1.1 (Phase 17). Move into MVP after Phase 9 if central to usage (+~1 phase) | Phase 5/17 | **Confirmed** — [ADR 0010](adr/0010-categories-and-transactions.md) |
 | D6 | Workspace ownership from day one | Yes (supports shared finance later and the "Personal ▾" switcher) | Phase 3 | **Confirmed** — [ADR 0008](adr/0008-auth-and-workspaces.md) |
 | D7 | Currency scope in MVP | TRY only, currency columns everywhere; multi-currency in v1.1 | Phase 4 | **Confirmed** — [ADR 0009](adr/0009-ledger-core.md) |
 | D8 | Navigation merges | Merge Savings + Goals; Debts + Net Worth into Accounts (§13) | Phase 2 | **Confirmed** — [ADR 0004](adr/0004-navigation-merges.md) |

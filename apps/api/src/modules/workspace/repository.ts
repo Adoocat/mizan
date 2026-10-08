@@ -3,6 +3,7 @@ import { and, eq } from 'drizzle-orm'
 import type { Db } from '../../db/client.ts'
 import { users, workspaceMembers, workspaces } from '../../db/schema/index.ts'
 import { uuidv7 } from '../../lib/uuid.ts'
+import { seedDefaultCategories } from '../categories/repository.ts'
 
 export type WorkspaceRole = 'owner' | 'editor' | 'viewer'
 
@@ -30,8 +31,10 @@ const workspaceColumns = {
 } as const
 
 /**
- * Creates the user's personal workspace and makes them its owner, in one transaction so a
- * half-provisioned account can never exist (decision D6, ADR 0008).
+ * Creates the user's personal workspace, makes them its owner and seeds the default category
+ * template — all in one transaction, so a half-provisioned account can never exist (decision D6,
+ * ADR 0008). The categories come with the workspace rather than with onboarding: every screen
+ * that records money needs somewhere to put it from the first sign-in (§13).
  */
 export async function createPersonalWorkspace(db: Db, userId: string): Promise<WorkspaceRow> {
   return db.transaction(async (tx) => {
@@ -48,6 +51,7 @@ export async function createPersonalWorkspace(db: Db, userId: string): Promise<W
     if (!workspace) throw new Error('Workspace insert returned no row')
 
     await tx.insert(workspaceMembers).values({ workspaceId: workspace.id, userId, role: 'owner' })
+    await seedDefaultCategories(tx, workspace.id)
     return workspace
   })
 }

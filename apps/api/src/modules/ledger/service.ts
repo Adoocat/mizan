@@ -13,6 +13,11 @@ const MESSAGES: Record<LedgerViolation, string> = {
   expenseMustBeNegative: 'Every line of an expense must be negative. Record a refund as income.',
   incomeMustBePositive: 'Every line of income must be positive.',
   splitNeedsOneAccount: 'A split stays on one account.',
+  categoryRequired: 'Choose a category for every part of this transaction.',
+  transferNeedsCategory:
+    'Money leaving the budget needs a category, so the plan can see where it went.',
+  transferCategoryNotAllowed:
+    'A transfer between two budget accounts has no category: the money is still in the budget.',
 }
 
 /**

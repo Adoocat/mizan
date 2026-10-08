@@ -11,6 +11,12 @@ const envSchema = z.object({
   PORT: z.coerce.number().int().min(1).max(65535).default(3000),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
   DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/ }),
+  /**
+   * Connections the pool may open. A request can hold several at once — a page that lists
+   * transactions runs its page and its totals side by side — so this has to leave room for the
+   * expected concurrency, not just the expected request rate.
+   */
+  DATABASE_POOL_MAX: z.coerce.number().int().min(1).max(100).default(10),
   WEB_ORIGIN: z.url({ protocol: /^https?$/ }).default('http://localhost:5173'),
   TRUST_PROXY: booleanString,
   /**
@@ -35,6 +41,7 @@ export interface AppConfig {
   port: number
   logLevel: 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace' | 'silent'
   databaseUrl: string
+  databasePoolMax: number
   webOrigin: string
   trustProxy: boolean
   authSecret: string
@@ -63,6 +70,7 @@ export function loadConfig(env: Record<string, string | undefined>): AppConfig {
     port: parsed.PORT,
     logLevel: parsed.LOG_LEVEL,
     databaseUrl: parsed.DATABASE_URL,
+    databasePoolMax: parsed.DATABASE_POOL_MAX,
     webOrigin: new URL(parsed.WEB_ORIGIN).origin,
     trustProxy: parsed.TRUST_PROXY,
     authSecret: parsed.AUTH_SECRET,

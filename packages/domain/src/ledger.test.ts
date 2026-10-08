@@ -11,11 +11,13 @@ import {
   isAccountType,
   isAllowedAccountCurrency,
   isLiabilityAccount,
+  isSplitComplete,
   isTransactionType,
   LedgerInvariantError,
   netWorth,
   openingBalanceLine,
   reconcileAdjustment,
+  splitRemainder,
   TRANSACTION_TYPES,
   UnknownAccountTypeError,
   type LedgerLine,
@@ -420,6 +422,161 @@ describe('properties', () => {
           expect(checkLedgerTransaction({ type, lines }).ok).toBe(false)
         },
       ),
+    )
+  })
+})
+
+/** A line whose account is known to be on- or off-budget, which is what the category rules need. */
+const budgetLine = (
+  accountId: string,
+  amount: string,
+  onBudget: boolean,
+  categoryId?: string,
+): LedgerLine => ({
+  accountId,
+  amount: tl(amount),
+  onBudget,
+  ...(categoryId ? { categoryId } : {}),
+})
+
+describe('categories on a transaction', () => {
+  it('requires a category on an on-budget expense', () => {
+    expect(
+      checkLedgerTransaction({ type: 'expense', lines: [budgetLine('a', '-85', true)] }),
+    ).toEqual({ ok: false, violation: 'categoryRequired' })
+
+    expect(
+      checkLedgerTransaction({
+        type: 'expense',
+        lines: [budgetLine('a', '-85', true, 'diningOut')],
+      }),
+    ).toEqual({ ok: true })
+  })
+
+  it('requires a category on every part of a split', () => {
+    expect(
+      checkLedgerTransaction({
+        type: 'expense',
+        lines: [budgetLine('a', '-1200', true, 'groceries'), budgetLine('a', '-400', true)],
+      }),
+    ).toEqual({ ok: false, violation: 'categoryRequired' })
+  })
+
+  it('requires a category on on-budget income', () => {
+    expect(
+      checkLedgerTransaction({ type: 'income', lines: [budgetLine('a', '50000', true)] }),
+    ).toEqual({ ok: false, violation: 'categoryRequired' })
+
+    expect(
+      checkLedgerTransaction({ type: 'income', lines: [budgetLine('a', '50000', true, 'salary')] }),
+    ).toEqual({ ok: true })
+  })
+
+  it('asks nothing of an off-budget account', () => {
+    expect(
+      checkLedgerTransaction({ type: 'expense', lines: [budgetLine('x', '-85', false)] }),
+    ).toEqual({ ok: true })
+  })
+
+  it('asks nothing when the caller did not say which accounts are on budget', () => {
+    // Opening balances and reconciliations build their lines this way, and are never categorized.
+    expect(checkLedgerTransaction({ type: 'expense', lines: [line('a', '-85')] })).toEqual({
+      ok: true,
+    })
+  })
+
+  it('leaves an on-budget to on-budget transfer uncategorized', () => {
+    // §10: the money is still inside the budget, so a category would count spending twice.
+    expect(
+      checkLedgerTransaction({
+        type: 'transfer',
+        lines: [budgetLine('a', '-10000', true), budgetLine('b', '10000', true)],
+      }),
+    ).toEqual({ ok: true })
+
+    expect(
+      checkLedgerTransaction({
+        type: 'transfer',
+        lines: [budgetLine('a', '-10000', true, 'savingsTransfer'), budgetLine('b', '10000', true)],
+      }),
+    ).toEqual({ ok: false, violation: 'transferCategoryNotAllowed' })
+  })
+
+  it('requires a category on the on-budget side of a transfer that leaves the budget', () => {
+    expect(
+      checkLedgerTransaction({
+        type: 'transfer',
+        lines: [budgetLine('a', '-10000', true), budgetLine('x', '10000', false)],
+      }),
+    ).toEqual({ ok: false, violation: 'transferNeedsCategory' })
+
+    expect(
+      checkLedgerTransaction({
+        type: 'transfer',
+        lines: [
+          budgetLine('a', '-10000', true, 'investmentContribution'),
+          budgetLine('x', '10000', false),
+        ],
+      }),
+    ).toEqual({ ok: true })
+  })
+
+  it('refuses a category on the off-budget side of that transfer', () => {
+    expect(
+      checkLedgerTransaction({
+        type: 'transfer',
+        lines: [
+          budgetLine('a', '-10000', true, 'investmentContribution'),
+          budgetLine('x', '10000', false, 'investmentContribution'),
+        ],
+      }),
+    ).toEqual({ ok: false, violation: 'transferCategoryNotAllowed' })
+  })
+
+  it('leaves a transfer between two off-budget accounts alone', () => {
+    expect(
+      checkLedgerTransaction({
+        type: 'transfer',
+        lines: [budgetLine('x', '-10000', false), budgetLine('y', '10000', false)],
+      }),
+    ).toEqual({ ok: true })
+  })
+})
+
+describe('splits', () => {
+  it('reports what is left to assign while the 1,600 TL split is entered', () => {
+    const total = tl('1600')
+    expect(splitRemainder(total, []).toDto().amount).toBe('1600.00')
+    expect(splitRemainder(total, [tl('1200')]).toDto().amount).toBe('400.00')
+    expect(splitRemainder(total, [tl('1200'), tl('300')]).toDto().amount).toBe('100.00')
+    expect(splitRemainder(total, [tl('1200'), tl('300'), tl('100')]).isZero()).toBe(true)
+  })
+
+  it('goes negative when the parts overshoot', () => {
+    expect(splitRemainder(tl('1600'), [tl('1200'), tl('500')]).toDto().amount).toBe('-100.00')
+  })
+
+  it('compares magnitudes, so the signs of an expense do not matter', () => {
+    expect(splitRemainder(tl('-1600'), [tl('-1200'), tl('-400')]).isZero()).toBe(true)
+    expect(splitRemainder(tl('-1600'), [tl('1200'), tl('400')]).isZero()).toBe(true)
+  })
+
+  it('is complete only when the parts account for the whole amount', () => {
+    expect(isSplitComplete(tl('1600'), [tl('1200'), tl('400')])).toBe(true)
+    expect(isSplitComplete(tl('1600'), [tl('1200')])).toBe(false)
+    // No parts at all is not a complete split of zero; it is an empty split.
+    expect(isSplitComplete(tl('0'), [])).toBe(false)
+  })
+
+  it('splits that allocate the whole amount always balance', () => {
+    fc.assert(
+      fc.property(fc.array(amountArb, { minLength: 1, maxLength: 8 }), (parts) => {
+        const total = Money.sum(
+          parts.map((part) => part.abs()),
+          'TRY',
+        )
+        expect(isSplitComplete(total, parts)).toBe(true)
+      }),
     )
   })
 })
