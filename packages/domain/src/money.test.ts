@@ -83,6 +83,18 @@ describe('Money rounding', () => {
     expect(tl(input).roundToMinor().toDto().amount).toBe(expected)
   })
 
+  it.each([
+    ['1.005', '1.00'],
+    ['1.009', '1.00'],
+    ['142.857142', '142.85'],
+    ['-1.005', '-1.00'],
+    ['-1.009', '-1.00'],
+    ['3.00', '3.00'],
+  ])('floors %s towards zero to %s', (input, expected) => {
+    // A daily allowance must never promise more than there is, in either direction (§10).
+    expect(tl(input).floorToMinor().toDto().amount).toBe(expected)
+  })
+
   it('reports whether an amount is whole minor units', () => {
     expect(tl('1.20').isWholeMinor()).toBe(true)
     expect(tl('1.205').isWholeMinor()).toBe(false)

@@ -30,6 +30,10 @@ export interface PlanRowProps {
   /** A subcategory is shown indented under its parent. */
   indented?: boolean
   saving?: boolean
+  /** Offered on an overspent row: records which line paid for the overspend (§10). */
+  onCover?: (() => void) | undefined
+  /** Undoes the cover recorded against this row. */
+  onUndoCover?: (() => void) | undefined
 }
 
 const RATIO_FULL = decimal(1)
@@ -55,6 +59,8 @@ export function PlanLineRow({
   disabled = false,
   indented = false,
   saving = false,
+  onCover,
+  onUndoCover,
 }: PlanRowProps) {
   const { t } = useTranslation()
 
@@ -76,7 +82,9 @@ export function PlanLineRow({
    */
   const claiming = covered && draft !== undefined
 
-  const figures = { planned, carryIn, actual }
+  const movesIn = moneyFromDto(row.movesIn)
+  const movesOut = moneyFromDto(row.movesOut)
+  const figures = { planned, carryIn, movesIn, movesOut, actual }
   const available = covered ? Money.zero(planned.currency) : planLineAvailable(figures)
   const usage = covered ? null : budgetUsage(figures)
   // The pool or the parent carries a covered row, so it is never the one that is over.
@@ -93,10 +101,39 @@ export function PlanLineRow({
       )}
     >
       <span className="flex min-w-0 flex-col gap-1.5">
-        <span className="flex min-w-0 items-baseline gap-2">
+        <span className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1">
           <span className="truncate text-ink-2">{name}</span>
           {row.rollover && (
             <span className="shrink-0 text-caption text-accent">{t('plan.rolloverOn')}</span>
+          )}
+          {!movesIn.isZero() && (
+            <span className="shrink-0 text-caption text-accent">
+              {t('plan.coveredIn')} <MoneyText value={movesIn} fractionDigits="none" />
+              {onUndoCover && !disabled && (
+                <button
+                  type="button"
+                  onClick={onUndoCover}
+                  className="ml-1.5 cursor-pointer border-0 bg-transparent p-0 text-caption text-ink-3 hover:underline"
+                >
+                  {t('common.undo')}
+                </button>
+              )}
+            </span>
+          )}
+          {!movesOut.isZero() && (
+            <span className="shrink-0 text-caption text-ink-3">
+              {t('plan.coveredOut')} <MoneyText value={movesOut} fractionDigits="none" />
+            </span>
+          )}
+          {status === 'over' && onCover && !disabled && (
+            <button
+              type="button"
+              aria-label={t('plan.coverFor', { name })}
+              onClick={onCover}
+              className="shrink-0 cursor-pointer rounded-full border border-border-strong bg-surface px-2.5 py-0.5 text-caption text-ink-2 hover:border-border-hover hover:text-ink"
+            >
+              {t('plan.cover')}
+            </button>
           )}
         </span>
         <ProgressBar

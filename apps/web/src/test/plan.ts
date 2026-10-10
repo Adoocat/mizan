@@ -30,6 +30,8 @@ function line(
     categoryId: testCategory(categoryKey).id,
     planned: tl(planned),
     carryIn: ZERO,
+    movesIn: ZERO,
+    movesOut: ZERO,
     actual: tl(actual),
     available: available.roundToMinor().toDto(),
     overspend: (available.isNegative() ? available.negate() : Money.zero('TRY'))
@@ -52,6 +54,8 @@ function pooled(categoryKey: string, actual: string): PlanRowDto {
     categoryId: testCategory(categoryKey).id,
     planned: ZERO,
     carryIn: ZERO,
+    movesIn: ZERO,
+    movesOut: ZERO,
     actual: tl(actual),
     available: ZERO,
     overspend: ZERO,
@@ -99,6 +103,8 @@ const POOL_ROW: PlanRowDto = {
   categoryId: null,
   planned: tl('9000.00'),
   carryIn: ZERO,
+  movesIn: ZERO,
+  movesOut: ZERO,
   actual: tl('2850.00'),
   available: tl('6150.00'),
   overspend: ZERO,
@@ -135,6 +141,23 @@ export const TEST_PLAN: PlanResponse = {
     overspend: tl('110.00'),
     uncategorizedSpending: ZERO,
   },
+  /*
+   * The pool has ₺9,000 with ₺2,850 spent, and personal care is ₺110 over its line, so what can
+   * be spent is ₺6,040 (decision D4). Twenty-one of October's 31 days are gone: ₺604 a day.
+   */
+  spend: {
+    poolBudget: tl('9000.00'),
+    poolSpent: tl('2850.00'),
+    poolAvailable: tl('6150.00'),
+    uncoveredOverspend: tl('110.00'),
+    overAllocated: ZERO,
+    availableToSpend: tl('6040.00'),
+    availableAtStartOfToday: tl('6040.00'),
+    daysLeft: 10,
+    safeToday: tl('604.00'),
+    spentToday: ZERO,
+    remainingToday: tl('604.00'),
+  },
   groups: [
     groupOf(
       'essential',
@@ -163,6 +186,7 @@ export const TEST_PLAN: PlanResponse = {
       sortOrder: 1,
     },
   ],
+  moves: [],
   copyableFrom: plainDate('2026-09-01'),
 }
 
@@ -172,4 +196,70 @@ export function planHandlers(plan: PlanResponse = TEST_PLAN) {
     http.get('*/api/v1/plans/current', () => HttpResponse.json(plan)),
     http.get('*/api/v1/plans/:start', () => HttpResponse.json(plan)),
   ]
+}
+
+/**
+ * The same plan with one overspend covered from another line, as the API would return it: the
+ * covered line's budget rises by the amount and the source line's falls, and the move is listed.
+ */
+export function withCover(
+  plan: PlanResponse,
+  targetKey: string,
+  sourceKey: string,
+  amount: string,
+): PlanResponse {
+  const moved = Money.of(amount, 'TRY')
+  const targetId = testCategory(targetKey).id
+  const sourceId = testCategory(sourceKey).id
+
+  const adjust = (row: PlanRowDto): PlanRowDto => {
+    if (row.categoryId !== targetId && row.categoryId !== sourceId) return row
+    const isTarget = row.categoryId === targetId
+    const figures = {
+      planned: moneyFromDto(row.planned),
+      carryIn: moneyFromDto(row.carryIn),
+      movesIn: isTarget ? moved : Money.zero('TRY'),
+      movesOut: isTarget ? Money.zero('TRY') : moved,
+      actual: moneyFromDto(row.actual),
+    }
+    const available = figures.planned
+      .plus(figures.movesIn)
+      .minus(figures.movesOut)
+      .minus(figures.actual)
+
+    return {
+      ...row,
+      movesIn: figures.movesIn.roundToMinor().toDto(),
+      movesOut: figures.movesOut.roundToMinor().toDto(),
+      available: available.roundToMinor().toDto(),
+      overspend: (available.isNegative() ? available.negate() : Money.zero('TRY'))
+        .roundToMinor()
+        .toDto(),
+    }
+  }
+
+  const groups = plan.groups.map((group) => ({ ...group, rows: group.rows.map(adjust) }))
+  const lineOf = (categoryId: string) =>
+    groups.flatMap((group) => group.rows).find((row) => row.categoryId === categoryId)!.lineId!
+
+  return {
+    ...plan,
+    groups,
+    moves: [
+      {
+        id: id(),
+        fromLineId: lineOf(sourceId),
+        toLineId: lineOf(targetId),
+        amount: moved.roundToMinor().toDto(),
+        reason: null,
+        createdAt: '2026-10-22T09:00:00.000Z',
+      },
+    ],
+    spend: {
+      ...plan.spend,
+      uncoveredOverspend: tl('0'),
+      availableToSpend: plan.spend.poolAvailable,
+      availableAtStartOfToday: plan.spend.poolAvailable,
+    },
+  }
 }

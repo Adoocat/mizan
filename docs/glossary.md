@@ -13,7 +13,6 @@ the UI wording and may be refined as the Turkish copy is reviewed.
 | Unassigned (U) | Dağıtılmamış | Income + pool carry-in − allocated. Aim is zero |
 | Left to allocate | Dağıtılacak tutar | U when positive |
 | Over-allocated | Fazla dağıtılmış | U when negative |
-| Safe to spend today | Bugün güvenle harcanabilir | max(0, ATS excluding today's spending) ÷ days left including today |
 | On-budget account | Bütçe içi hesap | An account whose transactions affect the plan |
 | Carry-over | Devir | What happens to a line's leftover or overspend when a period closes |
 | Expected income | Beklenen gelir | A planned income item: what the month is planned against until the money is confirmed |
@@ -26,7 +25,11 @@ the UI wording and may be refined as the Turkish copy is reviewed.
 | Rollover | Devretme | A flag on a line: its leftover stays with it next period instead of returning to the pool |
 | Copy a month | Ayı kopyala | Fill a month's plan from an earlier one, leaving any amount already typed untouched |
 | Overspend | Aşım | max(0, −Available(line)) |
-| Cover | Karşıla | Move money from one line to another to cover an overspend |
+| Cover | Karşıla | Move money from one line to another to cover an overspend; it records where the money came from and never changes the plan's total |
+| Plan move | Plan aktarımı | The stored record of a cover: an amount, the line it left and the line it went to |
+| Safe to spend today | Bugün güvenle harcanabilir | What was available at the start of today, divided by the days left including today |
+| Today's allowance | Bugünün payı | Safe to spend today, less everything today has already taken off what can be spent |
+| Uncovered overspend | Karşılanmayan aşım | An overspend no plan move has paid for; it reduces available to spend straight away (D4) |
 | Goal contribution | Hedef katkısı | An earmark (or release) of money for a goal |
 | Sinking fund | Birikim fonu | A goal for a known future expense, optionally repeating |
 | Emergency fund | Acil durum fonu | Goal sized as months × essential monthly expenses |

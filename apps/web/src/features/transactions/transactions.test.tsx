@@ -7,6 +7,7 @@ import { accountHandlers } from '../../test/accounts'
 import { categoryHandlers, testCategory } from '../../test/categories'
 import { axeViolations, renderApp, setLanguage } from '../../test/render'
 import { sessionHandlers } from '../../test/session'
+import { planHandlers } from '../../test/plan'
 import { TEST_TRANSACTIONS, transactionHandlers } from '../../test/transactions'
 
 const creates: Record<string, unknown>[] = []
@@ -22,6 +23,7 @@ const server = setupServer(
   ...accountHandlers(),
   ...categoryHandlers(),
   ...transactionHandlers(),
+  ...planHandlers(),
   http.post('*/api/v1/transactions', async ({ request }) => {
     const body = (await request.json()) as Record<string, unknown>
     creates.push(body)
@@ -322,3 +324,63 @@ async function openListTurkish() {
   await screen.findByRole('heading', { level: 1, name: 'İşlemler' })
   await screen.findByText('Şişli Çarşı')
 }
+
+describe('the budget impact preview', () => {
+  /** Quick add, from the app shell. */
+  async function openQuickAdd() {
+    const user = userEvent.setup()
+    await openList()
+    await user.click(screen.getAllByRole('button', { name: 'Add transaction' })[0]!)
+    const dialog = await screen.findByRole('dialog')
+    /*
+     * The form opens on the browser's today; the plan's today comes from the API, in the
+     * workspace's time zone. The fixture month is the mockups' 22 October 2026, so the date is
+     * set explicitly rather than depending on when the suite happens to run.
+     */
+    const date = within(dialog).getByLabelText('Date')
+    await user.clear(date)
+    await user.type(date, '2026-10-22')
+    return { user, dialog }
+  }
+
+  it('says what an expense would do to its line and to today', async () => {
+    const { user, dialog } = await openQuickAdd()
+
+    await user.type(within(dialog).getByRole('textbox', { name: 'Amount' }), '500')
+    await user.click(within(dialog).getByRole('combobox', { name: 'Category' }))
+    await user.click(
+      within(screen.getByRole('listbox', { name: 'Category' })).getByRole('option', {
+        name: /Food & groceries/,
+      }),
+    )
+
+    // Groceries has ₺1,150 left of its line; the fixture's date is today.
+    const preview = await within(dialog).findByTestId('budget-impact')
+    expect(preview).toHaveTextContent('Food & groceries ₺1,150 → ₺650')
+    // Spending inside a line that can afford it does not touch what is safe to spend.
+    expect(preview).not.toHaveTextContent("today's allowance")
+  })
+
+  it('takes the whole amount off today when the pool answers for the category', async () => {
+    const { user, dialog } = await openQuickAdd()
+
+    await user.type(within(dialog).getByRole('textbox', { name: 'Amount' }), '85')
+    await user.click(within(dialog).getByRole('combobox', { name: 'Category' }))
+    await user.click(
+      within(screen.getByRole('listbox', { name: 'Category' })).getByRole('option', {
+        name: /Dining out/,
+      }),
+    )
+
+    const preview = await within(dialog).findByTestId('budget-impact')
+    // Dining out has no line of its own, so it comes out of the pool and out of today's ₺604.
+    expect(preview).toHaveTextContent('Available to spend ₺6,150 → ₺6,065')
+    expect(preview).toHaveTextContent("today's allowance ₺604 → ₺519")
+  })
+
+  it('says nothing for a transfer', async () => {
+    const { user, dialog } = await openQuickAdd()
+    await user.click(within(dialog).getByRole('button', { name: 'Transfer' }))
+    expect(within(dialog).queryByTestId('budget-impact')).not.toBeInTheDocument()
+  })
+})

@@ -164,6 +164,9 @@ export const planLines = pgTable(
       columns: [table.categoryId, table.workspaceId],
       foreignColumns: [categories.id, categories.workspaceId],
     }),
+    // The target of the composite foreign keys on plan_moves: a move can never join two
+    // workspaces' lines.
+    unique('plan_lines_id_workspace_key').on(table.id, table.workspaceId),
     // One line per category per period: two would make "what is left" ambiguous.
     unique('plan_lines_period_category_key').on(table.periodId, table.categoryId),
     uniqueIndex('plan_lines_period_pool_key')
@@ -173,5 +176,53 @@ export const planLines = pgTable(
     // Exactly one target. Phase 8 widens this to include `goal_id`.
     check('plan_lines_one_target', sql`(${table.categoryId} IS NOT NULL) <> ${table.isPool}`),
     check('plan_lines_planned_not_negative', sql`${table.plannedAmount} >= 0`),
+  ],
+)
+
+/**
+ * Money reassigned from one plan line to another: a **cover** (PLAN §6, §10).
+ *
+ * When a category goes over its line, the overspend reduces what is available to spend straight
+ * away (decision D4, ADR 0012). Covering it does not create money — it records where the money
+ * came from, so the plan still adds up: the covered line's budget rises and the source line's
+ * falls by the same amount, and `Allocated` never changes.
+ *
+ * Both sides are required and must differ. §7's sketch left them nullable; a cover with only one
+ * end would be money appearing from nowhere, which is exactly what this table exists to prevent.
+ */
+export const planMoves = pgTable(
+  'plan_moves',
+  {
+    id: uuid().primaryKey(),
+    workspaceId: uuid()
+      .notNull()
+      .references(() => workspaces.id, { onDelete: 'cascade' }),
+    periodId: uuid().notNull(),
+    fromLineId: uuid().notNull(),
+    toLineId: uuid().notNull(),
+    amount: money().notNull(),
+    /** Free text the user may add: "covered the water bill from groceries". */
+    reason: text(),
+    createdAt: instant().notNull().defaultNow(),
+  },
+  (table) => [
+    foreignKey({
+      name: 'plan_moves_period_fk',
+      columns: [table.periodId, table.workspaceId],
+      foreignColumns: [planPeriods.id, planPeriods.workspaceId],
+    }).onDelete('cascade'),
+    foreignKey({
+      name: 'plan_moves_from_fk',
+      columns: [table.fromLineId, table.workspaceId],
+      foreignColumns: [planLines.id, planLines.workspaceId],
+    }).onDelete('cascade'),
+    foreignKey({
+      name: 'plan_moves_to_fk',
+      columns: [table.toLineId, table.workspaceId],
+      foreignColumns: [planLines.id, planLines.workspaceId],
+    }).onDelete('cascade'),
+    index('plan_moves_period_idx').on(table.workspaceId, table.periodId, table.createdAt),
+    check('plan_moves_amount_positive', sql`${table.amount} > 0`),
+    check('plan_moves_two_lines', sql`${table.fromLineId} <> ${table.toLineId}`),
   ],
 )

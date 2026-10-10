@@ -2,6 +2,7 @@ import { decimal, Money } from '@mizan/domain'
 import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CurrencyInput } from '../../components/finance/CurrencyInput'
+import { ExplainPopover } from '../../components/finance/ExplainPopover'
 import { FormError, FormNotice, SelectField, TextField } from '../../components/ui/Field'
 import { HeroPanel, MetricCard, MetricRow } from '../../components/finance/MetricCard'
 import { MoneyText } from '../../components/finance/MoneyText'
@@ -309,6 +310,25 @@ export function ShowcasePage() {
             </span>
             <PrivacyToggle />
           </div>
+        </Card>
+      </Section>
+
+      <Section id="sc-explain" title={t('showcase.explain')}>
+        <Card className="flex items-center gap-3">
+          <span className="text-value-s text-ink">
+            <MoneyText value={Money.of('300', 'TRY')} fractionDigits="none" />
+          </span>
+          <ExplainPopover
+            title={t('spend.title')}
+            rows={[
+              { label: t('spend.explain.pool'), value: Money.of('9000', 'TRY') },
+              { label: t('spend.explain.spent'), value: Money.of('6000', 'TRY'), negative: true },
+              { label: t('spend.explain.left'), value: Money.of('3000', 'TRY'), total: true },
+            ]}
+            divisor={t('spend.explain.divide', { count: 10 })}
+            result={{ label: t('spend.explain.aDay'), value: Money.of('300', 'TRY') }}
+            note={t('spend.explain.note')}
+          />
         </Card>
       </Section>
 

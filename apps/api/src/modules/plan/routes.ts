@@ -1,6 +1,7 @@
 import {
   copyPlanResponseSchema,
   copyPlanSchema,
+  coverOverspendSchema,
   createPlanIncomeItemSchema,
   planResponseSchema,
   plainDateSchema,
@@ -14,10 +15,12 @@ import type { Database } from '../../db/client.ts'
 import { requireAuth } from '../../plugins/require-auth.ts'
 import {
   copyPlan,
+  coverOverspend,
   createIncomeItem,
   patchIncomeItem,
   readPlan,
   removeIncomeItem,
+  undoCover,
   upsertPlanLine,
 } from './service.ts'
 
@@ -28,6 +31,7 @@ import {
 const startParamsSchema = z.object({ start: plainDateSchema })
 const copyParamsSchema = z.object({ start: plainDateSchema, from: plainDateSchema })
 const itemParamsSchema = z.object({ start: plainDateSchema, id: z.uuid() })
+const moveParamsSchema = z.object({ start: plainDateSchema, id: z.uuid() })
 
 /** `/plans` (PLAN §12). */
 export const planRoutes: FastifyPluginAsyncZod<{ database: Database; clock: Clock }> = async (
@@ -116,6 +120,26 @@ export const planRoutes: FastifyPluginAsyncZod<{ database: Database; clock: Cloc
         request.params.start,
         request.params.id,
       ),
+  )
+
+  app.post(
+    '/plans/:start/moves',
+    {
+      schema: {
+        params: startParamsSchema,
+        body: coverOverspendSchema,
+        response: { 200: planResponseSchema },
+      },
+    },
+    async (request) =>
+      coverOverspend(database.db, requireAuth(request), deps, request.params.start, request.body),
+  )
+
+  app.delete(
+    '/plans/:start/moves/:id',
+    { schema: { params: moveParamsSchema, response: { 200: planResponseSchema } } },
+    async (request) =>
+      undoCover(database.db, requireAuth(request), deps, request.params.start, request.params.id),
   )
 
   app.post(

@@ -1,9 +1,10 @@
 import type { PlainDate } from '@mizan/domain'
-import { and, asc, desc, eq, exists, isNull, lt, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, exists, isNull, lt, or, sql } from 'drizzle-orm'
 import {
   accounts,
   planIncomeItems,
   planLines,
+  planMoves,
   planPeriods,
   transactionLines,
   transactions,
@@ -370,6 +371,12 @@ export interface CategoryActualRow {
   categoryId: string | null
   /** The **signed** sum: negative is money that left. The domain decides what that means. */
   total: string
+  /**
+   * The same sum over everything dated **before today**, which is what the daily allowance
+   * divides (§10: "safe to spend today = ATS excluding today's spending ÷ days left"). One query
+   * returns both, so the two figures can never be read from different states of the ledger.
+   */
+  totalBeforeToday: string
 }
 
 /**
@@ -392,11 +399,15 @@ export async function sumActualByCategory(
   tx: Executor,
   workspaceId: string,
   period: { start: PlainDate; end: PlainDate },
+  today: PlainDate,
 ): Promise<CategoryActualRow[]> {
   return tx
     .select({
       categoryId: transactionLines.categoryId,
       total: sql<string>`sum(${transactionLines.amount})`,
+      totalBeforeToday: sql<string>`sum(
+        CASE WHEN ${transactionLines.date} < ${today} THEN ${transactionLines.amount} ELSE 0 END
+      )`,
     })
     .from(transactionLines)
     .innerJoin(transactions, eq(transactions.id, transactionLines.transactionId))
@@ -415,4 +426,97 @@ export async function sumActualByCategory(
       ),
     )
     .groupBy(transactionLines.categoryId)
+}
+
+/* -------------------------------------------------------------------- moves */
+
+export interface PlanMoveRow {
+  id: string
+  fromLineId: string
+  toLineId: string
+  amount: string
+  reason: string | null
+  createdAt: Date
+}
+
+const moveColumns = {
+  id: planMoves.id,
+  fromLineId: planMoves.fromLineId,
+  toLineId: planMoves.toLineId,
+  amount: planMoves.amount,
+  reason: planMoves.reason,
+  createdAt: planMoves.createdAt,
+} as const
+
+export async function findMoves(
+  tx: Executor,
+  workspaceId: string,
+  periodId: string,
+): Promise<PlanMoveRow[]> {
+  return tx
+    .select(moveColumns)
+    .from(planMoves)
+    .where(and(eq(planMoves.workspaceId, workspaceId), eq(planMoves.periodId, periodId)))
+    .orderBy(asc(planMoves.createdAt), asc(planMoves.id))
+}
+
+export async function findMoveById(
+  tx: Executor,
+  workspaceId: string,
+  id: string,
+): Promise<PlanMoveRow | undefined> {
+  const [row] = await tx
+    .select(moveColumns)
+    .from(planMoves)
+    .where(and(eq(planMoves.workspaceId, workspaceId), eq(planMoves.id, id)))
+    .limit(1)
+  return row
+}
+
+export interface InsertMoveInput {
+  id: string
+  workspaceId: string
+  periodId: string
+  fromLineId: string
+  toLineId: string
+  amount: string
+  reason: string | null
+}
+
+export async function insertMove(
+  tx: Executor,
+  input: InsertMoveInput,
+): Promise<PlanMoveRow | undefined> {
+  const [row] = await tx.insert(planMoves).values(input).returning(moveColumns)
+  return row
+}
+
+export async function deleteMove(
+  tx: Executor,
+  workspaceId: string,
+  id: string,
+): Promise<PlanMoveRow | undefined> {
+  const [row] = await tx
+    .delete(planMoves)
+    .where(and(eq(planMoves.workspaceId, workspaceId), eq(planMoves.id, id)))
+    .returning(moveColumns)
+  return row
+}
+
+/** Whether any cover still points at this line, which is what stops it being deleted (§10). */
+export async function countMovesForLine(
+  tx: Executor,
+  workspaceId: string,
+  lineId: string,
+): Promise<number> {
+  const [row] = await tx
+    .select({ count: sql<string>`count(*)` })
+    .from(planMoves)
+    .where(
+      and(
+        eq(planMoves.workspaceId, workspaceId),
+        or(eq(planMoves.fromLineId, lineId), eq(planMoves.toLineId, lineId)),
+      ),
+    )
+  return Number.parseInt(row?.count ?? '0', 10)
 }

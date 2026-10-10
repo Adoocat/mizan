@@ -1,3 +1,4 @@
+import type { Clock } from '@mizan/domain'
 import { buildApp, type App } from '../app.ts'
 import { createAuth } from '../auth/auth.ts'
 import type { Mailer, PasswordResetMail } from '../auth/mailer.ts'
@@ -38,12 +39,17 @@ export interface TestApp {
 export interface TestAppOptions {
   /** Better Auth's per-IP limits. Off by default: every injected request shares one address. */
   ipRateLimit?: boolean
+  /**
+   * Pins "today" for the figures that depend on it — the current period, and the daily allowance
+   * that divides what is left by the days that remain (PLAN §10). Defaults to the system clock.
+   */
+  clock?: Clock
 }
 
 /** The real app over a real database, with mail captured instead of sent. */
 export async function buildTestApp(
   database: Database,
-  { ipRateLimit = false }: TestAppOptions = {},
+  { ipRateLimit = false, clock }: TestAppOptions = {},
 ): Promise<TestApp> {
   const mailer = createRecordingMailer()
   const config = {
@@ -56,7 +62,7 @@ export async function buildTestApp(
   } as const
 
   const auth = createAuth({ config, database, mailer, ipRateLimit })
-  const app = await buildApp({ config, database, auth })
+  const app = await buildApp({ config, database, auth, ...(clock ? { clock } : {}) })
 
   return {
     app,

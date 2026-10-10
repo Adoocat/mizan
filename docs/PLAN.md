@@ -1,7 +1,7 @@
 # Mizan — Master Implementation Plan
 
 > **Status:** Approved as the working plan. Implementation in progress (see the phase tracker).
-> **Open items:** D1, D2, D3, D5, D6, D7 and D8 in [§22](#22-decisions) are confirmed; the others are recorded with their recommended defaults and are still **pending confirmation**.
+> **Open items:** D1–D8 in [§22](#22-decisions) are confirmed; D9 (audience and hosting) is recorded with its recommended default and is still **pending confirmation**.
 > **Design reference:** the current high-fidelity mockups live in [`design/new-design/`](../design/new-design/) (design system **2.0**, ADR 0006); the 1.0 files at the top of [`design/`](../design/) are superseded. They depict the long-term product; the MVP ships a subset (see §3 and §13).
 
 ## Phase tracker
@@ -15,7 +15,7 @@
 | 4 | Accounts and ledger core | ✅ |
 | 5 | Categories and transactions | ✅ |
 | 6 | Monthly plan I | ✅ |
-| 7 | Available to spend and safe-to-spend | ⬜ |
+| 7 | Available to spend and safe-to-spend | ✅ |
 | 8 | Goals | ⬜ |
 | 9 | Recurring and upcoming | ⬜ |
 | 10 | Month review and close | ⬜ |
@@ -466,10 +466,11 @@ Fields: `account_id, asset_id, type, trade_date, quantity, price, price_currency
 - **Allocated A** = Σ planned(L) (plan moves net to zero).
 - **Unassigned U** = I + pool carry-in − A. Aim: U = 0. U > 0 → "Left to allocate"; U < 0 → "Over-allocated".
 - **Available(L)** = planned + carry_in + moves_in − moves_out − actual. **Overspend(L)** = max(0, −Available(L)).
-- **Available to spend (ATS)** = Available(pool) − Σ uncovered Overspend(L) + min(0, U). *(Pending decision D4.)*
-  - ATS never shows money the user doesn't have.
-  - **"Cover"** creates a PlanMove recording where the money came from.
-- **Safe to spend today** = max(0, ATS excluding today's spending) ÷ days left including today. Mockup: 9,000 − 6,000 = 3,000 ÷ 10 = **300**. Today's remaining = safe today − today's spending; unspent allowance rolls into tomorrow because the formula recomputes daily.
+- **Available to spend (ATS)** = Available(pool) − Σ uncovered Overspend(L) + min(0, U), floored at zero (decision D4, confirmed — ADR 0012).
+  - ATS never shows money the user doesn't have, so an overspend reduces it **the moment it happens** rather than once the user acknowledges it. Every term of the subtraction is therefore in the API and in the "how this is calculated" popover.
+  - Money still waiting to be assigned (U > 0) is **not** spendable: giving it a job is the user's decision.
+  - **"Cover"** creates a PlanMove recording where the money came from. It does not change ATS by itself: covering from another category returns that money to ATS, covering from the pool leaves it exactly where it was. A cover may never exceed the overspend, nor what the source line has spare.
+- **Safe to spend today** = max(0, ATS excluding today's spending) ÷ days left including today, rounded **down** so the remaining days can never promise more than the month holds. Mockup: 9,000 − 6,000 = 3,000 ÷ 10 = **300**. The allowance is set at the start of the day and spent down: today's remaining = safe today − everything today has taken off ATS, and an unspent allowance rolls into tomorrow because the division runs again over one day fewer.
 - **Transfers:** between on-budget accounts → no plan effect. On-budget → off-budget (investment, loan): the on-budget line **must carry a category** (Investments, Loan payment).
 - **Credit cards** are on-budget. A purchase is spending on its date. Paying the statement is a **transfer** (no double counting); the UI labels it as such in upcoming payments.
 
@@ -771,8 +772,12 @@ Every phase's Definition of Done also includes: CI green, tests written in the s
 
 **Phase 7 — Available to spend and safe-to-spend**
 - *Features:* ATS, safe today, today's remaining allowance, Cover (plan moves), ExplainPopover, budget-impact preview in quick add.
+- *Database:* plan_moves.
 - *Tests:* day boundaries, overspend coverage, over-allocation, last day of period.
 - *DoD:* mockup example gives 300/day; spending 85 shows 215 left.
+- *Deferred (ADR 0012):* safe-to-spend is on the **Plan** page; the Dashboard hero that the
+  mockup shows it in is phase 11's screen. A cover's optional `reason` is stored but nothing
+  writes one, and only the most recent cover on a line is offered an Undo.
 
 **Phase 8 — Goals**
 - *Features:* emergency fund (1/3/6 months from plan essentials), savings goals, sinking funds with repeat, contributions (manual, from plan line, linked transfer), goal-funded expenses, required monthly, "add to plan", over-earmark warning.
@@ -857,7 +862,7 @@ Status legend: **Pending** = recommended default recorded, awaiting confirmation
 | D1 | Stack | TypeScript monorepo: React + Vite SPA, Fastify, PostgreSQL, Drizzle, Better Auth | Phase 0 | **Confirmed** — [ADR 0001](adr/0001-stack.md) |
 | D2 | Language and number format | i18n from day one; **English UI default, Turkish available** (changed from Turkish default); numbers formatted by locale (mockups use English/`₺50,000`) | Phases 0–2 | **Confirmed (changed)** — [ADR 0002](adr/0002-default-language-english.md) |
 | D3 | Plan month anchor | Monthly periods with a configurable start day (1–28) chosen at onboarding, default 1st (not fixed-length periods) | Phase 1 | **Confirmed** — [ADR 0003](adr/0003-plan-period-anchor.md) |
-| D4 | Overspending vs safe-to-spend | Conservative: uncovered overspending reduces ATS automatically; "Cover" records the source (the Dashboard mockup instead lowers the allowance only after clicking Cover — design to be updated) | Phase 7 | Pending |
+| D4 | Overspending vs safe-to-spend | Conservative: uncovered overspending reduces ATS automatically; "Cover" records the source (the Dashboard mockup instead lowers the allowance only after clicking Cover — design to be updated) | Phase 7 | **Confirmed** — [ADR 0012](adr/0012-available-and-safe-to-spend.md) |
 | D5 | Credit card installments | MVP records the full amount on the purchase date; installment budgeting in v1.1 (Phase 17). Move into MVP after Phase 9 if central to usage (+~1 phase) | Phase 5/17 | **Confirmed** — [ADR 0010](adr/0010-categories-and-transactions.md) |
 | D6 | Workspace ownership from day one | Yes (supports shared finance later and the "Personal ▾" switcher) | Phase 3 | **Confirmed** — [ADR 0008](adr/0008-auth-and-workspaces.md) |
 | D7 | Currency scope in MVP | TRY only, currency columns everywhere; multi-currency in v1.1 | Phase 4 | **Confirmed** — [ADR 0009](adr/0009-ledger-core.md) |

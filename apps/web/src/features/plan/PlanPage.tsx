@@ -24,9 +24,11 @@ import { useFormatPeriod, useFormatShortMonth } from '../../lib/format-date'
 import { useCurrentSession } from '../auth/session'
 import { useCategories } from '../categories/api'
 import { optionsById, useCategoryGroupName, useCategoryOptions } from '../categories/names'
-import { useCopyPlan, usePlan, useUpsertPlanLine } from './api'
+import { useCopyPlan, useCoverOverspend, usePlan, useUndoCover, useUpsertPlanLine } from './api'
+import { CoverDialog, coverSources } from './CoverDialog'
 import { IncomePanel } from './IncomePanel'
 import { planGridClass, PlanLineRow } from './PlanLineRow'
+import { SafeToSpend } from './SafeToSpend'
 import { planSearchSchema, type PlanSearch } from './search'
 
 /** Reads the month from the URL, which is where it lives (§13). */
@@ -76,10 +78,14 @@ export function PlanPage() {
 
   const upsert = useUpsertPlanLine(start)
   const copy = useCopyPlan(start)
+  const cover = useCoverOverspend(start)
+  const undoCover = useUndoCover(start)
 
   /** Amounts being typed, by row, applied over the stored ones until they are saved. */
   const [drafts, setDrafts] = useState<Record<string, Money | null>>({})
   const [savingKey, setSavingKey] = useState<string | null>(null)
+  /** The overspent row the Cover dialog is open for. */
+  const [coveringKey, setCoveringKey] = useState<string | null>(null)
 
   const clearDraft = (key: string) =>
     setDrafts((current) =>
@@ -181,6 +187,22 @@ export function PlanPage() {
     })
   }
 
+  const covering =
+    coveringKey === null
+      ? undefined
+      : rows.find((row) => rowKey(row) === coveringKey && !moneyFromDto(row.overspend).isZero())
+
+  /** Undo for the cover recorded against a row, when there is one to undo. */
+  const undoCoverFor = (row: PlanChildRowDto): (() => void) | undefined => {
+    const last = data.moves.filter((move) => move.toLineId === row.lineId).at(-1)
+    if (!last) return undefined
+    return () =>
+      undoCover.mutate(last.id, {
+        onError: (error) =>
+          toast.error(error instanceof Error ? error.message : t('cover.undoFailed')),
+      })
+  }
+
   const label = (row: PlanChildRowDto): string =>
     row.target === 'pool'
       ? t('plan.poolLine')
@@ -269,6 +291,8 @@ export function PlanPage() {
       />
 
       {data.period.status === 'closed' && <Badge tone="neutral">{t('plan.closedMonth')}</Badge>}
+
+      <SafeToSpend plan={data} />
 
       <div className="grid gap-5 md:grid-cols-3">
         {tiles.map((tile) => (
@@ -390,6 +414,8 @@ export function PlanPage() {
                     }
                     onCommit={() => commit(row)}
                     onRevert={() => clearDraft(rowKey(row))}
+                    onCover={() => setCoveringKey(rowKey(row))}
+                    onUndoCover={undoCoverFor(row)}
                   />,
                   ...row.children.map((child) => (
                     <PlanLineRow
@@ -406,6 +432,8 @@ export function PlanPage() {
                       }
                       onCommit={() => commit(child)}
                       onRevert={() => clearDraft(rowKey(child))}
+                      onCover={() => setCoveringKey(rowKey(child))}
+                      onUndoCover={undoCoverFor(child)}
                     />
                   )),
                 ])}
@@ -424,6 +452,28 @@ export function PlanPage() {
           editable={editable}
         />
       </div>
+
+      {covering && (
+        <CoverDialog
+          key={coveringKey}
+          open
+          onOpenChange={(next) => setCoveringKey(next ? coveringKey : null)}
+          target={covering}
+          targetName={label(covering)}
+          sources={coverSources(data, covering, label)}
+          pending={cover.isPending}
+          onSubmit={(input) =>
+            cover.mutate(input, {
+              onSuccess: () => {
+                setCoveringKey(null)
+                toast.success(t('cover.done'))
+              },
+              onError: (error) =>
+                toast.error(error instanceof Error ? error.message : t('cover.failed')),
+            })
+          }
+        />
+      )}
 
       {!moneyFromDto(data.summary.uncategorizedSpending).isZero() && (
         <p className="m-0 text-caption text-ink-3">

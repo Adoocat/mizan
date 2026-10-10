@@ -62,9 +62,12 @@ const planRowFields = {
   planned: moneySchema,
   /** What the previous period's close carried into this line. Zero until phase 10. */
   carryIn: moneySchema,
+  /** Money covered into this line, and out of it, by plan moves (§10, decision D4). */
+  movesIn: moneySchema,
+  movesOut: moneySchema,
   /** Spending in the category this period, subcategories without a line included. */
   actual: moneySchema,
-  /** `planned + carryIn − actual`; zero on a covered row, whose cover carries it instead. */
+  /** `planned + carryIn + movesIn − movesOut − actual`; zero on a row something else covers. */
   available: moneySchema,
   overspend: moneySchema,
   rollover: z.boolean(),
@@ -153,11 +156,61 @@ export const planSummarySchema = z.object({
 })
 export type PlanSummary = z.infer<typeof planSummarySchema>
 
+/**
+ * One recorded cover: money reassigned from one line to another (§10).
+ *
+ * It is listed with the plan so the page can show what was covered from where, and undo it.
+ */
+export const planMoveSchema = z.object({
+  id: z.uuid(),
+  fromLineId: z.uuid(),
+  toLineId: z.uuid(),
+  amount: moneySchema,
+  reason: z.string().nullable(),
+  createdAt: z.string(),
+})
+export type PlanMoveDto = z.infer<typeof planMoveSchema>
+
+/**
+ * Available to spend, and the daily allowance it divides into (§10, decision D4).
+ *
+ * Every part of the subtraction is here, not just the answer: "how is this calculated" is a
+ * product principle (§14), and a number that can fall because a category went over has to be
+ * able to say so.
+ */
+export const planSpendSchema = z.object({
+  /** The pool's planned amount, carry-in and covers: what it had to spend. */
+  poolBudget: moneySchema,
+  /** Spending the pool answers for. */
+  poolSpent: moneySchema,
+  /** `Available(pool)`. */
+  poolAvailable: moneySchema,
+  /** Σ overspend of every other line, covers applied. It reduces what can be spent. */
+  uncoveredOverspend: moneySchema,
+  /** `min(0, U)` as a positive deduction: what the plan promises beyond its income. */
+  overAllocated: moneySchema,
+  /** `ATS = Available(pool) − uncovered overspend − over-allocation`, never below zero. */
+  availableToSpend: moneySchema,
+  /** ATS as it stood at the start of today, which is what the daily allowance divides. */
+  availableAtStartOfToday: moneySchema,
+  /** Days of the period left, today included. Zero once the period is over. */
+  daysLeft: z.number().int().min(0),
+  /** `max(0, ATS excluding today) ÷ days left`, rounded down. */
+  safeToday: moneySchema,
+  /** What today has taken off the figure. */
+  spentToday: moneySchema,
+  /** `safe today − today's spending`. Negative once today has gone past its allowance. */
+  remainingToday: moneySchema,
+})
+export type PlanSpend = z.infer<typeof planSpendSchema>
+
 export const planResponseSchema = z.object({
   period: planPeriodSchema,
   summary: planSummarySchema,
+  spend: planSpendSchema,
   groups: z.array(planGroupSchema),
   incomeItems: z.array(planIncomeItemSchema),
+  moves: z.array(planMoveSchema),
   /** The start date of an earlier period worth copying from, or null when there is none. */
   copyableFrom: plainDateSchema.nullable(),
 })
@@ -231,6 +284,35 @@ export const copyPlanSchema = z.object({
   includeIncome: z.boolean().optional(),
 })
 export type CopyPlanInput = z.infer<typeof copyPlanSchema>
+
+/**
+ * Covering an overspend (§10): where the money comes from, where it goes, and how much.
+ *
+ * Both ends are named by their **target** rather than by a line id, the same way an allocation
+ * is, because the overspent line may not exist yet — an unplanned category has an overspend and
+ * no line to receive the money. The service creates what it needs.
+ */
+const coverEndSchema = z
+  .object({
+    target: planLineTargetSchema,
+    categoryId: z.uuid().optional(),
+  })
+  .refine((value) => (value.target === 'category') === (value.categoryId !== undefined), {
+    message: 'A category end needs a categoryId, and no other end may have one',
+    path: ['categoryId'],
+  })
+  .refine((value) => value.target !== 'goal', {
+    message: 'Goal lines are not available yet',
+    path: ['target'],
+  })
+
+export const coverOverspendSchema = z.object({
+  from: coverEndSchema,
+  to: coverEndSchema,
+  amount: moneySchema,
+  reason: z.string().trim().max(200).optional(),
+})
+export type CoverOverspendInput = z.infer<typeof coverOverspendSchema>
 
 export const copyPlanResponseSchema = z.object({
   plan: planResponseSchema,

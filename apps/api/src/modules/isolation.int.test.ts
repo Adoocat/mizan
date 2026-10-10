@@ -83,6 +83,32 @@ async function createFixtures(victim: Actor): Promise<IsolationIds> {
     throw new Error(`fixture income item failed (${incomeItem.statusCode}): ${incomeItem.body}`)
   }
 
+  /*
+   * A recorded cover, so the move endpoints have something to address: the fixture transaction
+   * spent ₺85 on `category`, so a ₺50 line on it is ₺35 over, and `otherCategory` has the room.
+   */
+  const allocate = (categoryId: string, planned: string) =>
+    victim.request({
+      method: 'PUT',
+      url: `/api/v1/plans/${PLAN_ISOLATION_START}/lines`,
+      payload: { target: 'category', categoryId, planned: { amount: planned, currency: 'TRY' } },
+    })
+  await allocate(category.id, '50.00')
+  await allocate(otherCategory.id, '500.00')
+
+  const cover = await victim.request({
+    method: 'POST',
+    url: `/api/v1/plans/${PLAN_ISOLATION_START}/moves`,
+    payload: {
+      from: { target: 'category', categoryId: otherCategory.id },
+      to: { target: 'category', categoryId: category.id },
+      amount: { amount: '35.00', currency: 'TRY' },
+    },
+  })
+  if (cover.statusCode !== 200) {
+    throw new Error(`fixture cover failed (${cover.statusCode}): ${cover.body}`)
+  }
+
   return {
     accountId,
     categoryGroupId: flexible.id,
@@ -91,6 +117,7 @@ async function createFixtures(victim: Actor): Promise<IsolationIds> {
     incomeCategoryId: incomeCategory.id,
     transactionId: transaction.json<{ id: string }>().id,
     planIncomeItemId: incomeItem.json<PlanResponse>().incomeItems[0]!.id,
+    planMoveId: cover.json<PlanResponse>().moves[0]!.id,
   }
 }
 

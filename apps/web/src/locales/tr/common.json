@@ -195,7 +195,8 @@
     "addAccount": "Hesap ekle",
     "fields": "Form alanları",
     "fieldHint": "Tek mesaj satırı; ipuçları ve hatalar aynı yerde görünür.",
-    "amountCompact": "Tutar, satır içi (Plan satırları)"
+    "amountCompact": "Tutar, satır içi (Plan satırları)",
+    "explain": "Açıklama baloncuğu"
   },
   "days": {
     "mon": "Pzt",
@@ -414,7 +415,11 @@
       "save": "Ekle",
       "failed": "Gelir kaydedilemedi"
     },
-    "giveItsOwnLine": "{{name}} için ayrı tutar belirle"
+    "giveItsOwnLine": "{{name}} için ayrı tutar belirle",
+    "cover": "Karşıla",
+    "coverFor": "{{name}} aşımını karşıla",
+    "coveredIn": "karşılandı",
+    "coveredOut": "karşılıyor"
   },
   "transactions": {
     "summary": {
@@ -506,7 +511,11 @@
       "failed": "Bu işlem kaydedilemedi.",
       "noAccounts": "Önce bir hesap ekleyin — her işlem bir yerden para hareket ettirir."
     },
-    "addFirst": "İlk işleminizi kaydedin"
+    "addFirst": "İlk işleminizi kaydedin",
+    "impact": {
+      "line": "{{name}} {{before}} → {{after}}",
+      "allowance": "bugünün payı {{before}} → {{after}}"
+    }
   },
   "upcoming": {
     "eyebrow": "Yinelenen ve planlanmış para hareketleri",
@@ -1220,5 +1229,48 @@
     "oct": "Ekim",
     "nov": "Kasım",
     "dec": "Aralık"
+  },
+  "explain": {
+    "label": "{{name}} nasıl hesaplanıyor",
+    "title": "Bu nasıl hesaplanıyor"
+  },
+  "spend": {
+    "title": "Bugün güvenle harcanabilir",
+    "meta_one": "Bu ayda 1 gün kaldı",
+    "meta_other": "Bu ayda {{count}} gün kaldı",
+    "aDay": "ayın kalanı için günlük",
+    "leftThisMonth": "bu ay harcanabilir kalan",
+    "spentToday": "bugün harcandı",
+    "leftToday": "bugün kalan",
+    "todayAllowance": "Bugünün payı",
+    "carryNote": "Harcanmayan pay yarına devreder.",
+    "periodOver": "Bu ay bitti, bölüşülecek bir pay kalmadı.",
+    "overspentNote": "Başka kalemlerde aşılan {{amount}} bu tutardan düşüldü. Hangi kalemin karşıladığını kaydetmek için karşılayın.",
+    "explain": {
+      "pool": "Bu ay harcanabilir",
+      "spent": "Şimdiye kadar harcanan",
+      "overspent": "Başka kalemlerde aşılan, karşılanmayan",
+      "overAllocated": "Fazla dağıtılan",
+      "left": "Bu ay kalan",
+      "divide_one": "÷ kalan 1 gün",
+      "divide_other": "÷ kalan {{count}} gün",
+      "aDay": "günlük",
+      "note": "Faturalar, birikim ve yatırımlar zaten ayrıldı; bu tutarı azaltmazlar."
+    }
+  },
+  "cover": {
+    "title": "{{name}} aşımını karşıla",
+    "description": "Aşımı hangi kalemin karşıladığını belirtin. Planın toplamı değişmez.",
+    "overspentBy": "Aşım",
+    "from": "Şuradan al",
+    "sourceOption": "{{name}} — {{amount}} kaldı",
+    "amount": "Karşılanacak tutar",
+    "tooMuch": "Bu, aşım tutarından fazla.",
+    "tooMuchForSource": "O kalemde bu kadar kalmadı.",
+    "noSource": "Bunu karşılayacak kalem yok. Önce bir tutarı azaltın ya da olduğu gibi bırakın: harcanabilir tutardan zaten düşüldü.",
+    "submit": "Karşıla",
+    "done": "Karşılandı",
+    "failed": "Karşılama kaydedilemedi",
+    "undoFailed": "Karşılama geri alınamadı"
   }
 }

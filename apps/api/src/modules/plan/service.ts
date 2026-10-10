@@ -1,13 +1,16 @@
 import type {
   CopyPlanInput,
+  CoverOverspendInput,
   MoneyDto,
   CopyPlanResponse,
   CreatePlanIncomeItemInput,
   PlanChildRowDto,
   PlanGroupDto,
   PlanIncomeItemDto,
+  PlanMoveDto,
   PlanResponse,
   PlanRowDto,
+  PlanSpend,
   PlanSummary,
   UpdatePlanIncomeItemInput,
   UpsertPlanLineInput,
@@ -16,20 +19,27 @@ import { moneyFromDto } from '@mizan/contracts'
 import {
   Money,
   allocatedTotal,
+  availableToSpend,
   categoryGroupKind,
-  countedIncome,
+  checkCover,
   compareCategoryGroupKinds,
+  countedIncome,
+  dailyAllowance,
   daysElapsed,
+  daysLeftToSpend,
   isPooledByDefault,
+  overAllocatedBy,
   periodContaining,
   periodLength,
   planLineAvailable,
+  planLineBudget,
   planLineOverspend,
   planTotals,
   previousPeriod,
   shiftExpectedDate,
   todayIn,
   unassigned,
+  uncoveredOverspend,
   type Clock,
   type CategoryGroupKind,
   type IncomeCategoryFigures,
@@ -50,16 +60,22 @@ import {
 } from '../categories/repository.ts'
 import { assertCanWrite } from '../workspace/service.ts'
 import {
+  countMovesForLine,
   deleteIncomeItem,
   deleteLine,
+  deleteMove,
   findIncomeItemById,
   findIncomeItems,
   findLatestPlannedPeriodBefore,
+  findLineById,
   findLineByTarget,
   findLines,
+  findMoveById,
+  findMoves,
   findPeriodByStart,
   insertIncomeItem,
   insertLine,
+  insertMove,
   insertPeriod,
   nextIncomeItemSortOrder,
   sumActualByCategory,
@@ -67,6 +83,7 @@ import {
   updateLine,
   type PlanIncomeItemRow,
   type PlanLineRow,
+  type PlanMoveRow,
   type PlanPeriodRow,
 } from './repository.ts'
 
@@ -163,31 +180,42 @@ interface CategoryContext {
   kind: CategoryGroupKind
 }
 
+/** Signed sums per category, `null` keyed for spending with no category at all. */
+type Actuals = Map<string | null, Money>
+
 interface PlanData {
   groups: CategoryGroupRow[]
   categories: CategoryRow[]
   lines: PlanLineRow[]
   incomeItems: PlanIncomeItemRow[]
-  /** Signed sums per category, `null` keyed for spending with no category at all. */
-  actuals: Map<string | null, Money>
+  moves: PlanMoveRow[]
+  actuals: Actuals
+  /**
+   * The same sums over everything dated before today. The daily allowance divides what was
+   * available at the *start* of today, so the figure is steady through the day and what has been
+   * spent since is shown against it (§10).
+   */
+  actualsBeforeToday: Actuals
 }
 
 async function loadPlanData(
   db: Db,
   auth: RequestAuth,
   resolvedPeriod: ResolvedPeriod,
+  today: PlainDate,
 ): Promise<PlanData> {
   const base = auth.workspace.baseCurrency
   const periodId = resolvedPeriod.row?.id
 
-  const [groups, categories, lines, incomeItems, actualRows] = await Promise.all([
+  const [groups, categories, lines, incomeItems, moves, actualRows] = await Promise.all([
     findCategoryGroups(db, auth.workspaceId),
     // Archived categories are included: a line or last week's spending may still point at one,
     // and a plan that hid it would not add up.
     findCategories(db, auth.workspaceId, { includeArchived: true }),
     periodId ? findLines(db, auth.workspaceId, periodId) : Promise.resolve([]),
     periodId ? findIncomeItems(db, auth.workspaceId, periodId) : Promise.resolve([]),
-    sumActualByCategory(db, auth.workspaceId, resolvedPeriod.period),
+    periodId ? findMoves(db, auth.workspaceId, periodId) : Promise.resolve([]),
+    sumActualByCategory(db, auth.workspaceId, resolvedPeriod.period, today),
   ])
 
   return {
@@ -195,8 +223,15 @@ async function loadPlanData(
     categories,
     lines,
     incomeItems,
+    moves,
     actuals: new Map(
       actualRows.map((row) => [row.categoryId, Money.of(row.total, base).roundToMinor()]),
+    ),
+    actualsBeforeToday: new Map(
+      actualRows.map((row) => [
+        row.categoryId,
+        Money.of(row.totalBeforeToday, base).roundToMinor(),
+      ]),
     ),
   }
 }
@@ -233,8 +268,23 @@ function buildPlan(
   )
   const poolLine = data.lines.find((line) => line.isPool)
 
+  /** The covers in and out of a line (§10). Both are zero for a line nothing has covered. */
+  const movesFor = (lineId: string | undefined) => {
+    if (lineId === undefined) return { movesIn: zero, movesOut: zero }
+    const sum = (rows: PlanMoveRow[]) =>
+      Money.sum(
+        rows.map((move) => Money.of(move.amount, base)),
+        base,
+      ).roundToMinor()
+    return {
+      movesIn: sum(data.moves.filter((move) => move.toLineId === lineId)),
+      movesOut: sum(data.moves.filter((move) => move.fromLineId === lineId)),
+    }
+  }
+
   /** A category's own spending: the signed ledger sum, read as money that left. */
-  const ownSpending = (categoryId: string): Money => (data.actuals.get(categoryId) ?? zero).negate()
+  const ownSpending = (actuals: Actuals, categoryId: string): Money =>
+    (actuals.get(categoryId) ?? zero).negate()
 
   const childrenOf = new Map<string, CategoryRow[]>()
   for (const category of data.categories) {
@@ -248,16 +298,45 @@ function buildPlan(
    * What a category's line answers for: its own spending plus every subcategory that has no line
    * of its own (§10). A subcategory with a line keeps its spending to itself.
    */
-  const foldedSpending = (category: CategoryRow): Money =>
+  const foldedSpending = (actuals: Actuals, category: CategoryRow): Money =>
     Money.sum(
       [
-        ownSpending(category.id),
+        ownSpending(actuals, category.id),
         ...(childrenOf.get(category.id) ?? [])
           .filter((child) => !lineByCategory.has(child.id))
-          .map((child) => ownSpending(child.id)),
+          .map((child) => ownSpending(actuals, child.id)),
       ],
       base,
     ).roundToMinor()
+
+  /** Nothing covers a row that has its own line; without one, a subcategory falls to its parent
+   * and a flexible category to the pool. Anything else is simply unplanned, and says so. */
+  const coverOf = (
+    category: CategoryRow,
+    kind: CategoryGroupKind,
+    isChild: boolean,
+  ): 'pool' | 'parent' | null =>
+    lineByCategory.has(category.id)
+      ? null
+      : isChild
+        ? 'parent'
+        : isPooledByDefault(kind)
+          ? 'pool'
+          : null
+
+  /** A category's line as the domain sees it: what it may spend, and what it has. */
+  const lineFigures = (
+    actuals: Actuals,
+    category: CategoryRow,
+  ): PlanLineFigures & { movesIn: Money; movesOut: Money } => {
+    const line = lineByCategory.get(category.id)
+    return {
+      planned: line ? Money.of(line.plannedAmount, base) : zero,
+      carryIn: line ? Money.of(line.carryIn, base) : zero,
+      ...movesFor(line?.id),
+      actual: foldedSpending(actuals, category),
+    }
+  }
 
   const row = (
     category: CategoryRow,
@@ -265,17 +344,8 @@ function buildPlan(
     { isChild }: { isChild: boolean },
   ): PlanChildRowDto => {
     const line = lineByCategory.get(category.id)
-    const actual = foldedSpending(category)
-
-    // Nothing covers a row that has its own line; without one, a subcategory falls to its parent
-    // and a flexible category to the pool. Anything else is simply unplanned, and says so.
-    const coveredBy = line ? null : isChild ? 'parent' : isPooledByDefault(kind) ? 'pool' : null
-
-    const figures: PlanLineFigures = {
-      planned: line ? Money.of(line.plannedAmount, base) : zero,
-      carryIn: line ? Money.of(line.carryIn, base) : zero,
-      actual,
-    }
+    const coveredBy = coverOf(category, kind, isChild)
+    const figures = lineFigures(data.actuals, category)
 
     return {
       lineId: line?.id ?? null,
@@ -283,7 +353,9 @@ function buildPlan(
       categoryId: category.id,
       planned: figures.planned.toDto(),
       carryIn: (figures.carryIn ?? zero).toDto(),
-      actual: actual.toDto(),
+      movesIn: figures.movesIn.toDto(),
+      movesOut: figures.movesOut.toDto(),
+      actual: figures.actual.toDto(),
       // A covered row's cover carries its remainder, so showing one here would count it twice.
       available: (coveredBy ? zero : planLineAvailable(figures)).toDto(),
       overspend: (coveredBy ? zero : planLineOverspend(figures)).toDto(),
@@ -294,27 +366,35 @@ function buildPlan(
     }
   }
 
-  /** Spending the pool answers for: pooled categories, folded, plus what has no category. */
-  const uncategorized = (data.actuals.get(null) ?? zero).negate()
-  const pooledSpending = Money.sum(
-    [
-      uncategorized,
-      ...data.categories
-        .filter((category) => {
-          if (category.parentId !== null || lineByCategory.has(category.id)) return false
-          const context = contextOf(category)
-          return context ? isPooledByDefault(context.kind) : false
-        })
-        .map(foldedSpending),
-    ],
-    base,
-  ).roundToMinor()
+  /** Top-level categories the pool answers for (§10). */
+  const pooledCategories = data.categories.filter((category) => {
+    if (category.parentId !== null || lineByCategory.has(category.id)) return false
+    const context = contextOf(category)
+    return context ? isPooledByDefault(context.kind) : false
+  })
 
-  const poolFigures: PlanLineFigures = {
+  /** Spending the pool answers for: pooled categories, folded, plus what has no category. */
+  const pooledSpending = (actuals: Actuals): Money =>
+    Money.sum(
+      [
+        (actuals.get(null) ?? zero).negate(),
+        ...pooledCategories.map((category) => foldedSpending(actuals, category)),
+      ],
+      base,
+    ).roundToMinor()
+
+  const poolFiguresFor = (
+    actuals: Actuals,
+  ): PlanLineFigures & { movesIn: Money; movesOut: Money } => ({
     planned: poolLine ? Money.of(poolLine.plannedAmount, base) : zero,
     carryIn: poolLine ? Money.of(poolLine.carryIn, base) : zero,
-    actual: pooledSpending,
-  }
+    ...movesFor(poolLine?.id),
+    actual: pooledSpending(actuals),
+  })
+
+  const uncategorized = (data.actuals.get(null) ?? zero).negate()
+  const poolFigures = poolFiguresFor(data.actuals)
+  const visibleSpending = (category: CategoryRow) => foldedSpending(data.actuals, category)
 
   const poolRow: PlanRowDto = {
     lineId: poolLine?.id ?? null,
@@ -322,7 +402,9 @@ function buildPlan(
     categoryId: null,
     planned: poolFigures.planned.toDto(),
     carryIn: (poolFigures.carryIn ?? zero).toDto(),
-    actual: pooledSpending.toDto(),
+    movesIn: poolFigures.movesIn.toDto(),
+    movesOut: poolFigures.movesOut.toDto(),
+    actual: poolFigures.actual.toDto(),
     available: planLineAvailable(poolFigures).toDto(),
     overspend: planLineOverspend(poolFigures).toDto(),
     rollover: poolLine?.rollover ?? false,
@@ -349,11 +431,11 @@ function buildPlan(
 
     const rows: PlanRowDto[] = inGroup
       .filter((category) => category.parentId === null)
-      .filter((category) => isVisible(category, lineByCategory, foldedSpending))
+      .filter((category) => isVisible(category, lineByCategory, visibleSpending))
       .map((category) => ({
         ...row(category, kind, { isChild: false }),
         children: (childrenOf.get(category.id) ?? [])
-          .filter((child) => isVisible(child, lineByCategory, foldedSpending))
+          .filter((child) => isVisible(child, lineByCategory, visibleSpending))
           .map((child) => row(child, kind, { isChild: true })),
       }))
 
@@ -383,7 +465,7 @@ function buildPlan(
   /* ----------------------------------------------------------- the summary */
 
   const incomeItems = data.incomeItems.map((item) => toIncomeItemDto(item, data.actuals, base))
-  const income = incomeFigures(data, groupById, base)
+  const income = incomeFigures(data, groupById, base, data.actuals)
 
   const allocated = allocatedTotal(
     data.lines.map((line) => ({ planned: Money.of(line.plannedAmount, base) })),
@@ -391,6 +473,62 @@ function buildPlan(
   )
   const poolCarryIn = poolFigures.carryIn ?? zero
   const selfAnswering = groups.flatMap((group) => contributingRows(group.rows))
+
+  /* ------------------------------------------------------------ what can be spent */
+
+  /**
+   * The three inputs to `ATS` for one state of the ledger (§10, decision D4).
+   *
+   * Run twice — over everything, and over everything dated before today — because the daily
+   * allowance divides what was available when the day began, and today's spending is then shown
+   * against it rather than quietly shrinking it.
+   */
+  const atsInputsFor = (actuals: Actuals) => {
+    const pool = poolFiguresFor(actuals)
+    const selfAnsweringLines = data.categories
+      .filter((category) => {
+        const context = contextOf(category)
+        if (!context || context.kind === 'income') return false
+        return coverOf(category, context.kind, category.parentId !== null) === null
+      })
+      .map((category) => lineFigures(actuals, category))
+
+    const figures = incomeFigures(data, groupById, base, actuals)
+    return {
+      // The pool's own shortfall is already in what it has available, so it is not counted again.
+      poolAvailable: planLineAvailable(pool),
+      uncoveredOverspend: uncoveredOverspend(selfAnsweringLines, base),
+      unassigned: unassigned({
+        income: figures.total,
+        poolCarryIn: pool.carryIn ?? zero,
+        allocated,
+      }),
+    }
+  }
+
+  const inputsNow = atsInputsFor(data.actuals)
+  const atsNow = availableToSpend(inputsNow)
+  const atsAtStartOfToday = availableToSpend(atsInputsFor(data.actualsBeforeToday))
+  const daysLeft = daysLeftToSpend(period, today)
+  const allowance = dailyAllowance({
+    availableAtStartOfToday: atsAtStartOfToday,
+    availableNow: atsNow,
+    daysLeft,
+  })
+
+  const spend: PlanSpend = {
+    poolBudget: planLineBudget(poolFigures).toDto(),
+    poolSpent: poolFigures.actual.toDto(),
+    poolAvailable: inputsNow.poolAvailable.toDto(),
+    uncoveredOverspend: inputsNow.uncoveredOverspend.toDto(),
+    overAllocated: overAllocatedBy(inputsNow.unassigned).toDto(),
+    availableToSpend: atsNow.toDto(),
+    availableAtStartOfToday: atsAtStartOfToday.toDto(),
+    daysLeft,
+    safeToday: allowance.safeToday.toDto(),
+    spentToday: allowance.spentToday.toDto(),
+    remainingToday: allowance.remainingToday.toDto(),
+  }
 
   const summary: PlanSummary = {
     income: income.total.toDto(),
@@ -427,8 +565,10 @@ function buildPlan(
       days: periodLength(period),
     },
     summary,
+    spend,
     groups,
     incomeItems,
+    moves: data.moves.map((move) => toMoveDto(move, base)),
     copyableFrom,
   }
 }
@@ -492,6 +632,18 @@ function toIncomeItemDto(
   }
 }
 
+function toMoveDto(move: PlanMoveRow, currency: string): PlanMoveDto {
+  return {
+    id: move.id,
+    fromLineId: move.fromLineId,
+    toLineId: move.toLineId,
+    // NUMERIC(20,4) comes back with its full scale; money leaves the API in minor units.
+    amount: Money.of(move.amount, currency).roundToMinor().toDto(),
+    reason: move.reason,
+    createdAt: move.createdAt.toISOString(),
+  }
+}
+
 /**
  * `I` and the part of it nobody planned for (§10).
  *
@@ -503,6 +655,7 @@ function incomeFigures(
   data: PlanData,
   groupById: Map<string, CategoryGroupRow>,
   currency: string,
+  actuals: Actuals,
 ): { total: Money; unplanned: Money } {
   const zero = Money.zero(currency)
   const incomeCategories = data.categories.filter((category) => {
@@ -515,7 +668,7 @@ function incomeFigures(
     figuresByCategory.set(category.id, {
       expected: zero,
       received: zero,
-      actual: data.actuals.get(category.id) ?? zero,
+      actual: actuals.get(category.id) ?? zero,
     })
   }
 
@@ -526,7 +679,7 @@ function incomeFigures(
     const figures = current ?? {
       expected: zero,
       received: zero,
-      actual: data.actuals.get(item.categoryId) ?? zero,
+      actual: actuals.get(item.categoryId) ?? zero,
     }
     figuresByCategory.set(item.categoryId, {
       actual: figures.actual,
@@ -563,8 +716,9 @@ async function readPlanFor(
   clock: Clock,
   resolvedPeriod: ResolvedPeriod,
 ): Promise<PlanResponse> {
+  const today = todayIn(clock, auth.workspace.timezone)
   const [data, previous] = await Promise.all([
-    loadPlanData(db, auth, resolvedPeriod),
+    loadPlanData(db, auth, resolvedPeriod, today),
     findLatestPlannedPeriodBefore(db, auth.workspaceId, resolvedPeriod.period.start),
   ])
 
@@ -572,7 +726,7 @@ async function readPlanFor(
     auth,
     resolvedPeriod,
     data,
-    todayIn(clock, auth.workspace.timezone),
+    today,
     (previous?.startDate as PlainDate | undefined) ?? null,
   )
 }
@@ -653,6 +807,14 @@ export async function upsertPlanLine(
     }
 
     if (planned.isZero() && !(input.rollover ?? existing.rollover)) {
+      /*
+       * A line a cover points at cannot simply go: the move records where money came from, and
+       * removing one end of it would leave the other side's figures standing on nothing. Undoing
+       * the cover is the user's decision, so it is theirs to make first.
+       */
+      if ((await countMovesForLine(db, auth.workspaceId, existing.id)) > 0) {
+        throw conflict('Undo the cover on this line before clearing its amount.')
+      }
       await deleteLine(db, auth.workspaceId, existing.id)
     } else {
       const updated = await updateLine(
@@ -912,4 +1074,175 @@ export async function copyPlan(
     copiedIncomeItems: includeIncome ? sourceIncome.length : 0,
     skippedLines: sourceLines.length - toCopy.length,
   }
+}
+
+/* --------------------------------------------------------------- covering */
+
+/** Both ends of a cover, as the request names them. */
+type CoverEnd = CoverOverspendInput['from']
+
+const endKey = (end: CoverEnd): string => (end.target === 'pool' ? 'pool' : (end.categoryId ?? ''))
+
+/**
+ * The line an end of a cover points at, created if it does not exist yet.
+ *
+ * An unplanned category has an overspend and no line to receive the money, so the cover has to
+ * be able to open one — at zero, which is the truth: nothing was ever allocated to it. The
+ * category has already been checked by the caller, which is what keeps a refused cover from
+ * leaving a period row behind.
+ */
+async function lineForCover(
+  db: Db,
+  auth: RequestAuth,
+  periodId: string,
+  end: CoverEnd,
+  category: CategoryRow | undefined,
+): Promise<PlanLineRow> {
+  const existing = await findLineByTarget(db, auth.workspaceId, periodId, {
+    categoryId: category?.id ?? null,
+  })
+  if (existing) return existing
+
+  const created = await insertLine(db, {
+    id: uuidv7(),
+    workspaceId: auth.workspaceId,
+    periodId,
+    categoryId: category?.id ?? null,
+    isPool: end.target === 'pool',
+    plannedAmount: '0',
+    rollover: false,
+    sortOrder: category?.sortOrder ?? 9999,
+  })
+  if (!created) throw conflict('That line could not be opened. Try again.')
+  return created
+}
+
+/**
+ * Every line of the period as the domain sees it, by line id.
+ *
+ * Read from the plan itself rather than from the rows, because the read model is the one place
+ * the folding, pooling and cover rules live: a cover is then checked against exactly the figures
+ * the user is looking at.
+ */
+async function lineFiguresById(
+  db: Db,
+  auth: RequestAuth,
+  clock: Clock,
+  resolvedPeriod: ResolvedPeriod,
+): Promise<Map<string, PlanLineFigures>> {
+  const plan = await readPlanFor(db, auth, clock, resolvedPeriod)
+  const rows = plan.groups.flatMap((group) => group.rows.flatMap((one) => [one, ...one.children]))
+
+  return new Map(
+    rows
+      .filter((row) => row.lineId !== null)
+      .map((row) => [
+        row.lineId!,
+        {
+          planned: moneyFromDto(row.planned),
+          carryIn: moneyFromDto(row.carryIn),
+          movesIn: moneyFromDto(row.movesIn),
+          movesOut: moneyFromDto(row.movesOut),
+          actual: moneyFromDto(row.actual),
+        },
+      ]),
+  )
+}
+
+const COVER_MESSAGES: Record<string, string> = {
+  nothingToCover: 'That line is not overspent.',
+  sameLine: 'A line cannot cover itself.',
+  notPositive: 'A cover has to be more than zero.',
+  moreThanOverspend: 'That is more than the overspend. Cover only what went over.',
+  sourceTooSmall: 'That line does not have enough left to cover it.',
+}
+
+/**
+ * Records a cover: where the money for an overspend came from (§10, decision D4).
+ *
+ * The overspend has already reduced what can be spent — this is not what makes that happen. What
+ * it does is say *which line paid for it*, so the plan still adds up: the covered line's budget
+ * rises, the source line's falls, and `Allocated` does not move. Covering from another category
+ * therefore puts the money back into what can be spent; covering from the pool leaves it where
+ * it already was.
+ */
+export async function coverOverspend(
+  db: Db,
+  auth: RequestAuth,
+  { clock }: PlanDependencies,
+  start: PlainDate | undefined,
+  input: CoverOverspendInput,
+): Promise<PlanResponse> {
+  assertCanWrite(auth)
+
+  const resolvedPeriod = await resolvePeriod(db, auth, clock, start)
+  assertOpen(resolvedPeriod)
+
+  const amount = moneyFromDto(input.amount)
+  if (amount.currency !== auth.workspace.baseCurrency) {
+    throw badRequest(`A cover must be in ${auth.workspace.baseCurrency}.`)
+  }
+  if (endKey(input.from) === endKey(input.to)) throw badRequest('A line cannot cover itself.')
+
+  // Both categories are checked before anything is written: a refused cover must not leave a
+  // period row behind in a workspace that never planned that month.
+  const toCategory =
+    input.to.categoryId === undefined
+      ? undefined
+      : await assertAllocatableCategory(db, auth, input.to.categoryId)
+  const fromCategory =
+    input.from.categoryId === undefined
+      ? undefined
+      : await assertAllocatableCategory(db, auth, input.from.categoryId)
+
+  const periodRow = await ensurePeriodRow(db, auth, resolvedPeriod)
+  const withRow = { ...resolvedPeriod, row: periodRow }
+
+  const to = await lineForCover(db, auth, periodRow.id, input.to, toCategory)
+  const from = await lineForCover(db, auth, periodRow.id, input.from, fromCategory)
+
+  const figures = await lineFiguresById(db, auth, clock, withRow)
+  const source = figures.get(from.id)
+  const target = figures.get(to.id)
+  // Both lines were just read or opened, so both are in the plan.
+  if (!source || !target) throw conflict('That cover could not be recorded. Try again.')
+
+  const check = checkCover({ source, target, amount, sameLine: from.id === to.id })
+  if (!check.ok) {
+    throw conflict(COVER_MESSAGES[check.refusal] ?? 'That cover is not possible.')
+  }
+
+  await insertMove(db, {
+    id: uuidv7(),
+    workspaceId: auth.workspaceId,
+    periodId: periodRow.id,
+    fromLineId: from.id,
+    toLineId: to.id,
+    amount: amount.roundToMinor().toDto().amount,
+    reason: input.reason?.trim() ? input.reason.trim() : null,
+  })
+
+  return readPlanFor(db, auth, clock, withRow)
+}
+
+/** Undoes a cover. The overspend comes back, and so does the money on the line it came from. */
+export async function undoCover(
+  db: Db,
+  auth: RequestAuth,
+  { clock }: PlanDependencies,
+  start: PlainDate | undefined,
+  id: string,
+): Promise<PlanResponse> {
+  assertCanWrite(auth)
+
+  const resolvedPeriod = await resolvePeriod(db, auth, clock, start)
+  const move = await findMoveById(db, auth.workspaceId, id)
+  if (!move || !resolvedPeriod.row) throw notFound('No such cover.')
+  assertOpen(resolvedPeriod)
+
+  const line = await findLineById(db, auth.workspaceId, move.toLineId)
+  if (!line || line.periodId !== resolvedPeriod.row.id) throw notFound('No such cover.')
+
+  await deleteMove(db, auth.workspaceId, id)
+  return readPlanFor(db, auth, clock, resolvedPeriod)
 }

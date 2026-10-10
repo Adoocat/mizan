@@ -12,6 +12,7 @@ import { CurrencyInput } from '../../components/finance/CurrencyInput'
 import { MoneyText } from '../../components/finance/MoneyText'
 import { Button } from '../../components/ui/Button'
 import { Dialog, DialogContent } from '../../components/ui/Dialog'
+import { BudgetImpactPreview } from './BudgetImpactPreview'
 import { FormError, SelectField, TextField } from '../../components/ui/Field'
 import { ApiError } from '../../lib/api-client'
 import { browserClock } from '../../lib/clock'
@@ -435,6 +436,15 @@ export function TransactionFormDialog({
                 onChange={(event) => setNotes(event.target.value)}
               />
             </>
+          )}
+
+          {kind !== 'transfer' && (
+            <BudgetImpactPreview
+              parts={parts}
+              date={date}
+              kind={kind}
+              onBudget={account?.onBudget ?? false}
+            />
           )}
 
           <div className="mt-3 flex justify-end gap-2">

@@ -2,6 +2,7 @@ import {
   copyPlanResponseSchema,
   planResponseSchema,
   type CopyPlanInput,
+  type CoverOverspendInput,
   type PlanResponse,
   type CreatePlanIncomeItemInput,
   type UpdatePlanIncomeItemInput,
@@ -81,6 +82,24 @@ export function useUpdateIncomeItem(start: string | null) {
 export function useDeleteIncomeItem(start: string | null) {
   return usePlanMutation(start, (id: string) =>
     apiDelete(`${path(start)}/income-items/${id}`, planResponseSchema),
+  )
+}
+
+/**
+ * Records a cover: which line paid for an overspend (§10, decision D4).
+ *
+ * The overspend has already come off what can be spent, so this does not change the total — it
+ * says where the money came from, and puts the source line's remainder where it belongs.
+ */
+export function useCoverOverspend(start: string | null) {
+  return usePlanMutation(start, (input: CoverOverspendInput) =>
+    apiPost(`${path(start)}/moves`, input, planResponseSchema),
+  )
+}
+
+export function useUndoCover(start: string | null) {
+  return usePlanMutation(start, (id: string) =>
+    apiDelete(`${path(start)}/moves/${id}`, planResponseSchema),
   )
 }
 

@@ -5,7 +5,7 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { categoryHandlers, testCategory } from '../../test/categories'
-import { planHandlers, TEST_PLAN } from '../../test/plan'
+import { planHandlers, TEST_PLAN, withCover } from '../../test/plan'
 import { axeViolations, renderApp, setLanguage } from '../../test/render'
 import { sessionHandlers } from '../../test/session'
 
@@ -13,6 +13,8 @@ const puts: Record<string, unknown>[] = []
 const copies: { from: string; body: Record<string, unknown> }[] = []
 const patches: { id: string; body: Record<string, unknown> }[] = []
 const posts: Record<string, unknown>[] = []
+const covers: Record<string, unknown>[] = []
+const undos: string[] = []
 
 const server = setupServer(
   http.get('*/api/v1/health', () =>
@@ -31,6 +33,14 @@ const server = setupServer(
   }),
   http.patch('*/api/v1/plans/:start/income-items/:id', async ({ request, params }) => {
     patches.push({ id: String(params.id), body: (await request.json()) as Record<string, unknown> })
+    return HttpResponse.json(TEST_PLAN)
+  }),
+  http.post('*/api/v1/plans/:start/moves', async ({ request }) => {
+    covers.push((await request.json()) as Record<string, unknown>)
+    return HttpResponse.json(TEST_PLAN)
+  }),
+  http.delete('*/api/v1/plans/:start/moves/:id', ({ params }) => {
+    undos.push(String(params.id))
     return HttpResponse.json(TEST_PLAN)
   }),
   http.post('*/api/v1/plans/:start/copy-from/:from', async ({ request, params }) => {
@@ -54,6 +64,8 @@ afterEach(async () => {
   copies.length = 0
   patches.length = 0
   posts.length = 0
+  covers.length = 0
+  undos.length = 0
   await setLanguage('en')
 })
 afterAll(() => server.close())
@@ -342,5 +354,110 @@ describe('accessibility and language', () => {
     expect(screen.getAllByText('Harcanabilir').length).toBeGreaterThan(0)
     expect(screen.getByText('Market')).toBeInTheDocument()
     rendered.unmount()
+  })
+})
+
+describe('safe to spend today', () => {
+  it('shows the daily figure and what is left of it', async () => {
+    await openPlan()
+    const panel = screen.getByRole('region', { name: 'Safe to spend today' })
+
+    expect(panel).toHaveTextContent('₺604')
+    expect(panel).toHaveTextContent('10 days left in this month')
+    expect(panel).toHaveTextContent('₺6,040')
+    expect(panel).toHaveTextContent('₺0 spent today')
+  })
+
+  it('shows its arithmetic, including the overspend that reduced it', async () => {
+    const user = userEvent.setup()
+    await openPlan()
+
+    await user.click(screen.getByRole('button', { name: 'How Safe to spend today is calculated' }))
+    const explain = screen.getByRole('group', { name: 'Safe to spend today' })
+
+    expect(explain).toHaveTextContent('Available to spend this month')
+    expect(explain).toHaveTextContent('₺9,000')
+    expect(explain).toHaveTextContent('Spent so far')
+    expect(explain).toHaveTextContent('−₺2,850')
+    // Decision D4: the overspend is already off the figure, and says so.
+    expect(explain).toHaveTextContent('Overspent elsewhere, not covered')
+    expect(explain).toHaveTextContent('−₺110')
+    expect(explain).toHaveTextContent('Left this month')
+    expect(explain).toHaveTextContent('÷ 10 days left')
+  })
+
+  it('closes the explanation on Escape', async () => {
+    const user = userEvent.setup()
+    await openPlan()
+
+    await user.click(screen.getByRole('button', { name: 'How Safe to spend today is calculated' }))
+    await user.keyboard('{Escape}')
+    expect(screen.queryByRole('group', { name: 'Safe to spend today' })).not.toBeInTheDocument()
+  })
+})
+
+describe('covering an overspend', () => {
+  const overspentRow = () =>
+    screen.getAllByTestId('plan-row').find((row) => row.dataset.status === 'over')!
+
+  it('offers Cover only on the overspent row', async () => {
+    await openPlan()
+    expect(screen.getAllByRole('button', { name: /^Cover the overspend/ })).toHaveLength(1)
+    expect(within(overspentRow()).getByRole('button', { name: /^Cover/ })).toBeInTheDocument()
+  })
+
+  it('covers it from a line that has money left', async () => {
+    const user = userEvent.setup()
+    await openPlan()
+
+    await user.click(within(overspentRow()).getByRole('button', { name: /^Cover/ }))
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).toHaveTextContent('Overspent by')
+    expect(dialog).toHaveTextContent('₺110')
+    // The amount defaults to the whole overspend, and the sources show what each has left.
+    expect(dialog.querySelector('select')).toHaveTextContent('Food & groceries — ₺1,150 left')
+
+    await user.click(within(dialog).getByRole('button', { name: 'Cover it' }))
+
+    await waitFor(() => expect(covers).toHaveLength(1))
+    expect(covers[0]).toEqual({
+      from: { target: 'category', categoryId: testCategory('groceries').id },
+      to: { target: 'category', categoryId: testCategory('personalCare').id },
+      amount: { amount: '110.00', currency: 'TRY' },
+    })
+  })
+
+  it('refuses more than the overspend before it is sent', async () => {
+    const user = userEvent.setup()
+    await openPlan()
+
+    await user.click(within(overspentRow()).getByRole('button', { name: /^Cover/ }))
+    const dialog = screen.getByRole('dialog')
+    const amount = within(dialog).getByRole('textbox', { name: 'Amount to cover' })
+    await user.clear(amount)
+    await user.type(amount, '500')
+
+    expect(within(dialog).getByRole('button', { name: 'Cover it' })).toBeDisabled()
+    expect(await screen.findByText('That is more than the overspend.')).toBeInTheDocument()
+  })
+
+  it('shows a recorded cover on the row and undoes it', async () => {
+    const user = userEvent.setup()
+    /*
+     * The month after the ₺110 overspend on personal care was covered from groceries: the
+     * covered line gained what the source lost, exactly as the API would return it.
+     */
+    const covered = withCover(TEST_PLAN, 'personalCare', 'groceries', '110.00')
+    server.use(...planHandlers(covered))
+    await openPlan()
+
+    const row = screen
+      .getAllByTestId('plan-row')
+      .find((one) => one.textContent?.includes('Öğrenci indirimi'))!
+    expect(row).toHaveTextContent('covered ₺110')
+
+    await user.click(within(row).getByRole('button', { name: 'Undo' }))
+    await waitFor(() => expect(undos).toHaveLength(1))
+    expect(undos[0]).toBe(covered.moves[0]!.id)
   })
 })

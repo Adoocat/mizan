@@ -11,7 +11,8 @@ const unique = () => Math.random().toString(36).slice(2, 8)
 
 async function addAccount(page: Page, name: string, balance: string) {
   await page.goto('/accounts')
-  await page.getByRole('button', { name: 'Add account' }).click()
+  // The page header and, in an empty workspace, the empty state both offer it.
+  await page.getByRole('button', { name: 'Add account' }).first().click()
   const dialog = page.getByRole('dialog')
   await dialog.getByLabel('Account name').fill(name)
   await dialog.getByLabel('Balance today').fill(balance)

@@ -195,7 +195,8 @@
     "addAccount": "Add account",
     "fields": "Form fields",
     "fieldHint": "One message line, used for hints and errors alike.",
-    "amountCompact": "Amount, inline (Plan rows)"
+    "amountCompact": "Amount, inline (Plan rows)",
+    "explain": "Explain popover"
   },
   "days": {
     "mon": "Mon",
@@ -414,7 +415,11 @@
       "save": "Add",
       "failed": "That income could not be saved"
     },
-    "giveItsOwnLine": "Give {{name}} its own amount"
+    "giveItsOwnLine": "Give {{name}} its own amount",
+    "cover": "Cover",
+    "coverFor": "Cover the overspend on {{name}}",
+    "coveredIn": "covered",
+    "coveredOut": "covering"
   },
   "transactions": {
     "summary": {
@@ -506,7 +511,11 @@
       "failed": "Could not save that transaction.",
       "noAccounts": "Add an account first — a transaction has to move money somewhere."
     },
-    "addFirst": "Record your first transaction"
+    "addFirst": "Record your first transaction",
+    "impact": {
+      "line": "{{name}} {{before}} → {{after}}",
+      "allowance": "today's allowance {{before}} → {{after}}"
+    }
   },
   "upcoming": {
     "eyebrow": "Recurring and scheduled money movements",
@@ -1220,5 +1229,48 @@
     "oct": "October",
     "nov": "November",
     "dec": "December"
+  },
+  "explain": {
+    "label": "How {{name}} is calculated",
+    "title": "How this is calculated"
+  },
+  "spend": {
+    "title": "Safe to spend today",
+    "meta_one": "1 day left in this month",
+    "meta_other": "{{count}} days left in this month",
+    "aDay": "a day, for the rest of the month",
+    "leftThisMonth": "left to spend this month",
+    "spentToday": "spent today",
+    "leftToday": "left today",
+    "todayAllowance": "Today's allowance",
+    "carryNote": "Unspent allowance carries into tomorrow.",
+    "periodOver": "This month is over, so there is no allowance left to divide.",
+    "overspentNote": "{{amount}} overspent elsewhere is already off this number. Cover it to record which line paid.",
+    "explain": {
+      "pool": "Available to spend this month",
+      "spent": "Spent so far",
+      "overspent": "Overspent elsewhere, not covered",
+      "overAllocated": "Over-allocated",
+      "left": "Left this month",
+      "divide_one": "÷ 1 day left",
+      "divide_other": "÷ {{count}} days left",
+      "aDay": "a day",
+      "note": "Bills, savings and investments are already set aside, so they don't reduce this number."
+    }
+  },
+  "cover": {
+    "title": "Cover {{name}}",
+    "description": "Say which line paid for the overspend. The plan stays the same size.",
+    "overspentBy": "Overspent by",
+    "from": "Take it from",
+    "sourceOption": "{{name}} — {{amount}} left",
+    "amount": "Amount to cover",
+    "tooMuch": "That is more than the overspend.",
+    "tooMuchForSource": "That line does not have that much left.",
+    "noSource": "No line has anything left to cover this. Reduce an allocation first, or leave it: it is already off what you can spend.",
+    "submit": "Cover it",
+    "done": "Covered",
+    "failed": "That cover could not be recorded",
+    "undoFailed": "That cover could not be undone"
   }
 }

@@ -15,7 +15,7 @@ test('an account opened with 24,850 TL shows exactly that', async ({ page }) => 
   await page.goto('/accounts')
   await expect(page.getByRole('heading', { level: 1, name: 'Accounts' })).toBeVisible()
 
-  await page.getByRole('button', { name: 'Add account' }).click()
+  await page.getByRole('button', { name: 'Add account' }).first().click()
   const dialog = page.getByRole('dialog')
   await dialog.getByLabel('Account name').fill(name)
   await dialog.getByLabel('Type').selectOption({ label: 'Current account' })
@@ -40,7 +40,7 @@ test('reconciling records the one adjustment that closes the gap', async ({ page
   const name = `Reconcile ${unique()}`
 
   await page.goto('/accounts')
-  await page.getByRole('button', { name: 'Add account' }).click()
+  await page.getByRole('button', { name: 'Add account' }).first().click()
   const form = page.getByRole('dialog')
   await form.getByLabel('Account name').fill(name)
   await form.getByLabel('Balance today').fill('1000')
@@ -73,7 +73,7 @@ test('a credit card holds a negative balance and lands in its own group', async 
   const name = `Bonus ${unique()}`
 
   await page.goto('/accounts')
-  await page.getByRole('button', { name: 'Add account' }).click()
+  await page.getByRole('button', { name: 'Add account' }).first().click()
   const dialog = page.getByRole('dialog')
   await dialog.getByLabel('Account name').fill(name)
   await dialog.getByLabel('Type').selectOption({ label: 'Credit card' })
@@ -89,7 +89,7 @@ test('an archived account leaves the list and keeps its history', async ({ page 
   const name = `Closed ${unique()}`
 
   await page.goto('/accounts')
-  await page.getByRole('button', { name: 'Add account' }).click()
+  await page.getByRole('button', { name: 'Add account' }).first().click()
   const form = page.getByRole('dialog')
   await form.getByLabel('Account name').fill(name)
   await form.getByLabel('Balance today').fill('500')

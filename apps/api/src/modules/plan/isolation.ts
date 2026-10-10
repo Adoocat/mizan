@@ -59,6 +59,22 @@ export const planIsolationCases: readonly IsolationCase[] = [
     url: (ids) => `/api/v1/plans/${PLAN_ISOLATION_START}/income-items/${ids.planIncomeItemId}`,
   },
   {
+    name: 'POST /plans/:start/moves',
+    method: 'POST',
+    url: () => `/api/v1/plans/${PLAN_ISOLATION_START}/moves`,
+    // Both ends are the victim's categories, so this doubles as a cross-tenant attempt.
+    payload: (ids) => ({
+      from: { target: 'category', categoryId: ids.otherCategoryId },
+      to: { target: 'category', categoryId: ids.categoryId },
+      amount: { amount: '100.00', currency: 'TRY' },
+    }),
+  },
+  {
+    name: 'DELETE /plans/:start/moves/:id',
+    method: 'DELETE',
+    url: (ids) => `/api/v1/plans/${PLAN_ISOLATION_START}/moves/${ids.planMoveId}`,
+  },
+  {
     name: 'POST /plans/:start/copy-from/:from',
     method: 'POST',
     // The attacker has no plan for the source month, so copying it is refused the same way a

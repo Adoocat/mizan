@@ -129,6 +129,20 @@ export class Money {
     )
   }
 
+  /**
+   * Rounds towards zero to the currency's minor units.
+   *
+   * For a figure that must never promise more than there is: a daily allowance of ₺1,000 over
+   * seven days is ₺142.857…, and half-up would make it ₺142.86 — seven of which come to ₺1,000.02
+   * (§10, safe to spend today).
+   */
+  floorToMinor(): Money {
+    return new Money(
+      this.amount.toDecimalPlaces(this.minorUnits, Decimal.ROUND_DOWN),
+      this.currency,
+    )
+  }
+
   /** True when the amount has no digits beyond the currency's minor units. */
   isWholeMinor(): boolean {
     return this.amount.decimalPlaces() <= this.minorUnits
