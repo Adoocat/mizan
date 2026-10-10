@@ -13,6 +13,7 @@ import { systemClock } from './lib/clock.ts'
 import { accountRoutes } from './modules/accounts/routes.ts'
 import { categoryRoutes } from './modules/categories/routes.ts'
 import { healthRoutes } from './modules/health/routes.ts'
+import { planRoutes } from './modules/plan/routes.ts'
 import { transactionRoutes } from './modules/transactions/routes.ts'
 import { workspaceRoutes } from './modules/workspace/routes.ts'
 import { registerAuth } from './plugins/auth.ts'
@@ -77,6 +78,7 @@ export async function buildApp({ config, database, auth, clock = systemClock }: 
       await api.register(accountRoutes, { database, clock })
       await api.register(categoryRoutes, { database })
       await api.register(transactionRoutes, { database })
+      await api.register(planRoutes, { database, clock })
     },
     { prefix: '/api/v1' },
   )

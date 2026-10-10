@@ -194,7 +194,8 @@
     "emptyDescription": "Add the accounts you use for spending and saving. Their balances start your plan.",
     "addAccount": "Add account",
     "fields": "Form fields",
-    "fieldHint": "One message line, used for hints and errors alike."
+    "fieldHint": "One message line, used for hints and errors alike.",
+    "amountCompact": "Amount, inline (Plan rows)"
   },
   "days": {
     "mon": "Mon",
@@ -334,29 +335,19 @@
   "plan": {
     "eyebrow": "Monthly plan",
     "title": "Give every lira a job",
-    "currentMonth": "October 2026",
     "previousMonth": "Previous month",
     "nextMonth": "Next month",
-    "copyToNext": "Copy to November",
     "totals": {
       "income": "Income available",
       "allocated": "Allocated",
       "left": "Left to allocate"
     },
-    "incomeNote": "Salary ₺46,000 · freelance ₺4,000",
     "allocatedNote": "{{percent}}% of income",
     "leftNote": "Aim for zero — every lira has a job",
     "allocation": "Allocation",
     "allocationNote": "Where this month's income is going",
     "groups": {
       "plannedExpenses": "Planned expenses",
-      "savings": "Savings",
-      "investments": "Investments",
-      "pool": "Available to spend"
-    },
-    "groups2": {
-      "essentials": "Essentials",
-      "flexible": "Flexible",
       "savings": "Savings",
       "investments": "Investments",
       "pool": "Available to spend"
@@ -382,13 +373,48 @@
       "future": "Savings, goals and investments"
     },
     "guideline": "guideline",
-    "changes": "Changes from September",
-    "changeRows": {
-      "investments": "Investments",
-      "groceries": "Food & groceries",
-      "pool": "Available to spend",
-      "sinkingFunds": "Sinking funds"
-    }
+    "incomeNote_zero": "No expected income yet",
+    "incomeNote_one": "From 1 expected item",
+    "incomeNote_other": "From {{count}} expected items",
+    "readyToAssign": "Ready to assign",
+    "overAllocated": "Over-allocated — reduce a category",
+    "allocationLive": "Updating as you type",
+    "editHint": "Edit any amount; totals update as you type",
+    "poolLine": "Available to spend",
+    "uncategorized": "Uncategorized",
+    "uncategorizedNote": "Spending with no category yet, covered by the pool:",
+    "fromPool": "from pool",
+    "fromParent": "from parent",
+    "rolloverOn": "rolls over",
+    "allocationFor": "Allocation for {{name}}",
+    "closedMonth": "This month is closed — reopen it to change the plan",
+    "copyFrom": "Copy from {{month}}",
+    "copied_zero": "Nothing left to copy",
+    "copied_one": "Copied 1 allocation from {{month}}",
+    "copied_other": "Copied {{count}} allocations from {{month}}",
+    "copyFailed": "That month could not be copied",
+    "saveFailed": "That amount could not be saved",
+    "loadFailed": "The plan could not be loaded",
+    "income": {
+      "title": "Expected income",
+      "meta": "What the plan is built on",
+      "add": "Add income",
+      "empty": "No expected income yet. Add your salary to plan against it.",
+      "untitled": "Income",
+      "expected": "Expected",
+      "received": "Received",
+      "markReceived": "Mark received",
+      "undoReceived": "Not received yet",
+      "insteadOf": "instead of",
+      "category": "Category",
+      "label": "Name",
+      "amount": "Expected amount",
+      "date": "Expected on",
+      "dateOutside": "That date is outside this month",
+      "save": "Add",
+      "failed": "That income could not be saved"
+    },
+    "giveItsOwnLine": "Give {{name}} its own amount"
   },
   "transactions": {
     "summary": {
@@ -1151,7 +1177,9 @@
     }
   },
   "dates": {
-    "dayMonthYear": "{{day}} {{month}} {{year}}"
+    "dayMonthYear": "{{day}} {{month}} {{year}}",
+    "monthYear": "{{month}} {{year}}",
+    "range": "{{from}} – {{to}}"
   },
   "categorySettings": {
     "title": "Categories",
@@ -1178,5 +1206,19 @@
     "mergeInto": "Merge into",
     "archive": "Archive",
     "unarchive": "Restore"
+  },
+  "monthsLong": {
+    "jan": "January",
+    "feb": "February",
+    "mar": "March",
+    "apr": "April",
+    "may": "May",
+    "jun": "June",
+    "jul": "July",
+    "aug": "August",
+    "sep": "September",
+    "oct": "October",
+    "nov": "November",
+    "dec": "December"
   }
 }

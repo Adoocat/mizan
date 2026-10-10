@@ -43,6 +43,13 @@
       "when": 1791489262140,
       "tag": "0005_seed_categories",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791637860392,
+      "tag": "0006_plan",
+      "breakpoints": true
     }
   ]
 }

@@ -241,71 +241,10 @@ const TRANSACTIONS: TransactionLine[] = [
   },
 ]
 
-export interface PlanCategoryGroup {
-  key: 'essentials' | 'flexible' | 'savings' | 'investments' | 'pool'
-  colorClass: string
-  lines: { id: string; budgeted: Money; spent: Money }[]
-}
-
-export interface AllocationMixRow {
-  key: 'needs' | 'wants' | 'future'
-  share: Decimal
-  guideline: Decimal
-}
-
 export interface RecurringGroup {
   key: 'housing' | 'debt' | 'subscriptions' | 'saving'
   amount: Money
 }
-
-const PLAN_CATEGORIES: PlanCategoryGroup[] = [
-  {
-    key: 'essentials',
-    colorClass: 'bg-data-essentials',
-    lines: [
-      { id: 'rent', budgeted: tl('14000'), spent: tl('14000') },
-      { id: 'utilities', budgeted: tl('1400'), spent: tl('1070') },
-      { id: 'groceries', budgeted: tl('6000'), spent: tl('4850') },
-      { id: 'transport', budgeted: tl('1800'), spent: tl('1420') },
-    ],
-  },
-  {
-    key: 'flexible',
-    colorClass: 'bg-data-flexible',
-    lines: [
-      { id: 'subscriptions', budgeted: tl('700'), spent: tl('379') },
-      { id: 'personalCare', budgeted: tl('500'), spent: tl('610') },
-      { id: 'diningOut', budgeted: tl('2600'), spent: tl('1990') },
-    ],
-  },
-  {
-    key: 'savings',
-    colorClass: 'bg-data-savings',
-    lines: [
-      { id: 'emergency', budgeted: tl('3000'), spent: tl('3000') },
-      { id: 'japan', budgeted: tl('3000'), spent: tl('3000') },
-    ],
-  },
-  {
-    key: 'investments',
-    colorClass: 'bg-data-investments',
-    lines: [
-      { id: 'funds', budgeted: tl('5000'), spent: tl('5000') },
-      { id: 'gold', budgeted: tl('3000'), spent: tl('0') },
-    ],
-  },
-  {
-    key: 'pool',
-    colorClass: 'bg-data-pool',
-    lines: [{ id: 'pool', budgeted: tl('9000'), spent: tl('6000') }],
-  },
-]
-
-const ALLOCATION_MIX: AllocationMixRow[] = [
-  { key: 'needs', share: decimal('0.466'), guideline: decimal('0.5') },
-  { key: 'wants', share: decimal('0.254'), guideline: decimal('0.3') },
-  { key: 'future', share: decimal('0.28'), guideline: decimal('0.2') },
-]
 
 const RECURRING: RecurringGroup[] = [
   { key: 'housing', amount: tl('11509') },
@@ -328,13 +267,7 @@ export interface SampleData {
     leftToday: Money
     spentTodayRatio: Decimal
   }
-  plan: {
-    income: Money
-    unassigned: Money
-    stillToPay: Money
-    groups: PlanGroup[]
-    elapsed: Decimal
-  }
+  plan: { groups: PlanGroup[]; elapsed: Decimal }
   glance: { checking: Money; spentThisMonth: Money; averageSpending: Money }
   alerts: AlertItem[]
   cashFlow: CashFlowMonth[]
@@ -345,8 +278,6 @@ export interface SampleData {
   goals: GoalLine[]
   goalsTotal: Money
   transactions: TransactionLine[]
-  planCategories: PlanCategoryGroup[]
-  allocationMix: AllocationMixRow[]
   recurring: RecurringGroup[]
   committedBeforeSpending: Money
   calendar: { overdue: Money; lowestBalance: Money; nextIncome: Money }
@@ -366,9 +297,6 @@ export const SAMPLE_DATA: SampleData = {
     spentTodayRatio: decimal('0.2833'),
   },
   plan: {
-    income: tl('50000'),
-    unassigned: tl('0'),
-    stillToPay: tl('3671'),
     groups: PLAN_GROUPS,
     // 71% of October has passed on the 22nd — the expected-pace marker.
     elapsed: decimal('0.71'),
@@ -387,8 +315,6 @@ export const SAMPLE_DATA: SampleData = {
   goals: GOALS,
   goalsTotal: tl('440500'),
   transactions: TRANSACTIONS,
-  planCategories: PLAN_CATEGORIES,
-  allocationMix: ALLOCATION_MIX,
   recurring: RECURRING,
   committedBeforeSpending: tl('32408'),
   calendar: {

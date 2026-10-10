@@ -194,7 +194,8 @@
     "emptyDescription": "Harcama ve birikim için kullandığın hesapları ekle. Bakiyeleri planının başlangıcı olur.",
     "addAccount": "Hesap ekle",
     "fields": "Form alanları",
-    "fieldHint": "Tek mesaj satırı; ipuçları ve hatalar aynı yerde görünür."
+    "fieldHint": "Tek mesaj satırı; ipuçları ve hatalar aynı yerde görünür.",
+    "amountCompact": "Tutar, satır içi (Plan satırları)"
   },
   "days": {
     "mon": "Pzt",
@@ -334,29 +335,19 @@
   "plan": {
     "eyebrow": "Aylık plan",
     "title": "Her liraya bir görev verin",
-    "currentMonth": "Ekim 2026",
     "previousMonth": "Önceki ay",
     "nextMonth": "Sonraki ay",
-    "copyToNext": "Kasım'a kopyala",
     "totals": {
       "income": "Kullanılabilir gelir",
       "allocated": "Dağıtılan",
       "left": "Dağıtılmayı bekleyen"
     },
-    "incomeNote": "Maaş ₺46.000 · serbest iş ₺4.000",
     "allocatedNote": "gelirin %{{percent}}'i",
     "leftNote": "Hedef sıfır — her liranın bir görevi olsun",
     "allocation": "Dağılım",
     "allocationNote": "Bu ayki gelir nereye gidiyor",
     "groups": {
       "plannedExpenses": "Planlı giderler",
-      "savings": "Birikim",
-      "investments": "Yatırımlar",
-      "pool": "Harcanabilir"
-    },
-    "groups2": {
-      "essentials": "Zorunlu",
-      "flexible": "Esnek",
       "savings": "Birikim",
       "investments": "Yatırımlar",
       "pool": "Harcanabilir"
@@ -382,13 +373,48 @@
       "future": "Birikim, hedefler ve yatırımlar"
     },
     "guideline": "ölçüt",
-    "changes": "Eylül'e göre değişimler",
-    "changeRows": {
-      "investments": "Yatırımlar",
-      "groceries": "Market",
-      "pool": "Harcanabilir",
-      "sinkingFunds": "Birikim fonları"
-    }
+    "incomeNote_zero": "Henüz beklenen gelir yok",
+    "incomeNote_one": "1 beklenen gelirden",
+    "incomeNote_other": "{{count}} beklenen gelirden",
+    "readyToAssign": "Dağıtılmaya hazır",
+    "overAllocated": "Fazla dağıtıldı — bir kategoriyi azaltın",
+    "allocationLive": "Yazdıkça güncelleniyor",
+    "editHint": "Tutarları değiştirin; toplamlar yazdıkça güncellenir",
+    "poolLine": "Harcanabilir",
+    "uncategorized": "Kategorisiz",
+    "uncategorizedNote": "Henüz kategorisi olmayan, havuzdan karşılanan harcama:",
+    "fromPool": "havuzdan",
+    "fromParent": "üst kategoriden",
+    "rolloverOn": "devreder",
+    "allocationFor": "{{name}} için ayrılan tutar",
+    "closedMonth": "Bu ay kapandı — planı değiştirmek için yeniden açın",
+    "copyFrom": "{{month}} ayından kopyala",
+    "copied_zero": "Kopyalanacak bir şey kalmadı",
+    "copied_one": "{{month}} ayından 1 tutar kopyalandı",
+    "copied_other": "{{month}} ayından {{count}} tutar kopyalandı",
+    "copyFailed": "O ay kopyalanamadı",
+    "saveFailed": "Tutar kaydedilemedi",
+    "loadFailed": "Plan yüklenemedi",
+    "income": {
+      "title": "Beklenen gelir",
+      "meta": "Planın dayandığı tutarlar",
+      "add": "Gelir ekle",
+      "empty": "Henüz beklenen gelir yok. Planı maaşınıza göre kurmak için ekleyin.",
+      "untitled": "Gelir",
+      "expected": "Bekleniyor",
+      "received": "Alındı",
+      "markReceived": "Alındı olarak işaretle",
+      "undoReceived": "Henüz alınmadı",
+      "insteadOf": "yerine",
+      "category": "Kategori",
+      "label": "Ad",
+      "amount": "Beklenen tutar",
+      "date": "Beklenen tarih",
+      "dateOutside": "Bu tarih planlanan ayın dışında",
+      "save": "Ekle",
+      "failed": "Gelir kaydedilemedi"
+    },
+    "giveItsOwnLine": "{{name}} için ayrı tutar belirle"
   },
   "transactions": {
     "summary": {
@@ -1151,7 +1177,9 @@
     }
   },
   "dates": {
-    "dayMonthYear": "{{day}} {{month}} {{year}}"
+    "dayMonthYear": "{{day}} {{month}} {{year}}",
+    "monthYear": "{{month}} {{year}}",
+    "range": "{{from}} – {{to}}"
   },
   "categorySettings": {
     "title": "Kategoriler",
@@ -1178,5 +1206,19 @@
     "mergeInto": "Şununla birleştir",
     "archive": "Arşivle",
     "unarchive": "Geri al"
+  },
+  "monthsLong": {
+    "jan": "Ocak",
+    "feb": "Şubat",
+    "mar": "Mart",
+    "apr": "Nisan",
+    "may": "Mayıs",
+    "jun": "Haziran",
+    "jul": "Temmuz",
+    "aug": "Ağustos",
+    "sep": "Eylül",
+    "oct": "Ekim",
+    "nov": "Kasım",
+    "dec": "Aralık"
   }
 }

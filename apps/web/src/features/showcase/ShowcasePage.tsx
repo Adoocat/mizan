@@ -320,6 +320,13 @@ export function ShowcasePage() {
             onChange={setAmount}
             hint={t('showcase.amountHint')}
           />
+          <CurrencyInput
+            compact
+            label={t('showcase.amountCompact')}
+            value={amount}
+            onChange={setAmount}
+            className="self-end"
+          />
           <div className="flex flex-col gap-1.5">
             <span className="text-label text-ink-3">{t('showcase.wireValue')}</span>
             <code

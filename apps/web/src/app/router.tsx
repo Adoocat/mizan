@@ -20,6 +20,7 @@ import { HomePage } from '../features/home/HomePage'
 import { LandingPage } from '../features/landing/LandingPage'
 import { PlaceholderPage } from '../features/placeholder/PlaceholderPage'
 import { PlanPage } from '../features/plan/PlanPage'
+import { planSearchSchema } from '../features/plan/search'
 import { SettingsPage } from '../features/settings/SettingsPage'
 import { ShowcasePage } from '../features/showcase/ShowcasePage'
 import { transactionsSearchSchema } from '../features/transactions/search'
@@ -99,7 +100,13 @@ export const routeTree = rootRoute.addChildren([
   ]),
   appRoute.addChildren([
     createRoute({ ...parent, path: '/', component: HomePage }),
-    createRoute({ ...parent, path: '/plan', component: PlanPage }),
+    createRoute({
+      ...parent,
+      path: '/plan',
+      component: PlanPage,
+      // The month lives in the URL, so a month can be shared or reloaded (PLAN §13).
+      validateSearch: planSearchSchema,
+    }),
     createRoute({
       ...parent,
       path: '/transactions',

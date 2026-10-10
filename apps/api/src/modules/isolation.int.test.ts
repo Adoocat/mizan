@@ -1,4 +1,4 @@
-import type { CategoryListResponse, MeResponse } from '@mizan/contracts'
+import type { CategoryListResponse, MeResponse, PlanResponse } from '@mizan/contracts'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { Database } from '../db/client.ts'
 import { buildTestApp, type TestApp } from '../testing/app.ts'
@@ -12,6 +12,7 @@ import { connectTestDatabase } from '../testing/postgres.ts'
 import { signUpActor, type Actor } from '../testing/session.ts'
 import { accountIsolationCases } from './accounts/isolation.ts'
 import { categoryIsolationCases } from './categories/isolation.ts'
+import { PLAN_ISOLATION_START, planIsolationCases } from './plan/isolation.ts'
 import { transactionIsolationCases } from './transactions/isolation.ts'
 import { workspaceIsolationCases } from './workspace/isolation.ts'
 
@@ -25,6 +26,7 @@ const CASES: readonly IsolationCase[] = [
   ...accountIsolationCases,
   ...categoryIsolationCases,
   ...transactionIsolationCases,
+  ...planIsolationCases,
 ]
 
 /** Resources owned by the victim's workspace, keyed by the name the cases use. */
@@ -48,7 +50,8 @@ async function createFixtures(victim: Actor): Promise<IsolationIds> {
   const groups = categories.json<CategoryListResponse>().groups
   const flexible = groups.find((group) => group.kind === 'flexible')
   const [category, otherCategory] = flexible?.categories ?? []
-  if (!flexible || !category || !otherCategory) {
+  const incomeCategory = groups.find((group) => group.kind === 'income')?.categories[0]
+  if (!flexible || !category || !otherCategory || !incomeCategory) {
     throw new Error('fixture categories missing: the workspace was not seeded')
   }
 
@@ -67,12 +70,27 @@ async function createFixtures(victim: Actor): Promise<IsolationIds> {
     throw new Error(`fixture transaction failed (${transaction.statusCode}): ${transaction.body}`)
   }
 
+  // A planned month with one income item, so the plan endpoints have something to address.
+  const incomeItem = await victim.request({
+    method: 'POST',
+    url: `/api/v1/plans/${PLAN_ISOLATION_START}/income-items`,
+    payload: {
+      categoryId: incomeCategory.id,
+      expected: { amount: '46000.00', currency: 'TRY' },
+    },
+  })
+  if (incomeItem.statusCode !== 201) {
+    throw new Error(`fixture income item failed (${incomeItem.statusCode}): ${incomeItem.body}`)
+  }
+
   return {
     accountId,
     categoryGroupId: flexible.id,
     categoryId: category.id,
     otherCategoryId: otherCategory.id,
+    incomeCategoryId: incomeCategory.id,
     transactionId: transaction.json<{ id: string }>().id,
+    planIncomeItemId: incomeItem.json<PlanResponse>().incomeItems[0]!.id,
   }
 }
 

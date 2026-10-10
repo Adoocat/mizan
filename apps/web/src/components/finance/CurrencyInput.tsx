@@ -6,7 +6,7 @@ import {
   type NumberLocale,
   type ParseError,
 } from '@mizan/domain'
-import { useId, useState, type ChangeEvent } from 'react'
+import { useId, useState, type ChangeEvent, type KeyboardEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/cn'
 import { useNumberLocale } from '../../lib/use-locale'
@@ -28,7 +28,15 @@ interface CurrencyInputProps {
   hint?: string
   disabled?: boolean
   autoFocus?: boolean
+  /**
+   * Inline mode, for an amount edited inside a table row (the Plan page): the label is read by a
+   * screen reader but not shown, and the message line appears only when there is something to
+   * say. Everything else — the parsing, the ₺, the right-aligned tabular numerals — is the same.
+   */
+  compact?: boolean
   className?: string
+  onBlur?: () => void
+  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void
 }
 
 const OPERATOR_BETWEEN_DIGITS = /\d\s*[+\-−]\s*[\d.,]/
@@ -66,7 +74,10 @@ export function CurrencyInput({
   hint,
   disabled,
   autoFocus,
+  compact = false,
   className,
+  onBlur,
+  onKeyDown,
 }: CurrencyInputProps) {
   const { t } = useTranslation()
   const locale = useNumberLocale()
@@ -112,16 +123,18 @@ export function CurrencyInput({
   function handleBlur() {
     setTouched(true)
     if (parsed.ok) setText(display(parsed.value))
+    onBlur?.()
   }
 
   return (
-    <div className={cn('flex flex-col gap-1.5', className)}>
-      <label htmlFor={inputId} className="text-label text-ink-2">
+    <div className={cn('flex flex-col', compact ? 'gap-0.5' : 'gap-1.5', className)}>
+      <label htmlFor={inputId} className={cn(compact ? 'sr-only' : 'text-label text-ink-2')}>
         {label}
       </label>
       <div
         className={cn(
-          'flex h-10 items-center gap-1.5 rounded-control border bg-surface px-3.5 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus',
+          'flex items-center gap-1.5 rounded-control border bg-surface focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus',
+          compact ? 'h-9 px-2.5' : 'h-10 px-3.5',
           showError ? 'border-negative' : 'border-border-strong hover:border-border-hover',
           disabled && 'bg-disabled',
         )}
@@ -143,18 +156,25 @@ export function CurrencyInput({
           placeholder={display(Money.zero(info.code))}
           onChange={handleChange}
           onBlur={handleBlur}
+          onKeyDown={onKeyDown}
           aria-invalid={showError || undefined}
           aria-describedby={message ? messageId : undefined}
           className="h-full min-w-0 flex-1 bg-transparent text-right text-value-s tabular-nums text-ink outline-none placeholder:text-ink-3"
         />
       </div>
-      <p
-        id={messageId}
-        aria-live="polite"
-        className={cn('m-0 min-h-4 text-caption', showError ? 'text-negative' : 'text-ink-3')}
-      >
-        {message}
-      </p>
+      {(!compact || message) && (
+        <p
+          id={messageId}
+          aria-live="polite"
+          className={cn(
+            'm-0 text-caption',
+            compact ? '' : 'min-h-4',
+            showError ? 'text-negative' : 'text-ink-3',
+          )}
+        >
+          {message}
+        </p>
+      )}
     </div>
   )
 }

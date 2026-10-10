@@ -16,6 +16,15 @@ the UI wording and may be refined as the Turkish copy is reviewed.
 | Safe to spend today | Bugün güvenle harcanabilir | max(0, ATS excluding today's spending) ÷ days left including today |
 | On-budget account | Bütçe içi hesap | An account whose transactions affect the plan |
 | Carry-over | Devir | What happens to a line's leftover or overspend when a period closes |
+| Expected income | Beklenen gelir | A planned income item: what the month is planned against until the money is confirmed |
+| Received (income) | Alındı | An income item confirmed with the amount that actually arrived, which is what the plan then counts |
+| Unplanned income | Plansız gelir | Income recorded in a category no plan item accounts for |
+| Allocated (A) | Dağıtılan | The sum of every line's planned amount |
+| Available (line) | Kullanılabilir | planned + carry-in + moves in − moves out − actual |
+| Covered by the pool | Havuzdan karşılanıyor | A flexible category with no line of its own; its spending counts on the pool |
+| Covered by its parent | Üst kategoriden karşılanıyor | A subcategory with no line of its own; its spending counts on the parent's line |
+| Rollover | Devretme | A flag on a line: its leftover stays with it next period instead of returning to the pool |
+| Copy a month | Ayı kopyala | Fill a month's plan from an earlier one, leaving any amount already typed untouched |
 | Overspend | Aşım | max(0, −Available(line)) |
 | Cover | Karşıla | Move money from one line to another to cover an overspend |
 | Goal contribution | Hedef katkısı | An earmark (or release) of money for a goal |

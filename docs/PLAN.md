@@ -14,7 +14,7 @@
 | 3 | Auth, users, workspace | ✅ |
 | 4 | Accounts and ledger core | ✅ |
 | 5 | Categories and transactions | ✅ |
-| 6 | Monthly plan I | ⬜ |
+| 6 | Monthly plan I | ✅ |
 | 7 | Available to spend and safe-to-spend | ⬜ |
 | 8 | Goals | ⬜ |
 | 9 | Recurring and upcoming | ⬜ |
@@ -319,9 +319,10 @@ transaction_lines(id, transaction_id→ ON DELETE CASCADE, workspace_id, account
                   FK(account_id, workspace_id, currency) → accounts(id, workspace_id, currency)
 
 plan_periods(id, workspace_id→, start_date, end_date, status, closed_at)  UNIQUE(workspace_id,start_date)
-plan_income_items(id, period_id→, category_id→, label, expected_amount ≥0, expected_date, received_at)
+plan_income_items(id, period_id→, category_id→, label, expected_amount ≥0, expected_date,
+                  received_amount NULL, received_at NULL)   -- confirmed amount, see §10
 plan_lines(id, period_id→, category_id NULL, goal_id NULL, is_pool BOOL, planned_amount ≥0,
-           carry_in, rollover BOOL, sort_order, version)
+           carry_in, rollover BOOL, sort_order, version)    -- goal_id joins in phase 8
            CHECK(exactly one of category_id / goal_id / is_pool)
            UNIQUE(period_id, category_id), UNIQUE(period_id, goal_id), UNIQUE(period_id) WHERE is_pool
 plan_moves(id, period_id→, from_line_id→ NULL, to_line_id→ NULL, amount >0, reason, created_at)
@@ -455,10 +456,13 @@ Fields: `account_id, asset_id, type, trade_date, quantity, price, price_currency
 - **Period:** anchored to `period_start_day` (1–28), stored with explicit start/end dates.
 - **Plan lines:** each line L is a category, a goal, or the single **pool** ("Available to spend"). The pool covers every flexible category without its own line, plus uncategorized spending.
 - **Actual(L):**
-  - *Expense/debt/investment category:* outflows on on-budget accounts in that category (incl. subcategories) dated in P, minus refunds, **excluding** goal-funded lines.
+  - *Expense/debt/investment category:* outflows on on-budget accounts in that category dated in P, minus refunds, **excluding** goal-funded lines. Subcategories without a line of their own are included; one with a line keeps its spending to itself.
   - *Goal line:* contributions to that goal dated in P.
-  - *Pool:* spending in categories without their own line.
-- **Income I:** each income item counts its *expected* amount until marked received (automatically when the recurring income is confirmed or actual ≥ expected), then its *actual* amount. Income with no planned item adds as unplanned income.
+  - *Pool:* spending in flexible categories without their own line, plus on-budget spending with no category at all.
+  - Only `expense`, `income` and `transfer` lines count. An opening balance is not spending and a reconciliation is a correction; an in-budget transfer's legs cancel, and one leaving the budget carries a category on its on-budget leg (ADR 0011).
+- **Who answers for a category:** a category with a line answers for itself. Without one, a flexible category is covered by the **pool** and a subcategory by its **parent**; the cover carries the remainder and the overspend, while the row still reports its own spending. An essential, debt, savings or investment category with no line answers for itself, so anything spent on it surfaces as an overspend the plan never accounted for. Totals add up only the rows that answer for themselves, which is what counts every lira exactly once.
+- **Clearing an allocation removes the line** rather than storing a zero, which is what hands a flexible category back to the pool and a subcategory back to its parent (ADR 0011).
+- **Income I:** per income category, `counted = received + max(expected, actual − received)`, where `received` sums the items the user has confirmed (at the amount they confirmed), `expected` sums the ones they have not, and `actual` is what the ledger recorded in that category this period (ADR 0011). An item counts its expectation until the money overtakes it; a confirmed item counts what was confirmed, so a short salary shows the plan as over-allocated. A category with no item has `expected` of zero, so everything in it is **unplanned income**.
 - **Allocated A** = Σ planned(L) (plan moves net to zero).
 - **Unassigned U** = I + pool carry-in − A. Aim: U = 0. U > 0 → "Left to allocate"; U < 0 → "Over-allocated".
 - **Available(L)** = planned + carry_in + moves_in − moves_out − actual. **Overspend(L)** = max(0, −Available(L)).
@@ -761,6 +765,9 @@ Every phase's Definition of Done also includes: CI green, tests written in the s
 - *Database:* plan_periods, plan_income_items, plan_lines.
 - *Tests:* golden 50k plan, refunds, subcategories, pool membership, expected → actual income switch.
 - *DoD:* Plan page reproduces 27,000 / 6,000 / 8,000 / 9,000 with U = 0.
+- *Deferred (ADR 0011):* the mockup's **"Changes from September"** and **"When October closes"**
+  panels need the previous period's lines and the review projection, both of which belong to
+  phase 10. Rollover flags are stored and shown but only take effect when a period closes.
 
 **Phase 7 — Available to spend and safe-to-spend**
 - *Features:* ATS, safe today, today's remaining allowance, Cover (plan moves), ExplainPopover, budget-impact preview in quick add.
