@@ -8,6 +8,8 @@ import {
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiDelete, apiGet, apiPost, apiPut } from '../../lib/api-client'
 import { accountKeys } from '../accounts/api'
+import { goalKeys } from '../goals/api'
+import { planKeys } from '../plan/api'
 
 /** The filters, in the shape the page holds them (and the URL carries them). */
 export interface TransactionFilters {
@@ -70,8 +72,11 @@ export function useTransactions(filters: TransactionFilters) {
 }
 
 /**
- * Every write invalidates the transactions *and* the accounts: an expense moves a balance, and
- * the Accounts page would otherwise keep showing the old one.
+ * Every write invalidates the transactions, the accounts, the plan and the goals.
+ *
+ * An expense moves a balance, and it is also what a plan line measures against — and an expense
+ * funded from a goal draws that goal down (§9), so the Goals page would otherwise keep showing
+ * money that has been spent.
  */
 function useTransactionMutation<Input, Output>(mutationFn: (input: Input) => Promise<Output>) {
   const queryClient = useQueryClient()
@@ -81,6 +86,8 @@ function useTransactionMutation<Input, Output>(mutationFn: (input: Input) => Pro
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: transactionKeys.all }),
         queryClient.invalidateQueries({ queryKey: accountKeys.all }),
+        queryClient.invalidateQueries({ queryKey: planKeys.all }),
+        queryClient.invalidateQueries({ queryKey: goalKeys.all }),
       ])
     },
   })

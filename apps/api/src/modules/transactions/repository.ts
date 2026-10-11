@@ -19,6 +19,7 @@ export interface TransactionLineRow {
   transactionId: string
   accountId: string
   categoryId: string | null
+  goalId: string | null
   amount: string
   currency: string
   memo: string | null
@@ -40,6 +41,7 @@ const lineColumns = {
   transactionId: transactionLines.transactionId,
   accountId: transactionLines.accountId,
   categoryId: transactionLines.categoryId,
+  goalId: transactionLines.goalId,
   amount: transactionLines.amount,
   currency: transactionLines.currency,
   memo: transactionLines.memo,

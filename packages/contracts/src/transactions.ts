@@ -24,6 +24,11 @@ export const transactionLineSchema = z.object({
   id: z.uuid(),
   accountId: z.uuid(),
   categoryId: z.uuid().nullable(),
+  /**
+   * Set when this line is funded from a goal (§9). The spending comes out of the goal instead of
+   * this month's Available to spend, which is what makes a sinking fund work.
+   */
+  goalId: z.uuid().nullable(),
   amount: moneySchema,
   memo: z.string().nullable(),
 })
@@ -113,6 +118,14 @@ export type TransactionListResponse = z.infer<typeof transactionListResponseSche
  */
 export const transactionPartSchema = z.object({
   categoryId: z.uuid().nullable().optional(),
+  /**
+   * Funds this part from a goal (flow F4: "fund it from a goal").
+   *
+   * The part still carries its category, so the expense is still classified and still shows on
+   * the Transactions page where it belongs — it simply comes out of the goal rather than out of
+   * this month's plan (§9, §10).
+   */
+  goalId: z.uuid().nullable().optional(),
   amount: positiveMoneySchema,
   memo: memoSchema.optional(),
 })

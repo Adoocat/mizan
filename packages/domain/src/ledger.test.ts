@@ -543,6 +543,71 @@ describe('categories on a transaction', () => {
   })
 })
 
+describe('funding a line from a goal', () => {
+  const goalLine = (
+    accountId: string,
+    amount: string,
+    onBudget: boolean,
+    categoryId?: string,
+  ): LedgerLine => ({
+    accountId,
+    amount: tl(amount),
+    onBudget,
+    goalId: 'goal-1',
+    ...(categoryId ? { categoryId } : {}),
+  })
+
+  it('accepts an expense funded from a goal', () => {
+    expect(
+      checkLedgerTransaction({
+        type: 'expense',
+        lines: [goalLine('a', '-14200', true, 'insurance')],
+      }),
+    ).toEqual({ ok: true })
+  })
+
+  it('accepts income funded from a goal, which is how a refund goes back to it', () => {
+    expect(
+      checkLedgerTransaction({
+        type: 'income',
+        lines: [goalLine('a', '14200', true, 'insurance')],
+      }),
+    ).toEqual({ ok: true })
+  })
+
+  it('refuses a transfer funded from a goal', () => {
+    // Moving money between your own accounts does not spend it, so there is nothing for the
+    // earmark to pay for — drawing the goal down would lose it with nothing to show (§9).
+    expect(
+      checkLedgerTransaction({
+        type: 'transfer',
+        lines: [goalLine('a', '-10000', true, 'savingsTransfer'), budgetLine('x', '10000', false)],
+      }),
+    ).toEqual({ ok: false, violation: 'goalNotAllowedOnTransfer' })
+  })
+
+  it('refuses an opening balance or a reconciliation funded from a goal', () => {
+    expect(
+      checkLedgerTransaction({ type: 'adjustment', lines: [goalLine('a', '-500', true)] }),
+    ).toEqual({ ok: false, violation: 'goalNotAllowedOnTransfer' })
+    expect(
+      checkLedgerTransaction({ type: 'opening_balance', lines: [goalLine('a', '500', true)] }),
+    ).toEqual({ ok: false, violation: 'goalNotAllowedOnTransfer' })
+  })
+
+  it('still requires a category: the goal says who pays, not what it was for', () => {
+    expect(
+      checkLedgerTransaction({ type: 'expense', lines: [goalLine('a', '-14200', true)] }),
+    ).toEqual({ ok: false, violation: 'goalNeedsCategory' })
+  })
+
+  it('leaves an off-budget line alone, as the category rules do', () => {
+    expect(
+      checkLedgerTransaction({ type: 'expense', lines: [goalLine('x', '-14200', false)] }),
+    ).toEqual({ ok: true })
+  })
+})
+
 describe('splits', () => {
   it('reports what is left to assign while the 1,600 TL split is entered', () => {
     const total = tl('1600')

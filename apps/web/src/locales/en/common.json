@@ -509,7 +509,11 @@
       "unassigned": "Left to assign",
       "submit": "Save",
       "failed": "Could not save that transaction.",
-      "noAccounts": "Add an account first — a transaction has to move money somewhere."
+      "noAccounts": "Add an account first — a transaction has to move money somewhere.",
+      "fundedFrom": "Funded from a goal",
+      "fundedFromNone": "This month’s plan",
+      "fundedFromHint": "Comes out of the goal, not out of what is available to spend this month.",
+      "fundedFromEmptyHint": "Leave as it is unless you saved up for this separately."
     },
     "addFirst": "Record your first transaction",
     "impact": {
@@ -557,17 +561,97 @@
     "summary": "{{count}} goals",
     "committed": "committed",
     "of": "of",
-    "names": {
-      "emergency": "Emergency fund",
-      "japan": "Japan trip",
-      "computer": "New computer",
-      "house": "House deposit"
+    "loadFailed": "Your goals could not be loaded.",
+    "emptyTitle": "No goals yet",
+    "emptyBody": "A goal gives money a purpose without moving it anywhere. Start with an emergency fund of a few months of essentials, a savings goal for something you are working towards, or a sinking fund for a bill you know is coming.",
+    "showArchived": "Show archived",
+    "hideArchived": "Hide archived",
+    "archived": "Archived",
+    "archive": "Archive",
+    "unarchive": "Bring back",
+    "edit": "Edit",
+    "addToPlan": "Add to plan",
+    "addToPlanFailed": "That goal could not be added to the plan.",
+    "inPlan": "In this month’s plan:",
+    "types": {
+      "emergency_fund": "Emergency fund",
+      "savings": "Savings goal",
+      "sinking_fund": "Sinking fund"
     },
-    "notes": {
-      "emergency": "3.3 months of essential expenses covered",
-      "japan": "Target Jul 2027 · about 2 months behind",
-      "computer": "On track for Dec 2027",
-      "house": "Cash, funds and gold · target Dec 2029"
+    "repeats": {
+      "monthly": "Every month",
+      "quarterly": "Every three months",
+      "annual": "Every year"
+    },
+    "status": {
+      "funded": "Funded",
+      "onTrack": "On track",
+      "behind": "Behind",
+      "neutral": "Not tracked"
+    },
+    "note": {
+      "funded": "Fully funded",
+      "coverage": "{{months}} months of essential expenses covered",
+      "requiredMonthly": "Needs",
+      "by": "by {{date}}",
+      "projected": "On course to finish in {{date}}",
+      "noDate": "No target date, so no monthly amount to aim for"
+    },
+    "overEarmarked": {
+      "title": "More is earmarked than is there",
+      "body": "more is earmarked than {{account}} holds. The goals still stand — the money just is not there yet."
+    },
+    "form": {
+      "addTitle": "New goal",
+      "addLead": "A goal earmarks money you already have. Nothing moves between your accounts.",
+      "editTitle": "Edit goal",
+      "failed": "That goal could not be saved.",
+      "type": "Kind of goal",
+      "typeFixed": "The kind cannot change: each one keeps its target differently.",
+      "typeHint": {
+        "emergency_fund": "Its target is months of your planned essentials, and follows your plan.",
+        "savings": "A target you are working towards, with or without a date.",
+        "sinking_fund": "A bill you know is coming, with the date it falls due."
+      },
+      "name": "Name",
+      "nameRequired": "Give the goal a name.",
+      "months": "Months of cover",
+      "monthsOption": "{{count}} months of essentials",
+      "derivedTarget": "Your plan plans",
+      "derivedTargetSuffix": "of essentials and debt a month, which is what the target is built from.",
+      "target": "Target",
+      "targetEditHint": "Leave empty to keep the current target.",
+      "dueDate": "Due date",
+      "dueDateHint": "The day the bill falls due.",
+      "repeat": "Comes round again",
+      "repeatNone": "One off",
+      "repeatHint": "Recorded now; Mizan will move the date forward for you in a later version.",
+      "targetDate": "Target date (optional)",
+      "targetDateHint": "With a date, Mizan can say what the goal needs each month.",
+      "keptIn": "Kept in",
+      "keptInNone": "Not set",
+      "keptInHint": "Mizan warns you if the goals in an account earmark more than it holds.",
+      "note": "Note (optional)",
+      "submit": "Create goal"
+    },
+    "contribute": {
+      "action": "Contribute",
+      "title": "Contribute to {{name}}",
+      "lead": "Earmarking money does not move it. Your balances stay exactly where they are.",
+      "failed": "That contribution could not be recorded.",
+      "direction": "Earmark or release",
+      "earmark": "Earmark",
+      "release": "Release",
+      "earmarkAmount": "Amount to earmark",
+      "releaseAmount": "Amount to release",
+      "earmarkHint": "Comes out of what is available to spend this month.",
+      "releaseHint": "Goes back to what is available to spend.",
+      "releasable": "This goal holds",
+      "moreThanSaved": "That is more than this goal holds.",
+      "preview": "The goal would hold",
+      "note": "Note (optional)",
+      "earmarkSubmit": "Earmark money",
+      "releaseSubmit": "Release money"
     },
     "howItWorks": "How goals work",
     "howItWorksBody": "A goal earmarks money you already have. Contributing moves money from Available to spend into the goal; releasing it moves the money back. Balances stay in your real accounts — Mizan only remembers what each lira is for."
@@ -869,6 +953,17 @@
       "mar2027": "Due March 2027",
       "feb2027": "Due February 2027",
       "sep2027": "Due September 2027"
+    },
+    "goalNames": {
+      "emergency": "Emergency fund",
+      "japan": "Japan trip",
+      "computer": "New computer",
+      "house": "House deposit"
+    },
+    "goalNotes": {
+      "japan": "Target Jul 2027 · about 2 months behind",
+      "computer": "On track for Dec 2027",
+      "house": "Cash, funds and gold · target Dec 2029"
     }
   },
   "investments": {

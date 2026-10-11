@@ -68,7 +68,7 @@ export function SavingsPage() {
 
       <div className="flex flex-wrap gap-5">
         <Panel
-          title={t('goals.names.emergency')}
+          title={t('savings.goalNames.emergency')}
           meta={t('savings.priority')}
           className="flex-[1.3] basis-[30rem]"
           action={<Badge tone="warning">{t('savings.funded', { percent: 55 })}</Badge>}
@@ -81,7 +81,7 @@ export function SavingsPage() {
               {t('savings.ofTarget')} <MoneyText value={emergency.target} fractionDigits="none" />
             </span>
           </div>
-          <ProgressBar value={share} tone="accent" label={t('goals.names.emergency')} />
+          <ProgressBar value={share} tone="accent" label={t('savings.goalNames.emergency')} />
           <dl className="m-0 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-5">
             {(
               [
@@ -140,7 +140,7 @@ export function SavingsPage() {
           {SAVINGS.goals.map((goal) => (
             <div key={goal.id} className="flex flex-col gap-2">
               <div className="flex flex-wrap items-baseline justify-between gap-3 text-body">
-                <span className="text-ink">{t(`goals.names.${goal.id}`)}</span>
+                <span className="text-ink">{t(`savings.goalNames.${goal.id}`)}</span>
                 <span className="text-ink-2">
                   <MoneyText value={goal.saved} fractionDigits="none" />
                   <span className="text-ink-3">
@@ -152,7 +152,7 @@ export function SavingsPage() {
               <ProgressBar
                 value={goal.saved.amount.dividedBy(goal.target.amount)}
                 tone={goal.status === 'behind' ? 'warning' : 'accent'}
-                label={t(`goals.names.${goal.id}`)}
+                label={t(`savings.goalNames.${goal.id}`)}
               />
               <div className="flex flex-wrap justify-between gap-3 text-caption text-ink-3">
                 <span>
@@ -164,7 +164,7 @@ export function SavingsPage() {
                     goal.status === 'onTrack' && 'text-positive',
                   )}
                 >
-                  {t(`goals.notes.${goal.id}`)}
+                  {t(`savings.goalNotes.${goal.id}`)}
                 </span>
               </div>
             </div>

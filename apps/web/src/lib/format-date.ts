@@ -35,6 +35,20 @@ export function useFormatDate() {
   }
 }
 
+/**
+ * Names the month a date falls in: `Aug 2029`, `Ağu 2029`.
+ *
+ * For a figure that is only ever accurate to the month — when a goal's plan line will finish
+ * funding it (§9) — where showing a day would promise more precision than the projection has.
+ */
+export function useFormatMonthYear() {
+  const { t } = useTranslation()
+  return (date: PlainDate): string => {
+    const { year, month } = toParts(date)
+    return t('dates.monthYear', { month: t(`months.${MONTH_KEYS[month - 1]!}`), year })
+  }
+}
+
 /** The short month name of a date: `Sep`, `Eki`. What the month switcher's arrows are labelled. */
 export function useFormatShortMonth() {
   const { t } = useTranslation()

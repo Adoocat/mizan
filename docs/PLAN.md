@@ -16,7 +16,7 @@
 | 5 | Categories and transactions | ✅ |
 | 6 | Monthly plan I | ✅ |
 | 7 | Available to spend and safe-to-spend | ✅ |
-| 8 | Goals | ⬜ |
+| 8 | Goals | ✅ |
 | 9 | Recurring and upcoming | ⬜ |
 | 10 | Month review and close | ⬜ |
 | 11 | Dashboard and onboarding | ⬜ |
@@ -784,6 +784,10 @@ Every phase's Definition of Done also includes: CI green, tests written in the s
 - *Database:* goals, goal_contributions, `goal_id` on plan lines and transaction lines.
 - *Tests:* required monthly (10k and 3k examples); goal-funded expenses excluded from ATS.
 - *DoD:* Goals page shows the three types; plan savings lines track contributions.
+- *Deferred (ADR 0013):* a sinking fund's `repeat` is stored and shown but rolling `target_date`
+  forward lands with recurring in phase 9. The **Savings** page still reads `wealth-data.ts`: its
+  rates and real returns are v1.1 (§8), and the goals it showed are now the Goals page's own.
+  Combined goals with funding sources remain v2.
 
 **Phase 9 — Recurring and upcoming**
 - *Features:* rule editor, virtual expansion, upcoming/overdue list, confirm/skip/override, this/future/all edits, pause/end, opt-in auto-post job, plan prefill from rules, uncovered-recurring warnings.
@@ -867,4 +871,7 @@ Status legend: **Pending** = recommended default recorded, awaiting confirmation
 | D6 | Workspace ownership from day one | Yes (supports shared finance later and the "Personal ▾" switcher) | Phase 3 | **Confirmed** — [ADR 0008](adr/0008-auth-and-workspaces.md) |
 | D7 | Currency scope in MVP | TRY only, currency columns everywhere; multi-currency in v1.1 | Phase 4 | **Confirmed** — [ADR 0009](adr/0009-ledger-core.md) |
 | D8 | Navigation merges | Merge Savings + Goals; Debts + Net Worth into Accounts (§13) | Phase 2 | **Confirmed** — [ADR 0004](adr/0004-navigation-merges.md) |
+| D10 | Emergency fund target | **Derived** from the current plan's essential and debt lines on every read, not snapshotted; the fund stores no target of its own | Phase 8 | **Confirmed** — [ADR 0013](adr/0013-goals.md) |
+| D11 | Required monthly with no target date | Omitted (`null`): no date means no denominator, so the card shows progress and a derived finish date instead | Phase 8 | **Confirmed** — [ADR 0013](adr/0013-goals.md) |
+| D12 | Sinking fund `repeat` | Stored and shown in phase 8; rolling `target_date` forward lands with recurring in phase 9 | Phase 8/9 | **Confirmed** — [ADR 0013](adr/0013-goals.md) |
 | D9 | Audience | Built to launch quality, private beta in an EU region; review hosting/KVKK before any public launch in Türkiye | Phase 12 | Pending |

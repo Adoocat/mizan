@@ -22,6 +22,7 @@ import type { RequestAuth } from '../../plugins/auth.ts'
 import { badRequest, conflict, notFound } from '../../plugins/errors.ts'
 import { findAccountById, type AccountRow } from '../accounts/repository.ts'
 import { findLiveCategoryIds } from '../categories/repository.ts'
+import { findGoalById } from '../goals/repository.ts'
 import { insertLines, insertTransaction } from '../ledger/repository.ts'
 import { validateTransaction } from '../ledger/service.ts'
 import { assertCanWrite } from '../workspace/service.ts'
@@ -46,6 +47,7 @@ function toLineDto(row: TransactionLineRow): TransactionLineDto {
     id: row.id,
     accountId: row.accountId,
     categoryId: row.categoryId,
+    goalId: row.goalId,
     amount: Money.of(row.amount, row.currency).toDto(),
     memo: row.memo,
   }
@@ -219,6 +221,28 @@ async function assertCategories(
   }
 }
 
+/**
+ * Every goal a line is funded from has to be live and belong to this workspace (§9).
+ *
+ * An archived goal is refused: the user put it away, and new spending must not quietly draw it
+ * down. Releasing what it still holds is a contribution, which is its own decision.
+ */
+async function assertGoals(
+  db: Db,
+  auth: RequestAuth,
+  ids: readonly (string | null | undefined)[],
+): Promise<void> {
+  const wanted = [...new Set(ids.filter((id): id is string => Boolean(id)))]
+  if (wanted.length === 0) return
+
+  for (const id of wanted) {
+    const goal = await findGoalById(db, auth.workspaceId, id)
+    // Another workspace's id is indistinguishable from one that does not exist.
+    if (!goal) throw notFound('No such goal.')
+    if (goal.archivedAt) throw conflict('That goal is archived.')
+  }
+}
+
 interface PreparedWrite {
   type: TransactionType
   date: PlainDate
@@ -292,6 +316,11 @@ async function prepare(
     auth,
     input.parts.map((part) => part.categoryId),
   )
+  await assertGoals(
+    db,
+    auth,
+    input.parts.map((part) => part.goalId),
+  )
 
   const account = accounts.get(input.accountId)!
   const sign = input.type === 'expense' ? -1 : 1
@@ -304,6 +333,8 @@ async function prepare(
       accountId: account.id,
       amount: amount.times(sign),
       categoryId: part.categoryId ?? null,
+      // Funded from a goal: the spending draws down that earmark instead of this month's plan.
+      goalId: part.goalId ?? null,
       onBudget: account.onBudget,
     }
   })

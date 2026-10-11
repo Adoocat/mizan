@@ -12,6 +12,7 @@ import type { Database } from './db/client.ts'
 import { systemClock } from './lib/clock.ts'
 import { accountRoutes } from './modules/accounts/routes.ts'
 import { categoryRoutes } from './modules/categories/routes.ts'
+import { goalRoutes } from './modules/goals/routes.ts'
 import { healthRoutes } from './modules/health/routes.ts'
 import { planRoutes } from './modules/plan/routes.ts'
 import { transactionRoutes } from './modules/transactions/routes.ts'
@@ -79,6 +80,7 @@ export async function buildApp({ config, database, auth, clock = systemClock }: 
       await api.register(categoryRoutes, { database })
       await api.register(transactionRoutes, { database })
       await api.register(planRoutes, { database, clock })
+      await api.register(goalRoutes, { database, clock })
     },
     { prefix: '/api/v1' },
   )

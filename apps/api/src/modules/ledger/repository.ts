@@ -92,6 +92,7 @@ export async function insertLines(tx: Executor, input: WriteLinesInput): Promise
         accountId: line.accountId,
         currency: amount.currency,
         categoryId: line.categoryId ?? null,
+        goalId: line.goalId ?? null,
         amount: amount.amount,
         baseAmount: amount.amount,
         fxRate: null,

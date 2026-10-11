@@ -15,6 +15,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core'
 import { categories } from './categories.ts'
+import { goals } from './goals.ts'
 import { workspaces } from './workspaces.ts'
 
 const instant = () => timestamp({ withTimezone: true, mode: 'date' })
@@ -125,10 +126,11 @@ export const planIncomeItems = pgTable(
 /**
  * One allocation in a period: money given a job (§6, §10).
  *
- * A line targets a category **or** the pool. `goal_id` joins the choice in phase 8, which is
- * when goals exist to point at; until then a savings allocation is a line on a savings category.
- * The pool — "Available to spend" — is the single line that covers every flexible category
- * without one of its own, and there can be at most one of it per period.
+ * A line targets a category, a **goal**, or the pool. A goal line's `actual` is the contributions
+ * to that goal dated in the period (§10), which is how "add to plan" turns a goal's required
+ * monthly amount into something the plan measures. The pool — "Available to spend" — is the
+ * single line that covers every flexible category without one of its own, and there can be at
+ * most one of it per period.
  *
  * `carry_in` is what the previous period's close left to this line (phase 10); it is zero until
  * then. `version` is bumped on every edit so the inline editing on the Plan page can refuse a
@@ -143,6 +145,7 @@ export const planLines = pgTable(
       .references(() => workspaces.id, { onDelete: 'cascade' }),
     periodId: uuid().notNull(),
     categoryId: uuid(),
+    goalId: uuid(),
     isPool: boolean().notNull().default(false),
     plannedAmount: money().notNull(),
     carryIn: money().notNull().default('0'),
@@ -164,17 +167,29 @@ export const planLines = pgTable(
       columns: [table.categoryId, table.workspaceId],
       foreignColumns: [categories.id, categories.workspaceId],
     }),
+    foreignKey({
+      name: 'plan_lines_goal_fk',
+      columns: [table.goalId, table.workspaceId],
+      foreignColumns: [goals.id, goals.workspaceId],
+    }),
     // The target of the composite foreign keys on plan_moves: a move can never join two
     // workspaces' lines.
     unique('plan_lines_id_workspace_key').on(table.id, table.workspaceId),
     // One line per category per period: two would make "what is left" ambiguous.
     unique('plan_lines_period_category_key').on(table.periodId, table.categoryId),
+    // And one per goal, for the same reason.
+    unique('plan_lines_period_goal_key').on(table.periodId, table.goalId),
     uniqueIndex('plan_lines_period_pool_key')
       .on(table.periodId)
       .where(sql`${table.isPool}`),
     index('plan_lines_period_idx').on(table.workspaceId, table.periodId, table.sortOrder),
-    // Exactly one target. Phase 8 widens this to include `goal_id`.
-    check('plan_lines_one_target', sql`(${table.categoryId} IS NOT NULL) <> ${table.isPool}`),
+    // Exactly one target: a category, a goal, or the pool.
+    check(
+      'plan_lines_one_target',
+      sql`(CASE WHEN ${table.categoryId} IS NOT NULL THEN 1 ELSE 0 END)
+          + (CASE WHEN ${table.goalId} IS NOT NULL THEN 1 ELSE 0 END)
+          + (CASE WHEN ${table.isPool} THEN 1 ELSE 0 END) = 1`,
+    ),
     check('plan_lines_planned_not_negative', sql`${table.plannedAmount} >= 0`),
   ],
 )

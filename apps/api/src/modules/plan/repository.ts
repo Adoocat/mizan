@@ -28,6 +28,7 @@ export interface PlanLineRow {
   id: string
   periodId: string
   categoryId: string | null
+  goalId: string | null
   isPool: boolean
   plannedAmount: string
   carryIn: string
@@ -60,6 +61,7 @@ const lineColumns = {
   id: planLines.id,
   periodId: planLines.periodId,
   categoryId: planLines.categoryId,
+  goalId: planLines.goalId,
   isPool: planLines.isPool,
   plannedAmount: planLines.plannedAmount,
   carryIn: planLines.carryIn,
@@ -179,12 +181,17 @@ export async function findLineById(
   return row
 }
 
-/** The line a target already has in this period, if any: what makes an edit an upsert. */
+/**
+ * The line a target already has in this period, if any: what makes an edit an upsert.
+ *
+ * Both columns are matched, never just one. A goal line and the pool line both have no category,
+ * so matching on `category_id IS NULL` alone would hand a goal's allocation back as the pool's.
+ */
 export async function findLineByTarget(
   tx: Executor,
   workspaceId: string,
   periodId: string,
-  target: { categoryId: string | null },
+  target: { categoryId: string | null; goalId: string | null },
 ): Promise<PlanLineRow | undefined> {
   const [row] = await tx
     .select(lineColumns)
@@ -196,6 +203,7 @@ export async function findLineByTarget(
         target.categoryId === null
           ? isNull(planLines.categoryId)
           : eq(planLines.categoryId, target.categoryId),
+        target.goalId === null ? isNull(planLines.goalId) : eq(planLines.goalId, target.goalId),
       ),
     )
     .limit(1)
@@ -207,6 +215,7 @@ export interface InsertLineInput {
   workspaceId: string
   periodId: string
   categoryId: string | null
+  goalId: string | null
   isPool: boolean
   plannedAmount: string
   rollover: boolean
@@ -394,6 +403,9 @@ export interface CategoryActualRow {
  *   inside the budget carries no category and its two legs cancel; one that leaves the budget
  *   carries a category on the on-budget leg, which is exactly the spending the plan should see.
  * - dates in `[start, end)`, taken from the denormalized date on the line.
+ * - **not** goal-funded lines (§9, §10). Money spent out of a goal was earmarked in an earlier
+ *   month, so counting it here would charge it to this month's plan a second time and pull down
+ *   what is available to spend. Leaving it out is precisely what makes a sinking fund work.
  */
 export async function sumActualByCategory(
   tx: Executor,
@@ -420,6 +432,8 @@ export async function sumActualByCategory(
         eq(transactionLines.workspaceId, workspaceId),
         isNull(transactions.deletedAt),
         eq(accounts.onBudget, true),
+        // Spending funded from a goal belongs to that goal, not to this month's plan (§9).
+        isNull(transactionLines.goalId),
         sql`${transactions.type} IN ('expense', 'income', 'transfer')`,
         sql`${transactionLines.date} >= ${period.start}`,
         sql`${transactionLines.date} < ${period.end}`,

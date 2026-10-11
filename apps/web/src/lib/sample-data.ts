@@ -47,13 +47,6 @@ export interface BudgetLine {
   status: 'onPace' | 'aheadOfPace' | 'over'
 }
 
-export interface GoalLine {
-  id: string
-  saved: Money
-  target: Money
-  status: 'onTrack' | 'behind' | 'neutral'
-}
-
 export interface TransactionLine {
   id: string
   date: string
@@ -175,13 +168,6 @@ const BUDGETS: BudgetLine[] = [
   { id: 'subscriptions', spent: tl('379'), limit: tl('700'), status: 'onPace' },
 ]
 
-const GOALS: GoalLine[] = [
-  { id: 'emergency', saved: tl('82000'), target: tl('150000'), status: 'neutral' },
-  { id: 'japan', saved: tl('24500'), target: tl('35000'), status: 'behind' },
-  { id: 'computer', saved: tl('27000'), target: tl('40000'), status: 'onTrack' },
-  { id: 'house', saved: tl('650000'), target: tl('1500000'), status: 'neutral' },
-]
-
 const TRANSACTIONS: TransactionLine[] = [
   {
     id: 't1',
@@ -275,8 +261,6 @@ export interface SampleData {
   upcomingTotal: Money
   checkingAfterUpcoming: Money
   budgets: BudgetLine[]
-  goals: GoalLine[]
-  goalsTotal: Money
   transactions: TransactionLine[]
   recurring: RecurringGroup[]
   committedBeforeSpending: Money
@@ -312,8 +296,6 @@ export const SAMPLE_DATA: SampleData = {
   upcomingTotal: tl('7430'),
   checkingAfterUpcoming: tl('17110'),
   budgets: BUDGETS,
-  goals: GOALS,
-  goalsTotal: tl('440500'),
   transactions: TRANSACTIONS,
   recurring: RECURRING,
   committedBeforeSpending: tl('32408'),

@@ -143,6 +143,17 @@ export class Money {
     )
   }
 
+  /**
+   * Rounds away from zero to the currency's minor units.
+   *
+   * The mirror of `floorToMinor`, for a figure that must never fall short: ₺10,000 needed over
+   * three months is ₺3,333.34 a month, and three of those clear the goal — where half-up would
+   * leave it one kuruş short of its target (§9, required monthly).
+   */
+  ceilToMinor(): Money {
+    return new Money(this.amount.toDecimalPlaces(this.minorUnits, Decimal.ROUND_UP), this.currency)
+  }
+
   /** True when the amount has no digits beyond the currency's minor units. */
   isWholeMinor(): boolean {
     return this.amount.decimalPlaces() <= this.minorUnits

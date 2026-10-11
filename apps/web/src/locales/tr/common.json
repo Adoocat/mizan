@@ -509,7 +509,11 @@
       "unassigned": "Dağıtılmayı bekleyen",
       "submit": "Kaydet",
       "failed": "Bu işlem kaydedilemedi.",
-      "noAccounts": "Önce bir hesap ekleyin — her işlem bir yerden para hareket ettirir."
+      "noAccounts": "Önce bir hesap ekleyin — her işlem bir yerden para hareket ettirir.",
+      "fundedFrom": "Hangi hedeften",
+      "fundedFromNone": "Bu ayın planından",
+      "fundedFromHint": "Bu ay harcanabilir tutardan değil, hedeften düşer.",
+      "fundedFromEmptyHint": "Bunun için ayrıca birikim yapmadıysanız olduğu gibi bırakın."
     },
     "addFirst": "İlk işleminizi kaydedin",
     "impact": {
@@ -557,17 +561,97 @@
     "summary": "{{count}} hedef",
     "committed": "bağlandı",
     "of": "/",
-    "names": {
-      "emergency": "Acil durum fonu",
-      "japan": "Japonya gezisi",
-      "computer": "Yeni bilgisayar",
-      "house": "Ev peşinatı"
+    "loadFailed": "Hedefleriniz yüklenemedi.",
+    "emptyTitle": "Henüz hedef yok",
+    "emptyBody": "Hedef, parayı hiçbir yere taşımadan ona bir amaç verir. Birkaç aylık zorunlu gideri karşılayan bir acil durum fonuyla, çalıştığınız bir birikim hedefiyle ya da geldiğini bildiğiniz bir fatura için bir birikim fonuyla başlayın.",
+    "showArchived": "Arşivlenenleri göster",
+    "hideArchived": "Arşivlenenleri gizle",
+    "archived": "Arşivlendi",
+    "archive": "Arşivle",
+    "unarchive": "Geri getir",
+    "edit": "Düzenle",
+    "addToPlan": "Plana ekle",
+    "addToPlanFailed": "Bu hedef plana eklenemedi.",
+    "inPlan": "Bu ayın planında:",
+    "types": {
+      "emergency_fund": "Acil durum fonu",
+      "savings": "Birikim hedefi",
+      "sinking_fund": "Birikim fonu"
     },
-    "notes": {
-      "emergency": "3,3 aylık zorunlu gider karşılanıyor",
-      "japan": "Hedef Tem 2027 · yaklaşık 2 ay geride",
-      "computer": "Ara 2027 için yolunda",
-      "house": "Nakit, fon ve altın · hedef Ara 2029"
+    "repeats": {
+      "monthly": "Her ay",
+      "quarterly": "Üç ayda bir",
+      "annual": "Her yıl"
+    },
+    "status": {
+      "funded": "Tamamlandı",
+      "onTrack": "Yolunda",
+      "behind": "Geride",
+      "neutral": "İzlenmiyor"
+    },
+    "note": {
+      "funded": "Tamamen fonlandı",
+      "coverage": "{{months}} aylık zorunlu gider karşılanıyor",
+      "requiredMonthly": "Aylık gereken",
+      "by": "{{date}} tarihine kadar",
+      "projected": "{{date}} tarihinde tamamlanma yolunda",
+      "noDate": "Hedef tarihi yok, bu yüzden aylık bir tutar hesaplanamıyor"
+    },
+    "overEarmarked": {
+      "title": "Ayrılan tutar mevcuttan fazla",
+      "body": "tutar {{account}} hesabında olandan fazla ayrılmış. Hedefler geçerli — para henüz orada değil."
+    },
+    "form": {
+      "addTitle": "Yeni hedef",
+      "addLead": "Hedef, hâlihazırda sahip olduğunuz parayı ayırır. Hesaplarınız arasında hiçbir şey taşınmaz.",
+      "editTitle": "Hedefi düzenle",
+      "failed": "Bu hedef kaydedilemedi.",
+      "type": "Hedef türü",
+      "typeFixed": "Tür değiştirilemez: her biri hedefini farklı biçimde tutar.",
+      "typeHint": {
+        "emergency_fund": "Hedefi, planladığınız zorunlu giderlerin ay sayısıdır ve planınızı izler.",
+        "savings": "Tarihli ya da tarihsiz, ulaşmak istediğiniz bir tutar.",
+        "sinking_fund": "Geldiğini bildiğiniz bir fatura ve vade tarihi."
+      },
+      "name": "Ad",
+      "nameRequired": "Hedefe bir ad verin.",
+      "months": "Kaç aylık karşılık",
+      "monthsOption": "{{count}} aylık zorunlu gider",
+      "derivedTarget": "Planınız ayda",
+      "derivedTargetSuffix": "zorunlu gider ve borç planlıyor; hedef bunun üzerine kurulu.",
+      "target": "Hedef tutar",
+      "targetEditHint": "Mevcut hedefi korumak için boş bırakın.",
+      "dueDate": "Vade tarihi",
+      "dueDateHint": "Faturanın ödenmesi gereken gün.",
+      "repeat": "Tekrarlanma",
+      "repeatNone": "Tek seferlik",
+      "repeatHint": "Şimdi kaydedilir; Mizan tarihi ileri almayı sonraki bir sürümde yapacak.",
+      "targetDate": "Hedef tarihi (isteğe bağlı)",
+      "targetDateHint": "Tarih verirseniz Mizan hedefin aylık ne kadar gerektirdiğini söyleyebilir.",
+      "keptIn": "Nerede tutuluyor",
+      "keptInNone": "Belirtilmedi",
+      "keptInHint": "Bir hesaptaki hedefler hesapta olandan fazlasını ayırırsa Mizan sizi uyarır.",
+      "note": "Not (isteğe bağlı)",
+      "submit": "Hedef oluştur"
+    },
+    "contribute": {
+      "action": "Katkı ver",
+      "title": "{{name}} hedefine katkı",
+      "lead": "Para ayırmak onu taşımaz. Bakiyeleriniz olduğu yerde kalır.",
+      "failed": "Bu katkı kaydedilemedi.",
+      "direction": "Ayır ya da serbest bırak",
+      "earmark": "Ayır",
+      "release": "Serbest bırak",
+      "earmarkAmount": "Ayrılacak tutar",
+      "releaseAmount": "Serbest bırakılacak tutar",
+      "earmarkHint": "Bu ay harcanabilir tutardan düşer.",
+      "releaseHint": "Harcanabilir tutara geri döner.",
+      "releasable": "Bu hedefte",
+      "moreThanSaved": "Bu, hedefte olandan fazla.",
+      "preview": "Hedefte olacak",
+      "note": "Not (isteğe bağlı)",
+      "earmarkSubmit": "Parayı ayır",
+      "releaseSubmit": "Parayı serbest bırak"
     },
     "howItWorks": "Hedefler nasıl çalışır",
     "howItWorksBody": "Hedef, hâlihazırda sahip olduğunuz parayı ayırır. Katkı vermek parayı Harcanabilir tutardan hedefe taşır; serbest bırakmak geri getirir. Bakiyeler gerçek hesaplarınızda kalır — Mizan yalnızca her liranın ne için olduğunu hatırlar."
@@ -869,6 +953,17 @@
       "mar2027": "Mart 2027'de",
       "feb2027": "Şubat 2027'de",
       "sep2027": "Eylül 2027'de"
+    },
+    "goalNames": {
+      "emergency": "Acil durum fonu",
+      "japan": "Japonya gezisi",
+      "computer": "Yeni bilgisayar",
+      "house": "Ev peşinatı"
+    },
+    "goalNotes": {
+      "japan": "Hedef Tem 2027 · yaklaşık 2 ay geride",
+      "computer": "Ara 2027 için yolunda",
+      "house": "Nakit, fon ve altın · hedef Ara 2029"
     }
   },
   "investments": {

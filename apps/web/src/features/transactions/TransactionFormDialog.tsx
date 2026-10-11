@@ -21,6 +21,7 @@ import { uuidv7 } from '../../lib/uuid'
 import { useAccounts } from '../accounts/api'
 import { useCurrentSession } from '../auth/session'
 import { CategoryPicker } from '../categories/CategoryPicker'
+import { useGoals } from '../goals/api'
 import { useCreateTransaction, useReplaceTransaction } from './api'
 
 type Kind = 'expense' | 'income' | 'transfer'
@@ -31,10 +32,18 @@ interface Part {
   key: string
   amount: Money | null
   categoryId: string | null
+  /** Set when this part is funded from a goal (flow F4, §9). */
+  goalId: string | null
   memo: string
 }
 
-const newPart = (): Part => ({ key: uuidv7(), amount: null, categoryId: null, memo: '' })
+const newPart = (): Part => ({
+  key: uuidv7(),
+  amount: null,
+  categoryId: null,
+  goalId: null,
+  memo: '',
+})
 
 function partsFrom(transaction: TransactionDto, accountId: string): Part[] {
   const lines = transaction.lines.filter((line) => line.accountId === accountId)
@@ -43,6 +52,7 @@ function partsFrom(transaction: TransactionDto, accountId: string): Part[] {
     // The API signs the amount; the form edits magnitudes.
     amount: moneyFromDto(line.amount).abs(),
     categoryId: line.categoryId,
+    goalId: line.goalId,
     memo: line.memo ?? '',
   }))
 }
@@ -125,6 +135,13 @@ export function TransactionFormDialog({
   const [newId, setNewId] = useState(() => uuidv7())
   const [showErrors, setShowErrors] = useState(false)
 
+  /*
+   * Live goals, for "fund it from a goal" (flow F4). Spending funded from a goal draws that
+   * earmark down instead of this month's plan (§9), so the selector appears only where a
+   * category does — the same lines the plan would otherwise measure.
+   */
+  const goals = useGoals().data?.goals ?? []
+
   const account = accounts.find((candidate) => candidate.id === accountId)
   const target = accounts.find((candidate) => candidate.id === toAccountId)
   const base = workspace.baseCurrency
@@ -198,6 +215,7 @@ export function TransactionFormDialog({
             parts: parts.map((part) => ({
               amount: part.amount!.toDto(),
               ...(part.categoryId ? { categoryId: part.categoryId } : {}),
+              ...(part.goalId ? { goalId: part.goalId } : {}),
               ...(part.memo.trim() ? { memo: part.memo.trim() } : {}),
             })),
             ...(payee.trim() ? { payee: payee.trim() } : {}),
@@ -359,6 +377,30 @@ export function TransactionFormDialog({
                             showErrors && part.categoryId === null
                               ? t('transactions.form.categoryRequired')
                               : undefined
+                          }
+                        />
+                      )}
+                      {categoryNeeded && goals.length > 0 && (
+                        <SelectField
+                          label={t('transactions.form.fundedFrom')}
+                          value={part.goalId ?? ''}
+                          onChange={(event) =>
+                            setParts((current) =>
+                              current.map((candidate) =>
+                                candidate.key === part.key
+                                  ? { ...candidate, goalId: event.target.value || null }
+                                  : candidate,
+                              ),
+                            )
+                          }
+                          options={[
+                            { value: '', label: t('transactions.form.fundedFromNone') },
+                            ...goals.map((goal) => ({ value: goal.id, label: goal.name })),
+                          ]}
+                          hint={
+                            part.goalId
+                              ? t('transactions.form.fundedFromHint')
+                              : t('transactions.form.fundedFromEmptyHint')
                           }
                         />
                       )}

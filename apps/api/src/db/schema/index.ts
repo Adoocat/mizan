@@ -1,6 +1,7 @@
 export * from './auth.ts'
 export * from './categories.ts'
 export * from './currencies.ts'
+export * from './goals.ts'
 export * from './ledger.ts'
 export * from './plan.ts'
 export * from './workspaces.ts'

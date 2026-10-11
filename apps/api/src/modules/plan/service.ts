@@ -58,6 +58,12 @@ import {
   type CategoryGroupRow,
   type CategoryRow,
 } from '../categories/repository.ts'
+import {
+  findGoalById,
+  findGoals,
+  sumContributionsByGoalForPeriod,
+  type GoalRow,
+} from '../goals/repository.ts'
 import { assertCanWrite } from '../workspace/service.ts'
 import {
   countMovesForLine,
@@ -196,6 +202,11 @@ interface PlanData {
    * spent since is shown against it (§10).
    */
   actualsBeforeToday: Actuals
+  /** Archived goals included, for the same reason archived categories are (see `loadPlanData`). */
+  goals: GoalRow[]
+  /** Contributions to each goal dated in the period: a goal line's `actual` (§9, §10). */
+  goalActuals: Map<string, Money>
+  goalActualsBeforeToday: Map<string, Money>
 }
 
 async function loadPlanData(
@@ -207,16 +218,20 @@ async function loadPlanData(
   const base = auth.workspace.baseCurrency
   const periodId = resolvedPeriod.row?.id
 
-  const [groups, categories, lines, incomeItems, moves, actualRows] = await Promise.all([
-    findCategoryGroups(db, auth.workspaceId),
-    // Archived categories are included: a line or last week's spending may still point at one,
-    // and a plan that hid it would not add up.
-    findCategories(db, auth.workspaceId, { includeArchived: true }),
-    periodId ? findLines(db, auth.workspaceId, periodId) : Promise.resolve([]),
-    periodId ? findIncomeItems(db, auth.workspaceId, periodId) : Promise.resolve([]),
-    periodId ? findMoves(db, auth.workspaceId, periodId) : Promise.resolve([]),
-    sumActualByCategory(db, auth.workspaceId, resolvedPeriod.period, today),
-  ])
+  const [groups, categories, lines, incomeItems, moves, actualRows, goals, goalRows] =
+    await Promise.all([
+      findCategoryGroups(db, auth.workspaceId),
+      // Archived categories are included: a line or last week's spending may still point at one,
+      // and a plan that hid it would not add up.
+      findCategories(db, auth.workspaceId, { includeArchived: true }),
+      periodId ? findLines(db, auth.workspaceId, periodId) : Promise.resolve([]),
+      periodId ? findIncomeItems(db, auth.workspaceId, periodId) : Promise.resolve([]),
+      periodId ? findMoves(db, auth.workspaceId, periodId) : Promise.resolve([]),
+      sumActualByCategory(db, auth.workspaceId, resolvedPeriod.period, today),
+      // Archived goals too: a line or a contribution this month may still point at one.
+      findGoals(db, auth.workspaceId, { includeArchived: true }),
+      sumContributionsByGoalForPeriod(db, auth.workspaceId, resolvedPeriod.period, today),
+    ])
 
   return {
     groups,
@@ -232,6 +247,13 @@ async function loadPlanData(
         row.categoryId,
         Money.of(row.totalBeforeToday, base).roundToMinor(),
       ]),
+    ),
+    goals,
+    goalActuals: new Map(
+      goalRows.map((row) => [row.goalId, Money.of(row.total, base).roundToMinor()]),
+    ),
+    goalActualsBeforeToday: new Map(
+      goalRows.map((row) => [row.goalId, Money.of(row.totalBeforeToday, base).roundToMinor()]),
     ),
   }
 }
@@ -265,6 +287,11 @@ function buildPlan(
     data.lines
       .filter((line): line is PlanLineRow & { categoryId: string } => line.categoryId !== null)
       .map((line) => [line.categoryId, line]),
+  )
+  const lineByGoal = new Map(
+    data.lines
+      .filter((line): line is PlanLineRow & { goalId: string } => line.goalId !== null)
+      .map((line) => [line.goalId, line]),
   )
   const poolLine = data.lines.find((line) => line.isPool)
 
@@ -351,6 +378,8 @@ function buildPlan(
       lineId: line?.id ?? null,
       target: 'category',
       categoryId: category.id,
+      goalId: null,
+      name: null,
       planned: figures.planned.toDto(),
       carryIn: (figures.carryIn ?? zero).toDto(),
       movesIn: figures.movesIn.toDto(),
@@ -396,10 +425,69 @@ function buildPlan(
   const poolFigures = poolFiguresFor(data.actuals)
   const visibleSpending = (category: CategoryRow) => foldedSpending(data.actuals, category)
 
+  /* -------------------------------------------------------------- goal lines */
+
+  /**
+   * A goal's line as the domain sees it (§10): what was allocated to the goal this period against
+   * the contributions it actually received. A release shows up as a negative `actual`, which
+   * leaves the line with more available — which is exactly what releasing money does.
+   */
+  const goalFigures = (
+    actuals: Map<string, Money>,
+    goal: GoalRow,
+  ): PlanLineFigures & { movesIn: Money; movesOut: Money } => {
+    const line = lineByGoal.get(goal.id)
+    return {
+      planned: line ? Money.of(line.plannedAmount, base) : zero,
+      carryIn: line ? Money.of(line.carryIn, base) : zero,
+      ...movesFor(line?.id),
+      actual: actuals.get(goal.id) ?? zero,
+    }
+  }
+
+  /**
+   * Which goals earn a row.
+   *
+   * A goal needs one once it is part of this month: it has a line, or it was contributed to. A
+   * live goal with neither is not on the plan yet — "add to plan" is what puts it there — so
+   * listing every goal here would fill the page with rows nobody allocated to. An archived goal
+   * follows the same rule as an archived category and drops out once both are gone.
+   */
+  const plannedGoals = data.goals.filter(
+    (goal) => lineByGoal.has(goal.id) || !(data.goalActuals.get(goal.id) ?? zero).isZero(),
+  )
+
+  const goalRows: PlanRowDto[] = plannedGoals.map((goal) => {
+    const line = lineByGoal.get(goal.id)
+    const figures = goalFigures(data.goalActuals, goal)
+    return {
+      lineId: line?.id ?? null,
+      target: 'goal',
+      categoryId: null,
+      goalId: goal.id,
+      name: goal.name,
+      planned: figures.planned.toDto(),
+      carryIn: (figures.carryIn ?? zero).toDto(),
+      movesIn: figures.movesIn.toDto(),
+      movesOut: figures.movesOut.toDto(),
+      actual: figures.actual.toDto(),
+      available: planLineAvailable(figures).toDto(),
+      overspend: planLineOverspend(figures).toDto(),
+      rollover: line?.rollover ?? false,
+      // A goal answers for itself: nothing else covers a contribution.
+      coveredBy: null,
+      sortOrder: goal.priority,
+      version: line?.version ?? null,
+      children: [],
+    }
+  })
+
   const poolRow: PlanRowDto = {
     lineId: poolLine?.id ?? null,
     target: 'pool',
     categoryId: null,
+    goalId: null,
+    name: null,
     planned: poolFigures.planned.toDto(),
     carryIn: (poolFigures.carryIn ?? zero).toDto(),
     movesIn: poolFigures.movesIn.toDto(),
@@ -451,13 +539,28 @@ function buildPlan(
     }
   })
 
+  // Goals sit after the category groups and before the pool, where savings belongs on the page
+  // (§13). The group is absent when nothing has been allocated to a goal, rather than empty.
+  if (goalRows.length > 0) {
+    groups.push({
+      id: null,
+      kind: 'goals',
+      name: 'Goals',
+      systemKey: 'goals',
+      renamed: false,
+      sortOrder: spendingGroups.length + 1,
+      rows: goalRows,
+      ...groupTotals(goalRows, base),
+    })
+  }
+
   groups.push({
     id: null,
     kind: 'pool',
     name: 'Available to spend',
     systemKey: 'pool',
     renamed: false,
-    sortOrder: spendingGroups.length + 1,
+    sortOrder: spendingGroups.length + 2,
     rows: [poolRow],
     ...groupTotals([poolRow], base),
   })
@@ -483,7 +586,7 @@ function buildPlan(
    * allowance divides what was available when the day began, and today's spending is then shown
    * against it rather than quietly shrinking it.
    */
-  const atsInputsFor = (actuals: Actuals) => {
+  const atsInputsFor = (actuals: Actuals, goalActuals: Map<string, Money>) => {
     const pool = poolFiguresFor(actuals)
     const selfAnsweringLines = data.categories
       .filter((category) => {
@@ -493,11 +596,18 @@ function buildPlan(
       })
       .map((category) => lineFigures(actuals, category))
 
+    /*
+     * Goal lines count here like any other line. Contributing more to a goal than the plan
+     * allocated is an overspend in the ordinary sense — the money went somewhere, and there is
+     * that much less to spend — so it comes off what is available straight away (decision D4).
+     */
+    const goalLines = plannedGoals.map((goal) => goalFigures(goalActuals, goal))
+
     const figures = incomeFigures(data, groupById, base, actuals)
     return {
       // The pool's own shortfall is already in what it has available, so it is not counted again.
       poolAvailable: planLineAvailable(pool),
-      uncoveredOverspend: uncoveredOverspend(selfAnsweringLines, base),
+      uncoveredOverspend: uncoveredOverspend([...selfAnsweringLines, ...goalLines], base),
       unassigned: unassigned({
         income: figures.total,
         poolCarryIn: pool.carryIn ?? zero,
@@ -506,9 +616,11 @@ function buildPlan(
     }
   }
 
-  const inputsNow = atsInputsFor(data.actuals)
+  const inputsNow = atsInputsFor(data.actuals, data.goalActuals)
   const atsNow = availableToSpend(inputsNow)
-  const atsAtStartOfToday = availableToSpend(atsInputsFor(data.actualsBeforeToday))
+  const atsAtStartOfToday = availableToSpend(
+    atsInputsFor(data.actualsBeforeToday, data.goalActualsBeforeToday),
+  )
   const daysLeft = daysLeftToSpend(period, today)
   const allowance = dailyAllowance({
     availableAtStartOfToday: atsAtStartOfToday,
@@ -766,6 +878,41 @@ async function assertAllocatableCategory(
   return category
 }
 
+/** A goal a line may point at: live, and this workspace's (§9). */
+async function assertAllocatableGoal(db: Db, auth: RequestAuth, goalId: string): Promise<GoalRow> {
+  const goal = await findGoalById(db, auth.workspaceId, goalId)
+  // Another workspace's id is indistinguishable from one that does not exist.
+  if (!goal) throw notFound('No such goal.')
+  if (goal.archivedAt) throw conflict('That goal is archived.')
+  return goal
+}
+
+/** Where a plan line's target comes from, for the upsert and for both ends of a cover. */
+interface LineTarget {
+  categoryId: string | null
+  goalId: string | null
+  isPool: boolean
+  /** Categories sort by their own order; goals by priority; the pool sits below everything. */
+  sortOrder: number
+}
+
+const POOL_SORT_ORDER = 9999
+
+function targetOf(category: CategoryRow | undefined, goal: GoalRow | undefined): LineTarget {
+  if (category) {
+    return {
+      categoryId: category.id,
+      goalId: null,
+      isPool: false,
+      sortOrder: category.sortOrder,
+    }
+  }
+  if (goal) {
+    return { categoryId: null, goalId: goal.id, isPool: false, sortOrder: goal.priority }
+  }
+  return { categoryId: null, goalId: null, isPool: true, sortOrder: POOL_SORT_ORDER }
+}
+
 /**
  * Sets an allocation, creating the line if the target has none (flow F3).
  *
@@ -795,11 +942,12 @@ export async function upsertPlanLine(
     input.categoryId === undefined
       ? undefined
       : await assertAllocatableCategory(db, auth, input.categoryId)
+  const goal =
+    input.goalId === undefined ? undefined : await assertAllocatableGoal(db, auth, input.goalId)
+  const target = targetOf(category, goal)
 
   const periodRow = await ensurePeriodRow(db, auth, resolvedPeriod)
-  const existing = await findLineByTarget(db, auth.workspaceId, periodRow.id, {
-    categoryId: category?.id ?? null,
-  })
+  const existing = await findLineByTarget(db, auth.workspaceId, periodRow.id, target)
 
   if (existing) {
     if (input.version !== undefined && input.version !== existing.version) {
@@ -836,12 +984,13 @@ export async function upsertPlanLine(
       id: uuidv7(),
       workspaceId: auth.workspaceId,
       periodId: periodRow.id,
-      categoryId: category?.id ?? null,
-      isPool: input.target === 'pool',
+      categoryId: target.categoryId,
+      goalId: target.goalId,
+      isPool: target.isPool,
       plannedAmount: planned.roundToMinor().toDto().amount,
       rollover: input.rollover ?? false,
       // The pool sits below every category group, where the Plan page shows it.
-      sortOrder: category?.sortOrder ?? 9999,
+      sortOrder: target.sortOrder,
     })
   }
 
@@ -1027,9 +1176,10 @@ export async function copyPlan(
 
   const periodRow = await ensurePeriodRow(db, auth, target)
   const existing = await findLines(db, auth.workspaceId, periodRow.id)
-  const taken = new Set(existing.map((line) => line.categoryId ?? 'pool'))
+  const lineKey = (line: PlanLineRow) => line.categoryId ?? line.goalId ?? 'pool'
+  const taken = new Set(existing.map(lineKey))
 
-  const toCopy = sourceLines.filter((line) => !taken.has(line.categoryId ?? 'pool'))
+  const toCopy = sourceLines.filter((line) => !taken.has(lineKey(line)))
   const includeIncome =
     (input.includeIncome ?? true) &&
     sourceIncome.length > 0 &&
@@ -1042,6 +1192,7 @@ export async function copyPlan(
         workspaceId: auth.workspaceId,
         periodId: periodRow.id,
         categoryId: line.categoryId,
+        goalId: line.goalId,
         isPool: line.isPool,
         plannedAmount: line.plannedAmount,
         rollover: line.rollover,
@@ -1081,7 +1232,8 @@ export async function copyPlan(
 /** Both ends of a cover, as the request names them. */
 type CoverEnd = CoverOverspendInput['from']
 
-const endKey = (end: CoverEnd): string => (end.target === 'pool' ? 'pool' : (end.categoryId ?? ''))
+const endKey = (end: CoverEnd): string =>
+  end.target === 'pool' ? 'pool' : (end.categoryId ?? end.goalId ?? '')
 
 /**
  * The line an end of a cover points at, created if it does not exist yet.
@@ -1095,23 +1247,23 @@ async function lineForCover(
   db: Db,
   auth: RequestAuth,
   periodId: string,
-  end: CoverEnd,
   category: CategoryRow | undefined,
+  goal: GoalRow | undefined,
 ): Promise<PlanLineRow> {
-  const existing = await findLineByTarget(db, auth.workspaceId, periodId, {
-    categoryId: category?.id ?? null,
-  })
+  const target = targetOf(category, goal)
+  const existing = await findLineByTarget(db, auth.workspaceId, periodId, target)
   if (existing) return existing
 
   const created = await insertLine(db, {
     id: uuidv7(),
     workspaceId: auth.workspaceId,
     periodId,
-    categoryId: category?.id ?? null,
-    isPool: end.target === 'pool',
+    categoryId: target.categoryId,
+    goalId: target.goalId,
+    isPool: target.isPool,
     plannedAmount: '0',
     rollover: false,
-    sortOrder: category?.sortOrder ?? 9999,
+    sortOrder: target.sortOrder,
   })
   if (!created) throw conflict('That line could not be opened. Try again.')
   return created
@@ -1184,8 +1336,8 @@ export async function coverOverspend(
   }
   if (endKey(input.from) === endKey(input.to)) throw badRequest('A line cannot cover itself.')
 
-  // Both categories are checked before anything is written: a refused cover must not leave a
-  // period row behind in a workspace that never planned that month.
+  // Both ends are checked before anything is written: a refused cover must not leave a period
+  // row behind in a workspace that never planned that month.
   const toCategory =
     input.to.categoryId === undefined
       ? undefined
@@ -1194,12 +1346,20 @@ export async function coverOverspend(
     input.from.categoryId === undefined
       ? undefined
       : await assertAllocatableCategory(db, auth, input.from.categoryId)
+  const toGoal =
+    input.to.goalId === undefined
+      ? undefined
+      : await assertAllocatableGoal(db, auth, input.to.goalId)
+  const fromGoal =
+    input.from.goalId === undefined
+      ? undefined
+      : await assertAllocatableGoal(db, auth, input.from.goalId)
 
   const periodRow = await ensurePeriodRow(db, auth, resolvedPeriod)
   const withRow = { ...resolvedPeriod, row: periodRow }
 
-  const to = await lineForCover(db, auth, periodRow.id, input.to, toCategory)
-  const from = await lineForCover(db, auth, periodRow.id, input.from, fromCategory)
+  const to = await lineForCover(db, auth, periodRow.id, toCategory, toGoal)
+  const from = await lineForCover(db, auth, periodRow.id, fromCategory, fromGoal)
 
   const figures = await lineFiguresById(db, auth, clock, withRow)
   const source = figures.get(from.id)

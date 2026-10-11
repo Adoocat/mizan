@@ -57,8 +57,19 @@ const planRowFields = {
   /** The stored line, or null when this row has no allocation yet. */
   lineId: z.uuid().nullable(),
   target: planLineTargetSchema,
-  /** Null on the pool line. */
+  /** Null on the pool line and on a goal line. */
   categoryId: z.uuid().nullable(),
+  /** Set on a goal line, whose `actual` is the contributions to that goal this period (§10). */
+  goalId: z.uuid().nullable(),
+  /**
+   * The goal's name, on a goal row.
+   *
+   * Null on a category row and on the pool, whose names the client resolves for itself — a
+   * system category reads in both languages, so that decision stays in one place (see
+   * `transactionLineSchema`). A goal's name is the user's own words, which translate to nothing
+   * and which the client would otherwise need a second request to learn.
+   */
+  name: z.string().nullable(),
   planned: moneySchema,
   /** What the previous period's close carried into this line. Zero until phase 10. */
   carryIn: moneySchema,
@@ -104,9 +115,13 @@ export type PlanRowDto = z.infer<typeof planRowSchema>
  * pool or a parent category already carries is never counted twice.
  */
 export const planGroupSchema = z.object({
-  /** Null for the pool group, which is not a category group. */
+  /** Null for the goals and pool groups, neither of which is a category group. */
   id: z.uuid().nullable(),
-  kind: z.union([categoryGroupKindSchema, z.literal('pool')]),
+  /**
+   * `goals` and `pool` are groups the plan makes up, because neither a goal nor "Available to
+   * spend" is a category and both still need somewhere to sit on the page (§13).
+   */
+  kind: z.union([categoryGroupKindSchema, z.literal('goals'), z.literal('pool')]),
   name: z.string(),
   systemKey: z.string().nullable(),
   renamed: z.boolean(),
@@ -230,6 +245,7 @@ export const upsertPlanLineSchema = z
   .object({
     target: planLineTargetSchema,
     categoryId: z.uuid().optional(),
+    goalId: z.uuid().optional(),
     planned: plannedAmountSchema,
     rollover: z.boolean().optional(),
     /** The version the user was looking at. An older one means someone else got there first. */
@@ -239,10 +255,9 @@ export const upsertPlanLineSchema = z
     message: 'A category line needs a categoryId, and no other line may have one',
     path: ['categoryId'],
   })
-  // Goal lines arrive with goals themselves, in phase 8.
-  .refine((value) => value.target !== 'goal', {
-    message: 'Goal lines are not available yet',
-    path: ['target'],
+  .refine((value) => (value.target === 'goal') === (value.goalId !== undefined), {
+    message: 'A goal line needs a goalId, and no other line may have one',
+    path: ['goalId'],
   })
 export type UpsertPlanLineInput = z.infer<typeof upsertPlanLineSchema>
 
@@ -296,14 +311,15 @@ const coverEndSchema = z
   .object({
     target: planLineTargetSchema,
     categoryId: z.uuid().optional(),
+    goalId: z.uuid().optional(),
   })
   .refine((value) => (value.target === 'category') === (value.categoryId !== undefined), {
     message: 'A category end needs a categoryId, and no other end may have one',
     path: ['categoryId'],
   })
-  .refine((value) => value.target !== 'goal', {
-    message: 'Goal lines are not available yet',
-    path: ['target'],
+  .refine((value) => (value.target === 'goal') === (value.goalId !== undefined), {
+    message: 'A goal end needs a goalId, and no other end may have one',
+    path: ['goalId'],
   })
 
 export const coverOverspendSchema = z.object({

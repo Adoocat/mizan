@@ -57,6 +57,13 @@
       "when": 1791643455260,
       "tag": "0007_plan_moves",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791729157709,
+      "tag": "0008_goals",
+      "breakpoints": true
     }
   ]
 }

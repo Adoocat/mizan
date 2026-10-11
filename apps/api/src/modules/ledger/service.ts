@@ -18,6 +18,9 @@ const MESSAGES: Record<LedgerViolation, string> = {
     'Money leaving the budget needs a category, so the plan can see where it went.',
   transferCategoryNotAllowed:
     'A transfer between two budget accounts has no category: the money is still in the budget.',
+  goalNotAllowedOnTransfer:
+    'Only spending can be funded from a goal. Moving money between your own accounts does not spend it.',
+  goalNeedsCategory: 'Spending funded from a goal still needs a category.',
 }
 
 /**

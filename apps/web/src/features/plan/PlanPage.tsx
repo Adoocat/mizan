@@ -46,6 +46,8 @@ const GROUP_COLOURS: Record<PlanGroupDto['kind'], string> = {
   debt: 'bg-data-debt',
   savings: 'bg-data-savings',
   investment: 'bg-data-investments',
+  // Goals take the savings tone: a contribution is savings with a name on it (§9).
+  goals: 'bg-data-savings',
   pool: 'bg-data-pool',
 }
 
@@ -203,10 +205,16 @@ export function PlanPage() {
       })
   }
 
+  /*
+   * A goal row carries its own name, because it is the user's own words; a category's comes from
+   * the workspace's categories, where a system key reads in both languages (§9, §10).
+   */
   const label = (row: PlanChildRowDto): string =>
     row.target === 'pool'
       ? t('plan.poolLine')
-      : (namesById.get(row.categoryId ?? '')?.label ?? t('plan.uncategorized'))
+      : row.target === 'goal'
+        ? (row.name ?? t('plan.uncategorized'))
+        : (namesById.get(row.categoryId ?? '')?.label ?? t('plan.uncategorized'))
 
   const tiles = [
     {

@@ -17,6 +17,7 @@ import {
 import { users } from './auth.ts'
 import { categories } from './categories.ts'
 import { currencies } from './currencies.ts'
+import { goals } from './goals.ts'
 import { workspaces } from './workspaces.ts'
 
 const instant = () => timestamp({ withTimezone: true, mode: 'date' })
@@ -158,9 +159,18 @@ export const transactionLines = pgTable(
     /**
      * What this movement was for. Null on an opening balance, a reconciliation and both sides of
      * a transfer that stays inside the budget; required on an on-budget expense or income, which
-     * the domain's ledger invariants enforce (§10). `goal_id` joins it in phase 8.
+     * the domain's ledger invariants enforce (§10).
      */
     categoryId: uuid(),
+    /**
+     * The goal this line is funded from (§9, phase 8).
+     *
+     * A goal-funded expense keeps its category — it is still classified, and still shows on the
+     * Transactions page where it belongs — but it is **left out of the plan's category sums**, so
+     * it does not count against this month's Available to spend. That is what makes a sinking
+     * fund work: the money was earmarked in earlier months, and paying the bill draws it down.
+     */
+    goalId: uuid(),
     amount: money().notNull(),
     baseAmount: money().notNull(),
     fxRate: fxRate(),
@@ -179,7 +189,17 @@ export const transactionLines = pgTable(
       columns: [table.categoryId, table.workspaceId],
       foreignColumns: [categories.id, categories.workspaceId],
     }),
+    foreignKey({
+      name: 'transaction_lines_goal_fk',
+      columns: [table.goalId, table.workspaceId],
+      foreignColumns: [goals.id, goals.workspaceId],
+    }),
     index('transaction_lines_account_date_idx').on(table.workspaceId, table.accountId, table.date),
+    // What a goal has had spent out of it, and the partial index that keeps goal-funded lines
+    // cheap to exclude from every category sum (§10).
+    index('transaction_lines_goal_idx')
+      .on(table.workspaceId, table.goalId, table.date)
+      .where(sql`${table.goalId} IS NOT NULL`),
     // Spending per category in a period: the query behind every plan line (§16).
     index('transaction_lines_category_date_idx').on(
       table.workspaceId,

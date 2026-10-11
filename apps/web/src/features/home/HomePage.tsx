@@ -1,4 +1,5 @@
-import { formatMoney, Money } from '@mizan/domain'
+import { moneyFromDto } from '@mizan/contracts'
+import { decimal, formatMoney, Money } from '@mizan/domain'
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -10,12 +11,78 @@ import { PageContainer, PageHeader } from '../../components/layout/AppShell'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { Panel, panelLinkClass } from '../../components/ui/Panel'
+import { Skeleton } from '../../components/ui/Skeleton'
 import { useSampleData } from '../../lib/sample-data'
 import { useNumberLocale } from '../../lib/use-locale'
 import { useCurrentSession } from '../auth/session'
+import { useGoals } from '../goals/api'
 import { HealthIndicator } from '../health/HealthIndicator'
 import { TransactionTable } from '../transactions/TransactionTable'
 import { UpcomingList } from '../calendar/UpcomingList'
+
+/**
+ * Goal progress on the dashboard, from the real goals (PLAN §9).
+ *
+ * The rest of this page is still placeholder data until phase 11, but goals are wired now: the
+ * panel is the Goals page's own figures in miniature, so showing invented ones beside the real
+ * ones would be worse than showing none.
+ */
+function GoalProgressPanel() {
+  const { t } = useTranslation()
+  const { workspace } = useCurrentSession()
+  const { data, isPending } = useGoals()
+
+  const goals = data?.goals ?? []
+  const totalSaved = data ? moneyFromDto(data.totalSaved) : Money.zero(workspace.baseCurrency)
+
+  return (
+    <Panel
+      title={t('home.savingsGoals')}
+      className="flex-1 basis-[22rem]"
+      meta={
+        goals.length > 0 ? (
+          <>
+            <MoneyText value={totalSaved} fractionDigits="none" />{' '}
+            {t('home.savedAcross', { count: goals.length })}
+          </>
+        ) : undefined
+      }
+      action={
+        <Link to="/goals" className={panelLinkClass}>
+          {t('home.allGoals')}
+        </Link>
+      }
+    >
+      {isPending ? (
+        <Skeleton className="h-32 w-full rounded-inset" />
+      ) : goals.length === 0 ? (
+        <p className="m-0 text-body text-ink-2">{t('goals.emptyBody')}</p>
+      ) : (
+        <div className="flex flex-col gap-5">
+          {goals.map((goal) => (
+            <div key={goal.id} className="flex flex-col gap-1.5">
+              <div className="flex items-baseline justify-between gap-3 text-body">
+                <span className="text-ink">{goal.name}</span>
+                <span className="text-ink-2">
+                  <MoneyText value={moneyFromDto(goal.saved)} fractionDigits="none" />
+                  <span className="text-ink-3">
+                    {' / '}
+                    <MoneyText value={moneyFromDto(goal.target)} fractionDigits="none" />
+                  </span>
+                </span>
+              </div>
+              <ProgressBar
+                value={goal.progress === null ? decimal(0) : decimal(goal.progress)}
+                tone={goal.status === 'behind' ? 'warning' : 'accent'}
+                label={goal.name}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </Panel>
+  )
+}
 
 /** The four lines of the plan, as a single stacked strip (mockup: Dashboard, hero panel). */
 function PlanStrip() {
@@ -308,54 +375,7 @@ export function HomePage() {
           </div>
         </Panel>
 
-        <Panel
-          title={t('home.savingsGoals')}
-          className="flex-1 basis-[22rem]"
-          meta={
-            <>
-              <MoneyText value={data.goalsTotal} fractionDigits="none" />{' '}
-              {t('home.savedAcross', { count: data.goals.length })}
-            </>
-          }
-          action={
-            <Link to="/goals" className={panelLinkClass}>
-              {t('home.allGoals')}
-            </Link>
-          }
-        >
-          <div className="flex flex-col gap-5">
-            {data.goals.map((goal) => (
-              <div key={goal.id} className="flex flex-col gap-1.5">
-                <div className="flex items-baseline justify-between gap-3 text-body">
-                  <span className="text-ink">{t(`goals.names.${goal.id}`)}</span>
-                  <span className="text-ink-2">
-                    <MoneyText value={goal.saved} fractionDigits="none" />
-                    <span className="text-ink-3">
-                      {' / '}
-                      <MoneyText value={goal.target} fractionDigits="none" />
-                    </span>
-                  </span>
-                </div>
-                <ProgressBar
-                  value={goal.saved.amount.dividedBy(goal.target.amount)}
-                  tone={goal.status === 'behind' ? 'warning' : 'accent'}
-                  label={t(`goals.names.${goal.id}`)}
-                />
-                <p
-                  className={`m-0 text-caption ${
-                    goal.status === 'behind'
-                      ? 'text-warning'
-                      : goal.status === 'onTrack'
-                        ? 'text-positive'
-                        : 'text-ink-3'
-                  }`}
-                >
-                  {t(`goals.notes.${goal.id}`)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </Panel>
+        <GoalProgressPanel />
       </div>
 
       <Panel

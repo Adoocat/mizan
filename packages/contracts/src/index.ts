@@ -1,5 +1,6 @@
 export * from './accounts.ts'
 export * from './categories.ts'
+export * from './goals.ts'
 export * from './health.ts'
 export * from './identity.ts'
 export * from './plan.ts'

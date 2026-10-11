@@ -1,4 +1,4 @@
-import type { CategoryListResponse, MeResponse, PlanResponse } from '@mizan/contracts'
+import type { CategoryListResponse, GoalResponse, MeResponse, PlanResponse } from '@mizan/contracts'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { Database } from '../db/client.ts'
 import { buildTestApp, type TestApp } from '../testing/app.ts'
@@ -12,6 +12,7 @@ import { connectTestDatabase } from '../testing/postgres.ts'
 import { signUpActor, type Actor } from '../testing/session.ts'
 import { accountIsolationCases } from './accounts/isolation.ts'
 import { categoryIsolationCases } from './categories/isolation.ts'
+import { goalIsolationCases } from './goals/isolation.ts'
 import { PLAN_ISOLATION_START, planIsolationCases } from './plan/isolation.ts'
 import { transactionIsolationCases } from './transactions/isolation.ts'
 import { workspaceIsolationCases } from './workspace/isolation.ts'
@@ -27,6 +28,7 @@ const CASES: readonly IsolationCase[] = [
   ...categoryIsolationCases,
   ...transactionIsolationCases,
   ...planIsolationCases,
+  ...goalIsolationCases,
 ]
 
 /** Resources owned by the victim's workspace, keyed by the name the cases use. */
@@ -109,8 +111,42 @@ async function createFixtures(victim: Actor): Promise<IsolationIds> {
     throw new Error(`fixture cover failed (${cover.statusCode}): ${cover.body}`)
   }
 
+  /*
+   * A goal with one contribution, so the goal endpoints have something to address. A sinking fund
+   * is used deliberately: it carries a target and a date, so every field the write cases touch is
+   * present on the victim's row.
+   */
+  const goal = await victim.request({
+    method: 'POST',
+    url: '/api/v1/goals',
+    payload: {
+      type: 'sinking_fund',
+      name: 'Kasko insurance',
+      target: { amount: '15000.00', currency: 'TRY' },
+      targetDate: '2027-03-01',
+      keptInAccountId: accountId,
+    },
+  })
+  if (goal.statusCode !== 201) {
+    throw new Error(`fixture goal failed (${goal.statusCode}): ${goal.body}`)
+  }
+  const goalId = goal.json<{ id: string }>().id
+
+  const contribution = await victim.request({
+    method: 'POST',
+    url: `/api/v1/goals/${goalId}/contributions`,
+    payload: { amount: { amount: '2000.00', currency: 'TRY' }, date: '2026-10-05' },
+  })
+  if (contribution.statusCode !== 200) {
+    throw new Error(
+      `fixture contribution failed (${contribution.statusCode}): ${contribution.body}`,
+    )
+  }
+
   return {
     accountId,
+    goalId,
+    goalContributionId: contribution.json<GoalResponse>().contributions[0]!.id,
     categoryGroupId: flexible.id,
     categoryId: category.id,
     otherCategoryId: otherCategory.id,

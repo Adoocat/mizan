@@ -136,6 +136,8 @@ export const LEDGER_VIOLATIONS = [
   'categoryRequired',
   'transferNeedsCategory',
   'transferCategoryNotAllowed',
+  'goalNotAllowedOnTransfer',
+  'goalNeedsCategory',
 ] as const
 
 export type LedgerViolation = (typeof LEDGER_VIOLATIONS)[number]
@@ -176,6 +178,9 @@ export function checkLedgerTransaction({ type, lines }: LedgerTransaction): Ledg
 
   const accounts = new Set(lines.map((line) => line.accountId))
   const categorized = (line: LedgerLine) => Boolean(line.categoryId)
+
+  const goalCheck = checkGoalFunding(type, lines)
+  if (!goalCheck.ok) return goalCheck
 
   switch (type) {
     case 'opening_balance':
@@ -225,6 +230,28 @@ export function checkLedgerTransaction({ type, lines }: LedgerTransaction): Ledg
  * Between two off-budget accounts, and whenever the caller did not say which accounts are
  * on-budget, there is nothing to check.
  */
+/**
+ * Funding a line from a goal (§9).
+ *
+ * Only spending can be funded from a goal, and a refund of it can go back — so an `expense` or
+ * `income` line may carry a goal. A **transfer** may not: moving money between your own accounts
+ * does not spend it, so drawing a goal down for it would lose the earmark with nothing to show
+ * for it. An opening balance and a reconciliation are not spending either.
+ *
+ * A goal-funded line still needs its category. The goal says which earmark pays for the expense;
+ * the category still says what the expense *was*, so the Transactions page and every report keep
+ * working. Only an on-budget line is checked, for the same reason the category rules are.
+ */
+function checkGoalFunding(type: TransactionType, lines: readonly LedgerLine[]): LedgerCheck {
+  const funded = lines.filter((line) => Boolean(line.goalId))
+  if (funded.length === 0) return ok
+
+  if (type !== 'expense' && type !== 'income') return fail('goalNotAllowedOnTransfer')
+  return funded.every((line) => line.onBudget !== true || Boolean(line.categoryId))
+    ? ok
+    : fail('goalNeedsCategory')
+}
+
 function checkTransferCategories(lines: readonly LedgerLine[]): LedgerCheck {
   if (lines.some((line) => line.onBudget === undefined)) return ok
 
