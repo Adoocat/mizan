@@ -18,7 +18,7 @@ import { useCurrentSession } from '../auth/session'
 import { useGoals } from '../goals/api'
 import { HealthIndicator } from '../health/HealthIndicator'
 import { TransactionTable } from '../transactions/TransactionTable'
-import { UpcomingList } from '../calendar/UpcomingList'
+import { ComingUpPanel } from '../recurring/ComingUpPanel'
 
 /**
  * Goal progress on the dashboard, from the real goals (PLAN §9).
@@ -316,25 +316,7 @@ export function HomePage() {
 
       <div className="flex flex-wrap gap-5">
         <CashFlow />
-        <Panel
-          title={t('home.comingUp')}
-          meta={t('home.comingUpRange')}
-          className="flex-1 basis-[22rem]"
-          flush
-          action={
-            <span className="text-value-s text-ink">
-              <MoneyText value={data.upcomingTotal} fractionDigits="none" />
-            </span>
-          }
-        >
-          <UpcomingList items={data.upcoming.slice(0, 6)} />
-          <div className="flex justify-between gap-3 px-7 text-caption text-ink-3">
-            <span>{t('home.checkingAfter')}</span>
-            <span className="font-medium text-ink">
-              <MoneyText value={data.checkingAfterUpcoming} fractionDigits="none" />
-            </span>
-          </div>
-        </Panel>
+        <ComingUpPanel />
       </div>
 
       <div className="flex flex-wrap gap-5">

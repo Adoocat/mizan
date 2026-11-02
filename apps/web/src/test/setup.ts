@@ -1,7 +1,12 @@
-import '@testing-library/jest-dom/vitest'
+import * as matchers from '@testing-library/jest-dom/matchers'
 import { cleanup } from '@testing-library/react'
-import { afterEach } from 'vitest'
+import { afterEach, expect } from 'vitest'
 import { initI18n } from '../lib/i18n'
+
+// Registered here rather than through `@testing-library/jest-dom/vitest`, whose own type
+// augmentation binds to whichever `vitest` pnpm happens to hoist. `matchers.d.ts` declares them
+// against this package's copy; this is the runtime half of the same pair.
+expect.extend(matchers)
 
 // jsdom has no matchMedia; the toaster and theme code query it.
 if (!window.matchMedia) {

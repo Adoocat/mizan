@@ -9,7 +9,8 @@ export type Executor = Db | Parameters<Parameters<Db['transaction']>[0]>[0]
 
 export interface WriteTransactionInput {
   workspaceId: string
-  createdBy: string
+  /** Null when nobody was there: the auto-post worker writes on a rule's behalf (PLAN §11). */
+  createdBy: string | null
   type: TransactionType
   date: PlainDate
   lines: readonly LedgerLine[]
@@ -23,6 +24,16 @@ export interface WriteTransactionInput {
    */
   searchText?: string
   source?: 'manual' | 'recurring' | 'import'
+  /**
+   * The recurring rule this confirms, and which of its occurrences — the occurrence's **original**
+   * date, not the date the money moved (§11).
+   *
+   * The pair is the whole record that the occurrence is posted, and the partial unique index on
+   * it is what makes a confirm safe to retry: a second attempt raises a unique violation rather
+   * than writing the rent twice.
+   */
+  recurringRuleId?: string | null
+  occurrenceDate?: PlainDate | null
   /** Client-supplied id, which is what makes a create idempotent (PLAN §12). */
   id?: string
 }
@@ -52,6 +63,8 @@ export async function insertTransaction(
     notes: input.notes ?? null,
     searchText: input.searchText ?? '',
     source: input.source ?? 'manual',
+    recurringRuleId: input.recurringRuleId ?? null,
+    occurrenceDate: input.occurrenceDate ?? null,
     createdBy: input.createdBy,
   })
 

@@ -20,12 +20,13 @@ import {
   overEarmarked,
   releasableAmount,
   requiredMonthly,
+  rolledTargetDate,
   UnknownGoalTypeError,
   REPEAT_MONTHS,
 } from './goals.ts'
 import { Money } from './money.ts'
 import { periodContaining } from './period.ts'
-import { arbNonNegativeTry, arbTry } from './testing/arbitraries.ts'
+import { arbNonNegativeTry, arbPlainDate, arbTry } from './testing/arbitraries.ts'
 
 const tl = (value: string) => Money.of(value, 'TRY')
 const ZERO = Money.zero('TRY')
@@ -64,6 +65,59 @@ describe('goal types', () => {
     expect(isGoalRepeat('weekly')).toBe(false)
     expect(REPEAT_MONTHS.annual).toBe(12)
     expect(REPEAT_MONTHS.quarterly).toBe(3)
+  })
+
+  describe('rolling a repeating sinking fund forward (decision D12)', () => {
+    const today = plainDate('2026-10-22')
+
+    it('leaves a date that is still ahead alone', () => {
+      expect(rolledTargetDate(plainDate('2027-03-01'), 'annual', today)).toBe(
+        plainDate('2027-03-01'),
+      )
+    })
+
+    it('keeps a bill due today, which has not passed yet', () => {
+      expect(rolledTargetDate(today, 'annual', today)).toBe(today)
+    })
+
+    it('advances by whole repeats to the next one ahead', () => {
+      expect(rolledTargetDate(plainDate('2026-03-01'), 'annual', today)).toBe(
+        plainDate('2027-03-01'),
+      )
+      expect(rolledTargetDate(plainDate('2026-07-15'), 'quarterly', today)).toBe(
+        plainDate('2027-01-15'),
+      )
+      expect(rolledTargetDate(plainDate('2026-09-30'), 'monthly', today)).toBe(
+        plainDate('2026-10-30'),
+      )
+    })
+
+    it('stays on the cycle however long the fund went unattended', () => {
+      // Three years of neglect still lands on the bill's own month and day.
+      expect(rolledTargetDate(plainDate('2023-03-01'), 'annual', today)).toBe(
+        plainDate('2027-03-01'),
+      )
+    })
+
+    it('clamps through a shorter month without losing the day', () => {
+      // 31 August → 30 September → 31 October: each turn is measured from the original date, so
+      // the 31st is not demoted to the 30th by the one pass through September.
+      expect(rolledTargetDate(plainDate('2026-08-31'), 'monthly', today)).toBe(
+        plainDate('2026-10-31'),
+      )
+    })
+
+    it('always returns a date on or after today', () => {
+      fc.assert(
+        fc.property(
+          arbPlainDate.filter((value) => value < '2100-01-01'),
+          fc.constantFrom('monthly', 'quarterly', 'annual' as const),
+          (targetDate, repeat) => {
+            expect(rolledTargetDate(targetDate, repeat, today) >= today).toBe(true)
+          },
+        ),
+      )
+    })
   })
 
   it('offers 1, 3 and 6 months of emergency cover', () => {

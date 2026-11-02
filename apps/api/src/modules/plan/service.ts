@@ -12,6 +12,8 @@ import type {
   PlanRowDto,
   PlanSpend,
   PlanSummary,
+  PrefillPlanResponse,
+  UncoveredRecurringDto,
   UpdatePlanIncomeItemInput,
   UpsertPlanLineInput,
 } from '@mizan/contracts'
@@ -64,6 +66,7 @@ import {
   sumContributionsByGoalForPeriod,
   type GoalRow,
 } from '../goals/repository.ts'
+import { commitmentsInPeriod, uncoveredFrom, type PeriodCommitment } from '../recurring/service.ts'
 import { assertCanWrite } from '../workspace/service.ts'
 import {
   countMovesForLine,
@@ -272,6 +275,7 @@ function buildPlan(
   data: PlanData,
   today: PlainDate,
   copyableFrom: PlainDate | null,
+  uncoveredRecurring: readonly UncoveredRecurringDto[],
 ): PlanResponse {
   const base = auth.workspace.baseCurrency
   const zero = Money.zero(base)
@@ -682,6 +686,7 @@ function buildPlan(
     incomeItems,
     moves: data.moves.map((move) => toMoveDto(move, base)),
     copyableFrom,
+    uncoveredRecurring: [...uncoveredRecurring],
   }
 }
 
@@ -829,9 +834,10 @@ async function readPlanFor(
   resolvedPeriod: ResolvedPeriod,
 ): Promise<PlanResponse> {
   const today = todayIn(clock, auth.workspace.timezone)
-  const [data, previous] = await Promise.all([
+  const [data, previous, commitments] = await Promise.all([
     loadPlanData(db, auth, resolvedPeriod, today),
     findLatestPlannedPeriodBefore(db, auth.workspaceId, resolvedPeriod.period.start),
+    commitmentsInPeriod(db, auth, { clock }, resolvedPeriod.period),
   ])
 
   return buildPlan(
@@ -840,7 +846,36 @@ async function readPlanFor(
     data,
     today,
     (previous?.startDate as PlainDate | undefined) ?? null,
+    uncoveredFrom(commitments, coveredTargets(data)),
   )
+}
+
+/**
+ * What this month's plan already accounts for, which is what the recurring warnings are measured
+ * against (§11).
+ *
+ * A subcategory with no line of its own is covered by its parent's, exactly as its spending is
+ * counted there (§10) — so a Netflix rule under a Subscriptions line is covered, and one under a
+ * category nobody planned is not.
+ */
+function coveredTargets(data: PlanData): {
+  categoryIds: ReadonlySet<string>
+  goalIds: ReadonlySet<string>
+} {
+  const lineCategories = new Set(
+    data.lines.map((line) => line.categoryId).filter((id): id is string => id !== null),
+  )
+  const categoryIds = new Set(lineCategories)
+  for (const category of data.categories) {
+    if (category.parentId && lineCategories.has(category.parentId)) categoryIds.add(category.id)
+  }
+
+  return {
+    categoryIds,
+    goalIds: new Set(
+      data.lines.map((line) => line.goalId).filter((id): id is string => id !== null),
+    ),
+  }
 }
 
 /** `GET /plans/current` and `GET /plans/:start` (PLAN §12). */
@@ -1405,4 +1440,148 @@ export async function undoCover(
 
   await deleteMove(db, auth.workspaceId, id)
   return readPlanFor(db, auth, clock, resolvedPeriod)
+}
+
+/* ----------------------------------------------- prefilling from the rules */
+
+/**
+ * `POST /plans/:start/prefill`: fills the month from the recurring rules (flow F3, §11).
+ *
+ * The user has already told Mizan that rent is ₺11,500 on the 1st and Netflix is ₺222 on the
+ * 28th. Typing those into the plan a second time is exactly the tedium that loses users (§1), so
+ * each rule's occurrences inside the month are summed onto a line for its category — a bill that
+ * falls twice in one period counts twice — and income rules become expected-income items.
+ *
+ * Nothing the month already has is touched. A prefill must never overwrite an amount the user
+ * typed, so a target with a line is left exactly as it is and counted as skipped; running it
+ * again after adding a rule therefore fills in only what is new.
+ */
+export async function prefillPlan(
+  db: Db,
+  auth: RequestAuth,
+  { clock }: PlanDependencies,
+  start: PlainDate | undefined,
+): Promise<PrefillPlanResponse> {
+  assertCanWrite(auth)
+
+  const resolvedPeriod = await resolvePeriod(db, auth, clock, start)
+  assertOpen(resolvedPeriod)
+
+  const base = auth.workspace.baseCurrency
+  const [commitments, categories, groups, goals] = await Promise.all([
+    commitmentsInPeriod(db, auth, { clock }, resolvedPeriod.period),
+    findCategories(db, auth.workspaceId, { includeArchived: true }),
+    findCategoryGroups(db, auth.workspaceId),
+    findGoals(db, auth.workspaceId),
+  ])
+
+  const categoryById = new Map(categories.map((row) => [row.id, row]))
+  const goalById = new Map(goals.map((row) => [row.id, row]))
+  const groupById = new Map(groups.map((row) => [row.id, row]))
+  const isIncomeCategory = (category: CategoryRow) => {
+    const group = groupById.get(category.groupId)
+    return group !== undefined && categoryGroupKind(group.kind) === 'income'
+  }
+
+  const periodRow = await ensurePeriodRow(db, auth, resolvedPeriod)
+  const [existingLines, existingIncome] = await Promise.all([
+    findLines(db, auth.workspaceId, periodRow.id),
+    findIncomeItems(db, auth.workspaceId, periodRow.id),
+  ])
+
+  const plannedCategories = new Set(
+    existingLines.map((line) => line.categoryId).filter((id): id is string => id !== null),
+  )
+  const plannedGoals = new Set(
+    existingLines.map((line) => line.goalId).filter((id): id is string => id !== null),
+  )
+  const claimedIncome = new Set(existingIncome.map((item) => item.categoryId))
+
+  /*
+   * Several rules can share a category — three subscriptions under Subscriptions — and the plan
+   * holds one line per category, so they are summed before anything is written. Income is
+   * deliberately not grouped: an item per rule is what makes "Salary" and "Atölye invoice"
+   * separate things the user can confirm one at a time (flow F2).
+   */
+  const allocations = new Map<string, { target: LineTarget; planned: Money }>()
+  let skippedLines = 0
+  let createdIncomeItems = 0
+  let skippedIncomeItems = 0
+  const incomeToWrite: { commitment: PeriodCommitment; category: CategoryRow }[] = []
+
+  for (const commitment of commitments) {
+    if (commitment.kind === 'income') {
+      const category = commitment.categoryId ? categoryById.get(commitment.categoryId) : undefined
+      // Income the plan can count has to sit in an income category (§10); anything else is left.
+      if (!category || !isIncomeCategory(category) || claimedIncome.has(category.id)) {
+        skippedIncomeItems += 1
+        continue
+      }
+      incomeToWrite.push({ commitment, category })
+      continue
+    }
+
+    const goal = commitment.goalId ? goalById.get(commitment.goalId) : undefined
+    const category = commitment.categoryId ? categoryById.get(commitment.categoryId) : undefined
+
+    // A transfer between the user's own accounts with no goal behind it commits nothing to plan.
+    if (!goal && !category) continue
+    if (goal ? plannedGoals.has(goal.id) : plannedCategories.has(category!.id)) {
+      skippedLines += 1
+      continue
+    }
+    // An archived category or goal gets no new allocation: the user put it away.
+    if (goal?.archivedAt || category?.archivedAt) {
+      skippedLines += 1
+      continue
+    }
+
+    const target = targetOf(goal ? undefined : category, goal)
+    const key = target.goalId ?? target.categoryId ?? 'pool'
+    const running = allocations.get(key)
+    allocations.set(key, {
+      target,
+      planned: (running?.planned ?? Money.zero(base)).plus(commitment.amount),
+    })
+  }
+
+  await db.transaction(async (tx) => {
+    for (const { target, planned } of allocations.values()) {
+      await insertLine(tx, {
+        id: uuidv7(),
+        workspaceId: auth.workspaceId,
+        periodId: periodRow.id,
+        categoryId: target.categoryId,
+        goalId: target.goalId,
+        isPool: target.isPool,
+        plannedAmount: planned.roundToMinor().toDto().amount,
+        rollover: false,
+        sortOrder: target.sortOrder,
+      })
+    }
+
+    let sortOrder = await nextIncomeItemSortOrder(tx, auth.workspaceId, periodRow.id)
+    for (const { commitment, category } of incomeToWrite) {
+      await insertIncomeItem(tx, {
+        id: uuidv7(),
+        workspaceId: auth.workspaceId,
+        periodId: periodRow.id,
+        categoryId: category.id,
+        label: commitment.name,
+        expectedAmount: commitment.amount.roundToMinor().toDto().amount,
+        expectedDate: commitment.firstDueDate,
+        sortOrder,
+      })
+      sortOrder += 1
+      createdIncomeItems += 1
+    }
+  })
+
+  return {
+    plan: await readPlanFor(db, auth, clock, { ...resolvedPeriod, row: periodRow }),
+    createdLines: allocations.size,
+    createdIncomeItems,
+    skippedLines,
+    skippedIncomeItems,
+  }
 }

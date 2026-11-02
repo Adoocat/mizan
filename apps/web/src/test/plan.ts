@@ -194,6 +194,8 @@ export const TEST_PLAN: PlanResponse = {
   ],
   moves: [],
   copyableFrom: plainDate('2026-09-01'),
+  // Nothing recurring is unaccounted for in this month; the recurring tests set their own.
+  uncoveredRecurring: [],
 }
 
 /** Read-only handlers for the plan endpoints. Tests that mutate add their own on top. */

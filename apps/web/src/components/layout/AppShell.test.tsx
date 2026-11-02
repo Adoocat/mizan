@@ -37,7 +37,8 @@ describe('AppShell', () => {
     for (const name of [
       'Plan',
       'Transactions',
-      'Calendar',
+      // Named "Upcoming" since phase 9: the month grid it was named for is v1.1 (phase 19).
+      'Upcoming',
       'Savings',
       'Investments',
       'Goals',
@@ -93,7 +94,7 @@ describe('AppShell', () => {
     renderApp('/')
     await userEvent.click(await screen.findByRole('button', { name: 'More' }))
     const sheet = await screen.findByRole('dialog', { name: 'More' })
-    for (const name of ['Transactions', 'Calendar', 'Reports', 'Accounts', 'Settings']) {
+    for (const name of ['Transactions', 'Upcoming', 'Reports', 'Accounts', 'Settings']) {
       expect(within(sheet).getByRole('link', { name })).toBeInTheDocument()
     }
     await act(async () => {

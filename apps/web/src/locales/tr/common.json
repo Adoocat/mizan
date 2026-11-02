@@ -419,7 +419,21 @@
     "cover": "Karşıla",
     "coverFor": "{{name}} aşımını karşıla",
     "coveredIn": "karşılandı",
-    "coveredOut": "karşılıyor"
+    "coveredOut": "karşılıyor",
+    "prefill": "Yinelenenlerden doldur",
+    "prefilled_zero": "Doldurulacak bir şey yok — her kuralın zaten bir satırı var",
+    "prefilled_one": "Yinelenen ödemelerinizden {{count}} satır dolduruldu",
+    "prefilled_other": "Yinelenen ödemelerinizden {{count}} satır dolduruldu",
+    "prefillFailed": "Plan doldurulamadı",
+    "uncovered": {
+      "title_one": "{{count}} yinelenen ödeme planda yok",
+      "title_other": "{{count}} yinelenen ödeme planda yok",
+      "lead": "Bu para harcanabilir tutardan çıkıyor. Ona bir satır verin ya da havuzun karşıladığına karar verin.",
+      "body": "bu ay bir satırı yok",
+      "manage": "Yinelenen ödemeler",
+      "times_one": "{{count}} kez",
+      "times_other": "{{count}} kez"
+    }
   },
   "transactions": {
     "summary": {
@@ -524,35 +538,155 @@
   "upcoming": {
     "eyebrow": "Yinelenen ve planlanmış para hareketleri",
     "addRecurring": "Yinelenen ekle",
+    "loadFailed": "Yaklaşan ödemeler yüklenemedi",
     "tiles": {
-      "next7": "Önümüzdeki 7 gün",
+      "next": "Önümüzdeki {{days}} gün",
       "overdue": "Gecikmiş",
-      "lowest": "En düşük öngörülen bakiye",
-      "income": "Sonraki gelir"
+      "income": "Beklenen gelir",
+      "committed": "Her ay bağlanan"
     },
-    "next7Note": "5 kesin · 1 tahmini",
-    "overdueNote": "İSKİ Su · son tarih 19 Eki",
-    "lowestNote": "31 Eki, maaştan bir gün önce",
-    "incomeNote": "Maaş · 1 Kas bekleniyor",
+    "dueNote_zero": "Ödeme yok",
+    "dueNote_one": "{{count}} ödeme",
+    "dueNote_other": "{{count}} ödeme",
+    "overdueNote_zero": "Atlanan yok",
+    "overdueNote_one": "{{count}} ödeme kaydedilmedi",
+    "overdueNote_other": "{{count}} ödeme kaydedilmedi",
+    "incomeNote": "{{name}} · {{date}}",
+    "noIncome": "Bu aralıkta beklenen gelir yok",
+    "committedNote_zero": "Henüz kural yok",
+    "committedNote_one": "{{count}} kuraldan",
+    "committedNote_other": "{{count}} kuraldan",
+    "overdueTitle": "Gecikmiş",
+    "overdueLead": "Vadesi geçmiş ve kaydedilmemiş. Ödediklerinizi onaylayın ya da atlayın.",
     "schedule": "Takvim",
-    "overdueDays": "{{count}} gün gecikti",
+    "window": "Ne kadar ileri",
+    "windowDays": "{{days}} gün",
+    "range": "{{from}} – {{to}}",
+    "fromBalance": "/",
+    "nothingDueTitle": "Ödeme yok",
+    "nothingDueBody": "Önümüzdeki {{days}} gün içinde yinelenen bir ödeme yok.",
+    "emptyTitle": "Henüz yinelenen ödeme yok",
+    "emptyBody": "Şimdiden bildiğiniz sabit ödemeleri ekleyin — kira, faturalar, abonelikler, maaşınız — ve Mizan bunları her ay yazmanızı istemesin.",
+    "noCategory": "Kategori yok",
+    "seeAll": "Tüm yaklaşanlar",
+    "overdueDays_one": "{{count}} gün gecikti",
+    "overdueDays_other": "{{count}} gün gecikti",
     "estimated": "tahmini",
     "recurring": "Her ay yinelenen",
-    "recurringRows": {
-      "housing": "Konut ve faturalar",
-      "debt": "Borç ödemeleri",
-      "subscriptions": "Abonelikler",
-      "saving": "Birikim ve yatırım"
+    "committed": "harcamadan önce bağlanan"
+  },
+  "recurring": {
+    "kinds": {
+      "expense": "Ödeme",
+      "income": "Gelir",
+      "transfer": "Transfer"
     },
-    "committed": "Harcamadan önce bağlanan",
-    "month": "Ekim 2026",
-    "monthNote": "Gri rakam = gün sonu vadesiz bakiye",
-    "legend": {
-      "paid": "Ödendi",
+    "amountModes": {
+      "fixed": "Sabit tutar",
+      "estimated": "Tahmini"
+    },
+    "frequencies": {
+      "daily": "Günlük",
+      "weekly": "Haftalık",
+      "monthly": "Aylık",
+      "yearly": "Yıllık"
+    },
+    "weekendPolicies": {
+      "none": "Tarihi olduğu gibi bırak",
+      "previous_business_day": "Önceki cumaya al",
+      "next_business_day": "Sonraki pazartesiye at"
+    },
+    "schedule": {
+      "daily_one": "Her gün",
+      "daily_other": "{{count}} günde bir",
+      "weekly_one": "Her hafta",
+      "weekly_other": "{{count}} haftada bir",
+      "monthly_one": "Her ay",
+      "monthly_other": "{{count}} ayda bir",
+      "yearly_one": "Her yıl",
+      "yearly_other": "{{count}} yılda bir"
+    },
+    "states": {
       "upcoming": "Yaklaşan",
-      "estimated": "Tahmini",
+      "due": "Bugün",
       "overdue": "Gecikmiş",
-      "income": "Gelir"
+      "posted": "Kaydedildi",
+      "skipped": "Atlandı"
+    },
+    "next": "sıradaki {{date}}",
+    "perMonthSuffix": "/ay",
+    "paused": "Duraklatıldı",
+    "finished": "Bitti",
+    "autoPost": "Kendi kaydolur",
+    "overridden": "bu seferlik değişti",
+    "confirmAction": "Onayla",
+    "skip": "Atla",
+    "unskip": "Geri al",
+    "edit": "Düzenle",
+    "pause": "Duraklat",
+    "resume": "Devam et",
+    "end": "Bitir",
+    "delete": "Sil",
+    "deleteTitle": "{{name}} silinsin mi?",
+    "deleteBody": "Kural ve onun atlamaları ile değişiklikleri silinir. Daha önce kaydettikleri işlemlerinizde kalır. Kuralı durdurup saklamak için bitirin.",
+    "form": {
+      "newTitle": "Yeni yinelenen ödeme",
+      "editTitle": "Yinelenen ödemeyi düzenle",
+      "lead": "Mizan tarihler geldikçe bunu tek tek ödemelere açar. Onaylamadan hiçbir şey kaydedilmez.",
+      "failed": "Kural kaydedilemedi",
+      "kind": "Bu nedir",
+      "name": "Ad",
+      "nameHint": "Kendi adlandırmanız: “Kira”, “Netflix”, “Maaş”.",
+      "amount": "Tutar",
+      "amountMode": "Tutar biliniyor mu?",
+      "fromAccount": "Ödendiği hesap",
+      "intoAccount": "Yatacağı hesap",
+      "toAccount": "Aktarılacağı hesap",
+      "chooseAccount": "Bir hesap seçin",
+      "sameAccount": "Transfer için iki ayrı hesap gerekir.",
+      "category": "Kategori",
+      "goal": "Hedef",
+      "noGoal": "Yok",
+      "goalEarmark": "Transferi onaylamak parayı bu hedef için de ayırır.",
+      "goalFunded": "Para bu ayın planından değil, bu hedeften çıkar.",
+      "scheduleHeading": "Ne zaman",
+      "freq": "Sıklık",
+      "interval": "Her",
+      "intervalInvalid": "1 ile 365 arası tam sayı.",
+      "startDate": "İlki",
+      "byMonthDay": "Ayın günü",
+      "byMonthDayHint": "Boş bırakırsanız başlangıç günü kullanılır. 29–31, kısa ayların son gününe denk gelir.",
+      "weekendPolicy": "Hafta sonuna denk gelirse",
+      "endDate": "Sonuncusu",
+      "endDateHint": "Sürmesi için boş bırakın.",
+      "autoPost": "Vadesi geldiğinde kendiliğinden kaydet",
+      "autoPostHint": "Mizan sormadan kaydeder. Bunu yalnızca her zaman zamanında çıkan bir ödeme için yapın — başarısız olan bir ödeme de çıkmış gibi kaydedilir.",
+      "perMonth": "Bu, ayda yaklaşık",
+      "create": "Kural ekle",
+      "save": "Kaydet",
+      "scope": "Şuna uygula",
+      "scopes": {
+        "all": "Tüm seri",
+        "future": "Bu aydan itibaren"
+      },
+      "scopeHints": {
+        "all": "Henüz kaydedilmemiş her ödeme. Onayladıklarınız olduğu tutarda kalır.",
+        "future": "Mevcut kural biter ve yenisi devralır; önceki aylar söylediklerini korur."
+      }
+    },
+    "confirm": {
+      "title": "{{name}} onayı",
+      "lead": {
+        "expense": "Ödemeyi kayıtlarınıza işler.",
+        "income": "Paranın geldiğini kaydeder.",
+        "transfer": "Hesaplarınız arasındaki transferi kaydeder."
+      },
+      "estimatedHint": "Bu tutar tahminiydi. Faturanın gerçekte ne kadar olduğunu girin.",
+      "amount": "Hareket eden tutar",
+      "date": "Hareket tarihi",
+      "dateHint": "Varsayılan olarak vade günü.",
+      "submit": "Kaydet",
+      "failed": "Kaydedilemedi"
     }
   },
   "goals": {

@@ -17,7 +17,7 @@
 | 6 | Monthly plan I | ✅ |
 | 7 | Available to spend and safe-to-spend | ✅ |
 | 8 | Goals | ✅ |
-| 9 | Recurring and upcoming | ⬜ |
+| 9 | Recurring and upcoming | ✅ |
 | 10 | Month review and close | ⬜ |
 | 11 | Dashboard and onboarding | ⬜ |
 | 12 | MVP hardening and release | ⬜ |
@@ -873,5 +873,5 @@ Status legend: **Pending** = recommended default recorded, awaiting confirmation
 | D8 | Navigation merges | Merge Savings + Goals; Debts + Net Worth into Accounts (§13) | Phase 2 | **Confirmed** — [ADR 0004](adr/0004-navigation-merges.md) |
 | D10 | Emergency fund target | **Derived** from the current plan's essential and debt lines on every read, not snapshotted; the fund stores no target of its own | Phase 8 | **Confirmed** — [ADR 0013](adr/0013-goals.md) |
 | D11 | Required monthly with no target date | Omitted (`null`): no date means no denominator, so the card shows progress and a derived finish date instead | Phase 8 | **Confirmed** — [ADR 0013](adr/0013-goals.md) |
-| D12 | Sinking fund `repeat` | Stored and shown in phase 8; rolling `target_date` forward lands with recurring in phase 9 | Phase 8/9 | **Confirmed** — [ADR 0013](adr/0013-goals.md) |
+| D12 | Sinking fund `repeat` | Stored and shown in phase 8; a daily job rolls `target_date` forward once the bill has passed | Phase 8/9 | **Confirmed** — [ADR 0013](adr/0013-goals.md), [ADR 0014](adr/0014-recurring-and-upcoming.md) |
 | D9 | Audience | Built to launch quality, private beta in an EU region; review hosting/KVKK before any public launch in Türkiye | Phase 12 | Pending |

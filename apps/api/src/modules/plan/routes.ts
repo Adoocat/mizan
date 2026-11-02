@@ -4,6 +4,7 @@ import {
   coverOverspendSchema,
   createPlanIncomeItemSchema,
   planResponseSchema,
+  prefillPlanResponseSchema,
   plainDateSchema,
   updatePlanIncomeItemSchema,
   upsertPlanLineSchema,
@@ -18,6 +19,7 @@ import {
   coverOverspend,
   createIncomeItem,
   patchIncomeItem,
+  prefillPlan,
   readPlan,
   removeIncomeItem,
   undoCover,
@@ -27,11 +29,20 @@ import {
 /**
  * A month is addressed by its start date, which is the day the user's plan month begins — not
  * necessarily the 1st (decision D3). `current` resolves it from the clock instead.
+ *
+ * Every route that takes a month accepts both, and `current` arrives at the services as
+ * `undefined`, which is already how they ask for "this month". The Plan page shows the current
+ * month before the user has picked one, so its first edit of the day addresses `current` — and a
+ * date-only parameter here refused it.
  */
-const startParamsSchema = z.object({ start: plainDateSchema })
-const copyParamsSchema = z.object({ start: plainDateSchema, from: plainDateSchema })
-const itemParamsSchema = z.object({ start: plainDateSchema, id: z.uuid() })
-const moveParamsSchema = z.object({ start: plainDateSchema, id: z.uuid() })
+const monthParamSchema = z
+  .union([z.literal('current'), plainDateSchema])
+  .transform((value) => (value === 'current' ? undefined : value))
+
+const startParamsSchema = z.object({ start: monthParamSchema })
+const copyParamsSchema = z.object({ start: monthParamSchema, from: plainDateSchema })
+const itemParamsSchema = z.object({ start: monthParamSchema, id: z.uuid() })
+const moveParamsSchema = z.object({ start: monthParamSchema, id: z.uuid() })
 
 /** `/plans` (PLAN §12). */
 export const planRoutes: FastifyPluginAsyncZod<{ database: Database; clock: Clock }> = async (
@@ -140,6 +151,12 @@ export const planRoutes: FastifyPluginAsyncZod<{ database: Database; clock: Cloc
     { schema: { params: moveParamsSchema, response: { 200: planResponseSchema } } },
     async (request) =>
       undoCover(database.db, requireAuth(request), deps, request.params.start, request.params.id),
+  )
+
+  app.post(
+    '/plans/:start/prefill',
+    { schema: { params: startParamsSchema, response: { 200: prefillPlanResponseSchema } } },
+    async (request) => prefillPlan(database.db, requireAuth(request), deps, request.params.start),
   )
 
   app.post(

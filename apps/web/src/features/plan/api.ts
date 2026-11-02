@@ -1,6 +1,7 @@
 import {
   copyPlanResponseSchema,
   planResponseSchema,
+  prefillPlanResponseSchema,
   type CopyPlanInput,
   type CoverOverspendInput,
   type PlanResponse,
@@ -100,6 +101,21 @@ export function useCoverOverspend(start: string | null) {
 export function useUndoCover(start: string | null) {
   return usePlanMutation(start, (id: string) =>
     apiDelete(`${path(start)}/moves/${id}`, planResponseSchema),
+  )
+}
+
+/**
+ * Prefills the month from the recurring rules (flow F3, §11).
+ *
+ * Each rule's occurrences inside the month are summed onto a line for its category, and income
+ * rules become expected-income items. Nothing already there is touched, so this is safe to press
+ * again after adding a rule.
+ */
+export function usePrefillPlan(start: string | null) {
+  return usePlanMutation(
+    start,
+    () => apiPost(`${path(start)}/prefill`, undefined, prefillPlanResponseSchema),
+    (output) => output.plan,
   )
 }
 

@@ -177,6 +177,32 @@ describe('a plan period', () => {
     expect(plan.groups.length).toBeGreaterThan(0)
   })
 
+  it('can be edited as "current", not only by its date', async () => {
+    /*
+     * The Plan page shows the current month before the user has picked one, so its first edit of
+     * the day addresses `current` rather than a date. Every month-addressed route has to take
+     * both — this one refused `current` until phase 9 found it.
+     */
+    const response = await actor.request({
+      method: 'PUT',
+      url: '/api/v1/plans/current/lines',
+      payload: { target: 'category', categoryId: category.rent, planned: tl('11500.00') },
+    })
+    expect(response.statusCode, response.body).toBe(200)
+
+    // And it landed in the month `current` names. These tests run on the real clock, so that is
+    // whatever month it is today, not the October the rest of the file plans.
+    const plan = await readPlan('current')
+    expect(rowFor(plan, 'rent').planned).toEqual(tl('11500.00'))
+
+    // Cleared again, so the month these tests plan is the only one they leave anything in.
+    await actor.request({
+      method: 'PUT',
+      url: '/api/v1/plans/current/lines',
+      payload: { target: 'category', categoryId: category.rent, planned: tl('0.00') },
+    })
+  })
+
   it('reports its own bounds and its neighbours', async () => {
     const plan = await readPlan()
     expect(plan.period.start).toBe('2026-10-01')

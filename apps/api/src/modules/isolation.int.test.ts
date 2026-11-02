@@ -14,6 +14,7 @@ import { accountIsolationCases } from './accounts/isolation.ts'
 import { categoryIsolationCases } from './categories/isolation.ts'
 import { goalIsolationCases } from './goals/isolation.ts'
 import { PLAN_ISOLATION_START, planIsolationCases } from './plan/isolation.ts'
+import { RECURRING_ISOLATION_DATE, recurringIsolationCases } from './recurring/isolation.ts'
 import { transactionIsolationCases } from './transactions/isolation.ts'
 import { workspaceIsolationCases } from './workspace/isolation.ts'
 
@@ -29,6 +30,7 @@ const CASES: readonly IsolationCase[] = [
   ...transactionIsolationCases,
   ...planIsolationCases,
   ...goalIsolationCases,
+  ...recurringIsolationCases,
 ]
 
 /** Resources owned by the victim's workspace, keyed by the name the cases use. */
@@ -143,9 +145,31 @@ async function createFixtures(victim: Actor): Promise<IsolationIds> {
     )
   }
 
+  /*
+   * A recurring rule, so the rule and occurrence endpoints have something to address. Its first
+   * occurrence is `RECURRING_ISOLATION_DATE`, which the occurrence cases put in their URLs.
+   */
+  const rule = await victim.request({
+    method: 'POST',
+    url: '/api/v1/recurring',
+    payload: {
+      kind: 'expense',
+      name: 'Rent',
+      amount: { amount: '11500.00', currency: 'TRY' },
+      freq: 'monthly',
+      startDate: RECURRING_ISOLATION_DATE,
+      accountId,
+      categoryId: category.id,
+    },
+  })
+  if (rule.statusCode !== 201) {
+    throw new Error(`fixture recurring rule failed (${rule.statusCode}): ${rule.body}`)
+  }
+
   return {
     accountId,
     goalId,
+    recurringRuleId: rule.json<{ id: string }>().id,
     goalContributionId: contribution.json<GoalResponse>().contributions[0]!.id,
     categoryGroupId: flexible.id,
     categoryId: category.id,

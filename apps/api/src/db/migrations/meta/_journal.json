@@ -64,6 +64,13 @@
       "when": 1791729157709,
       "tag": "0008_goals",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793564127060,
+      "tag": "0009_recurring",
+      "breakpoints": true
     }
   ]
 }

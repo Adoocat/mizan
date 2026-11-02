@@ -15,6 +15,7 @@ import { categoryRoutes } from './modules/categories/routes.ts'
 import { goalRoutes } from './modules/goals/routes.ts'
 import { healthRoutes } from './modules/health/routes.ts'
 import { planRoutes } from './modules/plan/routes.ts'
+import { recurringRoutes } from './modules/recurring/routes.ts'
 import { transactionRoutes } from './modules/transactions/routes.ts'
 import { workspaceRoutes } from './modules/workspace/routes.ts'
 import { registerAuth } from './plugins/auth.ts'
@@ -81,6 +82,7 @@ export async function buildApp({ config, database, auth, clock = systemClock }: 
       await api.register(transactionRoutes, { database })
       await api.register(planRoutes, { database, clock })
       await api.register(goalRoutes, { database, clock })
+      await api.register(recurringRoutes, { database, clock })
     },
     { prefix: '/api/v1' },
   )

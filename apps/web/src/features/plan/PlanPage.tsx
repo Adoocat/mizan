@@ -22,13 +22,22 @@ import { toast } from '../../components/ui/Toaster'
 import { cn } from '../../lib/cn'
 import { useFormatPeriod, useFormatShortMonth } from '../../lib/format-date'
 import { useCurrentSession } from '../auth/session'
+import { useRecurringRules } from '../recurring/api'
 import { useCategories } from '../categories/api'
 import { optionsById, useCategoryGroupName, useCategoryOptions } from '../categories/names'
-import { useCopyPlan, useCoverOverspend, usePlan, useUndoCover, useUpsertPlanLine } from './api'
+import {
+  useCopyPlan,
+  useCoverOverspend,
+  usePlan,
+  usePrefillPlan,
+  useUndoCover,
+  useUpsertPlanLine,
+} from './api'
 import { CoverDialog, coverSources } from './CoverDialog'
 import { IncomePanel } from './IncomePanel'
 import { planGridClass, PlanLineRow } from './PlanLineRow'
 import { SafeToSpend } from './SafeToSpend'
+import { UncoveredRecurring } from './UncoveredRecurring'
 import { planSearchSchema, type PlanSearch } from './search'
 
 /** Reads the month from the URL, which is where it lives (§13). */
@@ -78,8 +87,17 @@ export function PlanPage() {
   const formatPeriod = useFormatPeriod()
   const shortMonth = useFormatShortMonth()
 
+  /*
+   * Only to decide whether "Fill from recurring" is worth offering. A button whose only possible
+   * answer is "nothing to fill in" is noise, and this query is cached across the two pages that
+   * use it.
+   */
+  const rules = useRecurringRules()
+  const hasRules = (rules.data?.rules.length ?? 0) > 0
+
   const upsert = useUpsertPlanLine(start)
   const copy = useCopyPlan(start)
+  const prefill = usePrefillPlan(start)
   const cover = useCoverOverspend(start)
   const undoCover = useUndoCover(start)
 
@@ -246,7 +264,9 @@ export function PlanPage() {
         eyebrow={t('plan.eyebrow')}
         title={t('plan.title')}
         actions={
-          <div className="flex items-center gap-2">
+          // Wrapping, not scrolling: the month switcher and up to three actions do not fit on one
+          // line on a phone, and a row that overflows instead sits on top of the page below it.
+          <div className="flex flex-wrap items-center gap-2">
             <Button
               size="sm"
               aria-label={t('plan.previousMonth')}
@@ -294,6 +314,26 @@ export function PlanPage() {
                 {t('plan.copyFrom', { month: shortMonth(data.copyableFrom) })}
               </Button>
             )}
+            {editable && hasRules && (
+              <Button
+                variant="secondary"
+                loading={prefill.isPending}
+                onClick={() => {
+                  prefill.mutate(undefined, {
+                    onSuccess: (result) =>
+                      toast.success(
+                        t('plan.prefilled', {
+                          count: result.createdLines + result.createdIncomeItems,
+                        }),
+                      ),
+                    onError: (error) =>
+                      toast.error(error instanceof Error ? error.message : t('plan.prefillFailed')),
+                  })
+                }}
+              >
+                {t('plan.prefill')}
+              </Button>
+            )}
           </div>
         }
       />
@@ -301,6 +341,11 @@ export function PlanPage() {
       {data.period.status === 'closed' && <Badge tone="neutral">{t('plan.closedMonth')}</Badge>}
 
       <SafeToSpend plan={data} />
+
+      <UncoveredRecurring
+        items={data.uncoveredRecurring}
+        nameOf={(categoryId) => namesById.get(categoryId)?.label ?? ''}
+      />
 
       <div className="grid gap-5 md:grid-cols-3">
         {tiles.map((tile) => (

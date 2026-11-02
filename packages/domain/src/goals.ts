@@ -12,7 +12,7 @@
  * still needs each month, and whether it is keeping up. The web app calls the same functions
  * while a contribution is being typed, so a preview and the saved answer agree by construction.
  */
-import { toParts, type PlainDate } from './dates.ts'
+import { addMonths, toParts, type PlainDate } from './dates.ts'
 import type { Decimal } from './decimal.ts'
 import { Money } from './money.ts'
 import type { Period } from './period.ts'
@@ -60,6 +60,38 @@ export const REPEAT_MONTHS: Record<GoalRepeat, number> = {
   monthly: 1,
   quarterly: 3,
   annual: 12,
+}
+
+/**
+ * Where a repeating sinking fund's target date moves once it has passed (decision D12, phase 9).
+ *
+ * The annual insurance that was due in March is due again next March, and until the date moves
+ * the goal is stuck claiming it needs its whole remainder *now* — `requiredMonthly` divides by
+ * months that have gone. Advancing by whole repeats rather than by "one from today" keeps the
+ * date on the cycle the bill actually follows, however long the fund went unattended.
+ *
+ * `today` is excluded: a bill due today has not passed yet, and rolling it would hide the thing
+ * the user is meant to be paying. Returns the date unchanged while it is still ahead.
+ */
+export function rolledTargetDate(
+  targetDate: PlainDate,
+  repeat: GoalRepeat,
+  today: PlainDate,
+): PlainDate {
+  const step = REPEAT_MONTHS[repeat]
+  let turns = 0
+  let rolled = targetDate
+  /*
+   * Every turn is measured from the original date rather than from the last one, so a bill due on
+   * the 31st is not quietly demoted to the 30th by one pass through a short month — the same
+   * reason `nthSeriesDate` clamps from the rule's own day (§11). Monthly is the shortest step, so
+   * even years of neglect is a bounded number of turns.
+   */
+  while (rolled < today) {
+    turns += 1
+    rolled = addMonths(targetDate, turns * step)
+  }
+  return rolled
 }
 
 /**

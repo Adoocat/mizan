@@ -6,6 +6,7 @@ import { setupServer } from 'msw/node'
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { categoryHandlers, testCategory } from '../../test/categories'
 import { planHandlers, TEST_PLAN, withCover } from '../../test/plan'
+import { recurringHandlers } from '../../test/recurring'
 import { axeViolations, renderApp, setLanguage } from '../../test/render'
 import { sessionHandlers } from '../../test/session'
 
@@ -23,6 +24,8 @@ const server = setupServer(
   ...sessionHandlers(),
   ...categoryHandlers(),
   ...planHandlers(),
+  // The page asks whether there are any rules, to decide whether to offer "Fill from recurring".
+  ...recurringHandlers(),
   http.put('*/api/v1/plans/:start/lines', async ({ request }) => {
     puts.push((await request.json()) as Record<string, unknown>)
     return HttpResponse.json(TEST_PLAN)
@@ -459,5 +462,73 @@ describe('covering an overspend', () => {
     await user.click(within(row).getByRole('button', { name: 'Undo' }))
     await waitFor(() => expect(undos).toHaveLength(1))
     expect(undos[0]).toBe(covered.moves[0]!.id)
+  })
+})
+
+describe('recurring money the plan does not account for (PLAN §11)', () => {
+  const uncovered = {
+    ...TEST_PLAN,
+    uncoveredRecurring: [
+      {
+        ruleId: '019a2c1e-0000-7000-8000-00000009e001',
+        name: 'Netflix',
+        kind: 'expense' as const,
+        categoryId: testCategory('diningOut').id,
+        goalId: null,
+        amount: { amount: '222.00', currency: 'TRY' as const },
+        occurrences: 1,
+      },
+    ],
+  }
+
+  it('warns about it, and says which category it belongs to', async () => {
+    server.use(...planHandlers(uncovered))
+    await openPlan()
+
+    const panel = await screen.findByRole('region', {
+      name: '1 recurring payment is not in the plan',
+    })
+    expect(within(panel).getByText('Netflix')).toBeInTheDocument()
+    expect(within(panel).getByText('(Dining out)')).toBeInTheDocument()
+    expect(within(panel).getByText('₺222')).toBeInTheDocument()
+  })
+
+  it('says nothing when every rule has a line', async () => {
+    await openPlan()
+    expect(screen.queryByText('has no line this month')).not.toBeInTheDocument()
+  })
+
+  it('fills the month in from the rules', async () => {
+    const user = userEvent.setup()
+    const prefills: string[] = []
+    server.use(
+      http.post('*/api/v1/plans/:start/prefill', ({ params }) => {
+        prefills.push(String(params.start))
+        return HttpResponse.json({
+          plan: TEST_PLAN,
+          createdLines: 2,
+          createdIncomeItems: 1,
+          skippedLines: 0,
+          skippedIncomeItems: 0,
+        })
+      }),
+    )
+    await openPlan()
+
+    await user.click(screen.getByRole('button', { name: 'Fill from recurring' }))
+    await waitFor(() => expect(prefills).toHaveLength(1))
+    expect(await screen.findByText(/Filled in 3 lines/)).toBeInTheDocument()
+  })
+
+  it('does not offer to fill from rules that do not exist', async () => {
+    server.use(
+      http.get('*/api/v1/recurring', () =>
+        HttpResponse.json({ rules: [], committedMonthly: { amount: '0.00', currency: 'TRY' } }),
+      ),
+    )
+    await openPlan()
+    await waitFor(() =>
+      expect(screen.queryByRole('button', { name: 'Fill from recurring' })).not.toBeInTheDocument(),
+    )
   })
 })

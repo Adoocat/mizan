@@ -2,6 +2,7 @@ import { PLAN_LINE_TARGETS, PLAN_PERIOD_STATUSES, type PlanLineTarget } from '@m
 import { z } from 'zod'
 import { categoryGroupKindSchema } from './categories.ts'
 import { moneySchema, plainDateSchema } from './primitives.ts'
+import { uncoveredRecurringSchema } from './recurring.ts'
 
 export const planPeriodStatusSchema = z.enum(PLAN_PERIOD_STATUSES)
 export const planLineTargetSchema = z.enum(
@@ -228,6 +229,14 @@ export const planResponseSchema = z.object({
   moves: z.array(planMoveSchema),
   /** The start date of an earlier period worth copying from, or null when there is none. */
   copyableFrom: plainDateSchema.nullable(),
+  /**
+   * Recurring money this month's plan does not account for (§11, phase 9).
+   *
+   * Listed with the plan rather than fetched separately because it is a property *of the plan*:
+   * the same read that says what is allocated should say what is committed and unallocated, or
+   * the two answers can disagree on screen.
+   */
+  uncoveredRecurring: z.array(uncoveredRecurringSchema),
 })
 export type PlanResponse = z.infer<typeof planResponseSchema>
 
@@ -338,3 +347,23 @@ export const copyPlanResponseSchema = z.object({
   skippedLines: z.number().int().min(0),
 })
 export type CopyPlanResponse = z.infer<typeof copyPlanResponseSchema>
+
+/**
+ * Prefilling a month's plan from the recurring rules (flow F3, §11, phase 9).
+ *
+ * Each rule's occurrences inside the period are summed onto a line for its category — or an
+ * income item for an income rule — so the fixed payments the user has already described do not
+ * have to be typed into the plan a second time.
+ *
+ * Nothing the month already has is touched: a prefill must never overwrite an amount the user
+ * typed, which is why the counts say what was skipped as well as what was written.
+ */
+export const prefillPlanResponseSchema = z.object({
+  plan: planResponseSchema,
+  createdLines: z.number().int().min(0),
+  createdIncomeItems: z.number().int().min(0),
+  /** Targets that already had a line or an item, left exactly as they were. */
+  skippedLines: z.number().int().min(0),
+  skippedIncomeItems: z.number().int().min(0),
+})
+export type PrefillPlanResponse = z.infer<typeof prefillPlanResponseSchema>

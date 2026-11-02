@@ -28,18 +28,6 @@ export interface AlertItem {
   tone: 'negative' | 'warning' | 'accent'
 }
 
-export interface UpcomingItem {
-  id: string
-  dayOfWeek: string
-  day: number
-  name: string
-  categoryKey: string
-  account: string
-  amount: Money
-  state: 'upcoming' | 'estimated' | 'overdue'
-  overdueDays?: number
-}
-
 export interface BudgetLine {
   id: string
   spent: Money
@@ -83,80 +71,6 @@ const ALERTS: AlertItem[] = [
   { id: 'insurance', kind: 'atRisk', tone: 'warning' },
   { id: 'care', kind: 'overBudget', tone: 'warning' },
   { id: 'sync', kind: 'data', tone: 'accent' },
-]
-
-const UPCOMING: UpcomingItem[] = [
-  {
-    id: 'water',
-    dayOfWeek: 'mon',
-    day: 19,
-    name: 'İSKİ Water',
-    categoryKey: 'utilities',
-    account: 'Garanti',
-    amount: tl('310.00'),
-    state: 'overdue',
-    overdueDays: 3,
-  },
-  {
-    id: 'internet',
-    dayOfWeek: 'fri',
-    day: 23,
-    name: 'Turkcell Superonline',
-    categoryKey: 'internet',
-    account: 'Garanti',
-    amount: tl('549'),
-    state: 'upcoming',
-  },
-  {
-    id: 'spotify',
-    dayOfWeek: 'sat',
-    day: 24,
-    name: 'Spotify Premium',
-    categoryKey: 'subscriptions',
-    account: 'Bonus card',
-    amount: tl('99'),
-    state: 'upcoming',
-  },
-  {
-    id: 'statement',
-    dayOfWeek: 'sun',
-    day: 25,
-    name: 'Bonus card statement',
-    categoryKey: 'cardPayment',
-    account: 'Garanti',
-    amount: tl('4860'),
-    state: 'upcoming',
-  },
-  {
-    id: 'electricity',
-    dayOfWeek: 'mon',
-    day: 26,
-    name: 'Enerjisa Electricity',
-    categoryKey: 'utilities',
-    account: 'Garanti',
-    amount: tl('720'),
-    state: 'estimated',
-  },
-  {
-    id: 'gym',
-    dayOfWeek: 'tue',
-    day: 27,
-    name: 'MACFit membership',
-    categoryKey: 'gym',
-    account: 'Bonus card',
-    amount: tl('980'),
-    state: 'upcoming',
-  },
-  {
-    id: 'netflix',
-    dayOfWeek: 'wed',
-    day: 28,
-    name: 'Netflix',
-    categoryKey: 'subscriptions',
-    account: 'Bonus card',
-    amount: tl('222'),
-    state: 'upcoming',
-  },
 ]
 
 const BUDGETS: BudgetLine[] = [
@@ -227,18 +141,6 @@ const TRANSACTIONS: TransactionLine[] = [
   },
 ]
 
-export interface RecurringGroup {
-  key: 'housing' | 'debt' | 'subscriptions' | 'saving'
-  amount: Money
-}
-
-const RECURRING: RecurringGroup[] = [
-  { key: 'housing', amount: tl('11509') },
-  { key: 'debt', amount: tl('5500') },
-  { key: 'subscriptions', amount: tl('1399') },
-  { key: 'saving', amount: tl('14000') },
-]
-
 /** Everything the screens read. One object, so a later query hook can replace it wholesale. */
 export interface SampleData {
   today: PlainDate
@@ -257,14 +159,8 @@ export interface SampleData {
   glance: { checking: Money; spentThisMonth: Money; averageSpending: Money }
   alerts: AlertItem[]
   cashFlow: CashFlowMonth[]
-  upcoming: UpcomingItem[]
-  upcomingTotal: Money
-  checkingAfterUpcoming: Money
   budgets: BudgetLine[]
   transactions: TransactionLine[]
-  recurring: RecurringGroup[]
-  committedBeforeSpending: Money
-  calendar: { overdue: Money; lowestBalance: Money; nextIncome: Money }
 }
 
 export const SAMPLE_DATA: SampleData = {
@@ -292,18 +188,8 @@ export const SAMPLE_DATA: SampleData = {
   },
   alerts: ALERTS,
   cashFlow: CASH_FLOW,
-  upcoming: UPCOMING,
-  upcomingTotal: tl('7430'),
-  checkingAfterUpcoming: tl('17110'),
   budgets: BUDGETS,
   transactions: TRANSACTIONS,
-  recurring: RECURRING,
-  committedBeforeSpending: tl('32408'),
-  calendar: {
-    overdue: tl('310'),
-    lowestBalance: tl('10720'),
-    nextIncome: tl('46000'),
-  },
 }
 
 /** The seam the API will replace: every page reads its data from here. */

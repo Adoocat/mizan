@@ -19,7 +19,15 @@ export const NAV_GROUPS: { labelKey: string | null; items: NavItem[] }[] = [
       { to: '/', labelKey: 'nav.home' },
       { to: '/plan', labelKey: 'nav.plan' },
       { to: '/transactions', labelKey: 'nav.transactions', badge: { count: 4, tone: 'neutral' } },
-      { to: '/calendar', labelKey: 'nav.calendar', badge: { count: 1, tone: 'negative' } },
+      /*
+       * No badge: the mockup's count stood for one overdue payment, and the page now knows how
+       * many there really are (phase 9). A hard-coded 1 beside a list that may say none would
+       * contradict itself — the same reason Accounts lost its count in phase 4.
+       *
+       * Called "Upcoming" rather than "Calendar": the month grid and its balance projection are
+       * v1.1 (§20, phase 19), and what the page shows is the 7/30-day list §13 asks for.
+       */
+      { to: '/calendar', labelKey: 'nav.upcoming' },
     ],
   },
   {
@@ -74,7 +82,7 @@ export const MOBILE_TABS_AFTER_ADD = [{ to: '/goals' as const, labelKey: 'nav.go
 /** Everything else, in the mobile "More" sheet. */
 export const MOBILE_MORE_ITEMS: { to: NavPath; labelKey: string }[] = [
   { to: '/transactions', labelKey: 'nav.transactions' },
-  { to: '/calendar', labelKey: 'nav.calendar' },
+  { to: '/calendar', labelKey: 'nav.upcoming' },
   { to: '/savings', labelKey: 'nav.savings' },
   { to: '/investments', labelKey: 'nav.investments' },
   { to: '/debts', labelKey: 'nav.debts' },

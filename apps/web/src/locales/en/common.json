@@ -419,7 +419,21 @@
     "cover": "Cover",
     "coverFor": "Cover the overspend on {{name}}",
     "coveredIn": "covered",
-    "coveredOut": "covering"
+    "coveredOut": "covering",
+    "prefill": "Fill from recurring",
+    "prefilled_zero": "Nothing to fill in — every rule already has a line",
+    "prefilled_one": "Filled in {{count}} line from your recurring payments",
+    "prefilled_other": "Filled in {{count}} lines from your recurring payments",
+    "prefillFailed": "The plan could not be filled in",
+    "uncovered": {
+      "title_one": "{{count}} recurring payment is not in the plan",
+      "title_other": "{{count}} recurring payments are not in the plan",
+      "lead": "This money is coming out of Available to spend. Give it a line, or decide the pool covers it.",
+      "body": "has no line this month",
+      "manage": "Recurring payments",
+      "times_one": "{{count}} time",
+      "times_other": "{{count}} times"
+    }
   },
   "transactions": {
     "summary": {
@@ -524,35 +538,155 @@
   "upcoming": {
     "eyebrow": "Recurring and scheduled money movements",
     "addRecurring": "Add recurring",
+    "loadFailed": "Upcoming payments could not be loaded",
     "tiles": {
-      "next7": "Next 7 days",
+      "next": "Next {{days}} days",
       "overdue": "Overdue",
-      "lowest": "Lowest projected balance",
-      "income": "Next income"
+      "income": "Income expected",
+      "committed": "Committed each month"
     },
-    "next7Note": "5 confirmed · 1 estimated",
-    "overdueNote": "İSKİ Water · due 19 Oct",
-    "lowestNote": "31 Oct, the day before salary",
-    "incomeNote": "Salary · expected 1 Nov",
+    "dueNote_zero": "No payments due",
+    "dueNote_one": "{{count}} payment",
+    "dueNote_other": "{{count}} payments",
+    "overdueNote_zero": "Nothing missed",
+    "overdueNote_one": "{{count}} payment not recorded",
+    "overdueNote_other": "{{count}} payments not recorded",
+    "incomeNote": "{{name}} · {{date}}",
+    "noIncome": "None expected in this window",
+    "committedNote_zero": "No rules yet",
+    "committedNote_one": "From {{count}} rule",
+    "committedNote_other": "From {{count}} rules",
+    "overdueTitle": "Overdue",
+    "overdueLead": "Past due and not recorded. Confirm what was paid, or skip it.",
     "schedule": "Schedule",
-    "overdueDays": "Overdue {{count}} days",
+    "window": "How far ahead",
+    "windowDays": "{{days}} days",
+    "range": "{{from}} – {{to}}",
+    "fromBalance": "of",
+    "nothingDueTitle": "Nothing due",
+    "nothingDueBody": "No recurring payment falls in the next {{days}} days.",
+    "emptyTitle": "No recurring payments yet",
+    "emptyBody": "Add the fixed payments you already know about — rent, bills, subscriptions, your salary — and Mizan will stop asking you to type them in.",
+    "noCategory": "No category",
+    "seeAll": "All upcoming",
+    "overdueDays_one": "Overdue {{count}} day",
+    "overdueDays_other": "Overdue {{count}} days",
     "estimated": "estimated",
     "recurring": "Recurring each month",
-    "recurringRows": {
-      "housing": "Housing & utilities",
-      "debt": "Debt payments",
-      "subscriptions": "Subscriptions",
-      "saving": "Savings & investing"
+    "committed": "committed before spending"
+  },
+  "recurring": {
+    "kinds": {
+      "expense": "Payment",
+      "income": "Income",
+      "transfer": "Transfer"
     },
-    "committed": "Committed before spending",
-    "month": "October 2026",
-    "monthNote": "Grey figure = checking balance at end of day",
-    "legend": {
-      "paid": "Paid",
+    "amountModes": {
+      "fixed": "Fixed amount",
+      "estimated": "Estimated"
+    },
+    "frequencies": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "weekendPolicies": {
+      "none": "Leave the date as it falls",
+      "previous_business_day": "Move to the Friday before",
+      "next_business_day": "Move to the Monday after"
+    },
+    "schedule": {
+      "daily_one": "Every day",
+      "daily_other": "Every {{count}} days",
+      "weekly_one": "Every week",
+      "weekly_other": "Every {{count}} weeks",
+      "monthly_one": "Every month",
+      "monthly_other": "Every {{count}} months",
+      "yearly_one": "Every year",
+      "yearly_other": "Every {{count}} years"
+    },
+    "states": {
       "upcoming": "Upcoming",
-      "estimated": "Estimated",
+      "due": "Due today",
       "overdue": "Overdue",
-      "income": "Income"
+      "posted": "Recorded",
+      "skipped": "Skipped"
+    },
+    "next": "next {{date}}",
+    "perMonthSuffix": "/month",
+    "paused": "Paused",
+    "finished": "Finished",
+    "autoPost": "Posts itself",
+    "overridden": "changed for this one",
+    "confirmAction": "Confirm",
+    "skip": "Skip",
+    "unskip": "Put back",
+    "edit": "Edit",
+    "pause": "Pause",
+    "resume": "Resume",
+    "end": "End",
+    "delete": "Delete",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteBody": "The rule goes, and so do its skips and overrides. Everything it already recorded stays in your transactions. To stop a rule but keep it, end it instead.",
+    "form": {
+      "newTitle": "New recurring payment",
+      "editTitle": "Edit recurring payment",
+      "lead": "Mizan expands this into occurrences as the dates come round. Nothing is recorded until you confirm it.",
+      "failed": "That rule could not be saved",
+      "kind": "What this is",
+      "name": "Name",
+      "nameHint": "What you call it: “Rent”, “Netflix”, “Salary”.",
+      "amount": "Amount",
+      "amountMode": "Is the amount known?",
+      "fromAccount": "Paid from",
+      "intoAccount": "Paid into",
+      "toAccount": "Moved to",
+      "chooseAccount": "Choose an account",
+      "sameAccount": "A transfer needs two different accounts.",
+      "category": "Category",
+      "goal": "Goal",
+      "noGoal": "None",
+      "goalEarmark": "Confirming the transfer also earmarks the money for this goal.",
+      "goalFunded": "The money comes out of this goal rather than this month’s plan.",
+      "scheduleHeading": "When",
+      "freq": "How often",
+      "interval": "Every",
+      "intervalInvalid": "A whole number from 1 to 365.",
+      "startDate": "First one on",
+      "byMonthDay": "Day of the month",
+      "byMonthDayHint": "Leave blank to use the day it starts on. 29–31 fall on the last day of shorter months.",
+      "weekendPolicy": "If it lands on a weekend",
+      "endDate": "Last one on",
+      "endDateHint": "Leave blank to keep going.",
+      "autoPost": "Record this automatically when it comes due",
+      "autoPostHint": "Mizan will post it without asking. Only do this for a payment that always leaves on time — a failed one would be recorded as though it had gone out.",
+      "perMonth": "That is about",
+      "create": "Add rule",
+      "save": "Save",
+      "scope": "Apply this to",
+      "scopes": {
+        "all": "The whole series",
+        "future": "This month onwards"
+      },
+      "scopeHints": {
+        "all": "Every occurrence that is not already recorded. What you have already confirmed keeps the amount it was.",
+        "future": "The current rule ends and a new one takes over, so earlier months keep what they said."
+      }
+    },
+    "confirm": {
+      "title": "Confirm {{name}}",
+      "lead": {
+        "expense": "Records the payment in your ledger.",
+        "income": "Records the money arriving.",
+        "transfer": "Records the transfer between your accounts."
+      },
+      "estimatedHint": "This amount was an estimate. Enter what the bill actually came to.",
+      "amount": "Amount that moved",
+      "date": "Date it moved",
+      "dateHint": "Defaults to the day it was due.",
+      "submit": "Record it",
+      "failed": "That could not be recorded"
     }
   },
   "goals": {

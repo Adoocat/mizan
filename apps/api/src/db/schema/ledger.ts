@@ -12,12 +12,14 @@ import {
   text,
   timestamp,
   unique,
+  uniqueIndex,
   uuid,
 } from 'drizzle-orm/pg-core'
 import { users } from './auth.ts'
 import { categories } from './categories.ts'
 import { currencies } from './currencies.ts'
 import { goals } from './goals.ts'
+import { recurringRules } from './recurring.ts'
 import { workspaces } from './workspaces.ts'
 
 const instant = () => timestamp({ withTimezone: true, mode: 'date' })
@@ -111,6 +113,26 @@ export const transactions = pgTable(
      * makes `MİGROS` findable by typing `migros`.
      */
     searchText: text().notNull().default(''),
+    /**
+     * The recurring rule this transaction confirmed, and which of its occurrences (§11, phase 9).
+     *
+     * This pair **is** the record that an occurrence has been posted: there is no occurrence table
+     * and no "posted" exception, so the ledger stays the one place that knows money moved, the
+     * duplicate check is the partial unique index below rather than a service's judgement, and
+     * soft-deleting this transaction hands the occurrence back as due with nothing to clean up.
+     *
+     * `occurrence_date` is the occurrence's **original** date — its series date — not the date
+     * the money moved, which is `date` and may differ when the user confirmed it late.
+     *
+     * A plain reference rather than a composite one, for the reason `goal_contributions` gives: a
+     * composite `ON DELETE SET NULL` would try to null this row's `workspace_id` as well, which is
+     * NOT NULL, so the cascade could not run. Deleting a rule therefore leaves its posted
+     * transactions standing — the money moved, whatever became of the rule — with
+     * `occurrence_date` left as provenance. The service checks the rule belongs to the caller's
+     * workspace, and the cross-tenant suite covers that it does.
+     */
+    recurringRuleId: uuid().references(() => recurringRules.id, { onDelete: 'set null' }),
+    occurrenceDate: date(),
     createdBy: uuid().references(() => users.id, { onDelete: 'set null' }),
     createdAt: instant().notNull().defaultNow(),
     updatedAt: instant().notNull().defaultNow(),
@@ -126,6 +148,18 @@ export const transactions = pgTable(
     index('transactions_search_idx')
       .using('gin', sql`${table.searchText} gin_trgm_ops`)
       .where(sql`${table.deletedAt} IS NULL`),
+    /*
+     * §11's duplicate prevention, and the phase's definition of done: confirming an occurrence
+     * creates exactly one transaction. Two taps, a retried request and the auto-post job racing a
+     * manual confirm all end at this index.
+     *
+     * Partial on `deleted_at IS NULL` deliberately: a confirm the user undoes must give the
+     * occurrence back, and a soft-deleted row that still held the slot would make it unconfirmable
+     * forever.
+     */
+    uniqueIndex('transactions_occurrence_key')
+      .on(table.workspaceId, table.recurringRuleId, table.occurrenceDate)
+      .where(sql`${table.deletedAt} IS NULL AND ${table.recurringRuleId} IS NOT NULL`),
     check(
       'transactions_type_known',
       sql`${table.type} IN ('expense', 'income', 'transfer', 'adjustment', 'opening_balance')`,

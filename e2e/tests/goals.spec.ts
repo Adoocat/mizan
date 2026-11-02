@@ -190,6 +190,21 @@ test('a release is capped at what the goal holds, before anything is sent', asyn
   await archive(page, goal)
 })
 
+/**
+ * `(target − saved) ÷ months left`, rounded up to the kuruş, as `requiredMonthly` computes it.
+ *
+ * Derived from today rather than written out, because the months left shrink as the real calendar
+ * moves: ₺12,000 to December 2032 was ₺160 a month when this test was written and is less every
+ * month after. Whole kuruş throughout — the money rules apply to a test's arithmetic too.
+ */
+function requiredMonthlyFor(targetKurus: number, year: number, month: number): string {
+  const now = new Date()
+  // Counted inclusively to the target month, which is what `contributionMonthsLeft` does.
+  const monthsLeft = (year - now.getFullYear()) * 12 + (month - (now.getMonth() + 1)) + 1
+  const kurus = Math.ceil(targetKurus / monthsLeft)
+  return `${Math.floor(kurus / 100)}.${String(kurus % 100).padStart(2, '0')}`
+}
+
 test('a goal added to the plan is measured against what it receives', async ({ page }) => {
   await openGoals(page)
   const name = `Planned goal ${unique()}`
@@ -212,9 +227,8 @@ test('a goal added to the plan is measured against what it receives', async ({ p
    * group and only this row is this test's own.
    */
   const row = page.getByRole('textbox', { name: `Allocation for ${name}` })
-  // ₺12,000 over the 75 months to December 2032, which "Add to plan" filled in by itself.
-  // The field's own formatting is the currency input's business, so the figure is what matters.
-  await expect(row).toHaveValue(/160/)
+  // What "Add to plan" filled in by itself: ₺12,000 over the months to December 2032.
+  await expect(row).toHaveValue(requiredMonthlyFor(12_000_00, 2032, 12))
 
   await openGoals(page)
   await archive(page, card(page, name))
