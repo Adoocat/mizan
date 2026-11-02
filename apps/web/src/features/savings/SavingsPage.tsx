@@ -204,7 +204,7 @@ export function SavingsPage() {
         </div>
       </Panel>
 
-      <p className="m-0 text-caption text-ink-3">{t('home.sampleNote', { phase: 8 })}</p>
+      <p className="m-0 text-caption text-ink-3">{t('home.sampleNote', { phase: 16 })}</p>
     </PageContainer>
   )
 }

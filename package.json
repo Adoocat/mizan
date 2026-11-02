@@ -14,6 +14,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "pnpm -r typecheck",
+    "deps:check": "pnpm -r outdated || true",
     "test": "pnpm test:unit && pnpm test:int && pnpm test:e2e",
     "test:unit": "pnpm -r test:unit",
     "test:int": "pnpm --filter @mizan/api test:int",

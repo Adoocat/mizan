@@ -9,7 +9,7 @@
     "worker": "node src/worker.ts",
     "typecheck": "tsc -p tsconfig.json",
     "test:unit": "vitest run",
-    "test:int": "vitest run --config vitest.int.config.ts",
+    "test:int": "vitest run --config vitest.int.config.ts --coverage",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "node --env-file-if-exists=../../.env src/db/migrate.ts"
   },
@@ -33,6 +33,7 @@
     "@testcontainers/postgresql": "^12.2.0",
     "@types/node": "^24.0.0",
     "@types/pg": "^8.23.1",
+    "@vitest/coverage-v8": "5.0.3",
     "drizzle-kit": "^0.31.11",
     "testcontainers": "^12.2.0",
     "typescript": "~6.0.3",

@@ -47,6 +47,7 @@ Guide for Claude Code sessions working on **Mizan**, a planning-first personal f
 ### Tests
 - Tests ship in the same phase as the code.
 - Financial calculations need golden tests plus property tests (fast-check). Target ≥ 95% branch coverage in `packages/domain`.
+- `apps/api` has a lower floor, enforced on the integration run where its logic actually executes: ≥ 75% branches and ≥ 87% statements. A service layer has error paths that need a database to misbehave to reach, so the number is a slide detector, not a target to write tests against.
 - Integration tests run against a real Postgres (Testcontainers), not mocks.
 
 ## Key domain terms
@@ -99,9 +100,10 @@ Requires Node 24 (`.nvmrc`), pnpm via Corepack, and Docker running (integration 
 | `pnpm db:generate` | Generate a SQL migration from the Drizzle schema (`apps/api/src/db/schema`) |
 | `pnpm dev` | API on :3000 and web on :5173 (web proxies `/api`) |
 | `pnpm lint` · `pnpm typecheck` · `pnpm format` | Static checks |
+| `pnpm deps:check` | Reports outdated dependencies. Never automatic — there is no Dependabot; dependencies are updated as part of the phase that needs them |
 | `pnpm test` | Unit + integration + E2E |
 | `pnpm test:unit` | Vitest unit tests in every package (domain runs with coverage thresholds) |
-| `pnpm test:int` | API integration tests against a Testcontainers Postgres |
+| `pnpm test:int` | API integration tests against a Testcontainers Postgres (with coverage thresholds) |
 | `pnpm test:e2e` | Playwright against a Testcontainers Postgres (first run: `pnpm --filter @mizan/e2e install-browsers`) |
 | `pnpm build` | Production build of the web app |
 
