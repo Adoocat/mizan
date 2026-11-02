@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Mizan">
+  <rect x="0.5" y="0.5" width="127" height="127" rx="34" fill="#101417" stroke="#232a2f"/>
+  <g transform="translate(27.1 24.6) scale(0.4194)">
+    <path d="M8 6 L68 51 L68 178 L8 136 Z" fill="#5a9e96" stroke="#5a9e96" stroke-width="8" stroke-linejoin="round"/>
+    <path d="M168 6 L168 136 L112 178 L112 106 C112 96 100 92 100 82 L100 54 Z" fill="#84cdb8" stroke="#84cdb8" stroke-width="8" stroke-linejoin="round"/>
+  </g>
+</svg>
