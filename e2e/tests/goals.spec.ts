@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
+import { unique } from './support/unique.ts'
 
 /**
  * Phase 8 end to end: the Goals page shows all three types, contributions move a goal, and a
@@ -9,7 +10,6 @@ import { expect, test, type Locator, type Page } from '@playwright/test'
  * find whichever run created one first. Goals are archived at the end of the tests that would
  * otherwise leave a standing earmark behind.
  */
-const unique = () => Math.random().toString(36).slice(2, 8)
 
 async function openGoals(page: Page) {
   await page.goto('/goals')

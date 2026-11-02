@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
+import { unique } from './support/unique.ts'
 
 /**
  * Phase 6 end to end: allocations are typed straight into the plan, the totals follow as they
@@ -16,8 +17,6 @@ function month(index: number, project: string): string {
 }
 
 const planFor = (index: number) => month(index, test.info().project.name)
-
-const unique = () => Math.random().toString(36).slice(2, 8)
 
 async function openPlan(page: Page, start: string) {
   await page.goto(`/plan?month=${start}`)

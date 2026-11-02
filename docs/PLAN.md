@@ -808,7 +808,14 @@ Every phase's Definition of Done also includes: CI green, tests written in the s
 
 **Phase 12 — MVP hardening and release**
 - *Features:* data export, account deletion, auth audit events, security headers/CSP review, rate-limit review, backups + restore drill, production deployment, full E2E suite, performance pass, a11y pass.
-- *DoD:* deployed; restore tested; security checklist signed off.
+- *Rate-limit review, specifically:* **every endpoint outside `/auth/*` is currently unthrottled.**
+  `plugins/auth-rate-limit.ts` covers only the credential endpoints, per account, in memory. This
+  phase adds a limiter across the API and moves the store out of process, and CodeQL's
+  `js/missing-rate-limiting` rule opens one alert per route handler until it does — ~60 as of
+  phase 9, and more with every phase that adds endpoints. The alerts are the symptom; closing them
+  is this item, not sixty items.
+- *DoD:* deployed; restore tested; security checklist signed off; CodeQL reports no high-severity
+  alert that is not explicitly dismissed with a reason.
 
 ### v1.1 (one phase each)
 

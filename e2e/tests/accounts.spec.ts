@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { unique } from './support/unique.ts'
 
 /**
  * Phase 4's Definition of Done, end to end: an account created with a 24,850 TL opening balance
@@ -7,7 +8,6 @@ import { expect, test } from '@playwright/test'
  * Each test adds accounts to the shared signed-in workspace, so the assertions are scoped to the
  * account they create rather than to the whole list.
  */
-const unique = () => Math.random().toString(36).slice(2, 8)
 
 test('an account opened with 24,850 TL shows exactly that', async ({ page }) => {
   const name = `Garanti ${unique()}`

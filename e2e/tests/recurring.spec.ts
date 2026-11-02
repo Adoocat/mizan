@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
+import { unique } from './support/unique.ts'
 
 /**
  * Phase 9 end to end: a recurring rule becomes an occurrence, confirming it writes exactly one
@@ -8,7 +9,6 @@ import { expect, test, type Locator, type Page } from '@playwright/test'
  * rule here is named with a unique suffix and deleted at the end — a standing rule would otherwise
  * put its own payments into every other spec's upcoming list.
  */
-const unique = () => Math.random().toString(36).slice(2, 8)
 
 /** Today, as the API's own time zone sees it. The rules are anchored to it so dates stay stable. */
 function today(): string {

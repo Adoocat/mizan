@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
+import { unique } from './support/unique.ts'
 
 /**
  * Phase 5's Definition of Done, end to end: the 1,600 TL supermarket split saves correctly and
@@ -7,7 +8,6 @@ import { expect, test, type Locator, type Page } from '@playwright/test'
  * The specs share one signed-in workspace, and both browser projects run against it, so every
  * test gives its account *and* its payee a unique suffix and asserts only on its own rows.
  */
-const unique = () => Math.random().toString(36).slice(2, 8)
 
 async function addAccount(page: Page, name: string, balance: string) {
   await page.goto('/accounts')
